@@ -1,5 +1,26 @@
 export default {
-    moving(state, payload) {
+    createEmptyCategory(state) {
+        state.list.push({
+            type: 'category',
+            name: '',
+            description: ''
+        })
+    },
+    createEmptyItem(state, id) {
+        let new_item = {
+            type: 'item',
+            name: '',
+            description: '',
+            weight: '0',
+            quantity: 1,
+            worn: false
+        }
+        state.list.splice(id, 0, new_item)
+    },
+    markAsWorn(state, id) {
+        state.list[id].worn = !state.list[id].worn
+    },
+    move(state, payload) {
         let direction = payload.direction
         const number = (direction === 'up') ? -1 : 1
         let id = payload.id

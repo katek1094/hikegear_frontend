@@ -2,6 +2,7 @@
   <div class="editor">
     <h1>Pack editor</h1>
     <Category v-for="category in packlist" :key="category" :category="category"/>
+    <button type="button" @click="addCategory">dodaj kategorię</button>
   </div>
 </template>
 
@@ -18,6 +19,11 @@ export default {
   computed: {
     packlist() {
       return this.$store.getters['editor/organized_list']
+    }
+  },
+  methods: {
+    addCategory() {
+      this.$store.dispatch('editor/addCategory')
     }
   }
 }

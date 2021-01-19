@@ -13,12 +13,13 @@ export default {
                 labels.push(dt.name)
             }
             else {
-                data[data.length - 1] += parseInt(dt.weight)
-                total_weight += parseInt(dt.weight)
-                if (dt.consumable) {consumable_weight += parseInt(dt.weight)}
-                if (dt.worn) {worn_weight += parseInt(dt.weight)}
+                data[data.length - 1] += dt.weight
+                total_weight += dt.weight
+                if (dt.consumable) {consumable_weight += dt.weight}
+                if (dt.worn) {worn_weight += dt.weight}
             }
         }
+        // TODO: add quantity to weight computating
         return {
             data,
             labels,

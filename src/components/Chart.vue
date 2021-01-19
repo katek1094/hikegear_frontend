@@ -18,7 +18,8 @@ export default {
       chart_data: {
         datasets: [{
           data: this.data_array,
-          backgroundColor: ['rgb(25,42,144)', 'rgb(56,173,42)', 'rgba(156,24,24)', 'rgb(164,173,24)']
+          backgroundColor: ['rgb(49,73,217)', 'rgb(63,212,51)', 'rgb(212,32,32)', 'rgb(246,234,58)',
+            'rgb(234,120,16)', 'rgb(130,125,109)', 'rgb(177,60,241)', 'rgb(46,227,172)']
         }],
         labels: this.data_labels
       },

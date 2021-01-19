@@ -1,6 +1,7 @@
 <template>
   <div class="editor">
     <h1>Pack editor</h1>
+    <Summary/>
     <Category v-for="category in packlist" :key="category" :category="category"/>
     <button type="button" @click="addCategory">dodaj kategorię</button>
   </div>
@@ -8,14 +9,10 @@
 
 <script>
 import Category from "@/components/Category";
+import Summary from "@/components/Summary";
 export default {
   name: "Editor",
-  components: {Category},
-  data() {
-    return {
-
-    }
-  },
+  components: {Summary, Category},
   computed: {
     packlist() {
       return this.$store.getters['editor/organized_list']

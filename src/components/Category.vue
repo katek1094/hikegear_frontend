@@ -1,9 +1,10 @@
 <template>
   <div class="category">
-    <h3>{{category.name}}</h3>
-    <button v-if="!category.cant_move_up" type="button" @click="up">up</button>
-    <button v-if="!category.cant_move_down" type="button" @click="down">down</button>
-    <Item v-for="item in category.items" :key="item" :item="item"/>
+    <input class="category_name" type="text" :value="category.name" placeholder="category name" @input="changeName">
+<!--    TODO: add description-->
+    <button :disabled="category.cant_move_up" type="button" @click="up">up</button>
+    <button :disabled="category.cant_move_down" type="button" @click="down">down</button>
+    <Item v-for="item in category.items" :key="item.id" :item="item"/>
     <button type="button" @click="addItem">dodaj przedmiot</button>
   </div>
 </template>
@@ -25,6 +26,9 @@ export default {
     },
     addItem() {
       this.$store.dispatch('editor/addItem', this.category.id)
+    },
+    changeName(e) {
+      this.$store.commit('editor/renameCategory', {id: this.category.id, name: e.target.value})
     }
   }
 }
@@ -35,5 +39,9 @@ export default {
   border: 1px solid black;
   padding: 2px;
   margin: 2px;
+}
+.category_name {
+  font-size: 18px;
+  margin: 4px;
 }
 </style>

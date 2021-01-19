@@ -1,4 +1,16 @@
 export default {
+    changeItemWeight(state, payload) {
+        state.list[payload.id].weight = payload.weight
+    },
+    changeItemDescription(state, payload) {
+        state.list[payload.id].description = payload.description
+    },
+    renameItem(state, payload) {
+        state.list[payload.id].name = payload.name
+    },
+    renameCategory(state, payload) {
+        state.list[payload.id].name = payload.name
+    },
     createEmptyCategory(state) {
         state.list.push({
             type: 'category',
@@ -19,6 +31,9 @@ export default {
     },
     markAsWorn(state, id) {
         state.list[id].worn = !state.list[id].worn
+    },
+    markAsConsumable(state, id) {
+        state.list[id].consumable = !state.list[id].consumable
     },
     move(state, payload) {
         let direction = payload.direction

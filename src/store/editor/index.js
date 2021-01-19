@@ -23,7 +23,8 @@ export default {
                     description: 'Lite Line 200',
                     weight: '510',
                     quantity: 1,
-                    worn: false
+                    worn: false,
+                    consumable: false,
                 },
                 {
                     type: 'item',
@@ -31,7 +32,8 @@ export default {
                     description: 'Quechua m100',
                     weight: '200',
                     quantity: 1,
-                    worn: false
+                    worn: false,
+                    consumable: false,
                 },
                 {
                     type: 'category',
@@ -49,7 +51,8 @@ export default {
                     description: 'MSR Pocket Rocket 2',
                     weight: '74',
                     quantity: 1,
-                    worn: false
+                    worn: false,
+                    consumable: false,
                 },
                 {
                     type: 'item',
@@ -57,7 +60,8 @@ export default {
                     description: 'decathlon 1l',
                     weight: '300',
                     quantity: 1,
-                    worn: false
+                    worn: false,
+                    consumable: false,
                 },
                 {
                     type: 'item',
@@ -65,7 +69,8 @@ export default {
                     description: 'decathlon',
                     weight: '5',
                     quantity: 1,
-                    worn: false
+                    worn: false,
+                    consumable: false,
                 },
                 {
                     type: 'category',
@@ -78,7 +83,8 @@ export default {
                     description: 'decathlon poliester',
                     weight: '100',
                     quantity: 1,
-                    worn: true
+                    worn: true,
+                    consumable: false,
                 },
                 {
                     type: 'item',
@@ -86,7 +92,8 @@ export default {
                     description: 'merino',
                     weight: '50',
                     quantity: 3,
-                    worn: true
+                    worn: true,
+                    consumable: false,
                 },
                 {
                     type: 'item',
@@ -94,7 +101,8 @@ export default {
                     description: 'costabona',
                     weight: '120',
                     quantity: 3,
-                    worn: false
+                    worn: false,
+                    consumable: false,
                 }
             ]
         }

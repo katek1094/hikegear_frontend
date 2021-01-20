@@ -1,4 +1,21 @@
 export default {
+    uploadData(state, data) {
+        state.id = data.id
+        state.name = data.name
+        state.profile = data.profile
+        state.list = data.list
+        state.created = data.created
+        state.description = data.description
+    },
+    renamePack(state, name) {
+        state.name = name
+    },
+    removeElements(state, payload) {
+        state.list.splice(payload.start, payload.amount)
+    },
+    deleteItem(state, id) {
+        state.list.splice(id, 1)
+    },
     changeItemWeight(state, payload) {
         state.list[payload.id].weight = payload.weight
     },

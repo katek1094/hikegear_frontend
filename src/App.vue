@@ -10,6 +10,9 @@ export default {
   name: 'App',
   components: {
     Editor
+  },
+  beforeCreate() {
+    this.$store.dispatch('editor/fetchData', 4)
   }
 }
 </script>

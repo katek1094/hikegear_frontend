@@ -1,14 +1,17 @@
 import { createStore } from "vuex";
-// import createPersistedState from "vuex-persistedstate";
+import createPersistedState from "vuex-persistedstate";
 import editor from './editor/index.js'
+import auth from "./auth.js";
+
 
 const store = createStore({
     modules: {
-        editor: editor
+        editor: editor,
+        auth: auth
     },
-    // plugins: [createPersistedState({
-    //     storage: window.sessionStorage,
-    // })],
+    plugins: [createPersistedState({
+        storage: window.sessionStorage,
+    })],
 })
 
 export default store;

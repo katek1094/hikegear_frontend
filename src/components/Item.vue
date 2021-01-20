@@ -1,20 +1,18 @@
 <template>
   <div class="item">
-    <input type="text" :value="item.name" placeholder="name" @input="changeName">
-    <input type="text" :value="item.description" placeholder="description" @input="changeDescription">
-    <input type="number" :value="item.weight" @blur="changeWeight">
-    <input type="number" :value="item.quantity">
-    <button type="button">usuń</button>
-    <button type="button">+1</button>
+    <input type="text" :value="item.name" placeholder="nazwa" @input="changeName">
+    <input type="text" :value="item.description" placeholder="opis" @input="changeDescription">
+    <input type="number" min=0 :value="item.weight" @blur="changeWeight">
+    <input type="number" min=0 :value="item.quantity">
     <button :disabled="item.cant_move_up" type="button" @click="up">up</button>
     <button :disabled="item.cant_move_down" type="button" @click="down">down</button>
-    <input type="checkbox" :id="'worn-' + item.id" :checked="item.worn" ref="worn_checkbox" @click="markAsWorn">
+    <input type="checkbox" :id="'worn-' + item.id" :checked="item.worn" :disabled="item.consumable" @click="markAsWorn">
     <label :for="'worn-' + item.id">na sobie</label>
-    <input type="checkbox" :id="'consumable-' + item.id" :checked="item.consumable"  ref="consumable_checkbox" @click="markAsConsumable">
+    <input type="checkbox" :id="'consumable-' + item.id" :checked="item.consumable"  :disabled="item.worn" @click="markAsConsumable">
     <label :for="'consumable-' + item.id">konsumpcyjne</label>
-<!--    TODO: restrict checking only one checbox-->
+    <button type="button" @click="deleteItem">usuń</button>
   </div>
-</template>q
+</template>
 
 <script>
 export default {
@@ -44,7 +42,10 @@ export default {
     changeWeight(e) {
       this.$store.commit('editor/changeItemWeight', {id: this.item.id, weight: e.target.value})
     },
-  }
+    deleteItem() {
+      this.$store.commit('editor/deleteItem', this.item.id)
+    }
+  },
 }
 </script>
 

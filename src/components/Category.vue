@@ -1,9 +1,10 @@
 <template>
   <div class="category">
-    <input class="category_name" type="text" :value="category.name" placeholder="category name" @input="changeName">
+    <input class="category_name" type="text" :value="category.name" placeholder="nazwa kategorii" @input="changeName">
 <!--    TODO: add description-->
     <button :disabled="category.cant_move_up" type="button" @click="up">up</button>
     <button :disabled="category.cant_move_down" type="button" @click="down">down</button>
+    <button type="button" @click="deleteCategory">usuń kategorię</button>
     <Item v-for="item in category.items" :key="item.id" :item="item"/>
     <button type="button" @click="addItem">dodaj przedmiot</button>
   </div>
@@ -29,6 +30,9 @@ export default {
     },
     changeName(e) {
       this.$store.commit('editor/renameCategory', {id: this.category.id, name: e.target.value})
+    },
+    deleteCategory() {
+      this.$store.dispatch('editor/deleteCategory', this.category.id)
     }
   }
 }

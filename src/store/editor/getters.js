@@ -1,33 +1,24 @@
 export default {
+    pack_name(state) {
+      return state.name
+    },
     summary_data(state) {
-        let list = state.list
-        let data = []
-        let labels = []
-        let total_weight = 0
-        let consumable_weight = 0
-        let worn_weight = 0
-        for (let i = 0; i < list.length; i++) {
-            let dt = list[i]
+        let results = {data: [], labels: [], total_weight: 0, consumable_weight: 0, worn_weight: 0}
+        for (let i = 0; i < state.list.length; i++) {
+            let dt = state.list[i]
             if (dt.type === 'category') {
-                data.push(0)
-                labels.push(dt.name)
+                results.data.push(0)
+                results.labels.push(dt.name)
             }
             else {
-                data[data.length - 1] += dt.weight
-                total_weight += dt.weight
-                if (dt.consumable) {consumable_weight += dt.weight}
-                if (dt.worn) {worn_weight += dt.weight}
+                results.data[results.data.length - 1] += (dt.weight * dt.quantity)
+                results.total_weight += (dt.weight * dt.quantity)
+                if (dt.consumable) {results.consumable_weight += (dt.weight * dt.quantity)}
+                if (dt.worn) {results.worn_weight += dt.weight}
             }
         }
-        // TODO: add quantity to weight computating
-        return {
-            data,
-            labels,
-            total_weight,
-            consumable_weight,
-            worn_weight,
-            base_weight: total_weight - consumable_weight - worn_weight
-        }
+        results.base_weight = results.total_weight - results.consumable_weight - results.worn_weight
+        return results
     },
     organized_list: state => {
         let list = state.list

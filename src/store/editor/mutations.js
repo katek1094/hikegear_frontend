@@ -1,35 +1,33 @@
 export default {
     uploadData(state, data) {
-        state.id = data.id
-        state.name = data.name
-        state.profile = data.profile
-        state.list = data.list
-        state.created = data.created
-        state.description = data.description
+        // Object.assign(state.static, data)
+        // Object.assign(state.dynamic, data)
+        state.static = JSON.parse(JSON.stringify(data))
+        state.dynamic = JSON.parse(JSON.stringify(data))
     },
     renamePack(state, name) {
-        state.name = name
+        state.dynamic.name = name
     },
     removeElements(state, payload) {
-        state.list.splice(payload.start, payload.amount)
+        state.dynamic.list.splice(payload.start, payload.amount)
     },
     deleteItem(state, id) {
-        state.list.splice(id, 1)
+        state.dynamic.list.splice(id, 1)
     },
     changeItemWeight(state, payload) {
-        state.list[payload.id].weight = payload.weight
+        state.dynamic.list[payload.id].weight = payload.weight
     },
     changeItemDescription(state, payload) {
-        state.list[payload.id].description = payload.description
+        state.dynamic.list[payload.id].description = payload.description
     },
     renameItem(state, payload) {
-        state.list[payload.id].name = payload.name
+        state.dynamic.list[payload.id].name = payload.name
     },
     renameCategory(state, payload) {
-        state.list[payload.id].name = payload.name
+        state.dynamic.list[payload.id].name = payload.name
     },
     createEmptyCategory(state) {
-        state.list.push({
+        state.dynamic.list.push({
             type: 'category',
             name: '',
             description: ''
@@ -44,23 +42,23 @@ export default {
             quantity: 1,
             worn: false
         }
-        state.list.splice(id, 0, new_item)
+        state.dynamic.list.splice(id, 0, new_item)
     },
     markAsWorn(state, id) {
-        state.list[id].worn = !state.list[id].worn
+        state.dynamic.list[id].worn = !state.dynamic.list[id].worn
     },
     markAsConsumable(state, id) {
-        state.list[id].consumable = !state.list[id].consumable
+        state.dynamic.list[id].consumable = !state.dynamic.list[id].consumable
     },
     move(state, payload) {
         let direction = payload.direction
         const number = (direction === 'up') ? -1 : 1
         let id = payload.id
-        let raw_element = state.list[id]
+        let raw_element = state.dynamic.list[id]
         let organized_elements = payload.organized
         let categories = []
-        for (let i = 0; i < state.list.length; i++) {
-            if (state.list[i].type === 'category') {
+        for (let i = 0; i < state.dynamic.list.length; i++) {
+            if (state.dynamic.list[i].type === 'category') {
                 categories.push(i)
             }
         }
@@ -70,27 +68,27 @@ export default {
             let category_index = categories.indexOf(id)
             if ((categories.length - 1 === category_index) && (number === 1)) {throw "can't move down while in the end!"}
             if ((category_index === 0) && (number === -1)) {throw "can't move up while on the top!"}
-            let data = state.list.slice(id, id + org_element.items.length + 1)
-            state.list.splice(id, org_element.items.length + 1)
+            let data = state.dynamic.list.slice(id, id + org_element.items.length + 1)
+            state.dynamic.list.splice(id, org_element.items.length + 1)
             let splice_id
             if (number === -1) {
                 splice_id  = categories[category_index + number]
             }
             else {
                 if (category_index === categories.length - 2) {
-                    splice_id = state.list.length
+                    splice_id = state.dynamic.list.length
                 }
                 else {
                     splice_id  = categories[category_index + number + 1] - data.length
                 }
             }
-            state.list.splice(splice_id, 0, ...data)
+            state.dynamic.list.splice(splice_id, 0, ...data)
         }
         else {
-            if ((id === state.list.length - 1) && (number === 1)) {throw "can't move down while in the end!"}
+            if ((id === state.dynamic.list.length - 1) && (number === 1)) {throw "can't move down while in the end!"}
             if ((id === 1) && (number === -1)) {throw "can't move up while on the top!"}
-            state.list.splice(id, 1)
-            state.list.splice(id + number, 0, raw_element)
+            state.dynamic.list.splice(id, 1)
+            state.dynamic.list.splice(id + number, 0, raw_element)
         }
     }
 }

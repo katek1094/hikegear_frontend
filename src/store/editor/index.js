@@ -6,13 +6,15 @@ export default {
     namespaced: true,
     state() {
         return {
-            id: 1,
-            name: '',
-            profile: {
-                id: 1
-            },
-            created: '',
-            list: []
+            static: {},
+            dynamic: {}
+            // id: 1,
+            // name: '',
+            // profile: {
+            //     id: 1
+            // },
+            // created: '',
+            // list: []
         }
     },
     mutations,

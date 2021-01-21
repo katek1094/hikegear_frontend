@@ -39,7 +39,7 @@ export default {
   methods: {
     createChart() {
       this.chart =  new Chart(document.getElementById('summary-chart'), {
-        type: 'pie',
+        type: 'doughnut',
         data: this.chart_data,
         options: this.chart_options,
       });

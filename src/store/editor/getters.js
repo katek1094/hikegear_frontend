@@ -1,11 +1,28 @@
 export default {
+    are_any_changes(state) {
+        let dyn = state.dynamic
+        let st = state.static
+        if (st.name !== dyn.name) {return true}
+        if (st.description !== dyn.description) {return true}
+        if (dyn.list.length !== st.list.length) {return true}
+        const len = (dyn.list.length >= st.list.length) ? dyn.list.length : st.list.length
+        for (let i = 0; i < len; i++) {
+            for (const [key, value] of Object.entries(st.list[i])) {
+                if (value !== dyn.list[i][key]) {return true}
+            }
+        }
+        return false
+    },
+    isDataFetched(state) {
+        return state.static.created
+    },
     pack_name(state) {
-      return state.name
+        return state.dynamic.name
     },
     summary_data(state) {
         let results = {data: [], labels: [], total_weight: 0, consumable_weight: 0, worn_weight: 0}
-        for (let i = 0; i < state.list.length; i++) {
-            let dt = state.list[i]
+        for (let i = 0; i < state.dynamic.list.length; i++) {
+            let dt = state.dynamic.list[i]
             if (dt.type === 'category') {
                 results.data.push(0)
                 results.labels.push(dt.name)
@@ -21,7 +38,7 @@ export default {
         return results
     },
     organized_list: state => {
-        let list = state.list
+        let list = state.dynamic.list
         let results = []
         if (list[0].type !== 'category') {
             throw 'first item of backpack list is not a category! something is wrong'

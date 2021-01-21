@@ -1,6 +1,6 @@
 <template>
   <div class="editor">
-<!--    <h1>Pack editor</h1>-->
+    <h1>are any changes: {{are_changes}}</h1>
     <Summary/>
     <input class="pack__name" type="text" v-model.trim="pack_name" placeholder="nazwa listy">
     <Category v-for="category in packlist" :key="category" :category="category"/>
@@ -25,12 +25,15 @@ export default {
       set(val) {
         this.$store.commit('editor/renamePack', val)
       }
+    },
+    are_changes() {
+      return this.$store.getters['editor/are_any_changes']
     }
   },
   methods: {
     addCategory() {
       this.$store.dispatch('editor/addCategory')
-    }
+    },
   }
 }
 </script>

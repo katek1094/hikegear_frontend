@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Editor/>
+    <Editor v-if="editor_data_fetched"/>
   </div>
 </template>
 
@@ -10,6 +10,11 @@ export default {
   name: 'App',
   components: {
     Editor
+  },
+  computed: {
+    editor_data_fetched() {
+      return this.$store.getters['editor/isDataFetched']
+    }
   },
   beforeCreate() {
     this.$store.dispatch('editor/fetchData', 4)

@@ -1,7 +1,7 @@
 <template>
   <div class="category">
     <input class="category_name" type="text" :value="category.name" placeholder="nazwa kategorii" @input="changeName">
-<!--    TODO: add description-->
+<!--    TODO: add category description-->
     <button :disabled="category.cant_move_up" type="button" @click="up">up</button>
     <button :disabled="category.cant_move_down" type="button" @click="down">down</button>
     <button type="button" @click="deleteCategory">usuń kategorię</button>
@@ -44,7 +44,7 @@ export default {
   padding: 2px;
   margin: 2px;
 }
-.category_name {
+.category_name{
   font-size: 18px;
   margin: 4px;
 }

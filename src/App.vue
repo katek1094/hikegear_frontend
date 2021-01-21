@@ -1,14 +1,18 @@
 <template>
   <div>
-    <Editor v-if="editor_data_fetched"/>
+    <BaseApp>
+      <Editor v-if="editor_data_fetched"/>
+    </BaseApp>
   </div>
 </template>
 
 <script>
 import Editor from "@/components/Editor";
+import BaseApp from "@/components/BaseApp";
 export default {
   name: 'App',
   components: {
+    BaseApp,
     Editor
   },
   computed: {

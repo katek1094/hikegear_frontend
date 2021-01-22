@@ -40,10 +40,21 @@ export default {
 </script>
 
 <style scoped>
+
 .editor {
   border: 2px solid black;
   padding: 2px;
   margin: 2px;
-  background-color: #eeeeee;
+  background-color: var(--background);
+}
+
+</style>
+
+<style>
+.editor {
+  --background: #f6f6f6;
+}
+.autoresize {
+  resize: none;
 }
 </style>

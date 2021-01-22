@@ -5,7 +5,9 @@
     <button :disabled="category.cant_move_up" type="button" @click="up">up</button>
     <button :disabled="category.cant_move_down" type="button" @click="down">down</button>
     <button type="button" @click="deleteCategory">usuń kategorię</button>
-    <Item v-for="item in category.items" :key="item.id" :item="item"/>
+    <div class="items">
+      <Item v-for="item in category.items" :key="item.id" :item="item"/>
+    </div>
     <button type="button" @click="addItem">dodaj przedmiot</button>
   </div>
 </template>

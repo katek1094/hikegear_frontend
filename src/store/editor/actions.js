@@ -36,7 +36,7 @@ export default {
             .then(response => {
                 if (response.ok) {
                     response.json().then(data => {
-                        commit('uploadData', data)
+                        commit('loadData', data)
                     })
                 }
                 else console.log(response)

@@ -1,9 +1,10 @@
 export default {
-    uploadData(state, data) {
-        // Object.assign(state.static, data)
-        // Object.assign(state.dynamic, data)
+    loadData(state, data) {
         state.static = JSON.parse(JSON.stringify(data))
         state.dynamic = JSON.parse(JSON.stringify(data))
+    },
+    changeItemQuantity(state, payload) {
+        state.dynamic.list[payload.id].quantity = payload.quantity
     },
     renamePack(state, name) {
         state.dynamic.name = name
@@ -15,6 +16,7 @@ export default {
         state.dynamic.list.splice(id, 1)
     },
     changeItemWeight(state, payload) {
+        // TODO: deal with 'e'
         state.dynamic.list[payload.id].weight = payload.weight
     },
     changeItemDescription(state, payload) {

@@ -4,12 +4,13 @@ import router from "./router";
 import store from './store/index.js'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faChevronUp, faChevronDown, faTrash, faChild } from '@fortawesome/free-solid-svg-icons'
+import { faChevronUp, faChevronDown, faTrash, faChild, faSyncAlt } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faChevronUp)
 library.add(faChevronDown)
 library.add(faTrash)
 library.add(faChild)
+library.add(faSyncAlt)
 
 import App from './App.vue'
 

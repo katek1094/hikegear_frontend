@@ -33,7 +33,4 @@ export default {
 .summary__table {
   border: 1px solid black;
 }
-.summary__table td {
-  border: 1px solid black;
-}
 </style>

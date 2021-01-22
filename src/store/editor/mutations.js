@@ -16,7 +16,6 @@ export default {
         state.dynamic.list.splice(id, 1)
     },
     changeItemWeight(state, payload) {
-        // TODO: deal with 'e'
         state.dynamic.list[payload.id].weight = payload.weight
     },
     changeItemDescription(state, payload) {

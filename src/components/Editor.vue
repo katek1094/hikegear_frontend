@@ -46,6 +46,9 @@ export default {
   padding: 2px;
   margin: 2px;
   background-color: var(--background);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 </style>
@@ -56,5 +59,6 @@ export default {
 }
 .autoresize {
   resize: none;
+  overflow: hidden;
 }
 </style>

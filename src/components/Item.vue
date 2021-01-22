@@ -1,27 +1,24 @@
 <template>
-  <div class="item">
-    <textarea v-model.trim="item_name" class="name autoresize field" placeholder="nazwa" rows="1" @input="autoresize"
-              @keydown="preventEnter"/>
-    <textarea v-model.trim="item_description" class="description autoresize field" placeholder="opis" rows="1" @input="autoresize"/>
-    <input v-model="item_weight" class="weight field" max="99999" min=0 type="number">
-    <input v-model="item_quantity" class="quantity field" max="99" min=0 type="number">
-
-    <input :id="'worn-' + item.id" :checked="item.worn" :disabled="item.consumable" class="worn" type="checkbox"
-           @click="markAsWorn">
-    <label :for="'worn-' + item.id">na sobie</label>
-    <input :id="'consumable-' + item.id" :checked="item.consumable" :disabled="item.worn" class="consumable"
-           type="checkbox" @click="markAsConsumable">
-    <label :for="'consumable-' + item.id">konsumpcyjne</label>
-
-
-
-
+  <div class="item" :class="{first: first, last: last, middle: !last && !first}">
     <button :disabled="item.cant_move_up" class="up" type="button" @click="up">
       <font-awesome-icon class="fa-sm" icon="chevron-up"/>
     </button>
     <button :disabled="item.cant_move_down" class="down" type="button" @click="down">
       <font-awesome-icon class="fa-sm" icon="chevron-down"/>
     </button>
+    <textarea v-model.trim="item_name" class="name autoresize field" placeholder="nazwa" rows="1" @input="autoresize"
+              @keydown="preventEnter"/>
+    <textarea v-model.trim="item_description" class="description autoresize field" placeholder="opis" rows="1"
+              @input="autoresize"/>
+    <button :class="{ checked: item.worn }" :disabled="item.consumable" class="worn" @click="markAsWorn">
+      <font-awesome-icon class="fa-sm" icon="child"/>
+    </button>
+    <button :class="{ checked: item.consumable }" :disabled="item.worn" class="consumable" @click="markAsConsumable">
+      <font-awesome-icon class="fa-sm" icon="sync-alt"/>
+    </button>
+    <input v-model.number="item_weight" class="weight field" type="number" @input="removeLeadingZero">
+    <input v-model.number="item_quantity" :max="quantity_limit" class="quantity field" min="0" type="number"
+           @input="removeLeadingZero">
     <button class="delete" type="button" @click="deleteItem">
       <font-awesome-icon class="fa-sm" icon="trash"/>
     </button>
@@ -32,10 +29,15 @@
 export default {
   name: "Item",
   props: {
-    item: Object
+    item: Object,
+    first: Boolean,
+    last: Boolean
   },
   data() {
-    return {}
+    return {
+      weight_limit: 99999,
+      quantity_limit: 99
+    }
   },
   computed: {
     item_name: {
@@ -48,11 +50,21 @@ export default {
     },
     item_weight: {
       get() {return this.item.weight},
-      set(val) {this.$store.commit('editor/changeItemWeight', {id: this.item.id, weight: val})}
+      set(val) {
+        if ((val <= this.weight_limit) && (val >= 0))  {
+          this.$store.commit('editor/changeItemWeight', {id: this.item.id, weight: val})
+        }
+        else {this.$forceUpdate()}
+      }
     },
     item_quantity: {
       get() {return this.item.quantity},
-      set(val) {this.$store.commit('editor/changeItemQuantity', {id: this.item.id, quantity: val})}
+      set(val) {
+        if ((val <= this.quantity_limit) && (val >= 0)) {
+          this.$store.commit('editor/changeItemQuantity', {id: this.item.id, quantity: val})
+        }
+        else {this.$forceUpdate()}
+      }
     },
   },
   methods: {
@@ -69,30 +81,50 @@ export default {
     },
     preventEnter(e) {
       if (e.keyCode === 13) {e.preventDefault()}
+    },
+    resizeAll() {
+      let a = this.$el.getElementsByClassName('autoresize')
+      for (let i = 0; i < a.length; i++) {this.autoresize({target: a[i]})}
+    },
+    removeLeadingZero(e) {
+      if ((String(e.target.value)[0] === '0') && (e.target.value.length > 1))
+      {e.target.value = String(e.target.value).slice(1)}
     }
+  },
+  mounted() {
+    this.resizeAll()
+    window.addEventListener("resize", this.resizeAll);
   },
 }
 </script>
 
 <style scoped>
 .item {
-  border-top: 1px dotted grey;
-  /*TODO: borders for first and last different*/
-  padding: 3px;
+  padding: 3px 0;
   font-size: 12px;
   display: flex;
   align-items: center;
 }
+.item.first, .item.middle {
+  border-bottom: 1px dotted grey;
+}
+.item.first.last {
+  border: none;
+}
+.item > * {
+  margin: 0 2px;
+}
 input {
   font-size: 1em;
   border: none;
-  padding: 3px;
+  padding: 5px;
 }
 textarea {
   font-size: 1em;
   padding: 5px;
 }
 .field {
+  border-radius: 4px;
   border: 1px solid var(--background);
   background-color: var(--background);
   outline: none;
@@ -106,12 +138,14 @@ textarea {
 }
 .name {
   width: 12em;
+  min-width: 10em;
 }
 .description {
-
+  width: 12em;
+  min-width: 10em;
 }
 .weight {
-  width: 4.5em;
+  width: 3.5em;
 }
 .quantity {
   width: 3em;
@@ -122,6 +156,30 @@ textarea {
 .down {
 
 }
+.up, .down {
+  visibility: hidden;
+}
+.item:hover .up, .item:hover .down {
+  visibility: visible;
+}
+.item:hover .worn, .item:hover .consumable {
+  visibility: visible;
+}
+.worn, .consumable {
+  visibility: hidden;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  background-color: transparent;
+  outline: none;
+  color: grey;
+}
+.checked {
+  visibility: visible;
+  color: blue;
+}
+.worn:hover, .consumable:hover {
+  color: black;
+}
 .worn {
 
 }
@@ -129,15 +187,26 @@ textarea {
 
 }
 .delete {
-
+  visibility: hidden;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  padding: 4px 6px;
 }
+.item:hover .delete {
+  visibility: visible;
+}
+.delete:hover {
+  color: red;
+}
+
 /*code below removes arrows from numeric inputs*/
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
+.weight::-webkit-outer-spin-button,
+.weight::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-input[type=number] {
+.weight[type=number] {
   -moz-appearance: textfield;
 }
 

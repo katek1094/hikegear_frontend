@@ -2,13 +2,21 @@ export default {
     are_any_changes(state) {
         let dyn = state.dynamic
         let st = state.static
-        if (st.name !== dyn.name) {return true}
-        if (st.description !== dyn.description) {return true}
-        if (dyn.list.length !== st.list.length) {return true}
+        if (st.name !== dyn.name) {
+            return true
+        }
+        if (st.description !== dyn.description) {
+            return true
+        }
+        if (dyn.list.length !== st.list.length) {
+            return true
+        }
         const len = (dyn.list.length >= st.list.length) ? dyn.list.length : st.list.length
         for (let i = 0; i < len; i++) {
             for (const [key, value] of Object.entries(st.list[i])) {
-                if (value !== dyn.list[i][key]) {return true}
+                if (value !== dyn.list[i][key]) {
+                    return true
+                }
             }
         }
         return false
@@ -26,12 +34,15 @@ export default {
             if (dt.type === 'category') {
                 results.data.push(0)
                 results.labels.push(dt.name)
-            }
-            else {
+            } else {
                 results.data[results.data.length - 1] += (dt.weight * dt.quantity)
                 results.total_weight += (dt.weight * dt.quantity)
-                if (dt.consumable) {results.consumable_weight += (dt.weight * dt.quantity)}
-                if (dt.worn) {results.worn_weight += dt.weight}
+                if (dt.consumable) {
+                    results.consumable_weight += (dt.weight * dt.quantity)
+                }
+                if (dt.worn) {
+                    results.worn_weight += dt.weight
+                }
             }
         }
         results.base_weight = results.total_weight - results.consumable_weight - results.worn_weight
@@ -51,8 +62,7 @@ export default {
             if (dt.type === 'category') {
                 dt.items = []
                 results.push(dt)
-            }
-            else {
+            } else {
                 results[results.length - 1].items.push(dt)
             }
         }

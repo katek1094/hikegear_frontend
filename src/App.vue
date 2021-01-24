@@ -9,6 +9,7 @@
 <script>
 import Editor from "@/components/Editor";
 import BaseApp from "@/components/BaseApp";
+
 export default {
   name: 'App',
   components: {

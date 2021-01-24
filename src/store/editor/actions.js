@@ -19,13 +19,9 @@ export default {
         let final_id = id + organized[index].items.length + 1
         commit('createEmptyItem', final_id)
     },
-    addCategory({commit}) {
-        commit('createEmptyCategory')
-    },
     deleteCategory({commit, getters}, id) {
-        let organized = getters['organized_list']
-        let index = organized.findIndex(el => el.id === id)
-        let items_amount = organized[index].items.length
+        let index = getters['organized_list'].findIndex(el => el.id === id)
+        let items_amount = getters['organized_list'][index].items.length
         commit('removeElements', {start: id, amount: items_amount + 1})
     },
     fetchData({commit, rootGetters}, id) {
@@ -38,8 +34,7 @@ export default {
                     response.json().then(data => {
                         commit('loadData', data)
                     })
-                }
-                else console.log(response)
+                } else console.log(response)
             })
     }
 }

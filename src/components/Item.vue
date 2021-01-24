@@ -41,38 +41,62 @@ export default {
   },
   computed: {
     item_name: {
-      get() {return this.item.name},
-      set(val) {this.$store.commit('editor/renameItem', {id: this.item.id, name: val})}
+      get() {
+        return this.item.name
+      },
+      set(val) {
+        this.$store.commit('editor/renameItem', {id: this.item.id, name: val})
+      }
     },
     item_description: {
-      get() {return this.item.description},
-      set(val) {this.$store.commit('editor/changeItemDescription', {id: this.item.id, description: val})}
+      get() {
+        return this.item.description
+      },
+      set(val) {
+        this.$store.commit('editor/changeItemDescription', {id: this.item.id, description: val})
+      }
     },
     item_weight: {
-      get() {return this.item.weight},
+      get() {
+        return this.item.weight
+      },
       set(val) {
-        if ((val <= this.weight_limit) && (val >= 0))  {
+        if ((val <= this.weight_limit) && (val >= 0)) {
           this.$store.commit('editor/changeItemWeight', {id: this.item.id, weight: val})
+        } else {
+          this.$forceUpdate()
         }
-        else {this.$forceUpdate()}
       }
     },
     item_quantity: {
-      get() {return this.item.quantity},
+      get() {
+        return this.item.quantity
+      },
       set(val) {
         if ((val <= this.quantity_limit) && (val >= 0)) {
           this.$store.commit('editor/changeItemQuantity', {id: this.item.id, quantity: val})
+        } else {
+          this.$forceUpdate()
         }
-        else {this.$forceUpdate()}
       }
     },
   },
   methods: {
-    up() {this.$store.dispatch('editor/moveUp', this.item.id)},
-    down() {this.$store.dispatch('editor/moveDown', this.item.id)},
-    markAsWorn() {this.$store.commit('editor/markAsWorn', this.item.id)},
-    markAsConsumable() {this.$store.commit('editor/markAsConsumable', this.item.id)},
-    deleteItem() {this.$store.commit('editor/deleteItem', this.item.id)},
+    up() {
+      this.$store.dispatch('editor/moveUp', this.item.id)
+    },
+    down() {
+      this.$store.dispatch('editor/moveDown', this.item.id)
+    },
+    markAsWorn() {
+      this.$store.commit('editor/markAsWorn', this.item.id)
+    },
+    markAsConsumable() {
+      this.$store.commit('editor/markAsConsumable', this.item.id)
+    },
+    deleteItem() {
+      this.$store.commit('editor/deleteItem', this.item.id)
+    },
     autoresize(event) {
       let padding = parseInt(getComputedStyle(event.target).padding.replace('px', ''))
       let font_size = parseInt(getComputedStyle(event.target).fontSize.replace('px', ''))
@@ -80,15 +104,20 @@ export default {
       event.target.style.height = event.target.scrollHeight - padding * 2 + 'px'  // scrollHeight = font size + 2 + padding * 2
     },
     preventEnter(e) {
-      if (e.keyCode === 13) {e.preventDefault()}
+      if (e.keyCode === 13) {
+        e.preventDefault()
+      }
     },
     resizeAll() {
       let a = this.$el.getElementsByClassName('autoresize')
-      for (let i = 0; i < a.length; i++) {this.autoresize({target: a[i]})}
+      for (let i = 0; i < a.length; i++) {
+        this.autoresize({target: a[i]})
+      }
     },
     removeLeadingZero(e) {
-      if ((String(e.target.value)[0] === '0') && (e.target.value.length > 1))
-      {e.target.value = String(e.target.value).slice(1)}
+      if ((String(e.target.value)[0] === '0') && (e.target.value.length > 1)) {
+        e.target.value = String(e.target.value).slice(1)
+      }
     }
   },
   mounted() {
@@ -105,66 +134,85 @@ export default {
   display: flex;
   align-items: center;
 }
+
 .item.first, .item.middle {
   border-bottom: 1px dotted grey;
 }
+
 .item.first.last {
   border: none;
 }
+
 .item > * {
   margin: 0 2px;
 }
+
 input {
   font-size: 1em;
   border: none;
   padding: 5px;
 }
+
 textarea {
   font-size: 1em;
   padding: 5px;
 }
+
 .field {
   border-radius: 4px;
   border: 1px solid var(--background);
   background-color: var(--background);
   outline: none;
 }
+
 .field:focus {
   background-color: white;
   border: 1px solid grey;
 }
+
 .field:hover {
   background-color: white;
+  cursor: text;
 }
+
 .name {
   width: 12em;
   min-width: 10em;
 }
+
 .description {
   width: 12em;
   min-width: 10em;
 }
+
 .weight {
   width: 3.5em;
 }
+
 .quantity {
   width: 3em;
 }
-.up {
 
+.up:enabled {
+  cursor: pointer;
 }
-.down {
 
+.down:enabled {
+  cursor: pointer;
 }
+
 .up, .down {
   visibility: hidden;
 }
+
 .item:hover .up, .item:hover .down {
   visibility: visible;
 }
+
 .item:hover .worn, .item:hover .consumable {
   visibility: visible;
 }
+
 .worn, .consumable {
   visibility: hidden;
   border-radius: 50%;
@@ -173,19 +221,24 @@ textarea {
   outline: none;
   color: grey;
 }
+
 .checked {
   visibility: visible;
   color: blue;
 }
-.worn:hover, .consumable:hover {
+
+.worn:hover:enabled, .consumable:hover:enabled {
   color: black;
 }
-.worn {
 
+.worn:enabled {
+  cursor: pointer;
 }
-.consumable {
 
+.consumable:enabled {
+  cursor: pointer;
 }
+
 .delete {
   visibility: hidden;
   outline: none;
@@ -193,11 +246,14 @@ textarea {
   background-color: transparent;
   padding: 4px 6px;
 }
+
 .item:hover .delete {
   visibility: visible;
 }
+
 .delete:hover {
   color: red;
+  cursor: pointer;
 }
 
 /*code below removes arrows from numeric inputs*/
@@ -206,6 +262,7 @@ textarea {
   -webkit-appearance: none;
   margin: 0;
 }
+
 .weight[type=number] {
   -moz-appearance: textfield;
 }

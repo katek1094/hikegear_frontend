@@ -1,17 +1,21 @@
 <template>
   <div class="editor">
-    <h1>are any changes: {{are_changes}}</h1>
+    <h1>are any changes: {{ are_changes }}</h1>
     <Summary/>
     <input class="pack__name" type="text" v-model.trim="pack_name" placeholder="nazwa listy">
     <!--    TODO: add pack description-->
     <Category v-for="category in packlist" :key="category" :category="category"/>
-    <button type="button" @click="addCategory">dodaj kategorię</button>
+    <button class="add_category" type="button" @click="addCategory">
+      <font-awesome-icon class="fa-md" icon="plus"/>
+      dodaj kategorię
+    </button>
   </div>
 </template>
 
 <script>
 import Category from "@/components/Category";
 import Summary from "@/components/Summary";
+
 export default {
   name: "Editor",
   components: {Summary, Category},
@@ -33,7 +37,7 @@ export default {
   },
   methods: {
     addCategory() {
-      this.$store.dispatch('editor/addCategory')
+      this.$store.commit('editor/createEmptyCategory')
     },
   }
 }
@@ -57,8 +61,22 @@ export default {
 .editor {
   --background: #f6f6f6;
 }
+
 .autoresize {
   resize: none;
   overflow: hidden;
+}
+
+.add_category {
+  margin: 4px 0;
+  border: none;
+  background-color: transparent;
+  outline: none;
+  color: yellowgreen;
+}
+
+.add_category:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
 </style>

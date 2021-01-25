@@ -51,6 +51,7 @@ export default {
     organized_list: state => {
         let list = state.dynamic.list
         let results = []
+        let cat_unique = 0
         if (list[0].type !== 'category') {
             throw 'first item of backpack list is not a category! something is wrong'
         }
@@ -61,6 +62,8 @@ export default {
             dt.cant_move_down = false
             if (dt.type === 'category') {
                 dt.items = []
+                dt.unique_id = cat_unique
+                cat_unique++
                 results.push(dt)
             } else {
                 results[results.length - 1].items.push(dt)
@@ -75,5 +78,6 @@ export default {
             results[results.length - 1].items[results[results.length - 1].items.length - 1].cant_move_down = true
         }
         return results
-    }
+    },
+
 }

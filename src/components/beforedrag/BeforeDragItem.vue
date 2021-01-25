@@ -1,13 +1,11 @@
 <template>
   <div class="item" :class="{first: first, last: last, middle: !last && !first}">
-<!--    <button :disabled="item.cant_move_up" class="up" type="button" @click="up">-->
-<!--      <font-awesome-icon class="fa-sm" icon="chevron-up"/>-->
-<!--    </button>-->
-<!--    <button :disabled="item.cant_move_down" class="down" type="button" @click="down">-->
-<!--      <font-awesome-icon class="fa-sm" icon="chevron-down"/>-->
-<!--    </button>-->
-    <span class="handle it">X</span>
-
+    <button :disabled="item.cant_move_up" class="up" type="button" @click="up">
+      <font-awesome-icon class="fa-sm" icon="chevron-up"/>
+    </button>
+    <button :disabled="item.cant_move_down" class="down" type="button" @click="down">
+      <font-awesome-icon class="fa-sm" icon="chevron-down"/>
+    </button>
     <textarea v-model.trim="item_name" class="name autoresize field" placeholder="nazwa" rows="1" @input="autoresize"
               @keydown="preventEnter"/>
     <textarea v-model.trim="item_description" class="description autoresize field" placeholder="opis" rows="1"
@@ -33,8 +31,7 @@ export default {
   props: {
     item: Object,
     first: Boolean,
-    last: Boolean,
-    index: Number
+    last: Boolean
   },
   data() {
     return {
@@ -268,16 +265,6 @@ textarea {
 
 .weight[type=number] {
   -moz-appearance: textfield;
-}
-
-/*NEW DUE TO DRAGGABLE*/
-
-.handle {
-  margin: 2px 14px 2px 2px;
-  padding: 6px;
-  cursor: move;
-  background-color: white;
-  border-radius: 6px;
 }
 
 </style>

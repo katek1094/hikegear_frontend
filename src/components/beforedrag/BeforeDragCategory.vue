@@ -1,19 +1,22 @@
 <template>
   <div class="category">
     <div class="category__header">
-      <span class="handle cat">X</span>
+      <button :disabled="category.cant_move_up" class="up" type="button" @click="up">
+        <font-awesome-icon class="fa-sm" icon="chevron-up"/>
+      </button>
+      <button :disabled="category.cant_move_down" class="down" type="button" @click="down">
+        <font-awesome-icon class="fa-sm" icon="chevron-down"/>
+      </button>
       <input class="name" type="text" v-model.trim="category_name" placeholder="nazwa kategorii" @input="changeName">
       <!--    TODO: add category description-->
       <button class="delete" type="button" @click="deleteCategory">
         <font-awesome-icon class="fa-sm" icon="trash"/>
       </button>
     </div>
-    <draggable v-model="items" animation="500" group="items" item-key="id" @end="drag=false" @start="drag=true">
-      <template #item="{element, index}">
-        <Item :first="category.items.indexOf(element) === 0" :item="element" :index="index"
-              :last="category.items.indexOf(element) === category.items.length - 1"/>
-      </template>
-    </draggable>
+    <div class="items">
+      <Item v-for="item in category.items" :key="item.id" :first="category.items.indexOf(item) === 0" :item="item"
+            :last="category.items.indexOf(item) === category.items.length - 1"/>
+    </div>
     <button class="add_item" type="button" @click="addItem">
       <font-awesome-icon class="fa-md" icon="plus"/>
       dodaj przedmiot
@@ -22,37 +25,21 @@
 </template>
 
 <script>
-import draggable from 'vuedraggable'
 import Item from "@/components/Item";
 
 export default {
   name: "Category",
-  components: {Item, draggable},
+  components: {Item},
   props: {
-    category: Object,
-    index: Number
+    category: Object
   },
   computed: {
-    items_amount() {
-      return this.category.items.length
-    },
     category_name: {
       get() {
         return this.category.name
       },
       set(val) {
         this.$store.commit('editor/renameCategory', {id: this.category.id, name: val})
-      }
-    },
-    items: {
-      get() {
-        return this.category.items
-      },
-      set(val) {
-        // console.log(val)
-        // console.log(this.items_amount)
-        // console.log(this.category.id)
-        this.$store.dispatch('editor/moveItem', {new_category: val, category_unique_id: this.category.unique_id})
       }
     }
   },
@@ -68,7 +55,7 @@ export default {
     },
     deleteCategory() {
       this.$store.dispatch('editor/deleteCategory', this.category.id)
-    },
+    }
   }
 }
 </script>
@@ -161,11 +148,4 @@ export default {
 }
 
 
-.handle {
-  margin: 2px 14px 2px 2px;
-  padding: 6px;
-  cursor: move;
-  background-color: white;
-  border-radius: 6px;
-}
 </style>

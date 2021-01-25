@@ -1,4 +1,30 @@
 export default {
+    moveCat(state, payload) {
+        state.dynamic.list = payload
+    },
+    setCategory(state, payload) {
+        let id
+        let next_id
+        let founded = false
+        for (let i = 0; i < state.dynamic.list.length; i++) {
+            if ((founded) && (state.dynamic.list[i].type === 'category')) {
+                next_id = state.dynamic.list.indexOf(state.dynamic.list[i])
+                break
+            }
+            if (state.dynamic.list[i].unique_id === payload.category_unique_id) {
+                id = state.dynamic.list.indexOf(state.dynamic.list[i])
+                founded = true
+            }
+        }
+        if (next_id === undefined) {
+            next_id = state.dynamic.list.length
+        }
+        state.dynamic.list.splice(id + 1, next_id - id - 1, ...payload.new_category)
+        // console.log(payload.new_category)
+        // console.log(id)
+        // console.log(next_id)
+        // console.log(state.dynamic.list)
+    },
     loadData(state, data) {
         state.static = JSON.parse(JSON.stringify(data))
         state.dynamic = JSON.parse(JSON.stringify(data))
@@ -36,8 +62,8 @@ export default {
     },
     createEmptyItem(state, id) {
         let new_item = {
-            type: 'item',
             name: '',
+            type: 'item',
             description: '',
             weight: '0',
             quantity: 1,

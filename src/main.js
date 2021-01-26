@@ -1,10 +1,18 @@
-import { createApp } from 'vue'
+import {createApp} from 'vue'
 
 import router from "./router";
 import store from './store/index.js'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faChevronUp, faChevronDown, faTrash, faChild, faSyncAlt, faPlus } from '@fortawesome/free-solid-svg-icons'
+import {library} from '@fortawesome/fontawesome-svg-core'
+import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
+import {
+    faChevronUp,
+    faChevronDown,
+    faTrash,
+    faChild,
+    faSyncAlt,
+    faPlus,
+    faGripLines
+} from '@fortawesome/free-solid-svg-icons'
 
 library.add(faChevronUp)
 library.add(faChevronDown)
@@ -12,6 +20,7 @@ library.add(faTrash)
 library.add(faChild)
 library.add(faSyncAlt)
 library.add(faPlus)
+library.add(faGripLines)
 
 import App from './App.vue'
 

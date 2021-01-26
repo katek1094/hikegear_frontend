@@ -6,6 +6,7 @@
 
 <script>
 import Chart from 'chart.js';
+
 export default {
   name: "Chart",
   props: {
@@ -38,7 +39,7 @@ export default {
   },
   methods: {
     createChart() {
-      this.chart =  new Chart(document.getElementById('summary-chart'), {
+      this.chart = new Chart(document.getElementById('summary-chart'), {
         type: 'doughnut',
         data: this.chart_data,
         options: this.chart_options,

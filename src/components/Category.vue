@@ -1,7 +1,7 @@
 <template>
   <div class="category">
     <div class="category__header">
-      <span class="handle cat">X</span>
+      <span class="handle cat"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
       <input class="name" type="text" v-model.trim="category_name" placeholder="nazwa kategorii" @input="changeName">
       <!--    TODO: add category description-->
       <button class="delete" type="button" @click="deleteCategory">
@@ -49,20 +49,11 @@ export default {
         return this.category.items
       },
       set(val) {
-        // console.log(val)
-        // console.log(this.items_amount)
-        // console.log(this.category.id)
         this.$store.dispatch('editor/moveItem', {new_category: val, category_unique_id: this.category.unique_id})
       }
     }
   },
   methods: {
-    up() {
-      this.$store.dispatch('editor/moveUp', this.category.id)
-    },
-    down() {
-      this.$store.dispatch('editor/moveDown', this.category.id)
-    },
     addItem() {
       this.$store.dispatch('editor/addItem', this.category.id)
     },
@@ -108,17 +99,6 @@ export default {
   cursor: text;
 }
 
-.up:enabled {
-  cursor: pointer;
-}
-
-.down:enabled {
-  cursor: pointer;
-}
-
-.up, .down {
-  visibility: hidden;
-}
 
 .category__header:hover .up, .category__header:hover .down {
   visibility: visible;
@@ -161,11 +141,23 @@ export default {
 }
 
 
+</style>
+
+<style>
 .handle {
-  margin: 2px 14px 2px 2px;
+  margin: 2px 12px 2px 2px;
   padding: 6px;
   cursor: move;
-  background-color: white;
   border-radius: 6px;
+  font-size: 14px;
+  visibility: hidden;
+}
+
+.category__header:hover .handle, .item:hover .handle {
+  visibility: visible;
+}
+
+.handle:hover {
+  background-color: white;
 }
 </style>

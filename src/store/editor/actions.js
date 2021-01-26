@@ -1,9 +1,9 @@
 export default {
     moveCategory({commit}, data) {
         let result = []
-        for (let i = 0;i < data.length; i++) {
+        for (let i = 0; i < data.length; i++) {
             result.push({type: data[i].type, name: data[i].name, description: data[i].description})
-            for (let n = 0;n < data[i].items.length; n++) {
+            for (let n = 0; n < data[i].items.length; n++) {
                 result.push(data[i].items[n])
             }
         }
@@ -11,20 +11,6 @@ export default {
     },
     moveItem({commit}, payload) {
         commit('setCategory', payload)
-    },
-    moveUp({commit, getters}, id) {
-        commit('move', {
-            id: id,
-            organized: getters['organized_list'],
-            direction: 'up'
-        })
-    },
-    moveDown({commit, getters}, id) {
-        commit('move', {
-            id: id,
-            organized: getters['organized_list'],
-            direction: 'down'
-        })
     },
     addItem({commit, getters}, id) {
         let organized = getters['organized_list']

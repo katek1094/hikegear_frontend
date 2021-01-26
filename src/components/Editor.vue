@@ -57,45 +57,11 @@ export default {
     addCategory() {
       this.$store.commit('editor/createEmptyCategory')
     },
-    // createSortable() {
-    //   console.log('create sortable')
-    //   const component = this
-    //   let categories = document.getElementsByClassName('categories')[0];
-    //   this.editor_sortable = Sortable.create(categories, {
-    //     handle: '.handle.cat',
-    //     group: {
-    //       name: 'categories',
-    //     },
-    //     swapThreshold: 0.1,
-    //     animation: 1000,
-    //     onUpdate: function (evt) {
-    //       component.moveCategory(evt)
-    //     },
-    //   });
-    //   let items = document.getElementsByClassName('items')
-    //   for (let i = 0; i < items.length; i++) {
-    //     this.item_sortables.push(new Sortable.create(items[i], {
-    //       handle: ".handle.it",
-    //       group: {
-    //         name: 'items',
-    //       },
-    //       swapThreshold: 0.1,
-    //       animation: 600,
-    //       onUpdate: function (evt) {
-    //         component.moveItem(evt)
-    //       },
-    //       onAdd: function (evt) {
-    //         component.moveItem(evt)
-    //       },
-    //     }));
-    //   }
-    // },
   },
 }
 </script>
 
 <style scoped>
-
 .editor {
   border: 2px solid black;
   padding: 2px;
@@ -105,7 +71,6 @@ export default {
   flex-direction: column;
   align-items: center;
 }
-
 </style>
 
 <style>

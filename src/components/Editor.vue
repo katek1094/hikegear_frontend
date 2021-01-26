@@ -1,11 +1,11 @@
 <template>
   <div class="editor">
-    <h1>are any changes: {{ are_changes }}</h1>
+    <p>are any changes: {{ are_changes }}</p>
     <Summary/>
     <input class="pack__name" type="text" v-model.trim="pack_name" placeholder="nazwa listy">
     <!--    TODO: add pack description-->
     <draggable v-model="packlist" animation="700" group="categories" item-key="id" @end="drag=false"
-               @start="drag=true">
+               @start="drag=true" handle=".handle.cat">
       <template #item="{element, index}">
         <Category :category="element" :index="index"/>
       </template>
@@ -21,6 +21,7 @@
 import draggable from 'vuedraggable'
 import Category from "@/components/Category";
 import Summary from "@/components/Summary";
+
 
 export default {
   name: "Editor",
@@ -71,17 +72,6 @@ export default {
   flex-direction: column;
   align-items: center;
 }
-</style>
-
-<style>
-.editor {
-  --background: #f6f6f6;
-}
-
-.autoresize {
-  resize: none;
-  overflow: hidden;
-}
 
 .add_category {
   margin: 4px 0;
@@ -95,4 +85,39 @@ export default {
   text-decoration: underline;
   cursor: pointer;
 }
+
+.pack__name {
+  border-radius: 4px;
+  font-size: 1em;
+  font-weight: bold;
+  border: 1px solid var(--background);
+  background-color: var(--background);
+  outline: none;
+  padding: 5px;
+  text-align: center;
+}
+
+.pack__name:focus {
+  background-color: white;
+  border: 1px solid grey;
+}
+
+.pack__name:hover {
+  background-color: white;
+  cursor: text;
+}
+
+
+</style>
+
+<style>
+.editor {
+  --background: #f6f6f6;
+}
+
+.autoresize {
+  resize: none;
+  overflow: hidden;
+}
+
 </style>

@@ -31,4 +31,7 @@ export default {
 * {
   font-family: Arial, sans-serif;
 }
+html {
+  font-size: 16px;
+}
 </style>

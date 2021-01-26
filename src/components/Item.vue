@@ -120,7 +120,7 @@ export default {
 <style scoped>
 .item {
   padding: 3px 0;
-  font-size: 12px;
+  font-size: .75rem;
   display: flex;
   align-items: center;
 }
@@ -175,14 +175,6 @@ textarea {
   min-width: 10em;
 }
 
-.weight {
-  width: 3.5em;
-}
-
-.quantity {
-  width: 3em;
-}
-
 .item:hover .worn, .item:hover .consumable {
   visibility: visible;
 }
@@ -210,23 +202,6 @@ textarea {
 }
 
 .consumable:enabled {
-  cursor: pointer;
-}
-
-.delete {
-  visibility: hidden;
-  outline: none;
-  border: none;
-  background-color: transparent;
-  padding: 4px 6px;
-}
-
-.item:hover .delete {
-  visibility: visible;
-}
-
-.delete:hover {
-  color: red;
   cursor: pointer;
 }
 

@@ -2,15 +2,15 @@
   <div class="editor">
     <p>are any changes: {{ are_changes }}</p>
     <Summary/>
-    <input class="pack__name" type="text" v-model.trim="pack_name" placeholder="nazwa listy">
+    <input v-model.trim="pack_name" class="backpack__name" placeholder="nazwa listy" type="text">
     <!--    TODO: add pack description-->
-    <draggable v-model="packlist" animation="700" group="categories" item-key="id" @end="drag=false"
-               @start="drag=true" handle=".handle.cat">
+    <draggable v-model="packlist" animation="700" class="categories" group="categories" handle=".category__handle"
+               item-key="id" @end="drag=false" @start="drag=true">
       <template #item="{element, index}">
         <Category :category="element" :index="index"/>
       </template>
     </draggable>
-    <button class="add_category" type="button" @click="addCategory">
+    <button class="add-category" type="button" @click="addCategory">
       <font-awesome-icon class="fa-md" icon="plus"/>
       dodaj kategorię
     </button>
@@ -73,7 +73,7 @@ export default {
   align-items: center;
 }
 
-.add_category {
+.add-category, >>> .add-item {
   margin: 4px 0;
   border: none;
   background-color: transparent;
@@ -81,36 +81,61 @@ export default {
   color: yellowgreen;
 }
 
-.add_category:hover {
+.add-category:hover, >>> .add-item:hover {
   text-decoration: underline;
   cursor: pointer;
 }
 
-.pack__name {
+.backpack__name, >>> .category__name, >>> .item__name, >>> .item__description,
+>>> .item__weight, >>> .item__quantity{
   border-radius: 4px;
   font-size: 1em;
-  font-weight: bold;
-  border: 1px solid var(--background);
-  background-color: var(--background);
+  border: 1px solid transparent;
+  background-color: transparent;
   outline: none;
   padding: 5px;
+}
+
+.backpack__name, >>> .category__name {
+  font-weight: bold;
+}
+
+.backpack__name {
   text-align: center;
 }
 
-.pack__name:focus {
+.backpack__name:focus, >>> .category__name:focus, >>> .item__name:focus, >>> .item__description:focus,
+>>> .item__weight:focus, >>> .item__quantity:focus {
   background-color: white;
   border: 1px solid grey;
 }
 
-.pack__name:hover {
+.backpack__name:hover, >>> .category__name:hover, >>> .item__name:hover, >>> .item__description:hover,
+>>> .item__weight:hover, >>> .item__quantity:hover {
   background-color: white;
   cursor: text;
 }
 
-
 </style>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <style>
+/*GLOBAL STYLES*/
 .editor {
   --background: #f6f6f6;
 }
@@ -119,5 +144,4 @@ export default {
   resize: none;
   overflow: hidden;
 }
-
 </style>

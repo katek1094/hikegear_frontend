@@ -1,20 +1,20 @@
 <template>
   <div class="item" :class="{first: first, last: last, middle: !last && !first}">
-    <span class="handle it"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
-    <textarea v-model.trim="item_name" class="name autoresize field" placeholder="nazwa" rows="1" @input="autoresize"
+    <span class="item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
+    <textarea v-model.trim="item_name" class="item__name autoresize" placeholder="nazwa" rows="1" @input="autoresize"
               @keydown="preventEnter"/>
-    <textarea v-model.trim="item_description" class="description autoresize field" placeholder="opis" rows="1"
+    <textarea v-model.trim="item_description" class="item__description autoresize" placeholder="opis" rows="1"
               @input="autoresize"/>
-    <button :class="{ checked: item.worn }" :disabled="item.consumable" class="worn" @click="markAsWorn">
+    <button :class="{ checked: item.worn }" :disabled="item.consumable" class="item__worn" @click="markAsWorn">
       <font-awesome-icon class="fa-sm" icon="child"/>
     </button>
-    <button :class="{ checked: item.consumable }" :disabled="item.worn" class="consumable" @click="markAsConsumable">
+    <button :class="{ checked: item.consumable }" :disabled="item.worn" class="item__consumable" @click="markAsConsumable">
       <font-awesome-icon class="fa-sm" icon="sync-alt"/>
     </button>
-    <input v-model.number="item_weight" class="weight field" type="number" @input="removeLeadingZero">
-    <input v-model.number="item_quantity" :max="quantity_limit" class="quantity field" min="0" type="number"
+    <input v-model.number="item_weight" class="item__weight" type="number" @input="removeLeadingZero">
+    <input v-model.number="item_quantity" :max="quantity_limit" class="item__quantity" min="0" type="number"
            @input="removeLeadingZero">
-    <button class="delete" type="button" @click="deleteItem">
+    <button class="item__delete" type="button" @click="deleteItem">
       <font-awesome-icon class="fa-sm" icon="trash"/>
     </button>
   </div>
@@ -119,10 +119,7 @@ export default {
 
 <style scoped>
 .item {
-  padding: 3px 0;
   font-size: .75rem;
-  display: flex;
-  align-items: center;
 }
 
 .item.first, .item.middle {
@@ -133,53 +130,21 @@ export default {
   border: none;
 }
 
-.item > * {
-  margin: 0 2px;
-}
-
-input {
-  font-size: 1em;
-  border: none;
-  padding: 5px;
-}
-
-textarea {
-  font-size: 1em;
-  padding: 5px;
-}
-
-.field {
-  border-radius: 4px;
-  border: 1px solid var(--background);
-  background-color: var(--background);
-  outline: none;
-}
-
-.field:focus {
-  background-color: white;
-  border: 1px solid grey;
-}
-
-.field:hover {
-  background-color: white;
-  cursor: text;
-}
-
-.name {
+.item__name {
   width: 12em;
   min-width: 10em;
 }
 
-.description {
+.item__description {
   width: 12em;
   min-width: 10em;
 }
 
-.item:hover .worn, .item:hover .consumable {
+.item:hover .item__worn, .item:hover .item__consumable {
   visibility: visible;
 }
 
-.worn, .consumable {
+.item__worn, .item__consumable {
   visibility: hidden;
   border-radius: 50%;
   border: 1px solid transparent;
@@ -193,26 +158,22 @@ textarea {
   color: blue;
 }
 
-.worn:hover:enabled, .consumable:hover:enabled {
+.item__worn:hover:enabled, .item__consumable:hover:enabled {
   color: black;
 }
 
-.worn:enabled {
-  cursor: pointer;
-}
-
-.consumable:enabled {
+.item__worn:enabled, .item__consumable:enabled {
   cursor: pointer;
 }
 
 /*code below removes arrows from numeric inputs*/
-.weight::-webkit-outer-spin-button,
-.weight::-webkit-inner-spin-button {
+.item__weight::-webkit-outer-spin-button,
+.item__weight::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-.weight[type=number] {
+.item__weight[type=number] {
   -moz-appearance: textfield;
 }
 </style>

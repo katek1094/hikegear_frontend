@@ -2,7 +2,8 @@
   <div class="category">
     <div class="category__header">
       <span class="category__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
-      <input class="category__name" type="text" v-model.trim="category_name" placeholder="nazwa kategorii" @input="changeName">
+      <input class="category__name" type="text" v-model.trim="category_name" placeholder="nazwa kategorii"
+             @input="changeName">
       <!--    TODO: add category description-->
       <span class="category__weight__label">waga</span>
       <span class="category__quantity__label">ilość</span>
@@ -21,6 +22,11 @@
       <button class="add-item" type="button" @click="addItem">
         <font-awesome-icon class="fa-md" icon="plus"/>
         dodaj przedmiot
+      </button>
+      <span class="category__weight__total">{{ category.total_weight }}</span>
+      <span class="category__quantity__total">{{ category.total_quantity }}</span>
+      <button class="category__delete" type="button">
+        <font-awesome-icon class="fa-sm" icon="trash"/>
       </button>
     </div>
   </div>
@@ -53,7 +59,7 @@ export default {
       set(val) {
         this.$store.dispatch('editor/moveItem', {new_category: val, category_unique_id: this.category.unique_id})
       }
-    }
+    },
   },
   methods: {
     addItem() {
@@ -71,10 +77,10 @@ export default {
   margin: 6px;
 }
 
-.category__header, >>> .item {
+.category__header, .category__footer, >>> .item {
   display: flex;
-  align-items: center;
   padding: 2px 4px;
+  align-items: center;
 }
 
 .category__header {
@@ -86,7 +92,7 @@ export default {
   border-bottom: 1px solid grey;
 }
 
-.category__delete, >>>.item__delete {
+.category__delete, >>> .item__delete {
   visibility: hidden;
   outline: none;
   border: none;
@@ -98,12 +104,12 @@ export default {
   visibility: visible;
 }
 
-.category__delete:hover, >>>.item__delete:hover {
+.category__delete:hover, >>> .item__delete:hover {
   color: red;
   cursor: pointer;
 }
 
-.category__handle, >>>.item__handle {
+.category__handle, >>> .item__handle {
   margin: 2px 6px 2px 2px;
   padding: 6px;
   cursor: move;
@@ -116,30 +122,35 @@ export default {
   visibility: visible;
 }
 
-.category__handle:hover, >>>.item__handle:hover {
+.category__handle:hover, >>> .item__handle:hover {
   background-color: white;
 }
 
-.category__weight__label, .category__quantity__label, .category__delete, >>>.item__delete, >>>.item__worn,
->>>.item__consumable, >>>.item__description, >>>.item__name, >>>.item__weight, >>>.item__quantity {
+.category__weight__label, .category__quantity__label, .category__delete, >>> .item__delete, >>> .item__worn,
+>>> .item__consumable, >>> .item__description, >>> .item__name, >>> .item__weight, >>> .item__quantity,
+.category__quantity__total, .category__weight__total {
   margin: 0 2px;
 }
 
-.category__weight__label, .category__quantity__label {
+.category__weight__label, .category__quantity__label, .category__quantity__total, .category__weight__total {
   padding: 6px;
   font-size: .75rem;
 }
 
-.category__weight__label, >>>.item__weight {
+.category__weight__label, >>> .item__weight, .category__weight__total {
   width: 2.4rem;
 }
 
-.category__quantity__label, >>>.item__quantity {
+.category__quantity__label, >>> .item__quantity, .category__quantity__total {
   width: 2.3rem;
 }
 
-.category__weight__label {
+.category__weight__label, .category__weight__total {
   margin-left: auto;
+}
+
+.category__weight__label, .category__quantity__label {
+  align-self: flex-end;
 }
 
 </style>

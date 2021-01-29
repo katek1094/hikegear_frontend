@@ -58,24 +58,18 @@ export default {
         for (let i = 0; i < list.length; i++) {
             let dt = list[i]
             dt.id = i
-            dt.cant_move_up = false
-            dt.cant_move_down = false
             if (dt.type === 'category') {
                 dt.items = []
                 dt.unique_id = cat_unique
+                dt.total_weight = 0
+                dt.total_quantity = 0
                 cat_unique++
                 results.push(dt)
             } else {
                 results[results.length - 1].items.push(dt)
+                results[results.length - 1].total_weight += dt.weight
+                results[results.length - 1].total_quantity += dt.quantity
             }
-        }
-        results[0].cant_move_up = true
-        if (results[0].items.length !== 0) {
-            results[0].items[0].cant_move_up = true
-        }
-        results[results.length - 1].cant_move_down = true
-        if (results[results.length - 1].items.length !== 0) {
-            results[results.length - 1].items[results[results.length - 1].items.length - 1].cant_move_down = true
         }
         return results
     },

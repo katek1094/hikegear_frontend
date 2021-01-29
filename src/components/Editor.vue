@@ -87,7 +87,7 @@ export default {
 }
 
 .backpack__name, >>> .category__name, >>> .item__name, >>> .item__description,
->>> .item__weight, >>> .item__quantity{
+>>> .item__weight, >>> .item__quantity {
   border-radius: 4px;
   font-size: 1em;
   border: 1px solid transparent;
@@ -118,25 +118,9 @@ export default {
 
 </style>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <style>
 /*GLOBAL STYLES*/
-.editor {
+:root {
   --background: #f6f6f6;
 }
 

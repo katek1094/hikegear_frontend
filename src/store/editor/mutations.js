@@ -60,7 +60,7 @@ export default {
             name: '',
             type: 'item',
             description: '',
-            weight: '0',
+            weight: 0,
             quantity: 1,
             worn: false
         }

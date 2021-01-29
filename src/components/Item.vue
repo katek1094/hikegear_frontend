@@ -8,10 +8,12 @@
     <button :class="{ checked: item.worn }" :disabled="item.consumable" class="item__worn" @click="markAsWorn">
       <font-awesome-icon class="fa-sm" icon="child"/>
     </button>
-    <button :class="{ checked: item.consumable }" :disabled="item.worn" class="item__consumable" @click="markAsConsumable">
+    <button :class="{ checked: item.consumable }" :disabled="item.worn" class="item__consumable"
+            @click="markAsConsumable">
       <font-awesome-icon class="fa-sm" icon="sync-alt"/>
     </button>
     <input v-model.number="item_weight" class="item__weight" type="number" @input="removeLeadingZero">
+<!--    TODO: add units-->
     <input v-model.number="item_quantity" :max="quantity_limit" class="item__quantity" min="0" type="number"
            @input="removeLeadingZero">
     <button class="item__delete" type="button" @click="deleteItem">

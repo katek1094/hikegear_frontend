@@ -31,20 +31,22 @@ export default {
       active: false
     }
   },
-  computed: {
-    mediaQuery() {
-      return window.outerWidth < 800
-    },
-    activeClass() {
-      return this.mediaQuery && this.active
-    }
-
-  },
   methods: {
     handleClick() {
       this.active = !this.active
     },
-  }
+    onWindowResize() {
+      if (window.innerWidth < 800) {
+        this.active = false
+      }
+    }
+  },
+  mounted() {
+    window.addEventListener('resize', this.onWindowResize)
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.onWindowResize);
+  },
 }
 </script>
 
@@ -54,8 +56,9 @@ export default {
 }
 
 nav {
-  background-color: white;
-  box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, .1);
+  background-color: var(--background);
+  /*box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, .1);*/
+  box-shadow: 0 2px 2px -2px rgba(44, 99, 44, 0.2);
   height: var(--nav_height);
   line-height: var(--nav_height);
   padding: 0 10px;
@@ -79,10 +82,12 @@ nav a {
   padding: 0 14px;
   display: inline-block;
   white-space: nowrap;
+  cursor: pointer;
 }
 
 .menu a:hover, .dropdown-menu a:hover {
   background-color: #eae9e9;
+  border-radius: 4px;
 }
 
 .menu {

@@ -5,6 +5,7 @@ export default {
             result.push({type: data[i].type, name: data[i].name, description: data[i].description})
             for (let n = 0; n < data[i].items.length; n++) {
                 result.push(data[i].items[n])
+                delete result[result.length - 1].id
             }
         }
         commit('moveCat', result)
@@ -32,6 +33,28 @@ export default {
                 if (response.ok) {
                     response.json().then(data => {
                         commit('loadData', data)
+                    })
+                } else console.log(response)
+            })
+    },
+    updateBackpack({commit, rootGetters}) {
+        console.log('started')
+        fetch(process.env.VUE_APP_API_URL + '/api/backpacks/' + rootGetters['editor/pack_id'] + '/', {
+            method: 'PATCH',
+            headers: {
+                'Authorization': 'token ' + rootGetters['auth/token'],
+                'Content-Type': 'application/json'
+            },
+            body: rootGetters['editor/patchData']
+
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log('PATCH OK')
+                    response.json().then(data => {
+                        console.log('JSON OK')
+                        commit('loadData', data)
+                        console.log('DATA LOADED')
                     })
                 } else console.log(response)
             })

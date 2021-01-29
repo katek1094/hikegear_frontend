@@ -15,7 +15,6 @@ export default {
             // },
             // created: '',
             // list: []
-            // TODO: change name of consumable for changeable
         }
     },
     mutations,

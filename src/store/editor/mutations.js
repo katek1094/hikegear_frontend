@@ -5,14 +5,17 @@ export default {
     setCategory(state, payload) {
         let id, next_id
         let founded = false
+        let unique_cat = 0
         for (let i = 0; i < state.dynamic.list.length; i++) {
             if ((founded) && (state.dynamic.list[i].type === 'category')) {
                 next_id = state.dynamic.list.indexOf(state.dynamic.list[i])
                 break
             }
-            if (state.dynamic.list[i].unique_id === payload.category_unique_id) {
-                id = state.dynamic.list.indexOf(state.dynamic.list[i])
-                founded = true
+            if (state.dynamic.list[i].type === 'category') {
+                if (unique_cat === payload.category_unique_id) {
+                    id = state.dynamic.list.indexOf(state.dynamic.list[i])
+                    founded = true
+                } else unique_cat++
             }
         }
         if (next_id === undefined) {

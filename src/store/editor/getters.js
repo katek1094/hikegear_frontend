@@ -27,6 +27,9 @@ export default {
     pack_name(state) {
         return state.dynamic.name
     },
+    pack_id(state) {
+        return state.dynamic.id
+    },
     summary_data(state) {
         let results = {data: [], labels: [], total_weight: 0, consumable_weight: 0, worn_weight: 0}
         for (let i = 0; i < state.dynamic.list.length; i++) {
@@ -49,7 +52,7 @@ export default {
         return results
     },
     organized_list: state => {
-        let list = state.dynamic.list
+        let list = JSON.parse(JSON.stringify(state.dynamic.list))
         let results = []
         let cat_unique = 0
         if (list[0].type !== 'category') {
@@ -73,5 +76,27 @@ export default {
         }
         return results
     },
+    patchData(state) {
+        let data = {}
+        if (state.dynamic.name !== state.static.name) {
+            data.name = state.dynamic.name
+        }
+        if (state.dynamic.description !== state.static.description) {
+            data.description = state.dynamic.description
+        }
+        if (state.dynamic.list !== state.static.list) {
+            data.list = state.dynamic.list
+        }
+        // for (let i = 0; i < data.list.length; i++) {
+        //     delete data.list[i].id
+        //     if (data.list[i].type === 'category') {
+        //         delete data.list[i].items
+        //         delete data.list[i].unique_id
+        //         delete data.list[i].total_weight
+        //         delete data.list[i].total_quantity
+        //     }
+        // }
+        return JSON.stringify(data)
+    }
 
 }

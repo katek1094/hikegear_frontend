@@ -79,7 +79,7 @@ export default {
 
 .category__header, .category__footer, >>> .item {
   display: flex;
-  padding: 2px 4px;
+  padding: 0 4px;
   align-items: center;
 }
 

@@ -1,8 +1,9 @@
 <template>
   <div class="editor">
-    <p>are any changes: {{ are_changes }}</p>
-    <Summary/>
     <input v-model.trim="pack_name" class="backpack__name" placeholder="nazwa listy" type="text">
+    <Summary/>
+    <p>are any changes: {{are_changes}}</p>
+    <button class="save-button" type="button" :disabled="!are_changes" @click="save">zapisz</button>
     <!--    TODO: add pack description-->
     <draggable v-model="packlist" animation="700" class="categories" group="categories" handle=".category__handle"
                item-key="id" @end="drag=false" @start="drag=true">
@@ -58,15 +59,16 @@ export default {
     addCategory() {
       this.$store.commit('editor/createEmptyCategory')
     },
+    save() {
+      this.$store.dispatch('editor/updateBackpack')
+    }
   },
 }
 </script>
 
 <style scoped>
 .editor {
-  border: 2px solid black;
-  padding: 2px;
-  margin: 2px;
+  padding: 20px;
   background-color: var(--background);
   display: flex;
   flex-direction: column;
@@ -98,10 +100,15 @@ export default {
 
 .backpack__name, >>> .category__name {
   font-weight: bold;
+  max-width: 20rem;
+  min-width: 10rem;
+  width: 100%;
 }
 
 .backpack__name {
   text-align: center;
+  margin: 10px 0;
+  font-size: 1.4rem;
 }
 
 .backpack__name:focus, >>> .category__name:focus, >>> .item__name:focus, >>> .item__description:focus,
@@ -114,6 +121,33 @@ export default {
 >>> .item__weight:hover, >>> .item__quantity:hover {
   background-color: white;
   cursor: text;
+}
+
+.save-button {
+  --first: lightgrey;
+  --second: #75f61c;
+  --third: greenyellow;
+  outline: none;
+  width: 70px;
+  height: 35px;
+  font-size: 1em;
+  border-radius: 5px;
+  background-color: var(--first);
+  border: 1px solid var(--first);
+}
+
+.save-button:enabled {
+  background-color: var(--second);
+  cursor: pointer;
+  border-color: var(--second);
+}
+
+.save-button:hover:enabled {
+  background-color: var(--third);
+}
+
+.save-button:active:enabled {
+  border-color: var(--third);
 }
 
 </style>

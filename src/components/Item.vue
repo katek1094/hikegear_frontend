@@ -133,13 +133,13 @@ export default {
 }
 
 .item__name {
-  width: 12em;
-  min-width: 10em;
+  width: 100%;
+  min-width: 4em;
 }
 
 .item__description {
-  width: 12em;
-  min-width: 10em;
+  width: 100%;
+  min-width: 4em;
 }
 
 .item:hover .item__worn, .item:hover .item__consumable {

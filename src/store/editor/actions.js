@@ -38,7 +38,6 @@ export default {
             })
     },
     updateBackpack({commit, rootGetters}) {
-        console.log('started')
         fetch(process.env.VUE_APP_API_URL + '/api/backpacks/' + rootGetters['editor/pack_id'] + '/', {
             method: 'PATCH',
             headers: {
@@ -50,11 +49,8 @@ export default {
         })
             .then(response => {
                 if (response.ok) {
-                    console.log('PATCH OK')
                     response.json().then(data => {
-                        console.log('JSON OK')
                         commit('loadData', data)
-                        console.log('DATA LOADED')
                     })
                 } else console.log(response)
             })

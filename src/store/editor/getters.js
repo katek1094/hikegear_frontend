@@ -87,15 +87,6 @@ export default {
         if (state.dynamic.list !== state.static.list) {
             data.list = state.dynamic.list
         }
-        // for (let i = 0; i < data.list.length; i++) {
-        //     delete data.list[i].id
-        //     if (data.list[i].type === 'category') {
-        //         delete data.list[i].items
-        //         delete data.list[i].unique_id
-        //         delete data.list[i].total_weight
-        //         delete data.list[i].total_quantity
-        //     }
-        // }
         return JSON.stringify(data)
     }
 

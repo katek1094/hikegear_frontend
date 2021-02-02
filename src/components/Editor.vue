@@ -1,32 +1,35 @@
 <template>
-  <div class="editor">
-    <input v-model.trim="pack_name" class="backpack__name" placeholder="nazwa listy" type="text">
-    <Summary/>
-    <p>are any changes: {{are_changes}}</p>
-    <button class="save-button" type="button" :disabled="!are_changes" @click="save">zapisz</button>
-    <!--    TODO: add pack description-->
-    <draggable v-model="packlist" animation="700" class="categories" group="categories" handle=".category__handle"
-               item-key="id" @end="drag=false" @start="drag=true">
-      <template #item="{element, index}">
-        <Category :category="element" :index="index"/>
-      </template>
-    </draggable>
-    <button class="add-category" type="button" @click="addCategory">
-      <font-awesome-icon class="fa-md" icon="plus"/>
-      dodaj kategorię
-    </button>
-  </div>
+  <BaseApp>
+    <div class="editor" v-if="editor_data_fetched">
+      <input v-model.trim="pack_name" class="backpack__name" placeholder="nazwa listy" type="text">
+      <Summary/>
+      <button class="save-button" type="button" :disabled="!are_changes" @click="save">zapisz</button>
+      <!--    TODO: add pack description-->
+      <draggable v-model="packlist" animation="700" class="categories" group="categories" handle=".category__handle"
+                 item-key="id" @end="drag=false" @start="drag=true">
+        <template #item="{element, index}">
+          <Category :category="element" :index="index"/>
+        </template>
+      </draggable>
+      <button class="add-category" type="button" @click="addCategory">
+        <font-awesome-icon class="fa-md" icon="plus"/>
+        dodaj kategorię
+      </button>
+    </div>
+  </BaseApp>
 </template>
 
 <script>
 import draggable from 'vuedraggable'
 import Category from "@/components/Category";
 import Summary from "@/components/Summary";
+import BaseApp from "@/components/BaseApp";
 
 
 export default {
   name: "Editor",
   components: {
+    BaseApp,
     Summary,
     Category,
     draggable
@@ -35,6 +38,9 @@ export default {
     return {}
   },
   computed: {
+    editor_data_fetched() {
+      return this.$store.getters['editor/isDataFetched']
+    },
     packlist: {
       get() {
         return this.$store.getters['editor/organized_list']
@@ -63,6 +69,9 @@ export default {
       this.$store.dispatch('editor/updateBackpack')
     }
   },
+  beforeCreate() {
+    this.$store.dispatch('editor/fetchData', 4)
+  }
 }
 </script>
 

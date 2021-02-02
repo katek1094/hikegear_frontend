@@ -7,18 +7,10 @@
                 </span>
     </button>
     <div class="menu">
-      <a>Strona Główna</a>
-      <a>Edytor</a>
-      <a>Page 2</a>
-      <a>Page 3</a>
-      <a>Konto</a>
+      <a v-for="(item, index) in items" :key="index">{{item}}</a>
     </div>
     <div class="dropdown-menu">
-      <a>Strona Główna</a>
-      <a>Edytor</a>
-      <a>Page 2</a>
-      <a>Page 3</a>
-      <a>Konto</a>
+      <a v-for="(item, index) in items" :key="index">{{item}}</a>
     </div>
   </nav>
 </template>
@@ -28,7 +20,11 @@ export default {
   name: "NavBar",
   data() {
     return {
-      active: false
+      active: false,
+      items: [
+          'edytor',
+          'moje konto',
+      ]
     }
   },
   methods: {

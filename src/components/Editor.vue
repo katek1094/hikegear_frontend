@@ -78,7 +78,7 @@ export default {
   },
   methods: {
     addCategory() {
-      this.$store.dispatch('editor/createEmptyCategory')
+      this.$store.dispatch('editor/addCategory')
     },
     save() {
       this.$store.dispatch('editor/updateBackpack')

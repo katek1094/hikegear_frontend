@@ -37,6 +37,13 @@ export default {
         }
         commit('splice_dynamic_list', [id + 1, next_id - id - 1, ...payload.new_category])
     },
+    addCategory({commit}) {
+        commit('push_to_dynamic_list', {
+            type: 'category',
+            name: '',
+            description: ''
+        })
+    },
     addItem({commit, getters}, category_id) {
         const organized = getters['organized_list']
         const index = organized.findIndex(el => el.id === category_id)
@@ -56,15 +63,11 @@ export default {
         const items_amount = getters['organized_list'][index].items.length
         commit('remove_elements', {start: id, amount: items_amount + 1})
     },
+    deleteItem({commit}, id) {
+        commit('splice_dynamic_list', [id, 1])
+    },
     renamePack({commit}, new_name) {
         commit('set_backpack_name', new_name)
-    },
-    createEmptyCategory({commit}) {
-        commit('push_to_dynamic_list', {
-            type: 'category',
-            name: '',
-            description: ''
-        })
     },
     changeElementProperty({commit}, payload) {
         // payload = type, id, property, new_value
@@ -75,9 +78,6 @@ export default {
     },
     switchWorn({commit}, id) {
         commit('toggle_worn', id)
-    },
-    deleteItem({commit}, id) {
-        commit('splice_dynamic_list', [id, 1])
     },
     updateBackpack({commit, rootGetters}) {
         fetch(process.env.VUE_APP_API_URL + '/api/backpacks/' + rootGetters['editor/pack_id'] + '/', {

@@ -1,7 +1,5 @@
 <template>
   <div>
-    {{process.env}}
-    {{process.env.VUE_APP_API_URL}}
     <form class="auth__form" @submit.prevent="submitForm">
       <h1 class="auth__title">Login</h1>
       <input id="login-email"

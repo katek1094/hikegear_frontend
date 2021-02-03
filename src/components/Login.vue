@@ -1,7 +1,7 @@
 <template>
   <div>
     <form class="auth__form" @submit.prevent="submitForm">
-      <h1 class="auth__title">Log in</h1>
+      <h1 class="auth__title">Login</h1>
       <input id="login-email"
              v-model.trim="email"
              :class="{ invalid: !emailValidity, blurred: email_blurred}"
@@ -68,6 +68,7 @@ export default {
         })
             .then(status => {
               if (status === 'logged in') {
+                this.$store.dispatch('auth/get_initial_data')
                 this.$router.push('/editor')
               } else {
                 this.info = status
@@ -77,12 +78,7 @@ export default {
     },
     markAsBlurred(e) {
       let name = e.target.getAttribute('name')
-      if (name === 'email') {
-        this.email_blurred = true
-      } else if (name === 'password') {
-        this.password_blurred = true
-      }
-
+      this[name + '+blurred'] = true
     }
   }
 }

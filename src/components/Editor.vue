@@ -1,11 +1,22 @@
 <template>
   <BaseApp>
-    <div class="editor" v-if="editor_data_fetched">
+    <div class="editor" v-if="editor_data_ready">
+      <span>twoje plecaki:</span>
+      <div class="backpack__list">
+        <div class="backpack__list__item" v-for="(backpack, index) in backpacks" :key="backpack.id" @click="changeBackpack(index)">
+          <span>{{backpack.name}}</span>
+        </div>
+        <button class="add-backpack" type="button" @click="addBackpack">
+          <font-awesome-icon class="fa-md" icon="plus"/>
+          dodaj plecak
+        </button>
+      </div>
       <input v-model.trim="pack_name" class="backpack__name" placeholder="nazwa listy" type="text">
       <Summary/>
       <button class="save-button" type="button" :disabled="!are_changes" @click="save">zapisz</button>
+<!--      TODO: add discard changes button-->
       <!--    TODO: add pack description-->
-      <draggable v-model="packlist" animation="700" class="categories" group="categories" handle=".category__handle"
+      <draggable v-model="organized_list" animation="700" class="categories" group="categories" handle=".category__handle"
                  item-key="id" @end="drag=false" @start="drag=true">
         <template #item="{element, index}">
           <Category :category="element" :index="index"/>
@@ -38,10 +49,13 @@ export default {
     return {}
   },
   computed: {
-    editor_data_fetched() {
-      return this.$store.getters['editor/isDataFetched']
+    backpacks() {
+      return this.$store.getters['editor/backpacks']
     },
-    packlist: {
+    editor_data_ready() {
+      return this.$store.getters['editor/isEditorDataReady']
+    },
+    organized_list: {
       get() {
         return this.$store.getters['editor/organized_list']
       },
@@ -67,24 +81,43 @@ export default {
     },
     save() {
       this.$store.dispatch('editor/updateBackpack')
+    },
+    changeBackpack(index) {
+      this.$store.dispatch('editor/changeBackpack', index)
+    },
+    addBackpack() {
+      this.$store.dispatch('editor/addBackpack')
     }
   },
-  beforeCreate() {
-    this.$store.dispatch('editor/fetchData', 4)
-  }
 }
 </script>
 
 <style scoped>
+.backpack__list {
+  background-color: #e5e1e1;
+  border-radius: 4px;
+  padding: 8px;
+  margin: 10px;
+}
+
+.backpack__list__item {
+  margin: 6px;
+}
+
+.backpack__list__item span:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 .editor {
-  padding: 20px;
+  padding: 20px 0.3rem;
   background-color: var(--background);
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.add-category, >>> .add-item {
+.add-category, >>> .add-item, .add-backpack {
   margin: 4px 0;
   border: none;
   background-color: transparent;
@@ -92,7 +125,7 @@ export default {
   color: yellowgreen;
 }
 
-.add-category:hover, >>> .add-item:hover {
+.add-category:hover, >>> .add-item:hover, .add-backpack:hover {
   text-decoration: underline;
   cursor: pointer;
 }
@@ -109,14 +142,13 @@ export default {
 
 .backpack__name, >>> .category__name {
   font-weight: bold;
-  max-width: 20rem;
+  max-width: 50vw;
   min-width: 10rem;
-  width: 100%;
 }
 
 .backpack__name {
   text-align: center;
-  margin: 10px 0;
+  margin: .2rem 0;
   font-size: 1.4rem;
 }
 
@@ -159,6 +191,30 @@ export default {
   border-color: var(--third);
 }
 
+
+@media (min-width: 320px) {
+
+}
+
+@media (min-width: 480px) {
+
+}
+
+@media (min-width: 600px) {
+
+}
+
+@media (min-width: 801px) {
+
+}
+
+@media (min-width: 1025px) {
+
+}
+
+@media (min-width: 1281px) {
+
+}
 </style>
 
 <style>

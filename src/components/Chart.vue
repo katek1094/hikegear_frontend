@@ -65,8 +65,6 @@ export default {
 
 <style scoped>
 .canvas__wrapper {
-  height: 200px;
-  width: 200px;
-  margin: 30px;
+  margin: 10px;
 }
 </style>

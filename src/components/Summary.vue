@@ -55,7 +55,7 @@ export default {
 }
 
 .summary__table {
-  border-spacing: 12px 4px;
+  border-spacing: 30px 5px;
 }
 
 .color {
@@ -66,6 +66,37 @@ export default {
 }
 
 td {
-  margin-right: 14px;
+  margin-right: 4px;
+  font-size: 0.8rem;
+}
+
+
+
+
+@media (min-width: 320px) and (max-width: 479px) {
+  .summary__wrapper {
+    flex-direction: column;
+  }
+
+}
+
+@media (min-width: 480px) {
+
+}
+
+@media (min-width: 600px) {
+
+}
+
+@media (min-width: 801px) {
+
+}
+
+@media (min-width: 1025px) {
+
+}
+
+@media (min-width: 1281px) {
+
 }
 </style>

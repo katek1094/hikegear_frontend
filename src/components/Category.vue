@@ -138,7 +138,7 @@ export default {
 }
 
 .category__weight__label, >>> .item__weight, .category__weight__total {
-  width: 2.4rem;
+  width: 2.2rem;
 }
 
 .category__quantity__label, >>> .item__quantity, .category__quantity__total {
@@ -153,4 +153,39 @@ export default {
   align-self: flex-end;
 }
 
+@media (hover: none) and (pointer: coarse) {
+  .category__handle, >>> .item__handle, .category__delete, >>> .item__delete, >>> .item__worn, >>> .item__consumable {
+    visibility: visible;
+  }
+  .item__worn:hover:enabled, .item__consumable:hover:enabled {
+    color: grey;
+  }
+  .category__quantity__label, >>> .item__quantity, .category__quantity__total {
+    width: 1.1rem;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 479px){
+
+}
+
+@media (min-width: 480px) {
+
+}
+
+@media (min-width: 600px) {
+
+}
+
+@media (min-width: 801px) {
+
+}
+
+@media (min-width: 1025px) {
+
+}
+
+@media (min-width: 1281px) {
+
+}
 </style>

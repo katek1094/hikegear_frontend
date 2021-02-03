@@ -1,6 +1,6 @@
 <template>
   <div>
-      <img alt="logo" src="@/assets/hikegear_logo.png">
+      <img alt="logo" src="@/assets/logo.png">
     <router-view/>
   </div>
 </template>
@@ -12,10 +12,6 @@ export default {
 </script>
 
 <style scoped>
-img {
-  margin: -70px 0;
-  overflow: hidden;
-}
 
 
 

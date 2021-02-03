@@ -7,13 +7,17 @@ export default {
     state() {
         return {
             static: {},
-            dynamic: {}
+            dynamic: {},
+            backpacks: [],
+            choice: undefined,
+            fetched: false
             // id: 1,
             // name: '',
             // profile: {
             //     id: 1
             // },
             // created: '',
+            // updated
             // list: []
         }
     },

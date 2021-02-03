@@ -51,6 +51,36 @@ export default {
     renameCategory(state, payload) {
         state.dynamic.list[payload.id].name = payload.name
     },
+    createEmptyBackpack(state, user_id) {
+        state.backpacks.unshift({
+            name: 'nowy plecak',
+            profile: {
+                id: user_id
+            },
+            created: '',
+            updated: '',
+            list: [
+                {
+                    type: 'category',
+                    name: '',
+                    description: ''
+                },
+                {
+                    type: 'item',
+                    name: '',
+                    description: '',
+                    weight: 0,
+                    quantity: 0,
+                    worn: false,
+                    consumable: false,
+                },
+            ]
+        })
+    },
+    changeBackpack(state, payload) {
+        state.dynamic = JSON.parse(JSON.stringify(state.backpacks[payload]))
+        state.static = JSON.parse(JSON.stringify(state.backpacks[payload]))
+    },
     createEmptyCategory(state) {
         state.dynamic.list.push({
             type: 'category',
@@ -74,5 +104,23 @@ export default {
     },
     markAsConsumable(state, id) {
         state.dynamic.list[id].consumable = !state.dynamic.list[id].consumable
+    },
+    loadBackpacks(state, payload) {
+        state.backpacks = payload
+        let latest = state.backpacks[0].updated
+        let choice = state.backpacks[0].id
+        for (let i = 0; i < state.backpacks.length; i++) {
+            if (latest > state.backpacks[i].updated) {
+                latest = state.backpacks[i].updated
+                choice = state.backpacks[i].id
+            }
+        }
+        state.choice = choice
+        for (let i = 0; i < state.backpacks.length; i++) {
+            if (state.backpacks[i].id === state.choice) {
+                state.static = JSON.parse(JSON.stringify(state.backpacks[i]))
+                state.dynamic = JSON.parse(JSON.stringify(state.backpacks[i]))
+            }
+        }
     }
 }

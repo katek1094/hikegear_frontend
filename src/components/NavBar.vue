@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar" :class="{'navbar--active': active}">
-    <a class="brand">HikeGear</a>
+    <img class="brand" alt="logo" src="@/assets/logo.png">
     <button class="hamburger" :class="{'hamburger--active': active}" @click="handleClick">
                 <span class="hamburger__box">
                     <span class="hamburger__inner"></span>
@@ -32,7 +32,7 @@ export default {
       this.active = !this.active
     },
     onWindowResize() {
-      if (window.innerWidth < 800) {
+      if (window.innerWidth > 800) {
         this.active = false
       }
     }
@@ -48,28 +48,27 @@ export default {
 
 <style scoped>
 .navbar {
-  --nav_height: 70px;
+  --nav_height: 50px;
+  --nav_color: #e5e1e1;
+  --nav_hover_color: white;
+  --hamburger_height: 33px;
+  --hamburger_width: 36px;
+  --hamburger-padding: 7px 16px;
 }
 
 nav {
-  background-color: var(--background);
-  /*box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, .1);*/
-  box-shadow: 0 2px 2px -2px rgba(44, 99, 44, 0.2);
+  background-color: var(--nav_color);
   height: var(--nav_height);
   line-height: var(--nav_height);
-  padding: 0 10px;
+  padding: 0;
   text-align: right;
   overflow: hidden;
   transition: height .3s;
 }
 
 .brand {
-  font-size: 2rem;
   float: left;
-  font-family: "Times", sans-serif;
-  font-weight: 600;
-  font-style: italic;
-  color: grey;
+  cursor: pointer;
 }
 
 nav a {
@@ -81,8 +80,8 @@ nav a {
   cursor: pointer;
 }
 
-.menu a:hover, .dropdown-menu a:hover {
-  background-color: #eae9e9;
+.menu a:hover, .dropdown-menu a:hover, .brand:hover {
+  background-color: var(--nav_hover_color);
   border-radius: 4px;
 }
 
@@ -108,14 +107,14 @@ nav a {
 }
 
 .navbar--active {
-  height: calc(var(--nav_height) * 6);
+  height: calc(var(--nav_height) * 3);
   line-height: initial;
 }
 
 
 /*HAMBURGER STYLES*/
 .hamburger {
-  padding: 17px;
+  padding: var(--hamburger-padding);
   display: none;
   cursor: pointer;
   background-color: transparent;
@@ -133,8 +132,8 @@ nav a {
 }
 
 .hamburger__box {
-  width: 35px;
-  height: 33px;
+  width: var(--hamburger_width);
+  height: var(--hamburger_height);
   display: inline-block;
   position: relative;
 }

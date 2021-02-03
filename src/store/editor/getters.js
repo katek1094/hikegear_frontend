@@ -1,4 +1,7 @@
 export default {
+    backpacks(state) {
+      return state.backpacks
+    },
     are_any_changes(state) {
         let dyn = state.dynamic
         let st = state.static
@@ -21,8 +24,8 @@ export default {
         }
         return false
     },
-    isDataFetched(state) {
-        return state.static.created
+    isEditorDataReady(state) {
+        return state.static.list
     },
     pack_name(state) {
         return state.dynamic.name

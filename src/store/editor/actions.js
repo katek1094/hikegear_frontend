@@ -24,19 +24,6 @@ export default {
         let items_amount = getters['organized_list'][index].items.length
         commit('removeElements', {start: id, amount: items_amount + 1})
     },
-    fetchData({commit, rootGetters}, id) {
-        fetch(process.env.VUE_APP_API_URL + '/api/backpacks/' + id + '/', {
-            method: 'GET',
-            headers: {'Authorization': 'token ' + rootGetters['auth/token']}
-        })
-            .then(response => {
-                if (response.ok) {
-                    response.json().then(data => {
-                        commit('loadData', data)
-                    })
-                } else console.log(response)
-            })
-    },
     updateBackpack({commit, rootGetters}) {
         fetch(process.env.VUE_APP_API_URL + '/api/backpacks/' + rootGetters['editor/pack_id'] + '/', {
             method: 'PATCH',
@@ -54,5 +41,14 @@ export default {
                     })
                 } else console.log(response)
             })
+    },
+    loadInitialBackpacks({commit}, payload) {
+        commit('loadBackpacks', payload)
+    },
+    addBackpack({commit, rootGetters}) {
+        commit('createEmptyBackpack', rootGetters['auth/id'])
+    },
+    changeBackpack({commit}, index) {
+        commit('changeBackpack', index)
     }
 }

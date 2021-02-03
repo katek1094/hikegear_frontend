@@ -2,17 +2,21 @@
   <div>
     <form class="auth__form" @submit.prevent="submitForm">
       <h1>Register</h1>
-      <input id="registration-email" ref="email" v-model.trim="email" :class="{ invalid: !emailValidity, blurred: email_blurred}" class="auth__input" inputmode="email" name="email"
+      <input id="registration-email" ref="email" v-model.trim="email"
+             :class="{ invalid: !emailValidity, blurred: email_blurred}" class="auth__input" inputmode="email"
+             name="email"
              placeholder="e-mail" required type="email"
              @blur="markAsBlurred">
       <label v-show="emailInfoDisplay" for="registration-email">invalid email</label>
       <label v-if="email_info !== '' && emailValidity" for="registration-email">{{ email_info }}</label>
-      <input id="registration-password1" ref="password1" v-model.trim="password1" :class="{ invalid: !password1Validity, blurred: password1_blurred}"
+      <input id="registration-password1" ref="password1" v-model.trim="password1"
+             :class="{ invalid: !password1Validity, blurred: password1_blurred}"
              :placeholder="'password (min. ' + min_password_length + ' chars)'" class="auth__input" minlength="8"
              name="password1" required type="password"
              @blur="markAsBlurred">
       <label v-show="password1InfoDisplay" for="registration-password1">invalid password</label>
-      <input id="registration-password2" ref="password2" v-model.trim="password2" :class="{ invalid: !password2Validity, blurred: password2_blurred}" class="auth__input" minlength="8"
+      <input id="registration-password2" ref="password2" v-model.trim="password2"
+             :class="{ invalid: !password2Validity, blurred: password2_blurred}" class="auth__input" minlength="8"
              name="password2"
              placeholder="repeat password" required type="password"
              @blur="markAsBlurred">
@@ -91,26 +95,20 @@ export default {
       json.then(dt => {
         dt.password = this.password1
         this.$store.dispatch('auth/login', dt)
+        this.$store.dispatch('auth/get_initial_data')
+        this.$router.push('/editor')
       })
     },
     handleFailure(json) {
-      let data
       json.then(dt => {
-        data = dt
-        if (data.email) {
-          this.email_info = data.email[0]
+        if (dt.email) {
+          this.email_info = dt.email[0]
         }
       })
     },
     markAsBlurred(e) {
       let name = e.target.getAttribute('name')
-      if (name === 'email') {
-        this.email_blurred = true
-      } else if (name === 'password1') {
-        this.password1_blurred = true
-      } else if (name === 'password2') {
-        this.password2_blurred = true
-      }
+      this[name + '_blurred'] = true
     }
   }
 }

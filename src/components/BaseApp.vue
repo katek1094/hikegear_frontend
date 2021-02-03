@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="base_app">
     <NavBar/>
     <slot></slot>
   </div>
@@ -15,5 +15,7 @@ export default {
 </script>
 
 <style scoped>
-
+.base_app {
+  overflow: hidden;
+}
 </style>

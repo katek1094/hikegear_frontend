@@ -2,8 +2,9 @@ export default {
     namespaced: true,
     state() {
         return {
-            token: 'b93292f1450db02bcab752979e2c21c4e0fe344a',
-            id: 8,
+            // token: 'b93292f1450db02bcab752979e2c21c4e0fe344a',
+            token: '',
+            // id: 9,
         }
     },
     mutations: {
@@ -15,6 +16,9 @@ export default {
         },
     },
     getters: {
+        id(state) {
+            return state.id
+        },
         token(state) {
             return state.token
         },
@@ -52,7 +56,7 @@ export default {
                     }
                 })
         },
-        get_initial_data({commit, getters}) {
+        get_initial_data({commit, getters, dispatch}) {
             fetch(process.env.VUE_APP_API_URL + '/api/initial', {
                 method: 'GET',
                 headers: {'Authorization': 'token ' + getters['token']}
@@ -61,6 +65,7 @@ export default {
                     if (response.ok) {
                         response.json().then(data => {
                             commit('set_id', data.id)
+                            dispatch('editor/loadInitialBackpacks', data.backpacks, {root: true})
                         })
                     } else {
                         console.log(response)

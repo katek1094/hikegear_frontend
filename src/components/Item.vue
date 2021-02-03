@@ -160,8 +160,10 @@ export default {
   color: blue;
 }
 
-.item__worn:hover:enabled, .item__consumable:hover:enabled {
-  color: black;
+@media (hover: hover) and (pointer: fine) {
+  .item__worn:hover:enabled, .item__consumable:hover:enabled {
+    color: black;
+  }
 }
 
 .item__worn:enabled, .item__consumable:enabled {

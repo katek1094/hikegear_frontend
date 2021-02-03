@@ -3,6 +3,7 @@
     <div class="editor" v-if="editor_data_ready">
       <span>twoje plecaki:</span>
       <div class="backpack__list">
+
         <div class="backpack__list__item" v-for="(backpack, index) in backpacks" :key="backpack.id" @click="changeBackpack(index)">
           <span>{{backpack.name}}</span>
         </div>

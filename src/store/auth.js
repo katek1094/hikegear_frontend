@@ -35,8 +35,6 @@ export default {
             commit('set_id', undefined)
         },
         login({commit}, payload) {
-            console.log(process.env.VUE_APP_API_URL)
-            console.log(process.env)
             return fetch(process.env.VUE_APP_API_URL + '/api/obtain_token', {
                 method: 'POST',
                 headers: {

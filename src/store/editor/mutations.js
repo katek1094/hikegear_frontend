@@ -31,10 +31,10 @@ export default {
         state.dynamic.list.push(new_element)
     },
     toggle_consumable(state, id) {
-        state.dynamic.list[id].consumable = !state.dynamic.list['id'].consumable
+        state.dynamic.list[id].consumable = !state.dynamic.list[id].consumable
     },
     toggle_worn(state, id) {
-        state.dynamic.list[id].worn = !state.dynamic.list['id'].worn
+        state.dynamic.list[id].worn = !state.dynamic.list[id].worn
     },
     set_backpacks(state, backpacks) {
         state.backpacks = backpacks

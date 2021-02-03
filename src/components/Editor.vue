@@ -69,7 +69,7 @@ export default {
         return this.$store.getters['editor/pack_name']
       },
       set(val) {
-        this.$store.commit('editor/renamePack', val)
+        this.$store.dispatch('editor/renamePack', val)
       }
     },
     are_changes() {
@@ -78,7 +78,7 @@ export default {
   },
   methods: {
     addCategory() {
-      this.$store.commit('editor/createEmptyCategory')
+      this.$store.dispatch('editor/createEmptyCategory')
     },
     save() {
       this.$store.dispatch('editor/updateBackpack')

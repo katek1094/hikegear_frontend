@@ -1,126 +1,44 @@
 export default {
-    moveCat(state, payload) {
-        state.dynamic.list = payload
+    set_dynamic_list(state, new_list) {
+        state.dynamic.list = new_list
     },
-    setCategory(state, payload) {
-        let id, next_id
-        let founded = false
-        let unique_cat = 0
-        for (let i = 0; i < state.dynamic.list.length; i++) {
-            if ((founded) && (state.dynamic.list[i].type === 'category')) {
-                next_id = state.dynamic.list.indexOf(state.dynamic.list[i])
-                break
-            }
-            if (state.dynamic.list[i].type === 'category') {
-                if (unique_cat === payload.category_unique_id) {
-                    id = state.dynamic.list.indexOf(state.dynamic.list[i])
-                    founded = true
-                } else unique_cat++
-            }
-        }
-        if (next_id === undefined) {
-            next_id = state.dynamic.list.length
-        }
-        state.dynamic.list.splice(id + 1, next_id - id - 1, ...payload.new_category)
+    splice_dynamic_list(state, payload) {
+        // it should receive a array of arguments which first two are 'start' and 'deleteCount' and next are new objects
+        state.dynamic.list.splice(...payload)
     },
-    loadData(state, data) {
-        state.static = JSON.parse(JSON.stringify(data))
-        state.dynamic = JSON.parse(JSON.stringify(data))
+    copy_and_set_static_backpack(state, backpack) {
+        state.static = JSON.parse(JSON.stringify(backpack))
     },
-    changeItemQuantity(state, payload) {
-        state.dynamic.list[payload.id].quantity = payload.quantity
+    copy_and_set_dynamic_backpack(state, backpack) {
+        state.dynamic = JSON.parse(JSON.stringify(backpack))
     },
-    renamePack(state, name) {
-        state.dynamic.name = name
+    set_backpack_name(state, new_name) {
+        state.dynamic.name = new_name
     },
-    removeElements(state, payload) {
+    remove_elements(state, payload) {
         state.dynamic.list.splice(payload.start, payload.amount)
     },
-    deleteItem(state, id) {
-        state.dynamic.list.splice(id, 1)
+    set_element_property(state, payload) {
+        // payload = type, id, property, new_value
+        if (state.dynamic.list[payload.id].type === payload.type) {
+            state.dynamic.list[payload.id][payload.property] = payload.new_value
+        } else throw "You are trying to change a property of the element of different type than declared!"
     },
-    changeItemWeight(state, payload) {
-        state.dynamic.list[payload.id].weight = payload.weight
+    add_backpack(state, backpack) {
+        state.backpacks.unshift(backpack)
     },
-    changeItemDescription(state, payload) {
-        state.dynamic.list[payload.id].description = payload.description
+    push_to_dynamic_list(state, new_element) {
+        state.dynamic.list.push(new_element)
     },
-    renameItem(state, payload) {
-        state.dynamic.list[payload.id].name = payload.name
+    toggle_consumable(state, id) {
+        state.dynamic.list[id].consumable = !state.dynamic.list['id'].consumable
     },
-    renameCategory(state, payload) {
-        state.dynamic.list[payload.id].name = payload.name
+    toggle_worn(state, id) {
+        state.dynamic.list[id].worn = !state.dynamic.list['id'].worn
     },
-    createEmptyBackpack(state, user_id) {
-        state.backpacks.unshift({
-            name: 'nowy plecak',
-            profile: {
-                id: user_id
-            },
-            created: '',
-            updated: '',
-            list: [
-                {
-                    type: 'category',
-                    name: '',
-                    description: ''
-                },
-                {
-                    type: 'item',
-                    name: '',
-                    description: '',
-                    weight: 0,
-                    quantity: 0,
-                    worn: false,
-                    consumable: false,
-                },
-            ]
-        })
+    set_backpacks(state, backpacks) {
+        state.backpacks = backpacks
     },
-    changeBackpack(state, payload) {
-        state.dynamic = JSON.parse(JSON.stringify(state.backpacks[payload]))
-        state.static = JSON.parse(JSON.stringify(state.backpacks[payload]))
-    },
-    createEmptyCategory(state) {
-        state.dynamic.list.push({
-            type: 'category',
-            name: '',
-            description: ''
-        })
-    },
-    createEmptyItem(state, id) {
-        let new_item = {
-            name: '',
-            type: 'item',
-            description: '',
-            weight: 0,
-            quantity: 1,
-            worn: false
-        }
-        state.dynamic.list.splice(id, 0, new_item)
-    },
-    markAsWorn(state, id) {
-        state.dynamic.list[id].worn = !state.dynamic.list[id].worn
-    },
-    markAsConsumable(state, id) {
-        state.dynamic.list[id].consumable = !state.dynamic.list[id].consumable
-    },
-    loadBackpacks(state, payload) {
-        state.backpacks = payload
-        let latest = state.backpacks[0].updated
-        let choice = state.backpacks[0].id
-        for (let i = 0; i < state.backpacks.length; i++) {
-            if (latest > state.backpacks[i].updated) {
-                latest = state.backpacks[i].updated
-                choice = state.backpacks[i].id
-            }
-        }
-        state.choice = choice
-        for (let i = 0; i < state.backpacks.length; i++) {
-            if (state.backpacks[i].id === state.choice) {
-                state.static = JSON.parse(JSON.stringify(state.backpacks[i]))
-                state.dynamic = JSON.parse(JSON.stringify(state.backpacks[i]))
-            }
-        }
-    }
+
+
 }

@@ -13,7 +13,7 @@
       <font-awesome-icon class="fa-sm" icon="sync-alt"/>
     </button>
     <input v-model.number="item_weight" class="item__weight" type="number" @input="removeLeadingZero">
-<!--    TODO: add units-->
+    <!--    TODO: add units-->
     <input v-model.number="item_quantity" :max="quantity_limit" class="item__quantity" min="0" type="number"
            @input="removeLeadingZero">
     <button class="item__delete" type="button" @click="deleteItem">
@@ -43,7 +43,12 @@ export default {
         return this.item.name
       },
       set(val) {
-        this.$store.commit('editor/renameItem', {id: this.item.id, name: val})
+        this.$store.dispatch('editor/changeElementProperty', {
+          type: 'item',
+          id: this.item.id,
+          property: 'name',
+          new_value: val
+        })
       }
     },
     item_description: {
@@ -51,7 +56,12 @@ export default {
         return this.item.description
       },
       set(val) {
-        this.$store.commit('editor/changeItemDescription', {id: this.item.id, description: val})
+        this.$store.dispatch('editor/changeElementProperty', {
+          type: 'item',
+          id: this.item.id,
+          property: 'description',
+          new_value: val
+        })
       }
     },
     item_weight: {
@@ -60,7 +70,12 @@ export default {
       },
       set(val) {
         if ((val <= this.weight_limit) && (val >= 0)) {
-          this.$store.commit('editor/changeItemWeight', {id: this.item.id, weight: val})
+          this.$store.dispatch('editor/changeElementProperty', {
+            type: 'item',
+            id: this.item.id,
+            property: 'weight',
+            new_value: val
+          })
         } else {
           this.$forceUpdate()
         }
@@ -72,7 +87,12 @@ export default {
       },
       set(val) {
         if ((val <= this.quantity_limit) && (val >= 0)) {
-          this.$store.commit('editor/changeItemQuantity', {id: this.item.id, quantity: val})
+          this.$store.dispatch('editor/changeElementProperty', {
+            type: 'item',
+            id: this.item.id,
+            property: 'quantity',
+            new_value: val
+          })
         } else {
           this.$forceUpdate()
         }
@@ -81,13 +101,13 @@ export default {
   },
   methods: {
     markAsWorn() {
-      this.$store.commit('editor/markAsWorn', this.item.id)
+      this.$store.dispatch('editor/switchWorn', this.item.id)
     },
     markAsConsumable() {
-      this.$store.commit('editor/markAsConsumable', this.item.id)
+      this.$store.dispatch('editor/switchConsumable', this.item.id)
     },
     deleteItem() {
-      this.$store.commit('editor/deleteItem', this.item.id)
+      this.$store.dispatch('editor/deleteItem', this.item.id)
     },
     autoresize(event) {
       let padding = parseInt(getComputedStyle(event.target).padding.replace('px', ''))

@@ -9,7 +9,6 @@ export default {
             static: {},
             dynamic: {},
             backpacks: [],
-            choice: undefined,
             fetched: false
             // id: 1,
             // name: '',

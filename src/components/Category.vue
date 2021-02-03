@@ -49,7 +49,12 @@ export default {
         return this.category.name
       },
       set(val) {
-        this.$store.commit('editor/renameCategory', {id: this.category.id, name: val})
+        this.$store.dispatch('editor/changeElementProperty', {
+          type: 'category',
+          id: this.category.id,
+          property: 'name',
+          new_value: val
+        })
       }
     },
     items: {
@@ -157,15 +162,17 @@ export default {
   .category__handle, >>> .item__handle, .category__delete, >>> .item__delete, >>> .item__worn, >>> .item__consumable {
     visibility: visible;
   }
+
   .item__worn:hover:enabled, .item__consumable:hover:enabled {
     color: grey;
   }
+
   .category__quantity__label, >>> .item__quantity, .category__quantity__total {
     width: 1.1rem;
   }
 }
 
-@media (min-width: 320px) and (max-width: 479px){
+@media (min-width: 320px) and (max-width: 479px) {
 
 }
 

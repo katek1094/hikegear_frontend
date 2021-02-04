@@ -1,7 +1,6 @@
 <template>
   <div class="item" :class="{first: first, last: last, middle: !last && !first}">
     <span class="item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
-    {{item.id}}
     <textarea v-model.trim="item_name" class="item__name autoresize" placeholder="nazwa" rows="1" @input="autoresize"
               @keydown="preventEnter"/>
     <textarea v-model.trim="item_description" class="item__description autoresize" placeholder="opis" rows="1"

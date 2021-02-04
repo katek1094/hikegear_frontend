@@ -12,7 +12,7 @@
       </button>
     </div>
     <draggable v-model="items" animation="500" class="items" group="category__items" item-key="id"
-               handle=".item__handle" @update="itemMoved">
+               handle=".item__handle">
       <template #item="{element, index}">
         <Item :first="category.items.indexOf(element) === 0" :item="element" :index="index" :ref="setItemRef"
               :last="category.items.indexOf(element) === category.items.length - 1"/>
@@ -56,7 +56,7 @@ export default {
       set(val) {
         this.$store.dispatch('editor/changeElementProperty', {
           type: 'category',
-          id: this.category.id,
+          list_index: this.category.list_index,
           property: 'name',
           new_value: val
         })
@@ -67,23 +67,16 @@ export default {
         return this.category.items
       },
       set(val) {
-        this.$store.dispatch('editor/moveItem', {new_category: val, category_unique_id: this.category.unique_id})
+        this.$store.dispatch('editor/moveItem', {new_category: val, category_index: this.category.category_index})
       }
     },
   },
   methods: {
     addItem() {
-      this.$store.dispatch('editor/addItem', this.category.id)
+      this.$store.dispatch('editor/addItem', this.category.list_index)
     },
     deleteCategory() {
-      this.$store.dispatch('editor/deleteCategory', this.category.id)
-    },
-    async emit_event() {
-      console.log('item moved')
-      // this.$emit('item-moved')
-    },
-    itemMoved() {
-      this.emit_event()
+      this.$store.dispatch('editor/deleteCategory', this.category.list_index)
     },
     setItemRef(el) {
       if (el) {
@@ -196,7 +189,7 @@ export default {
   }
 }
 
-@media (min-width: 320px) and (max-width: 479px) {
+@media (max-width: 479px) {
 
 }
 

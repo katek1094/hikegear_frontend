@@ -30,7 +30,7 @@ body {
   margin: 0;
 }
 
-@media (min-width: 320px) {
+@media (max-width: 479px) {
   /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
   html {
     font-size: 14px;

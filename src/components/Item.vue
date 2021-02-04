@@ -46,7 +46,7 @@ export default {
       set(val) {
         this.$store.dispatch('editor/changeElementProperty', {
           type: 'item',
-          id: this.item.id,
+          list_index: this.item.list_index,
           property: 'name',
           new_value: val
         })
@@ -59,7 +59,7 @@ export default {
       set(val) {
         this.$store.dispatch('editor/changeElementProperty', {
           type: 'item',
-          id: this.item.id,
+          list_index: this.item.list_index,
           property: 'description',
           new_value: val
         })
@@ -74,7 +74,7 @@ export default {
         if ((val <= this.weight_limit) && (val >= 0)) {
           this.$store.dispatch('editor/changeElementProperty', {
             type: 'item',
-            id: this.item.id,
+            list_index: this.item.list_index,
             property: 'weight',
             new_value: val
           })
@@ -91,7 +91,7 @@ export default {
         if ((val <= this.quantity_limit) && (val >= 0)) {
           this.$store.dispatch('editor/changeElementProperty', {
             type: 'item',
-            id: this.item.id,
+            list_index: this.item.list_index,
             property: 'quantity',
             new_value: val
           })
@@ -103,13 +103,13 @@ export default {
   },
   methods: {
     markAsWorn() {
-      this.$store.dispatch('editor/switchWorn', this.item.id)
+      this.$store.dispatch('editor/switchWorn', this.item.list_index)
     },
     markAsConsumable() {
-      this.$store.dispatch('editor/switchConsumable', this.item.id)
+      this.$store.dispatch('editor/switchConsumable', this.item.list_index)
     },
     deleteItem() {
-      this.$store.dispatch('editor/deleteItem', this.item.id)
+      this.$store.dispatch('editor/deleteItem', this.item.list_index)
     },
     autoresize(event) {
       let padding = parseInt(getComputedStyle(event.target).padding.replace('px', ''))
@@ -135,8 +135,6 @@ export default {
     }
   },
   mounted() {
-    console.log('mounted')
-    console.log(this.item)
     this.resizeAll()
   }
 }

@@ -19,9 +19,9 @@ export default {
         state.dynamic.list.splice(payload.start, payload.amount)
     },
     set_element_property(state, payload) {
-        // payload = type, id, property, new_value
-        if (state.dynamic.list[payload.id].type === payload.type) {
-            state.dynamic.list[payload.id][payload.property] = payload.new_value
+        // payload = type, list_index, property, new_value
+        if (state.dynamic.list[payload.list_index].type === payload.type) {
+            state.dynamic.list[payload.list_index][payload.property] = payload.new_value
         } else throw "You are trying to change a property of the element of different type than declared!"
     },
     add_backpack(state, backpack) {
@@ -30,11 +30,11 @@ export default {
     push_to_dynamic_list(state, new_element) {
         state.dynamic.list.push(new_element)
     },
-    toggle_consumable(state, id) {
-        state.dynamic.list[id].consumable = !state.dynamic.list[id].consumable
+    toggle_consumable(state, list_index) {
+        state.dynamic.list[list_index].consumable = !state.dynamic.list[list_index].consumable
     },
-    toggle_worn(state, id) {
-        state.dynamic.list[id].worn = !state.dynamic.list[id].worn
+    toggle_worn(state, list_index) {
+        state.dynamic.list[list_index].worn = !state.dynamic.list[list_index].worn
     },
     set_backpacks(state, backpacks) {
         state.backpacks = backpacks

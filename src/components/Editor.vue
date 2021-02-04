@@ -20,7 +20,7 @@
       <draggable v-model="organized_list" animation="700" class="categories" group="categories" handle=".category__handle"
                  item-key="id" @end="drag=false" @start="drag=true">
         <template #item="{element, index}">
-          <Category :category="element" :index="index" :ref="setCategoryRef" @item-moved="resizeAllItems"/>
+          <Category :category="element" :index="index" :ref="setCategoryRef"/>
         </template>
       </draggable>
       <button class="add-category" type="button" @click="addCategory">
@@ -92,7 +92,6 @@ export default {
       this.$store.dispatch('editor/addBackpack')
     },
     resizeAllItems() {
-      console.log('resize all')
       for (let i = 0; i < this.categoryRefs.length; i++) {
         this.categoryRefs[i].resizeAllItems()
       }

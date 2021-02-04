@@ -1,6 +1,6 @@
 export default {
     backpacks(state) {
-      return state.backpacks
+        return state.backpacks
     },
     are_any_changes(state) {
         let dyn = state.dynamic
@@ -55,29 +55,40 @@ export default {
         return results
     },
     organized_list: state => {
-        let list = JSON.parse(JSON.stringify(state.dynamic.list))
-        let results = []
-        let cat_unique = 0
-        if (list[0].type !== 'category') {
+        let elements_list = JSON.parse(JSON.stringify(state.dynamic.list))
+        // TODO: copying array above is probably redundant
+        let organized = []
+        let category_counter = 0
+        if (elements_list[0].type !== 'category') {
             throw 'first item of backpack list is not a category! something is wrong'
         }
-        for (let i = 0; i < list.length; i++) {
-            let dt = list[i]
-            dt.id = i
-            if (dt.type === 'category') {
-                dt.items = []
-                dt.unique_id = cat_unique
-                dt.total_weight = 0
-                dt.total_quantity = 0
-                cat_unique++
-                results.push(dt)
-            } else {
-                results[results.length - 1].items.push(dt)
-                results[results.length - 1].total_weight += dt.weight
-                results[results.length - 1].total_quantity += dt.quantity
-            }
+        for (let i = 0; i < elements_list.length; i++) {
+            let element = elements_list[i]
+            element.list_index = i
+            if (element.type === 'category') {
+                element.items = []
+                element.category_index = category_counter
+                element.total_weight = 0
+                element.total_quantity = 0
+                category_counter++
+                organized.push(element)
+            } else if (element.type === 'item') {
+                organized[organized.length - 1].items.push(element)
+                organized[organized.length - 1].total_weight += element.weight
+                organized[organized.length - 1].total_quantity += element.quantity
+            } else throw 'backpack list element is neither category nor item!'
         }
-        return results
+        return organized
+    },
+    new_element_id(state) {
+        let ids = []
+        for (let i = 0; i < state.dynamic.list.length; i++) {
+            ids.push(state.dynamic.list[i].id)
+        }
+        for (let i = ids.length; i < 1000 + ids.length; i++) {
+            if (!ids.includes(i)) return i
+        }
+        throw 'loop iterated 1000 times in searching for new, free id, something is wrong!'
     },
     patchData(state) {
         let data = {}
@@ -89,6 +100,9 @@ export default {
         }
         if (state.dynamic.list !== state.static.list) {
             data.list = state.dynamic.list
+        }
+        for (let i = 0; i < data.list.length; i++) {
+            data.list[i].id = i
         }
         return JSON.stringify(data)
     },

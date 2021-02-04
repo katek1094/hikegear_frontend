@@ -12,7 +12,8 @@
             @click="markAsConsumable">
       <font-awesome-icon class="fa-sm" icon="sync-alt"/>
     </button>
-    <input v-model.number="item_weight" class="item__weight" type="number" @input="removeLeadingZero">
+    <input v-model.number="item_weight" :max="weight_limit" class="item__weight" min="0" type="number"
+           @input="removeLeadingZero">
     <!--    TODO: add units-->
     <input v-model.number="item_quantity" :max="quantity_limit" class="item__quantity" min="0" type="number"
            @input="removeLeadingZero">
@@ -69,6 +70,7 @@ export default {
         return this.item.weight
       },
       set(val) {
+        // TODO: does not work on mobile, closes keyboard every single character
         if ((val <= this.weight_limit) && (val >= 0)) {
           this.$store.dispatch('editor/changeElementProperty', {
             type: 'item',
@@ -133,9 +135,10 @@ export default {
     }
   },
   mounted() {
+    console.log('mounted')
+    console.log(this.item)
     this.resizeAll()
-    window.addEventListener("resize", this.resizeAll);
-  },
+  }
 }
 </script>
 

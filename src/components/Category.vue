@@ -11,11 +11,10 @@
         <font-awesome-icon class="fa-sm" icon="trash"/>
       </button>
     </div>
-    <draggable v-model="items" animation="500" class="items" group="category__items" :item-key="itemKey"
-               handle=".item__handle">
-      <!--      TODO: refresh autorizing all, after moving any item, because on small screen height has to be fixed-->
+    <draggable v-model="items" animation="500" class="items" group="category__items" item-key="id"
+               handle=".item__handle" @update="itemMoved">
       <template #item="{element, index}">
-        <Item :first="category.items.indexOf(element) === 0" :item="element" :index="index"
+        <Item :first="category.items.indexOf(element) === 0" :item="element" :index="index" :ref="setItemRef"
               :last="category.items.indexOf(element) === category.items.length - 1"/>
       </template>
     </draggable>
@@ -43,6 +42,11 @@ export default {
   props: {
     category: Object,
     index: Number
+  },
+  data() {
+    return {
+      itemRefs: []
+    }
   },
   computed: {
     category_name: {
@@ -74,8 +78,22 @@ export default {
     deleteCategory() {
       this.$store.dispatch('editor/deleteCategory', this.category.id)
     },
-    itemKey(item) {
-      return item.id + item.name + item.weight
+    async emit_event() {
+      console.log('item moved')
+      // this.$emit('item-moved')
+    },
+    itemMoved() {
+      this.emit_event()
+    },
+    setItemRef(el) {
+      if (el) {
+        this.itemRefs.push(el)
+      }
+    },
+    resizeAllItems() {
+      for (let i = 0; i < this.itemRefs.length; i++) {
+        this.itemRefs[i].resizeAll()
+      }
     }
   }
 }

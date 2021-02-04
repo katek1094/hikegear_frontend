@@ -134,7 +134,7 @@ export default {
                     name: '',
                     description: '',
                     weight: 0,
-                    quantity: 0,
+                    quantity: 1,
                     worn: false,
                     consumable: false,
                 },

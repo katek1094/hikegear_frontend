@@ -11,8 +11,9 @@
         <font-awesome-icon class="fa-sm" icon="trash"/>
       </button>
     </div>
-    <draggable v-model="items" animation="500" class="items" group="category__items" item-key="id" @end="drag=false"
-               @start="drag=true" handle=".item__handle">
+    <draggable v-model="items" animation="500" class="items" group="category__items" :item-key="itemKey"
+               handle=".item__handle">
+      <!--      TODO: refresh autorizing all, after moving any item, because on small screen height has to be fixed-->
       <template #item="{element, index}">
         <Item :first="category.items.indexOf(element) === 0" :item="element" :index="index"
               :last="category.items.indexOf(element) === category.items.length - 1"/>
@@ -73,6 +74,9 @@ export default {
     deleteCategory() {
       this.$store.dispatch('editor/deleteCategory', this.category.id)
     },
+    itemKey(item) {
+      return item.id + item.name + item.weight
+    }
   }
 }
 </script>
@@ -109,9 +113,11 @@ export default {
   visibility: visible;
 }
 
-.category__delete:hover, >>> .item__delete:hover {
-  color: red;
-  cursor: pointer;
+@media (hover: hover) and (pointer: fine) {
+  .category__delete:hover, >>> .item__delete:hover {
+    color: red;
+    cursor: pointer;
+  }
 }
 
 .category__handle, >>> .item__handle {
@@ -168,7 +174,7 @@ export default {
   }
 
   .category__quantity__label, >>> .item__quantity, .category__quantity__total {
-    width: 1.1rem;
+    width: 1.3rem;
   }
 }
 

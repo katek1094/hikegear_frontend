@@ -138,7 +138,6 @@ export default {
   border: 1px solid transparent;
   background-color: transparent;
   outline: none;
-  padding: 5px;
 }
 
 .backpack__name, >>> .category__name {

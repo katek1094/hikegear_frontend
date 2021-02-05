@@ -24,9 +24,6 @@ export default {
             state.dynamic.list[payload.list_index][payload.property] = payload.new_value
         } else throw "You are trying to change a property of the element of different type than declared!"
     },
-    add_backpack(state, backpack) {
-        state.backpacks.unshift(backpack)
-    },
     push_to_dynamic_list(state, new_element) {
         state.dynamic.list.push(new_element)
     },
@@ -39,6 +36,16 @@ export default {
     set_backpacks(state, backpacks) {
         state.backpacks = backpacks
     },
+    add_backpack(state, backpack) {
+        state.backpacks.unshift(backpack)
+    },
+    update_backpack(state, payload) {
+        for (let i = 0; i < state.backpacks.length; i++) {
+            if (state.backpacks[i].id === payload.id) {
+                state.backpacks[i] = payload.data
+            }
+        }
+    }
 
 
 }

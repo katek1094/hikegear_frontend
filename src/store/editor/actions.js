@@ -85,24 +85,6 @@ export default {
     discardChanges({commit, getters}) {
         commit('set_dynamic_list', getters['static_list'])
     },
-    createBackpack({commit, rootGetters}) {
-        fetch(process.env.VUE_APP_API_URL + '/api/backpacks/', {
-            method: 'POST',
-            headers: {
-                'Authorization': 'token ' + rootGetters['auth/token'],
-                'Content-Type': 'application/json'
-            },
-            body: rootGetters['editor/bodyBackpackData']
-        })
-            .then(response => {
-                if (response.ok) {
-                    response.json().then(data => {
-                        commit('copy_and_set_dynamic_backpack', data)
-                        commit('copy_and_set_static_backpack', data)
-                    })
-                } else console.log(response)
-            })
-    },
     updateBackpack({commit, rootGetters}) {
         fetch(process.env.VUE_APP_API_URL + '/api/backpacks/' + rootGetters['editor/pack_id'] + '/', {
             method: 'PATCH',
@@ -117,43 +99,50 @@ export default {
                     response.json().then(data => {
                         commit('copy_and_set_dynamic_backpack', data)
                         commit('copy_and_set_static_backpack', data)
+                        commit('update_backpack', {data: data, id: rootGetters['editor/pack_id']})
                     })
                 } else {
                     console.log(response)
                 }
             })
     },
-    loadInitialBackpacks({commit}, backpacks) {
-        commit('set_backpacks', backpacks)
-        commit('copy_and_set_dynamic_backpack', backpacks[0])
-        commit('copy_and_set_static_backpack', backpacks[0])
-    },
     addBackpack({commit, rootGetters}) {
-        commit('add_backpack', {
-            id: undefined,
-            name: 'nowy plecak',
-            profile: {
-                id: rootGetters['auth/id']
+        fetch(process.env.VUE_APP_API_URL + '/api/backpacks/', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'token ' + rootGetters['auth/token'],
+                'Content-Type': 'application/json'
             },
-            created: '',
-            updated: '',
-            list: [
-                {
-                    type: 'category',
-                    name: '',
-                    description: ''
-                },
-                {
-                    type: 'item',
-                    name: '',
-                    description: '',
-                    weight: 0,
-                    quantity: 1,
-                    worn: false,
-                    consumable: false,
-                },
-            ]
+            body: JSON.stringify({
+                name: 'nowy plecak',
+                description: '',
+                list: [
+                    {
+                        type: 'category',
+                        name: '',
+                        description: ''
+                    },
+                    {
+                        type: 'item',
+                        name: '',
+                        description: '',
+                        weight: 0,
+                        quantity: 1,
+                        worn: false,
+                        consumable: false,
+                    },
+                ]
+            })
         })
+            .then(response => {
+                if (response.ok) {
+                    response.json().then(data => {
+                        commit('copy_and_set_dynamic_backpack', data)
+                        commit('copy_and_set_static_backpack', data)
+                        commit('add_backpack', data)
+                    })
+                } else console.log(response)
+            })
     },
     changeBackpack({commit, getters}, index) {
         commit('copy_and_set_dynamic_backpack', getters['backpacks'][index])
@@ -167,9 +156,9 @@ export default {
             .then(response => {
                 if (response.ok) {
                     response.json().then(data => {
-                        commit('set_backpacks', data.backpacks)
                         commit('copy_and_set_dynamic_backpack', data.backpacks[0])
                         commit('copy_and_set_static_backpack', data.backpacks[0])
+                        commit('set_backpacks', data.backpacks)
                     })
                 } else {
                     console.log(response)

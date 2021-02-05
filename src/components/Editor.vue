@@ -15,12 +15,6 @@
       </div>
       <input v-model.trim="pack_name" class="backpack__name" placeholder="nazwa listy" type="text">
       <Summary/>
-      <div>
-        <button class="delete-button" type="button" @click="deleteBackpack">usuń plecak</button>
-        <button class="discard-button" type="button" :disabled="!are_changes" @click="discard">odrzuć zmiany</button>
-        <button class="save-button" type="button" :disabled="!are_changes || pack_name === ''" @click="save">zapisz
-        </button>
-      </div>
       <!--    TODO: add pack description-->
       <draggable v-model="organized_list" animation="1000" class="categories" group="categories"
                  handle=".category__handle" item-key="id" @end="drag=false" @start="drag=true">
@@ -53,7 +47,8 @@ export default {
   },
   data() {
     return {
-      categoryRefs: []
+      categoryRefs: [],
+      edits: 0
     }
   },
   computed: {
@@ -88,17 +83,11 @@ export default {
       this.$store.dispatch('editor/addCategory')
     },
     save() {
-      if (this.$store.getters['editor/pack_id'] !== undefined) {
-        this.$store.dispatch('editor/updateBackpack')
-      } else this.$store.dispatch('editor/createBackpack')
-    },
-    discard() {
-      this.$store.dispatch('editor/discardChanges')
-    },
-    deleteBackpack() {
-
+      this.edits = 0
+      this.$store.dispatch('editor/updateBackpack')
     },
     changeBackpack(index) {
+      if (this.are_changes) this.save()
       this.$store.dispatch('editor/changeBackpack', index)
     },
     addBackpack() {
@@ -116,7 +105,22 @@ export default {
   mounted() {
     this.resizeAllItems()
     window.addEventListener("resize", this.resizeAllItems);
-  }
+    this.$store.watch(
+        (state) => {
+          return state.editor.dynamic
+        },
+        () => {
+          this.edits += 1
+          let x = this.edits
+          setTimeout(() => {
+            if (x === this.edits && this.are_changes) {
+              this.save()
+            }
+          }, 3000)
+        },
+        {deep: true}
+    );
+  },
 }
 </script>
 
@@ -191,67 +195,6 @@ export default {
   background-color: white;
   cursor: text;
 }
-
-.save-button, .discard-button, .delete-button {
-  --disabled: lightgrey;
-  --save_second: #75f61c;
-  --save_third: #adff2f;
-  --discard_second: #f8ec00;
-  --discard_third: yellow;
-  --delete_second: #d22626;
-  --delete_third: red;
-  outline: none;
-  padding: 6px 7px;
-  margin: 3px 20px;
-  font-size: 1em;
-  border-radius: 6px;
-  background-color: var(--disabled);
-  border: 1px solid var(--disabled);
-}
-
-.save-button:enabled {
-  background-color: var(--save_second);
-  border-color: var(--save_second);
-}
-
-.save-button:hover:enabled {
-  background-color: var(--save_third);
-  cursor: pointer;
-}
-
-.save-button:active:enabled {
-  border-color: var(--save_third);
-}
-
-.discard-button:enabled {
-  background-color: var(--discard_second);
-  border-color: var(--discard_second);
-}
-
-.discard-button:hover:enabled {
-  cursor: pointer;
-  background-color: var(--discard_third);
-}
-
-.discard-button:active:enabled {
-  border-color: var(--discard_third);
-}
-
-.delete-button:enabled {
-  background-color: var(--delete_second);
-  border-color: var(--delete_second);
-}
-
-.delete-button:hover:enabled {
-  background-color: var(--delete_third);
-  cursor: pointer;
-  color: white;
-}
-
-.delete-button:active:enabled {
-  border-color: var(--delete_third);
-}
-
 
 @media (min-width: 320px) {
 

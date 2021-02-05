@@ -95,6 +95,9 @@ export default {
     static_list(state) {
         return JSON.parse(JSON.stringify(state.static.list))
     },
+    dynamic_data(state) {
+        return state.dynamic
+    }
 
 
 }

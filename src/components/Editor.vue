@@ -4,8 +4,9 @@
       <span>twoje plecaki:</span>
       <div class="backpack__list">
 
-        <div class="backpack__list__item" v-for="(backpack, index) in backpacks" :key="backpack.id" @click="changeBackpack(index)">
-          <span>{{backpack.name}}</span>
+        <div class="backpack__list__item" v-for="(backpack, index) in backpacks" :key="backpack.id"
+             @click="changeBackpack(index)">
+          <span>{{ backpack.name }}</span>
         </div>
         <button class="add-backpack" type="button" @click="addBackpack">
           <font-awesome-icon class="fa-md" icon="plus"/>
@@ -14,10 +15,13 @@
       </div>
       <input v-model.trim="pack_name" class="backpack__name" placeholder="nazwa listy" type="text">
       <Summary/>
-      <button class="save-button" type="button" :disabled="!are_changes" @click="save">zapisz</button>
-<!--      TODO: add discard changes button-->
+      <div>
+        <button class="discard-button" type="button" :disabled="!are_changes" @click="discard">odrzuć zmiany</button>
+        <button class="save-button" type="button" :disabled="!are_changes" @click="save">zapisz</button>
+      </div>
       <!--    TODO: add pack description-->
-      <draggable v-model="organized_list" animation="700" class="categories" group="categories" handle=".category__handle"
+      <draggable v-model="organized_list" animation="1000" class="categories" group="categories"
+                 handle=".category__handle"
                  item-key="id" @end="drag=false" @start="drag=true">
         <template #item="{element, index}">
           <Category :category="element" :index="index" :ref="setCategoryRef"/>
@@ -83,7 +87,15 @@ export default {
       this.$store.dispatch('editor/addCategory')
     },
     save() {
-      this.$store.dispatch('editor/updateBackpack')
+      if (this.$store.getters['editor/pack_id'] !== undefined) {
+        this.$store.dispatch('editor/updateBackpack')
+      }
+      else {
+        this.$store.dispatch('editor/createBackpack')
+      }
+    },
+    discard() {
+      this.$store.dispatch('editor/discardChanges')
     },
     changeBackpack(index) {
       this.$store.dispatch('editor/changeBackpack', index)
@@ -97,9 +109,7 @@ export default {
       }
     },
     setCategoryRef(el) {
-      if (el) {
-        this.categoryRefs.push(el)
-      }
+      if (el) this.categoryRefs.push(el)
     }
   },
   mounted() {
@@ -154,6 +164,7 @@ export default {
   border: 1px solid transparent;
   background-color: transparent;
   outline: none;
+  padding: 5px;
 }
 
 .backpack__name, >>> .category__name {
@@ -180,32 +191,49 @@ export default {
   cursor: text;
 }
 
-.save-button {
-  --first: lightgrey;
-  --second: #75f61c;
-  --third: greenyellow;
+.save-button, .discard-button {
+  --disabled: lightgrey;
+  --save_second: #75f61c;
+  --save_third: #adff2f;
+  --discard_second: #f8ec00;
+  --discard_third: yellow;
   outline: none;
-  width: 70px;
-  height: 35px;
+  padding: 6px 7px;
+  margin: 3px 20px;
   font-size: 1em;
-  border-radius: 5px;
-  background-color: var(--first);
-  border: 1px solid var(--first);
+  border-radius: 6px;
+  background-color: var(--disabled);
+  border: 1px solid var(--disabled);
 }
 
 .save-button:enabled {
-  background-color: var(--second);
+  background-color: var(--save_second);
   cursor: pointer;
-  border-color: var(--second);
+  border-color: var(--save_second);
 }
 
 .save-button:hover:enabled {
-  background-color: var(--third);
+  background-color: var(--save_third);
 }
 
 .save-button:active:enabled {
-  border-color: var(--third);
+  border-color: var(--save_third);
 }
+
+.discard-button:enabled {
+  background-color: var(--discard_second);
+  cursor: pointer;
+  border-color: var(--discard_second);
+}
+
+.discard-button:hover:enabled {
+  background-color: var(--discard_third);
+}
+
+.discard-button:active:enabled {
+  border-color: var(--discard_third);
+}
+
 
 
 @media (min-width: 320px) {

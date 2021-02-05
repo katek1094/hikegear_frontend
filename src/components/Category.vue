@@ -11,7 +11,7 @@
         <font-awesome-icon class="fa-sm" icon="trash"/>
       </button>
     </div>
-    <draggable v-model="items" animation="500" class="items" group="category__items" item-key="id"
+    <draggable v-model="items" animation="700" class="items" group="category__items" item-key="id"
                handle=".item__handle">
       <template #item="{element, index}">
         <Item :first="category.items.indexOf(element) === 0" :item="element" :index="index" :ref="setItemRef"
@@ -79,9 +79,7 @@ export default {
       this.$store.dispatch('editor/deleteCategory', this.category.list_index)
     },
     setItemRef(el) {
-      if (el) {
-        this.itemRefs.push(el)
-      }
+      if (el) this.itemRefs.push(el)
     },
     resizeAllItems() {
       for (let i = 0; i < this.itemRefs.length; i++) {
@@ -148,23 +146,31 @@ export default {
   background-color: white;
 }
 
+.sortable-chosen {
+  transform: scale(1.01);
+  box-shadow: 4px 4px 4px grey;
+}
+
 .category__weight__label, .category__quantity__label, .category__delete, >>> .item__delete, >>> .item__worn,
 >>> .item__consumable, >>> .item__description, >>> .item__name, >>> .item__weight, >>> .item__quantity,
 .category__quantity__total, .category__weight__total {
-  margin: 0 2px;
+  margin: 0 3px;
 }
 
 .category__weight__label, .category__quantity__label, .category__quantity__total, .category__weight__total {
-  padding: 6px;
   font-size: .75rem;
 }
 
 .category__weight__label, >>> .item__weight, .category__weight__total {
-  width: 2.2rem;
+  padding: 5px;
+  width: 2.8rem;
+  box-sizing: border-box;
 }
 
 .category__quantity__label, >>> .item__quantity, .category__quantity__total {
-  width: 2.3rem;
+  padding: 5px;
+  width: 2.8rem;
+  box-sizing: border-box;
 }
 
 .category__weight__label, .category__weight__total {
@@ -185,7 +191,7 @@ export default {
   }
 
   .category__quantity__label, >>> .item__quantity, .category__quantity__total {
-    width: 1.3rem;
+    width: 1.8rem;
   }
 }
 

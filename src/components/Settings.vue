@@ -1,12 +1,17 @@
 <template>
-  <div>
-
-  </div>
+  <BaseApp>
+    <div>
+      <h1>settings page</h1>
+    </div>
+  </BaseApp>
 </template>
 
 <script>
+import BaseApp from "@/components/BaseApp";
+
 export default {
-  name: "Settings"
+  name: "Settings",
+  components: {BaseApp}
 }
 </script>
 

@@ -70,7 +70,6 @@ export default {
         return this.item.weight
       },
       set(val) {
-        // TODO: does not work on mobile, closes keyboard every single character
         if ((val <= this.weight_limit) && (val >= 0)) {
           this.$store.dispatch('editor/changeElementProperty', {
             type: 'item',
@@ -174,6 +173,8 @@ export default {
   background-color: transparent;
   outline: none;
   color: grey;
+  padding: 2px;
+  font-size: 1.15em;
 }
 
 .checked {

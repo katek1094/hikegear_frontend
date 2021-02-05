@@ -1,16 +1,18 @@
 <template>
   <nav class="navbar" :class="{'navbar--active': active}">
-    <img class="brand" alt="logo" src="@/assets/logo.png">
+    <router-link to="/editor"><img class="brand" alt="logo" src="@/assets/logo.png"></router-link>
     <button class="hamburger" :class="{'hamburger--active': active}" @click="handleClick">
                 <span class="hamburger__box">
                     <span class="hamburger__inner"></span>
                 </span>
     </button>
     <div class="menu">
-      <a v-for="(item, index) in items" :key="index">{{item}}</a>
+      <router-link v-for="(item, index) in items" :key="index" :to="item.route" class="link">{{ item.name }}
+      </router-link>
     </div>
     <div class="dropdown-menu">
-      <a v-for="(item, index) in items" :key="index">{{item}}</a>
+      <router-link v-for="(item, index) in items" :key="index" :to="item.route" class="link">{{ item.name }}
+      </router-link>
     </div>
   </nav>
 </template>
@@ -22,8 +24,8 @@ export default {
     return {
       active: false,
       items: [
-          'edytor',
-          'moje konto',
+        {name: 'edytor', route: '/editor'},
+        {name: 'ustawienia', route: '/settings'},
       ]
     }
   },
@@ -71,16 +73,18 @@ nav {
   cursor: pointer;
 }
 
-nav a {
+.link {
   font-size: 1.3rem;
   line-height: var(--nav_height);
   padding: 0 14px;
   display: inline-block;
   white-space: nowrap;
   cursor: pointer;
+  text-decoration: none;
+  color: black;
 }
 
-.menu a:hover, .dropdown-menu a:hover, .brand:hover {
+.menu .link:hover, .dropdown-menu .link:hover, .brand:hover {
   background-color: var(--nav_hover_color);
   border-radius: 4px;
 }
@@ -96,7 +100,7 @@ nav a {
   text-align: center;
 }
 
-.dropdown-menu a {
+.dropdown-menu .link {
   display: block;
 }
 

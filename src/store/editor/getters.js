@@ -3,23 +3,13 @@ export default {
         return state.backpacks
     },
     are_any_changes(state) {
-        let dyn = state.dynamic
-        let st = state.static
-        if (st.name !== dyn.name) {
-            return true
-        }
-        if (st.description !== dyn.description) {
-            return true
-        }
-        if (dyn.list.length !== st.list.length) {
-            return true
-        }
-        const len = (dyn.list.length >= st.list.length) ? dyn.list.length : st.list.length
+        if (state.static.name !== state.dynamic.name) return true
+        if (state.static.description !== state.dynamic.description) return true
+        if (state.dynamic.list.length !== state.static.list.length) return true
+        const len = (state.dynamic.list.length >= state.static.list.length) ? state.dynamic.list.length : state.static.list.length
         for (let i = 0; i < len; i++) {
-            for (const [key, value] of Object.entries(st.list[i])) {
-                if (value !== dyn.list[i][key]) {
-                    return true
-                }
+            for (const [key, value] of Object.entries(state.static.list[i])) {
+                if (value !== state.dynamic.list[i][key]) return true
             }
         }
         return false
@@ -56,7 +46,6 @@ export default {
     },
     organized_list: state => {
         let elements_list = JSON.parse(JSON.stringify(state.dynamic.list))
-        // TODO: copying array above is probably redundant
         let organized = []
         let category_counter = 0
         if (elements_list[0].type !== 'category') {
@@ -90,7 +79,7 @@ export default {
         }
         throw 'loop iterated 1000 times in searching for new, free id, something is wrong!'
     },
-    patchData(state) {
+    bodyBackpackData(state) {
         let data = {}
         if (state.dynamic.name !== state.static.name) {
             data.name = state.dynamic.name
@@ -107,7 +96,11 @@ export default {
         return JSON.stringify(data)
     },
     dynamic_list(state) {
-        return state.dynamic.list
-    }
+        return JSON.parse(JSON.stringify(state.dynamic.list))
+    },
+    static_list(state) {
+        return JSON.parse(JSON.stringify(state.static.list))
+    },
+
 
 }

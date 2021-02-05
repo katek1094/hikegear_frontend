@@ -76,6 +76,7 @@ td {
 @media (min-width: 320px) and (max-width: 479px) {
   .summary__wrapper {
     flex-direction: column;
+    align-items: center;
   }
 
 }

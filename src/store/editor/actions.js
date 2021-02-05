@@ -12,7 +12,6 @@ export default {
             for (let n = 0; n < new_organized_list[i].items.length; n++) {
                 new_list.push(new_organized_list[i].items[n])
                 delete new_list[new_list.length - 1].list_index
-                // TODO: check if above line is necessary
             }
         }
         commit('set_dynamic_list', new_list)
@@ -83,6 +82,27 @@ export default {
     switchWorn({commit}, list_index) {
         commit('toggle_worn', list_index)
     },
+    discardChanges({commit, getters}) {
+        commit('set_dynamic_list', getters['static_list'])
+    },
+    createBackpack({commit, rootGetters}) {
+        fetch(process.env.VUE_APP_API_URL + '/api/backpacks/', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'token ' + rootGetters['auth/token'],
+                'Content-Type': 'application/json'
+            },
+            body: rootGetters['editor/bodyBackpackData']
+        })
+            .then(response => {
+                if (response.ok) {
+                    response.json().then(data => {
+                        commit('copy_and_set_dynamic_backpack', data)
+                        commit('copy_and_set_static_backpack', data)
+                    })
+                } else console.log(response)
+            })
+    },
     updateBackpack({commit, rootGetters}) {
         fetch(process.env.VUE_APP_API_URL + '/api/backpacks/' + rootGetters['editor/pack_id'] + '/', {
             method: 'PATCH',
@@ -90,8 +110,7 @@ export default {
                 'Authorization': 'token ' + rootGetters['auth/token'],
                 'Content-Type': 'application/json'
             },
-            body: rootGetters['editor/patchData']
-
+            body: rootGetters['editor/bodyBackpackData']
         })
             .then(response => {
                 if (response.ok) {
@@ -104,23 +123,12 @@ export default {
     },
     loadInitialBackpacks({commit}, backpacks) {
         commit('set_backpacks', backpacks)
-        let latest = backpacks[0].updated
-        let choice = backpacks[0].id
-        for (let i = 0; i < backpacks.length; i++) {
-            if (latest > backpacks[i].updated) {
-                latest = backpacks[i].updated
-                choice = backpacks[i].id
-            }
-        }
-        for (let i = 0; i < backpacks.length; i++) {
-            if (backpacks[i].id === choice) {
-                commit('copy_and_set_dynamic_backpack', backpacks[i])
-                commit('copy_and_set_static_backpack', backpacks[i])
-            }
-        }
+        commit('copy_and_set_dynamic_backpack', backpacks[0])
+        commit('copy_and_set_static_backpack', backpacks[0])
     },
     addBackpack({commit, rootGetters}) {
         commit('add_backpack', {
+            id: undefined,
             name: 'nowy plecak',
             profile: {
                 id: rootGetters['auth/id']
@@ -148,7 +156,6 @@ export default {
     changeBackpack({commit, getters}, index) {
         commit('copy_and_set_dynamic_backpack', getters['backpacks'][index])
         commit('copy_and_set_static_backpack', getters['backpacks'][index])
-
     }
 
 

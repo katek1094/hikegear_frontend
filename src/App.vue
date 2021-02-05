@@ -62,14 +62,14 @@ body {
 @media (min-width: 1025px) {
   /* big landscape tablets, laptops, and desktops */
   html {
-    font-size: 18px;
+    font-size: 17px;
   }
 }
 
 @media (min-width: 1281px) {
   /* hi-res laptops and desktops */
   html {
-    font-size: 19px;
+    font-size: 18px;
   }
 }
 

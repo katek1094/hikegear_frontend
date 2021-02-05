@@ -81,15 +81,9 @@ export default {
     },
     bodyBackpackData(state) {
         let data = {}
-        if (state.dynamic.name !== state.static.name) {
-            data.name = state.dynamic.name
-        }
-        if (state.dynamic.description !== state.static.description) {
-            data.description = state.dynamic.description
-        }
-        if (state.dynamic.list !== state.static.list) {
-            data.list = state.dynamic.list
-        }
+        data.name = state.dynamic.name
+        data.description = state.dynamic.description
+        data.list = state.dynamic.list
         for (let i = 0; i < data.list.length; i++) {
             data.list[i].id = i
         }

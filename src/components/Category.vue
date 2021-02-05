@@ -7,12 +7,12 @@
       <!--    TODO: add category description-->
       <span class="category__weight__label">waga</span>
       <span class="category__quantity__label">ilość</span>
-      <button class="category__delete" type="button" @click="deleteCategory">
+      <button class="category__delete" :class="{deletable: !is_the_only_category}" type="button" @click="deleteCategory">
         <font-awesome-icon class="fa-sm" icon="trash"/>
       </button>
     </div>
     <draggable v-model="items" animation="700" class="items" group="category__items" item-key="id"
-               handle=".item__handle">
+               handle=".item__handle" emptyInsertThreshold="30">
       <template #item="{element, index}">
         <Item :first="category.items.indexOf(element) === 0" :item="element" :index="index" :ref="setItemRef"
               :last="category.items.indexOf(element) === category.items.length - 1"/>
@@ -49,6 +49,9 @@ export default {
     }
   },
   computed: {
+    is_the_only_category() {
+      return this.category.category_index === 0 && this.$store.getters['editor/organized_list'].length === 1
+    },
     category_name: {
       get() {
         return this.category.name
@@ -118,7 +121,7 @@ export default {
   padding: 4px 6px;
 }
 
-.category__header:hover .category__delete, >>> .item:hover .item__delete {
+.category__header:hover .category__delete.deletable, >>> .item:hover .item__delete {
   visibility: visible;
 }
 
@@ -191,7 +194,7 @@ export default {
   }
 
   .category__quantity__label, >>> .item__quantity, .category__quantity__total {
-    width: 1.8rem;
+    width: 2rem;
   }
 }
 

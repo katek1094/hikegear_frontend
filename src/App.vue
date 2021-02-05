@@ -10,7 +10,7 @@ export default {
   name: 'App',
   beforeCreate() {
     if (this.$store.getters['auth/is_logged_in']) {
-      this.$store.dispatch('auth/get_initial_data')
+      this.$store.dispatch('editor/getInitialData')
     }
   }
 }

@@ -118,7 +118,9 @@ export default {
                         commit('copy_and_set_dynamic_backpack', data)
                         commit('copy_and_set_static_backpack', data)
                     })
-                } else console.log(response)
+                } else {
+                    console.log(response)
+                }
             })
     },
     loadInitialBackpacks({commit}, backpacks) {
@@ -156,6 +158,23 @@ export default {
     changeBackpack({commit, getters}, index) {
         commit('copy_and_set_dynamic_backpack', getters['backpacks'][index])
         commit('copy_and_set_static_backpack', getters['backpacks'][index])
+    },
+    getInitialData({commit, rootGetters}) {
+        fetch(process.env.VUE_APP_API_URL + '/api/initial', {
+            method: 'GET',
+            headers: {'Authorization': 'token ' + rootGetters['auth/token']}
+        })
+            .then(response => {
+                if (response.ok) {
+                    response.json().then(data => {
+                        commit('set_backpacks', data.backpacks)
+                        commit('copy_and_set_dynamic_backpack', data.backpacks[0])
+                        commit('copy_and_set_static_backpack', data.backpacks[0])
+                    })
+                } else {
+                    console.log(response)
+                }
+            })
     }
 
 

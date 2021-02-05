@@ -95,7 +95,7 @@ export default {
       json.then(dt => {
         dt.password = this.password1
         this.$store.dispatch('auth/login', dt)
-        this.$store.dispatch('auth/get_initial_data')
+        this.$store.dispatch('editor/getInitialData')
         this.$router.push('/editor')
       })
     },

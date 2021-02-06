@@ -20,6 +20,7 @@ export default {
 .base_app {
   overflow: hidden;
   background-color: var(--background);
+  min-height: 100vh;
 }
 
 .slot {

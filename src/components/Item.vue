@@ -13,10 +13,10 @@
       <font-awesome-icon class="fa-sm" icon="sync-alt"/>
     </button>
     <input v-model.number="item_weight" :max="weight_limit" class="item__weight" min="0" type="number"
-           @input="removeLeadingZero">
+           @input="removeLeadingZero" @keydown="preventNumericChars">
     <!--    TODO: add units-->
     <input v-model.number="item_quantity" :max="quantity_limit" class="item__quantity" min="0" type="number"
-           @input="removeLeadingZero">
+           @input="removeLeadingZero" @keydown="preventNumericChars">
     <button class="item__delete" type="button" @click="deleteItem">
       <font-awesome-icon class="fa-sm" icon="trash"/>
     </button>
@@ -70,7 +70,7 @@ export default {
         return this.item.weight
       },
       set(val) {
-        if ((val <= this.weight_limit) && (val >= 0)) {
+        if ((val <= this.weight_limit) && (val >= 0) && (String(val).length <= String(this.weight_limit).length)) {
           this.$store.dispatch('editor/changeElementProperty', {
             type: 'item',
             list_index: this.item.list_index,
@@ -118,6 +118,14 @@ export default {
     },
     preventEnter(e) {
       if (e.keyCode === 13) {
+        e.preventDefault()
+      }
+    },
+    preventNumericChars(e) {
+      if ((e.keyCode === 69) || (e.keyCode === 189)) {
+        e.preventDefault()
+      }
+      if ((e.target.className === 'item__quantity') && (e.keyCode === 190)) {
         e.preventDefault()
       }
     },

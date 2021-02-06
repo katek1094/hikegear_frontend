@@ -7,7 +7,9 @@
       <!--    TODO: add category description-->
       <span class="category__weight__label">waga</span>
       <span class="category__quantity__label">ilość</span>
-      <button class="category__delete" :class="{deletable: !is_the_only_category}" type="button" @click="deleteCategory">
+      <button :class="{deletable: !is_the_only_category, invisible: is_the_only_category}" class="category__delete"
+              type="button"
+              @click="deleteCategory">
         <font-awesome-icon class="fa-sm" icon="trash"/>
       </button>
     </div>
@@ -25,7 +27,7 @@
       </button>
       <span class="category__weight__total">{{ category.total_weight }}</span>
       <span class="category__quantity__total">{{ category.total_quantity }}</span>
-      <button class="category__delete" type="button">
+      <button class="category__delete invisible" type="button">
         <font-awesome-icon class="fa-sm" icon="trash"/>
       </button>
     </div>
@@ -190,6 +192,10 @@ export default {
 @media (hover: none) and (pointer: coarse) {
   .category__handle, >>> .item__handle, .category__delete, >>> .item__delete, >>> .item__worn, >>> .item__consumable {
     visibility: visible;
+  }
+
+  .invisible {
+    visibility: hidden;
   }
 
   .item__worn:hover:enabled, .item__consumable:hover:enabled {

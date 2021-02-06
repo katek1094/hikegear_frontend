@@ -1,12 +1,11 @@
 <template>
   <BaseApp>
     <div class="editor" v-if="editor_data_ready">
-      <span>twoje plecaki:</span>
       <div class="backpack__list">
         <div class="backpack__list__item" v-for="(backpack, index) in backpacks" :key="backpack.id"
              @click="changeBackpack(index)">
-          <span>{{ backpack.name }}</span>
-          <span v-if="backpack.name === ''">no name</span>
+          <span :class="{active: backpack.id === backpack_id}">{{ backpack.name }}</span>
+          <span v-if="backpack.name === ''" :class="{active: backpack.id === backpack_id}">bez nazwy</span>
         </div>
         <button class="add-backpack" type="button" @click="addBackpack">
           <font-awesome-icon class="fa-md" icon="plus"/>
@@ -15,8 +14,7 @@
       </div>
       <input v-model.trim="pack_name" class="backpack__name" placeholder="nazwa listy" type="text">
       <Summary/>
-      <span class="progress_span" v-if="!are_changes">data saved</span>
-      <div v-if="are_changes" class="progress" :style="{width: saveTimePassed * 100 / saveTimeout + '%' }"></div>
+      <div class="progress" :style="{width: saveTimePassed * 100 / saveTimeout + '%' }"></div>
       <!--    TODO: add pack description-->
       <draggable v-model="organized_list" animation="1000" class="categories" group="categories"
                  handle=".category__handle" item-key="id" @end="drag=false" @start="drag=true">
@@ -51,12 +49,15 @@ export default {
     return {
       categoryRefs: [],
       edits: 0,
-      saveTimeout: 90000,
+      saveTimeout: 3000,
       saveTimePassed: 0,
       resizes: 0,
     }
   },
   computed: {
+    backpack_id() {
+      return this.$store.getters['editor/pack_id']
+    },
     backpacks() {
       return this.$store.getters['editor/backpacks']
     },
@@ -146,14 +147,8 @@ export default {
 
 <style scoped>
 .progress {
-  margin-bottom: 10px;
-  margin-top: calc(1rem - 8px);
   height: 1px;
   background-color: grey;
-}
-
-.progress_span {
-  height: calc(1rem + 3px);
 }
 
 .backpack__list {
@@ -165,6 +160,15 @@ export default {
 
 .backpack__list__item {
   margin: 10px;
+}
+
+.backpack__list__item span {
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.backpack__list__item span.active {
+  background-color: white;
 }
 
 .backpack__list__item span:hover {

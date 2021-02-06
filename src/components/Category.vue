@@ -100,12 +100,12 @@ export default {
 
 <style scoped>
 .category {
-  margin: 6px;
+  margin: 16px 0;
 }
 
 .category__header, .category__footer, >>> .item {
   display: flex;
-  padding: 0 4px;
+  padding: 0 3px;
   align-items: center;
 }
 
@@ -138,11 +138,11 @@ export default {
 }
 
 .category__handle, >>> .item__handle {
-  margin: 2px 6px 2px 2px;
+  margin: 0 6px 0 0;
   padding: 6px;
   cursor: move;
   border-radius: 6px;
-  font-size: .875rem;
+  font-size: 1rem;
   visibility: hidden;
 }
 
@@ -162,7 +162,7 @@ export default {
 .category__weight__label, .category__quantity__label, .category__delete, >>> .item__delete, >>> .item__worn,
 >>> .item__consumable, >>> .item__description, >>> .item__name, >>> .item__weight, >>> .item__quantity,
 .category__quantity__total, .category__weight__total {
-  margin: 0 3px;
+  margin: 0 2px;
 }
 
 .category__weight__label, .category__quantity__label, .category__quantity__total, .category__weight__total {

@@ -181,8 +181,8 @@ export default {
   background-color: transparent;
   outline: none;
   color: grey;
-  padding: 2px;
-  font-size: 1.15em;
+  padding: 3px;
+  font-size: 1.2em;
 }
 
 .checked {

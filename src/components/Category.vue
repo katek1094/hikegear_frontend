@@ -205,6 +205,15 @@ export default {
   .category__quantity__label, >>> .item__quantity, .category__quantity__total {
     width: 1.8rem;
   }
+
+  >>> .item__quantity::-webkit-outer-spin-button,
+  >>> .item__quantity::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+
+  >>> .item__quantity[type=number] {
+    -moz-appearance: textfield;
+  }
 }
 
 @media (max-width: 479px) {

@@ -1,14 +1,10 @@
 <template>
   <div :class="{first: first, last: last, middle: !last && !first}" class="item">
     <span class="item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
-    <div>
-      <textarea ref="item_name" v-model.trim="item_name" :maxlength="max_name_length" class="item__name autoresize"
-                placeholder="nazwa" rows="1" @input="autoresize" @keydown="preventEnter"/>
-    </div>
-    <div>
-      <textarea ref="item_description" v-model.trim="item_description" :maxlength="max_description_length"
-                class="item__description autoresize" placeholder="opis" rows="1" @input="autoresize"/>
-    </div>
+    <textarea ref="item_name" v-model.trim="item_name" :maxlength="max_name_length" class="item__name autoresize"
+              placeholder="nazwa" rows="1" @input="autoresize" @keydown="preventEnter"/>
+    <textarea ref="item_description" v-model.trim="item_description" :maxlength="max_description_length"
+              class="item__description autoresize" placeholder="opis" rows="1" @input="autoresize"/>
     <button :class="{ checked: item.worn }" :disabled="item.consumable" class="item__worn" @click="markAsWorn">
       <font-awesome-icon class="fa-sm" icon="child"/>
     </button>
@@ -209,13 +205,6 @@ export default {
 .item__weight::-webkit-outer-spin-button,
 .item__weight::-webkit-inner-spin-button {
   -webkit-appearance: none;
-  margin: 0;
-}
-
-.item__weight::-webkit-outer-spin-button,
-.item__weight::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
 }
 
 .item__weight[type=number] {

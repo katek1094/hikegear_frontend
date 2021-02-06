@@ -15,6 +15,8 @@
       </div>
       <input v-model.trim="pack_name" class="backpack__name" placeholder="nazwa listy" type="text">
       <Summary/>
+      <span v-if="!are_changes">data saved</span>
+      <div class="progress" :style="{width: saveTimePassed * 100 / saveTimeout + '%' }"></div>
       <!--    TODO: add pack description-->
       <draggable v-model="organized_list" animation="1000" class="categories" group="categories"
                  handle=".category__handle" item-key="id" @end="drag=false" @start="drag=true">
@@ -43,12 +45,14 @@ export default {
     BaseApp,
     Summary,
     Category,
-    draggable
+    draggable,
   },
   data() {
     return {
       categoryRefs: [],
-      edits: 0
+      edits: 0,
+      saveTimeout: 3000,
+      saveTimePassed: 0
     }
   },
   computed: {
@@ -110,21 +114,30 @@ export default {
           return state.editor.dynamic
         },
         () => {
+          this.saveTimePassed = 0
           this.edits += 1
           let x = this.edits
           setTimeout(() => {
             if (x === this.edits && this.are_changes) {
               this.save()
             }
-          }, 3000)
+          }, this.saveTimeout)
         },
         {deep: true}
     );
+    setInterval(() => {
+      if (this.are_changes) this.saveTimePassed += 10
+    }, 10)
   },
 }
 </script>
 
 <style scoped>
+.progress {
+  height: 1px;
+  background-color: grey;
+}
+
 .backpack__list {
   background-color: #e5e1e1;
   border-radius: 4px;
@@ -143,7 +156,6 @@ export default {
 
 .editor {
   padding: 20px 0.3rem;
-  background-color: var(--background);
   display: flex;
   flex-direction: column;
   align-items: center;

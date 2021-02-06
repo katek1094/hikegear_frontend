@@ -1,7 +1,9 @@
 <template>
   <div class="base_app">
     <NavBar/>
-    <slot></slot>
+    <div class="slot">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
@@ -17,5 +19,13 @@ export default {
 <style scoped>
 .base_app {
   overflow: hidden;
+  background-color: var(--background);
 }
+
+.slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 </style>

@@ -50,7 +50,7 @@ export default {
       this.chart.data.datasets[0].data = this.data_array
       this.chart.data.labels = this.data_labels
       this.chart.update()
-    }
+    },
   },
   watch: {
     data_array: function () {

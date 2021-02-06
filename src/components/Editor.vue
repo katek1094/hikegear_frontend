@@ -12,7 +12,9 @@
           dodaj plecak
         </button>
       </div>
-      <input v-model.trim="pack_name" class="backpack__name" placeholder="nazwa listy" type="text">
+      <textarea ref="backpack_name" v-model.trim="pack_name" :maxlength="max_backpack_name_length"
+                class="backpack__name autoresize"
+                placeholder="nazwa listy" rows="1" @input="autoresize_backpack_name" @keydown="preventEnter"/>
       <Summary/>
       <div class="progress" :style="{width: saveTimePassed * 100 / saveTimeout + '%' }"></div>
       <!--    TODO: add pack description-->
@@ -52,6 +54,7 @@ export default {
       saveTimeout: 3000,
       saveTimePassed: 0,
       resizes: 0,
+      max_backpack_name_length: 60
     }
   },
   computed: {
@@ -85,6 +88,17 @@ export default {
     },
   },
   methods: {
+    autoresize_backpack_name(event) {
+      let padding = parseInt(getComputedStyle(event.target).padding.replace('px', ''))
+      let font_size = parseInt(getComputedStyle(event.target).fontSize.replace('px', ''))
+      event.target.style.height = font_size + 2 + 'px'  // default style.height = font size + 2
+      event.target.style.height = event.target.scrollHeight - padding * 2 + 'px'  // scrollHeight = font size + 2 + padding * 2
+    },
+    preventEnter(e) {
+      if (e.keyCode === 13) {
+        e.preventDefault()
+      }
+    },
     addCategory() {
       this.$store.dispatch('editor/addCategory')
     },
@@ -104,13 +118,14 @@ export default {
       for (let i = 0; i < this.categoryRefs.length; i++) {
         this.categoryRefs[i].resizeAllItems()
       }
+      this.autoresize_backpack_name({target: this.$refs.backpack_name})
     },
     windowResized() {
       this.resizes += 1
       let x = this.resizes
       setTimeout(() => {
         if (x === this.resizes) this.resizeAllItems()
-      }, 400)
+      }, 300)
     },
     setCategoryRef(el) {
       if (el) this.categoryRefs.push(el)
@@ -177,7 +192,7 @@ export default {
 }
 
 .editor {
-  padding: 20px 0.3rem;
+  padding: 20px 0;
   display: flex;
   flex-direction: column;
   align-items: center;

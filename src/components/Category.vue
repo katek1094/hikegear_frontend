@@ -142,7 +142,7 @@ export default {
   padding: 6px;
   cursor: move;
   border-radius: 6px;
-  font-size: 1rem;
+  font-size: 1.15rem;
   visibility: hidden;
 }
 

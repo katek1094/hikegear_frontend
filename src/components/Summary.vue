@@ -52,6 +52,7 @@ export default {
 .summary__wrapper {
   display: flex;
   margin-bottom: 15px;
+  justify-content: center;
 }
 
 .summary__table {
@@ -73,7 +74,7 @@ td {
 
 
 
-@media (min-width: 320px) and (max-width: 479px) {
+@media (max-width: 479px) {
   .summary__wrapper {
     flex-direction: column;
     align-items: center;

@@ -1,9 +1,11 @@
 <template>
   <div class="item" :class="{first: first, last: last, middle: !last && !first}">
     <span class="item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
-    <textarea v-model.trim="item_name" class="item__name autoresize" placeholder="nazwa" rows="1" @input="autoresize"
-              @keydown="preventEnter"/>
-    <textarea v-model.trim="item_description" class="item__description autoresize" placeholder="opis" rows="1"
+    <textarea ref="item_name" v-model.trim="item_name" :maxlength="max_name_length" class="item__name autoresize"
+              placeholder="nazwa" rows="1"
+              @input="autoresize" @keydown="preventEnter"/>
+    <textarea ref="item_description" v-model.trim="item_description" :maxlength="max_description_length"
+              class="item__description autoresize" placeholder="model / opis" rows="1"
               @input="autoresize"/>
     <button :class="{ checked: item.worn }" :disabled="item.consumable" class="item__worn" @click="markAsWorn">
       <font-awesome-icon class="fa-sm" icon="child"/>
@@ -35,7 +37,9 @@ export default {
   data() {
     return {
       weight_limit: 99999,
-      quantity_limit: 99
+      quantity_limit: 99,
+      max_name_length: 60,
+      max_description_length: 700,
     }
   },
   computed: {
@@ -130,10 +134,8 @@ export default {
       }
     },
     resizeAll() {
-      let a = this.$el.getElementsByClassName('autoresize')
-      for (let i = 0; i < a.length; i++) {
-        this.autoresize({target: a[i]})
-      }
+      this.autoresize({target: this.$refs.item_name})
+      this.autoresize({target: this.$refs.item_description})
     },
     removeLeadingZero(e) {
       if ((String(e.target.value)[0] === '0') && (e.target.value.length > 1)) {
@@ -162,12 +164,10 @@ export default {
 
 .item__name {
   width: 100%;
-  min-width: 4em;
 }
 
 .item__description {
   width: 100%;
-  min-width: 4em;
 }
 
 .item:hover .item__worn, .item:hover .item__consumable {

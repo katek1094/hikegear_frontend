@@ -15,7 +15,7 @@ export default {
         return false
     },
     isEditorDataReady(state) {
-        return state.static.list
+        return state.dynamic.list
     },
     pack_name(state) {
         return state.dynamic.name
@@ -74,7 +74,7 @@ export default {
         for (let i = 0; i < state.dynamic.list.length; i++) {
             ids.push(state.dynamic.list[i].id)
         }
-        for (let i = ids.length; i < 1000 + ids.length; i++) {
+        for (let i = 0; i < 1000 + ids.length; i++) {
             if (!ids.includes(i)) return i
         }
         throw 'loop iterated 1000 times in searching for new, free id, something is wrong!'
@@ -84,9 +84,6 @@ export default {
         data.name = state.dynamic.name
         data.description = state.dynamic.description
         data.list = state.dynamic.list
-        for (let i = 0; i < data.list.length; i++) {
-            data.list[i].id = i
-        }
         return JSON.stringify(data)
     },
     dynamic_list(state) {

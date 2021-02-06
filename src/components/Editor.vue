@@ -15,8 +15,8 @@
       </div>
       <input v-model.trim="pack_name" class="backpack__name" placeholder="nazwa listy" type="text">
       <Summary/>
-      <span v-if="!are_changes">data saved</span>
-      <div class="progress" :style="{width: saveTimePassed * 100 / saveTimeout + '%' }"></div>
+        <span v-if="!are_changes">data saved</span>
+        <div v-if="are_changes" class="progress" :style="{width: saveTimePassed * 100 / saveTimeout + '%' }"></div>
       <!--    TODO: add pack description-->
       <draggable v-model="organized_list" animation="1000" class="categories" group="categories"
                  handle=".category__handle" item-key="id" @end="drag=false" @start="drag=true">
@@ -52,7 +52,8 @@ export default {
       categoryRefs: [],
       edits: 0,
       saveTimeout: 3000,
-      saveTimePassed: 0
+      saveTimePassed: 0,
+      resizes: 0,
     }
   },
   computed: {
@@ -88,6 +89,7 @@ export default {
     },
     save() {
       this.edits = 0
+      // TODO: add some kind of progress when data is fetching
       this.$store.dispatch('editor/updateBackpack')
     },
     changeBackpack(index) {
@@ -102,17 +104,22 @@ export default {
         this.categoryRefs[i].resizeAllItems()
       }
     },
+    windowResized() {
+      this.resizes += 1
+      let x = this.resizes
+      setTimeout(() => {
+        if (x === this.resizes) this.resizeAllItems()
+      }, 400)
+    },
     setCategoryRef(el) {
       if (el) this.categoryRefs.push(el)
     }
   },
   mounted() {
     this.resizeAllItems()
-    window.addEventListener("resize", this.resizeAllItems);
+    window.addEventListener("resize", this.windowResized);
     this.$store.watch(
-        (state) => {
-          return state.editor.dynamic
-        },
+        (state) => state.editor.dynamic,
         () => {
           this.saveTimePassed = 0
           this.edits += 1
@@ -126,7 +133,7 @@ export default {
         {deep: true}
     );
     setInterval(() => {
-      if (this.are_changes) this.saveTimePassed += 10
+      if (this.editor_data_ready && this.are_changes) this.saveTimePassed += 10
     }, 10)
   },
 }
@@ -134,6 +141,8 @@ export default {
 
 <style scoped>
 .progress {
+  margin-bottom: 10px;
+  margin-top: 9px;
   height: 1px;
   background-color: grey;
 }

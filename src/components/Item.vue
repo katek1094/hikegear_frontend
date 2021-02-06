@@ -134,7 +134,7 @@ export default {
     }
   },
   mounted() {
-    // this.resizeAll()
+    this.resizeAll()
   },
 }
 </script>

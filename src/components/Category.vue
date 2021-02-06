@@ -89,7 +89,10 @@ export default {
         this.itemRefs[i].resizeAll()
       }
     }
-  }
+  },
+  beforeUpdate() {
+    this.itemRefs = []
+  },
 }
 </script>
 

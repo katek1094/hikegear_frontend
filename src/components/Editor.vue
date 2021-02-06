@@ -15,8 +15,8 @@
       </div>
       <input v-model.trim="pack_name" class="backpack__name" placeholder="nazwa listy" type="text">
       <Summary/>
-        <span v-if="!are_changes">data saved</span>
-        <div v-if="are_changes" class="progress" :style="{width: saveTimePassed * 100 / saveTimeout + '%' }"></div>
+      <span class="progress_span" v-if="!are_changes">data saved</span>
+      <div v-if="are_changes" class="progress" :style="{width: saveTimePassed * 100 / saveTimeout + '%' }"></div>
       <!--    TODO: add pack description-->
       <draggable v-model="organized_list" animation="1000" class="categories" group="categories"
                  handle=".category__handle" item-key="id" @end="drag=false" @start="drag=true">
@@ -51,7 +51,7 @@ export default {
     return {
       categoryRefs: [],
       edits: 0,
-      saveTimeout: 3000,
+      saveTimeout: 90000,
       saveTimePassed: 0,
       resizes: 0,
     }
@@ -115,8 +115,10 @@ export default {
       if (el) this.categoryRefs.push(el)
     }
   },
+  beforeUpdate() {
+    this.categoryRefs = []
+  },
   mounted() {
-    this.resizeAllItems()
     window.addEventListener("resize", this.windowResized);
     this.$store.watch(
         (state) => state.editor.dynamic,
@@ -136,15 +138,22 @@ export default {
       if (this.editor_data_ready && this.are_changes) this.saveTimePassed += 10
     }, 10)
   },
+  beforeUnmount() {
+    window.removeEventListener("resize", this.windowResized);
+  }
 }
 </script>
 
 <style scoped>
 .progress {
   margin-bottom: 10px;
-  margin-top: 9px;
+  margin-top: calc(1rem - 8px);
   height: 1px;
   background-color: grey;
+}
+
+.progress_span {
+  height: calc(1rem + 3px);
 }
 
 .backpack__list {

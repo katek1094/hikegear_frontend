@@ -2,8 +2,10 @@
   <div class="category">
     <div class="category__header">
       <span class="category__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
-      <input class="category__name" type="text" v-model.trim="category_name" placeholder="nazwa kategorii"
-             @input="changeName">
+      <div>
+        <input v-model.trim="category_name" :maxlength="max_name_length" class="category__name" :size="max_name_length"
+               placeholder="nazwa kategorii" type="text">
+      </div>
       <!--    TODO: add category description-->
       <span class="category__weight__label">waga</span>
       <span class="category__quantity__label">ilość</span>
@@ -47,7 +49,8 @@ export default {
   },
   data() {
     return {
-      itemRefs: []
+      itemRefs: [],
+      max_name_length: 30
     }
   },
   computed: {
@@ -113,6 +116,11 @@ export default {
   font-size: 1rem;
 }
 
+.category__name {
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .items {
   border-top: 1px solid grey;
   border-bottom: 1px solid grey;
@@ -166,7 +174,7 @@ export default {
 }
 
 .category__weight__label, .category__quantity__label, .category__quantity__total, .category__weight__total {
-  font-size: .75rem;
+  font-size: .8rem;
 }
 
 .category__weight__label, >>> .item__weight, .category__weight__total {
@@ -185,7 +193,7 @@ export default {
   margin-left: auto;
 }
 
-.category__weight__label, .category__quantity__label {
+.category__weight__label, .category__quantity__label, .category__delete {
   align-self: flex-end;
 }
 
@@ -204,6 +212,10 @@ export default {
 
   .category__quantity__label, >>> .item__quantity, .category__quantity__total {
     width: 1.8rem;
+  }
+
+  .category__delete, >>> .item__delete {
+    margin: 0 0 0 4px;
   }
 
   >>> .item__quantity::-webkit-outer-spin-button,

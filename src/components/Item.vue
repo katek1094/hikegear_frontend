@@ -152,7 +152,7 @@ export default {
 
 <style scoped>
 .item {
-  font-size: .75rem;
+  font-size: .8rem;
 }
 
 .item.first, .item.middle {

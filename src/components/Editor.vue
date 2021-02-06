@@ -223,8 +223,6 @@ export default {
 
 .backpack__name, >>> .category__name {
   font-weight: bold;
-  max-width: 50vw;
-  min-width: 10rem;
 }
 
 .backpack__name {

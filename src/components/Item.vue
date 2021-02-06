@@ -14,9 +14,10 @@
             @click="markAsConsumable">
       <font-awesome-icon class="fa-sm" icon="sync-alt"/>
     </button>
-    <input v-model.number="item_weight" :max="weight_limit" class="item__weight" min="0" type="number"
-           @input="removeLeadingZero" @keydown="preventNumericChars">
-    <!--    TODO: add units-->
+    <div>
+      <input v-model.number="item_weight" :max="weight_limit" class="item__weight" min="0" type="number"
+             @input="removeLeadingZero" @keydown="preventNumericChars">
+    </div>
     <div>
       <input v-model.number="item_quantity" :max="quantity_limit" class="item__quantity" min="0" type="number"
              @input="removeLeadingZero" @keydown="preventNumericChars">

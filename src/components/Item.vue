@@ -1,10 +1,10 @@
 <template>
   <div :class="{first: first, last: last, middle: !last && !first}" class="item">
     <span class="item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
-    <textarea ref="item_name" v-model.trim="item_name" :maxlength="max_name_length" class="item__name autoresize"
-              placeholder="nazwa" @input="autoresize" @keydown="preventEnter"/>
-    <textarea ref="item_description" v-model.trim="item_description" :maxlength="max_description_length"
-              class="item__description autoresize" placeholder="opis" @input="autoresize"/>
+    <Autoresizing ref="item_name" v-model.trim="item_name" :maxlength="max_name_length" class="item__name"
+                  placeholder="nazwa" :prevent-enter="true"/>
+    <Autoresizing ref="item_description" v-model="item_description" :maxlength="max_description_length"
+                  class="item__description" placeholder="opis"/>
     <button :class="{ checked: item.worn }" :disabled="item.consumable" class="item__worn" @click="markAsWorn">
       <font-awesome-icon class="fa-sm" icon="child"/>
     </button>
@@ -27,8 +27,11 @@
 </template>
 
 <script>
+import Autoresizing from "@/components/Autoresizing";
+
 export default {
   name: "Item",
+  components: {Autoresizing},
   props: {
     item: Object,
     first: Boolean,
@@ -115,17 +118,6 @@ export default {
     deleteItem() {
       this.$store.dispatch('editor/deleteItem', this.item.list_index)
     },
-    autoresize(event) {
-      let padding = parseInt(getComputedStyle(event.target).padding.replace('px', ''))
-      let font_size = parseInt(getComputedStyle(event.target).fontSize.replace('px', ''))
-      event.target.style.height = font_size + 2 + 'px'  // default style.height = font size + 2
-      event.target.style.height = event.target.scrollHeight - padding * 2 + 'px'  // scrollHeight = font size + 2 + padding * 2
-    },
-    preventEnter(e) {
-      if (e.keyCode === 13) {
-        e.preventDefault()
-      }
-    },
     preventNumericChars(e) {
       if ((e.keyCode === 69) || (e.keyCode === 189)) {
         e.preventDefault()
@@ -135,8 +127,8 @@ export default {
       }
     },
     resizeAll() {
-      this.autoresize({target: this.$refs.item_name})
-      this.autoresize({target: this.$refs.item_description})
+      this.$refs.item_name.autoresize()
+      this.$refs.item_description.autoresize()
     },
     removeLeadingZero(e) {
       if ((String(e.target.value)[0] === '0') && (e.target.value.length > 1)) {

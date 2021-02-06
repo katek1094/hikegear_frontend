@@ -12,9 +12,8 @@
           dodaj plecak
         </button>
       </div>
-      <textarea ref="backpack_name" v-model.trim="pack_name" :maxlength="max_backpack_name_length"
-                class="backpack__name autoresize" placeholder="nazwa listy" @input="autoresize_backpack_name"
-                @keydown="preventEnter"/>
+      <Autoresizing ref="backpack_name" v-model.trim="pack_name" :maxlength="max_backpack_name_length"
+                    :prevent-enter="true" class="backpack__name" placeholder="nazwa listy"/>
       <Summary/>
       <div class="progress" :style="{width: saveTimePassed * 100 / saveTimeout + '%' }"></div>
       <!--    TODO: add pack description-->
@@ -37,11 +36,13 @@ import draggable from 'vuedraggable'
 import Category from "@/components/Category";
 import Summary from "@/components/Summary";
 import BaseApp from "@/components/BaseApp";
+import Autoresizing from "@/components/Autoresizing";
 
 
 export default {
   name: "Editor",
   components: {
+    Autoresizing,
     BaseApp,
     Summary,
     Category,
@@ -88,17 +89,6 @@ export default {
     },
   },
   methods: {
-    autoresize_backpack_name(event) {
-      let padding = parseInt(getComputedStyle(event.target).padding.replace('px', ''))
-      let font_size = parseInt(getComputedStyle(event.target).fontSize.replace('px', ''))
-      event.target.style.height = font_size + 2 + 'px'  // default style.height = font size + 2
-      event.target.style.height = event.target.scrollHeight - padding * 2 + 'px'  // scrollHeight = font size + 2 + padding * 2
-    },
-    preventEnter(e) {
-      if (e.keyCode === 13) {
-        e.preventDefault()
-      }
-    },
     addCategory() {
       this.$store.dispatch('editor/addCategory')
     },
@@ -118,7 +108,7 @@ export default {
       for (let i = 0; i < this.categoryRefs.length; i++) {
         this.categoryRefs[i].resizeAllItems()
       }
-      this.autoresize_backpack_name({target: this.$refs.backpack_name})
+      this.$refs.backpack_name.autoresize()
     },
     windowResized() {
       this.resizes += 1
@@ -135,6 +125,7 @@ export default {
     this.categoryRefs = []
   },
   mounted() {
+    this.$refs.backpack_name.autoresize()
     window.addEventListener("resize", this.windowResized);
     this.$store.watch(
         (state) => state.editor.dynamic,

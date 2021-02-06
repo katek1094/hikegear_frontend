@@ -4,7 +4,7 @@
       <div class="backpack__list">
         <div class="backpack__list__item" v-for="(backpack, index) in backpacks" :key="backpack.id"
              @click="changeBackpack(index)">
-          <span :class="{active: backpack.id === backpack_id}">{{ backpack.name }}</span>
+          <span v-if="backpack.name !== ''" :class="{active: backpack.id === backpack_id}">{{ backpack.name }}</span>
           <span v-if="backpack.name === ''" :class="{active: backpack.id === backpack_id}">bez nazwy</span>
         </div>
         <button class="add-backpack" type="button" @click="addBackpack">

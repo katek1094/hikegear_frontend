@@ -204,7 +204,6 @@ export default {
 
   .category__quantity__label, >>> .item__quantity, .category__quantity__total {
     width: 2.5rem;
-    color: red;
   }
 }
 

@@ -5,7 +5,7 @@
               placeholder="nazwa" rows="1"
               @input="autoresize" @keydown="preventEnter"/>
     <textarea ref="item_description" v-model.trim="item_description" :maxlength="max_description_length"
-              class="item__description autoresize" placeholder="model / opis" rows="1"
+              class="item__description autoresize" placeholder="opis" rows="1"
               @input="autoresize"/>
     <button :class="{ checked: item.worn }" :disabled="item.consumable" class="item__worn" @click="markAsWorn">
       <font-awesome-icon class="fa-sm" icon="child"/>
@@ -17,8 +17,10 @@
     <input v-model.number="item_weight" :max="weight_limit" class="item__weight" min="0" type="number"
            @input="removeLeadingZero" @keydown="preventNumericChars">
     <!--    TODO: add units-->
-    <input v-model.number="item_quantity" :max="quantity_limit" class="item__quantity" min="0" type="number"
-           @input="removeLeadingZero" @keydown="preventNumericChars">
+    <div>
+      <input v-model.number="item_quantity" :max="quantity_limit" class="item__quantity" min="0" type="number"
+             @input="removeLeadingZero" @keydown="preventNumericChars">
+    </div>
     <button class="item__delete" type="button" @click="deleteItem">
       <font-awesome-icon class="fa-sm" icon="trash"/>
     </button>
@@ -201,6 +203,12 @@ export default {
 }
 
 /*code below removes arrows from numeric inputs*/
+.item__weight::-webkit-outer-spin-button,
+.item__weight::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .item__weight::-webkit-outer-spin-button,
 .item__weight::-webkit-inner-spin-button {
   -webkit-appearance: none;

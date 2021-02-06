@@ -13,8 +13,8 @@
         </button>
       </div>
       <textarea ref="backpack_name" v-model.trim="pack_name" :maxlength="max_backpack_name_length"
-                class="backpack__name autoresize"
-                placeholder="nazwa listy" rows="1" @input="autoresize_backpack_name" @keydown="preventEnter"/>
+                class="backpack__name autoresize" placeholder="nazwa listy" @input="autoresize_backpack_name"
+                @keydown="preventEnter"/>
       <Summary/>
       <div class="progress" :style="{width: saveTimePassed * 100 / saveTimeout + '%' }"></div>
       <!--    TODO: add pack description-->

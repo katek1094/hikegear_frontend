@@ -145,7 +145,7 @@ export default {
             })
     },
     deleteBackpack({commit, rootGetters}, backpack_id) {
-        return fetch(process.env.VUE_APP_API_URL + '/api/backpacks/' + backpack_id, {
+        return fetch(process.env.VUE_APP_API_URL + '/api/backpacks/' + backpack_id + '/', {
             method: 'DELETE',
             headers: {
                 'Authorization': 'token ' + rootGetters['auth/token'],

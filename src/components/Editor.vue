@@ -22,6 +22,7 @@
           dodaj plecak
         </button>
       </div>
+      {{test}}
       <Autoresizing ref="backpack_name" v-model.trim="pack_name" :maxlength="max_backpack_name_length"
                     :prevent-enter="true" class="backpack__name" placeholder="nazwa listy"/>
       <Summary/>
@@ -67,7 +68,8 @@ export default {
       saveTimePassed: 0,
       resizes: 0,
       max_backpack_name_length: 60,
-      interval: {}
+      interval: {},
+      test: ''
     }
   },
   computed: {
@@ -113,54 +115,65 @@ export default {
     },
     deleteBackpack() {
       let confirmation = confirm('na pewno chcesz usunąć ten plecak?')
-      if (confirmation) this.$store.dispatch('editor/deleteBackpack', this.backpack_id)
-    },
-    resizeAllItems() {
-      if (this.editor_data_ready) {
-        for (let i = 0; i < this.categoryRefs.length; i++) {
-          this.categoryRefs[i].resizeAllItems()
-        }
-        this.$refs.backpack_name.autoresize()
+      if (confirmation) {
+        this.test = 'true'
+        this.$store.dispatch('editor/deleteBackpack', this.backpack_id)
+      } else {
+        this.test = 'false'
+    }
+  },
+  resizeAllItems() {
+    if (this.editor_data_ready) {
+      for (let i = 0; i < this.categoryRefs.length; i++) {
+        this.categoryRefs[i].resizeAllItems()
       }
-    },
-    windowResized() {
-      this.resizes += 1
-      let x = this.resizes
-      setTimeout(() => {
-        if (x === this.resizes) this.resizeAllItems()
-      }, 300)
-    },
-    setCategoryRef(el) {
-      if (el) this.categoryRefs.push(el)
-    },
+      this.$refs.backpack_name.autoresize()
+    }
   },
-  beforeUpdate() {
-    this.categoryRefs = []
+  windowResized() {
+    this.resizes += 1
+    let x = this.resizes
+    setTimeout(() => {
+      if (x === this.resizes) this.resizeAllItems()
+    }, 300)
   },
-  mounted() {
-    window.addEventListener("resize", this.windowResized);
-    this.$store.watch(
-        (state) => state.editor.dynamic,
-        () => {
-          this.saveTimePassed = 0
-          this.edits += 1
-          let x = this.edits
-          setTimeout(() => {
-            if (x === this.edits && this.are_changes) {
-              this.save()
-            }
-          }, this.saveTimeout)
-        },
-        {deep: true}
-    );
-    this.interval = setInterval(() => {
-      if (this.editor_data_ready && this.are_changes) this.saveTimePassed += 10
-    }, 10)
+  setCategoryRef(el) {
+    if (el) this.categoryRefs.push(el)
   },
-  beforeUnmount() {
-    window.removeEventListener("resize", this.windowResized);
-    clearInterval(this.interval)
-  }
+}
+,
+beforeUpdate()
+{
+  this.categoryRefs = []
+}
+,
+mounted()
+{
+  window.addEventListener("resize", this.windowResized);
+  this.$store.watch(
+      (state) => state.editor.dynamic,
+      () => {
+        this.saveTimePassed = 0
+        this.edits += 1
+        let x = this.edits
+        setTimeout(() => {
+          if (x === this.edits && this.are_changes) {
+            this.save()
+          }
+        }, this.saveTimeout)
+      },
+      {deep: true}
+  );
+  this.interval = setInterval(() => {
+    if (this.editor_data_ready && this.are_changes) this.saveTimePassed += 10
+  }, 10)
+}
+,
+beforeUnmount()
+{
+  window.removeEventListener("resize", this.windowResized);
+  clearInterval(this.interval)
+}
 }
 </script>
 

@@ -95,8 +95,15 @@ export default {
       json.then(dt => {
         dt.password = this.password1
         this.$store.dispatch('auth/login', dt)
-        this.$store.dispatch('editor/getInitialData')
-        this.$router.push('/editor')
+            .then(status => {
+              if (status === 'logged in') {
+                this.$store.dispatch('editor/getInitialData')
+                .then(this.$router.push('/editor'))
+              } else {
+                // this.info = status
+                // TODO: line above
+              }
+            })
       })
     },
     handleFailure(json) {

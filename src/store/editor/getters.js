@@ -20,7 +20,7 @@ export default {
     pack_name(state) {
         return state.dynamic.name
     },
-    pack_id(state) {
+    backpack_id(state) {
         return state.dynamic.id
     },
     summary_data(state) {

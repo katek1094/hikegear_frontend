@@ -86,7 +86,7 @@ export default {
         commit('set_dynamic_list', getters['static_list'])
     },
     updateBackpack({commit, rootGetters}) {
-        fetch(process.env.VUE_APP_API_URL + '/api/backpacks/' + rootGetters['editor/pack_id'] + '/', {
+        fetch(process.env.VUE_APP_API_URL + '/api/backpacks/' + rootGetters['editor/backpack_id'] + '/', {
             method: 'PATCH',
             headers: {
                 'Authorization': 'token ' + rootGetters['auth/token'],
@@ -99,7 +99,7 @@ export default {
                     response.json().then(data => {
                         commit('copy_and_set_dynamic_backpack', data)
                         commit('copy_and_set_static_backpack', data)
-                        commit('update_backpack', {data: data, id: rootGetters['editor/pack_id']})
+                        commit('update_backpack', {data: data, id: rootGetters['editor/backpack_id']})
                     })
                 } else {
                     console.log(response)
@@ -144,21 +144,44 @@ export default {
                 } else console.log(response)
             })
     },
+    deleteBackpack({commit, rootGetters}, backpack_id) {
+        return fetch(process.env.VUE_APP_API_URL + '/api/backpacks/' + backpack_id, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': 'token ' + rootGetters['auth/token'],
+            },
+        })
+            .then(response => {
+                if (response.ok) {
+                    //
+                } else console.log(response)
+            })
+
+
+
+
+    },
     changeBackpack({commit, getters}, index) {
         commit('copy_and_set_dynamic_backpack', getters['backpacks'][index])
         commit('copy_and_set_static_backpack', getters['backpacks'][index])
     },
     getInitialData({commit, rootGetters}) {
-        fetch(process.env.VUE_APP_API_URL + '/api/initial', {
+        return fetch(process.env.VUE_APP_API_URL + '/api/initial', {
             method: 'GET',
             headers: {'Authorization': 'token ' + rootGetters['auth/token']}
         })
             .then(response => {
                 if (response.ok) {
                     response.json().then(data => {
-                        commit('copy_and_set_dynamic_backpack', data.backpacks[0])
-                        commit('copy_and_set_static_backpack', data.backpacks[0])
-                        commit('set_backpacks', data.backpacks)
+                        if (data.backpacks.length > 0) {
+                            commit('copy_and_set_dynamic_backpack', data.backpacks[0])
+                            commit('copy_and_set_static_backpack', data.backpacks[0])
+                            commit('set_backpacks', data.backpacks)
+                        } else {
+                            commit('copy_and_set_dynamic_backpack', [])
+                            commit('copy_and_set_static_backpack', [])
+                            commit('set_backpacks', data.backpacks)
+                        }
                     })
                 } else {
                     console.log(response)

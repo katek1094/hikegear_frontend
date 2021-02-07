@@ -41,6 +41,9 @@ export default {
         e.preventDefault()
       }
     }
+  },
+  mounted() {
+    this.autoresize()
   }
 }
 </script>

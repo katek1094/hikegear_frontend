@@ -1,9 +1,9 @@
 <template>
   <div :class="{first: first, last: last, middle: !last && !first}" class="item">
     <span class="item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
-    <Autoresizing ref="item_name" v-model.trim="item_name" :maxlength="max_name_length" class="item__name"
+    <Autoresizing ref="name" v-model.trim="item_name" :maxlength="max_name_length" class="item__name"
                   placeholder="nazwa" :prevent-enter="true"/>
-    <Autoresizing ref="item_description" v-model="item_description" :maxlength="max_description_length"
+    <Autoresizing ref="description" v-model="item_description" :maxlength="max_description_length"
                   class="item__description" placeholder="opis"/>
     <button :class="{ checked: item.worn }" :disabled="item.consumable" class="item__worn" @click="markAsWorn">
       <font-awesome-icon class="fa-sm" icon="child"/>
@@ -44,6 +44,8 @@ export default {
       quantity_limit: 99,
       max_name_length: 60,
       max_description_length: 700,
+      name_ref: {},
+      description_ref: {},
     }
   },
   computed: {
@@ -85,9 +87,7 @@ export default {
             property: 'weight',
             new_value: val
           })
-        } else {
-          this.$forceUpdate()
-        }
+        } else this.$forceUpdate()
       }
     },
     item_quantity: {
@@ -102,9 +102,7 @@ export default {
             property: 'quantity',
             new_value: val
           })
-        } else {
-          this.$forceUpdate()
-        }
+        } else this.$forceUpdate()
       }
     },
   },
@@ -127,17 +125,14 @@ export default {
       }
     },
     resizeAll() {
-      this.$refs.item_name.autoresize()
-      this.$refs.item_description.autoresize()
+      this.$refs.name.autoresize()
+      this.$refs.description.autoresize()
     },
     removeLeadingZero(e) {
       if ((String(e.target.value)[0] === '0') && (e.target.value.length > 1)) {
         e.target.value = String(e.target.value).slice(1)
       }
     }
-  },
-  mounted() {
-    this.resizeAll()
   },
 }
 </script>

@@ -84,7 +84,8 @@ export default {
       this.$store.dispatch('editor/addItem', this.category.list_index)
     },
     deleteCategory() {
-      this.$store.dispatch('editor/deleteCategory', this.category.list_index)
+      let confirmation = confirm("na pewno chcesz usunąć tę kategorię?")
+      if (confirmation) this.$store.dispatch('editor/deleteCategory', this.category.list_index)
     },
     setItemRef(el) {
       if (el) this.itemRefs.push(el)

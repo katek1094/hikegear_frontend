@@ -24,10 +24,12 @@
              type="password"
              @blur="markAsBlurred">
       <div class="auth__options_div">
-        <button class="login__option login__forgot_password" type="button">i don't remember password</button>
-        <button class="login__option login__register" type="button">i don't have an account</button>
+        <button class="login__option login__forgot_password" type="button">nie pamiętam hasła</button>
+        <router-link to="/register">
+          <button class="login__option login__register" type="button">nie mam konta (rejestracja)</button>
+        </router-link>
       </div>
-      <button class="auth__submit" type="submit" id="login-submit">submit</button>
+      <button class="auth__submit" type="submit" id="login-submit">zaloguj</button>
     </form>
   </div>
 </template>
@@ -69,7 +71,7 @@ export default {
             .then(status => {
               if (status === 'logged in') {
                 this.$store.dispatch('editor/getInitialData')
-                this.$router.push('/editor')
+                    .then(this.$router.push('/editor'))
               } else {
                 this.info = status
               }

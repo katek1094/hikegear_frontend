@@ -1,11 +1,21 @@
 <template>
   <BaseApp>
+    <div v-if="!editor_data_ready">
+      <p>nie masz żadnych plecaków</p>
+      <button class="add-backpack" type="button" @click="addBackpack">
+        <font-awesome-icon class="fa-md" icon="plus"/>
+        dodaj plecak
+      </button>
+    </div>
     <div class="editor" v-if="editor_data_ready">
       <div class="backpack__list">
         <div class="backpack__list__item" v-for="(backpack, index) in backpacks" :key="backpack.id"
              @click="changeBackpack(index)">
           <span v-if="backpack.name !== ''" :class="{active: backpack.id === backpack_id}">{{ backpack.name }}</span>
           <span v-if="backpack.name === ''" :class="{active: backpack.id === backpack_id}">bez nazwy</span>
+          <button v-if="backpack.id === backpack_id" class="backpack__delete" type="button" @click="deleteBackpack">
+            <font-awesome-icon class="fa-sm" icon="trash"/>
+          </button>
         </div>
         <button class="add-backpack" type="button" @click="addBackpack">
           <font-awesome-icon class="fa-md" icon="plus"/>
@@ -37,6 +47,7 @@ import Category from "@/components/Category";
 import Summary from "@/components/Summary";
 import BaseApp from "@/components/BaseApp";
 import Autoresizing from "@/components/Autoresizing";
+import {mapGetters} from 'vuex'
 
 
 export default {
@@ -55,19 +66,17 @@ export default {
       saveTimeout: 3000,
       saveTimePassed: 0,
       resizes: 0,
-      max_backpack_name_length: 60
+      max_backpack_name_length: 60,
+      interval: {}
     }
   },
   computed: {
-    backpack_id() {
-      return this.$store.getters['editor/pack_id']
-    },
-    backpacks() {
-      return this.$store.getters['editor/backpacks']
-    },
-    editor_data_ready() {
-      return this.$store.getters['editor/isEditorDataReady']
-    },
+    ...mapGetters({
+      backpack_id: 'editor/backpack_id',
+      backpacks: 'editor/backpacks',
+      editor_data_ready: 'editor/isEditorDataReady',
+      are_changes: 'editor/are_any_changes'
+    }),
     organized_list: {
       get() {
         return this.$store.getters['editor/organized_list']
@@ -84,9 +93,6 @@ export default {
         this.$store.dispatch('editor/renamePack', val)
       }
     },
-    are_changes() {
-      return this.$store.getters['editor/are_any_changes']
-    },
   },
   methods: {
     addCategory() {
@@ -100,15 +106,22 @@ export default {
     changeBackpack(index) {
       if (this.are_changes) this.save()
       this.$store.dispatch('editor/changeBackpack', index)
+      this.$forceUpdate()
     },
     addBackpack() {
       this.$store.dispatch('editor/addBackpack')
     },
+    deleteBackpack() {
+      let confirmation = confirm('na pewno chcesz usunąć ten plecak?')
+      if (confirmation) this.$store.commit('editor/deleteBackpack', this.backpack_id)
+    },
     resizeAllItems() {
-      for (let i = 0; i < this.categoryRefs.length; i++) {
-        this.categoryRefs[i].resizeAllItems()
+      if (this.editor_data_ready) {
+        for (let i = 0; i < this.categoryRefs.length; i++) {
+          this.categoryRefs[i].resizeAllItems()
+        }
+        this.$refs.backpack_name.autoresize()
       }
-      this.$refs.backpack_name.autoresize()
     },
     windowResized() {
       this.resizes += 1
@@ -119,13 +132,12 @@ export default {
     },
     setCategoryRef(el) {
       if (el) this.categoryRefs.push(el)
-    }
+    },
   },
   beforeUpdate() {
     this.categoryRefs = []
   },
   mounted() {
-    this.$refs.backpack_name.autoresize()
     window.addEventListener("resize", this.windowResized);
     this.$store.watch(
         (state) => state.editor.dynamic,
@@ -141,12 +153,13 @@ export default {
         },
         {deep: true}
     );
-    setInterval(() => {
+    this.interval = setInterval(() => {
       if (this.editor_data_ready && this.are_changes) this.saveTimePassed += 10
     }, 10)
   },
   beforeUnmount() {
     window.removeEventListener("resize", this.windowResized);
+    clearInterval(this.interval)
   }
 }
 </script>
@@ -166,11 +179,15 @@ export default {
 
 .backpack__list__item {
   margin: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .backpack__list__item span {
   padding: 4px 8px;
   border-radius: 4px;
+  width: 100px;
 }
 
 .backpack__list__item span.active {
@@ -180,6 +197,20 @@ export default {
 .backpack__list__item span:hover {
   cursor: pointer;
   text-decoration: underline;
+}
+
+.backpack__delete {
+  outline: none;
+  border: none;
+  background-color: transparent;
+  padding: 6px;
+  font-size: 1em;
+  margin-left: 10px;
+}
+
+.backpack__delete:hover {
+  color: red;
+  cursor: pointer;
 }
 
 .editor {

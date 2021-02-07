@@ -153,13 +153,22 @@ export default {
         })
             .then(response => {
                 if (response.ok) {
-                    //
+                    let backpacks = rootGetters['editor/backpacks']
+                    let index
+                    for (let i = 0; i < backpacks.length; i++) {
+                        if (backpacks[i].id === backpack_id) index = i
+                    }
+                    backpacks.splice(index, 1)
+                    commit('set_backpacks', backpacks)
+                    if (backpacks.length > 0) {
+                        commit('copy_and_set_dynamic_backpack', backpacks[0])
+                        commit('copy_and_set_static_backpack', backpacks[0])
+                    } else {
+                        commit('copy_and_set_dynamic_backpack', [])
+                        commit('copy_and_set_static_backpack', [])
+                    }
                 } else console.log(response)
             })
-
-
-
-
     },
     changeBackpack({commit, getters}, index) {
         commit('copy_and_set_dynamic_backpack', getters['backpacks'][index])
@@ -172,7 +181,7 @@ export default {
         })
             .then(response => {
                 if (response.ok) {
-                    response.json().then(data => {
+                    return response.json().then(data => {
                         if (data.backpacks.length > 0) {
                             commit('copy_and_set_dynamic_backpack', data.backpacks[0])
                             commit('copy_and_set_static_backpack', data.backpacks[0])
@@ -180,7 +189,7 @@ export default {
                         } else {
                             commit('copy_and_set_dynamic_backpack', [])
                             commit('copy_and_set_static_backpack', [])
-                            commit('set_backpacks', data.backpacks)
+                            commit('set_backpacks', [])
                         }
                     })
                 } else {

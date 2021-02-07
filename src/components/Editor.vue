@@ -113,7 +113,7 @@ export default {
     },
     deleteBackpack() {
       let confirmation = confirm('na pewno chcesz usunąć ten plecak?')
-      if (confirmation) this.$store.commit('editor/deleteBackpack', this.backpack_id)
+      if (confirmation) this.$store.dispatch('editor/deleteBackpack', this.backpack_id)
     },
     resizeAllItems() {
       if (this.editor_data_ready) {

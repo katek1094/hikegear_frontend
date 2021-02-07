@@ -71,7 +71,7 @@ export default {
             .then(status => {
               if (status === 'logged in') {
                 this.$store.dispatch('editor/getInitialData')
-                    .then(this.$router.push('/editor'))
+                    .then(() => this.$router.push('/editor'))
               } else {
                 this.info = status
               }

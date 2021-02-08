@@ -2,6 +2,7 @@
   <BaseApp>
     <div>
       <h1>settings page</h1>
+      <button @click="logout">logout</button>
     </div>
   </BaseApp>
 </template>
@@ -11,7 +12,13 @@ import BaseApp from "@/components/BaseApp";
 
 export default {
   name: "Settings",
-  components: {BaseApp}
+  components: {BaseApp},
+  methods: {
+    logout() {
+      this.$store.dispatch('auth/logout')
+      this.$router.push('/')
+    }
+  }
 }
 </script>
 

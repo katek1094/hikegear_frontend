@@ -22,10 +22,15 @@ export default {
 html {
   font-size: 16px;
   min-width: 320px;
+  /*--background: #f6f6f6;*/
+  --background: #efeded;
+  /*--background: #e7e6e6;*/
 }
 
 body {
   margin: 0;
+  min-height: 100vh;
+  background-color: var(--background);
 }
 
 @media (max-width: 479px) {

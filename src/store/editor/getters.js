@@ -5,6 +5,7 @@ export default {
     are_any_changes(state) {
         if (state.static.name !== state.dynamic.name) return true
         if (state.static.description !== state.dynamic.description) return true
+        if (state.dynamic.list === []) return false
         if (state.dynamic.list.length !== state.static.list.length) return true
         const len = (state.dynamic.list.length >= state.static.list.length) ? state.dynamic.list.length : state.static.list.length
         for (let i = 0; i < len; i++) {

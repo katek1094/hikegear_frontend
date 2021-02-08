@@ -4,7 +4,6 @@ export default {
         return {
             // token: 'b93292f1450db02bcab752979e2c21c4e0fe344a',
             token: '',
-            // id: 9,
         }
     },
     mutations: {
@@ -26,7 +25,6 @@ export default {
     actions: {
         logout({commit}) {
             commit('set_token', '')
-            commit('set_id', undefined)
         },
         login({commit}, payload) {
             return fetch(process.env.VUE_APP_API_URL + '/api/obtain_token', {

@@ -11,14 +11,14 @@
       <label v-if="email_info !== '' && emailValidity" for="registration-email">{{ email_info }}</label>
       <input id="registration-password1" ref="password1" v-model.trim="password1"
              :class="{ invalid: !password1Validity, blurred: password1_blurred}"
-             :placeholder="'password (min. ' + min_password_length + ' chars)'" class="auth__input" minlength="8"
+             :placeholder="'hasło (min. ' + min_password_length + ' znaków)'" class="auth__input" minlength="8"
              name="password1" required type="password"
              @blur="markAsBlurred">
       <label v-show="password1InfoDisplay" for="registration-password1">invalid password</label>
       <input id="registration-password2" ref="password2" v-model.trim="password2"
              :class="{ invalid: !password2Validity, blurred: password2_blurred}" class="auth__input" minlength="8"
              name="password2"
-             placeholder="repeat password" required type="password"
+             placeholder="powtórz hasło" required type="password"
              @blur="markAsBlurred">
       <label v-show="password2InfoDisplay" for="registration-password2">passwords have to match</label>
       <button id="register-submit" class="auth__submit" type="submit">submit</button>
@@ -108,9 +108,10 @@ export default {
     },
     handleFailure(json) {
       json.then(dt => {
+        console.log(dt)
         if (dt.email) {
           this.email_info = dt.email[0]
-        }
+        } else this.password_info = dt[0]
       })
     },
     markAsBlurred(e) {

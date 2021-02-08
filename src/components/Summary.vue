@@ -53,6 +53,7 @@ export default {
   display: flex;
   margin-bottom: 15px;
   justify-content: center;
+  align-items: center;
 }
 
 .summary__table {

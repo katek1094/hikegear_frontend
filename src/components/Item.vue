@@ -12,11 +12,11 @@
             @click="markAsConsumable">
       <font-awesome-icon class="fa-sm" icon="sync-alt"/>
     </button>
-    <div>
+    <div class="item__name_wrapper">
       <input v-model.number="item_weight" :max="weight_limit" class="item__weight" min="0" type="number"
              @input="removeLeadingZero" @keydown="preventNumericChars">
     </div>
-    <div>
+    <div class="item__description_wrapper">
       <input v-model.number="item_quantity" :max="quantity_limit" class="item__quantity" min="0" type="number"
              @input="removeLeadingZero" @keydown="preventNumericChars">
     </div>
@@ -170,7 +170,7 @@ export default {
   outline: none;
   color: grey;
   padding: 3px;
-  font-size: 1.2em;
+  font-size: 1.15em;
 }
 
 .checked {

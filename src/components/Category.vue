@@ -194,7 +194,7 @@ export default {
   margin-left: auto;
 }
 
-.category__weight__label, .category__quantity__label, .category__delete {
+.category__weight__label, .category__quantity__label {
   align-self: flex-end;
 }
 

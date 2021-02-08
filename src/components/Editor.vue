@@ -200,7 +200,6 @@ beforeUnmount()
 .backpack__list__item span {
   padding: 4px 8px;
   border-radius: 4px;
-  width: 100px;
 }
 
 .backpack__list__item span.active {
@@ -241,6 +240,7 @@ beforeUnmount()
   background-color: transparent;
   outline: none;
   color: yellowgreen;
+  font-size: .85rem;
 }
 
 .add-category:hover, >>> .add-item:hover, .add-backpack:hover {

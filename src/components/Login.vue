@@ -58,12 +58,12 @@ export default {
       return re.test(String(this.email).toLowerCase());
     },
     passwordValidity() {
-      return this.password_long_enough && this.password_not_to_long && this.password_not_enitirely_numeric
+      return this.password_long_enough && this.password_not_too_long && this.password_not_enitirely_numeric
     },
     password_long_enough() {
       return this.password.length >= this.min_password_length
     },
-    password_not_to_long() {
+    password_not_too_long() {
       return this.password.length <= this.max_password_length
     },
     password_not_enitirely_numeric() {
@@ -71,7 +71,7 @@ export default {
     },
     password_info() {
       if (!this.password_long_enough) return 'hasło jest zbyt krótkie'
-      if (!this.password_not_to_long) return 'hasło jest zbyt długie'
+      if (!this.password_not_too_long) return 'hasło jest zbyt długie'
       if (!this.password_not_enitirely_numeric) return 'hasło nie może składać się tylko z cyfr'
       return ''
     },
@@ -87,6 +87,7 @@ export default {
   },
   methods: {
     submitForm() {
+      this.info = ''
       this.password_blurred = true
       if (this.isFormValid) {
         this.$store.dispatch('auth/login', {

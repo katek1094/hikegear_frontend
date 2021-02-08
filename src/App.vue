@@ -72,7 +72,7 @@ body {
 @media (min-width: 1281px) {
   /* hi-res laptops and desktops */
   html {
-    font-size: 18px;
+    font-size: 17px;
   }
 }
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-      <img alt="logo" src="@/assets/logo.png">
+    <router-link to="/"><img alt="logo" src="@/assets/logo.png"></router-link>
     <router-view/>
   </div>
 </template>
@@ -69,12 +69,14 @@ export default {
 }
 
 >>> .login__option {
-  margin: 6px 0;
+  margin-top: 20px;
+  color: black;
+  text-decoration: none;
 }
 
-
-
-
+>>> .login__option:hover {
+  text-decoration: underline;
+}
 
 
 </style>

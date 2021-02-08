@@ -67,6 +67,9 @@ body {
   html {
     font-size: 17px;
   }
+  .category {
+    width: 700px;
+  }
 }
 
 @media (min-width: 1281px) {

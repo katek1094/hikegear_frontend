@@ -221,9 +221,11 @@ beforeUnmount()
   margin-left: 10px;
 }
 
-.backpack__delete:hover {
-  color: red;
-  cursor: pointer;
+@media (hover: hover) and (pointer: fine) {
+  .backpack__delete:hover {
+    color: red;
+    cursor: pointer;
+  }
 }
 
 .editor {
@@ -300,17 +302,5 @@ beforeUnmount()
 
 @media (min-width: 1281px) {
 
-}
-</style>
-
-<style>
-/*GLOBAL STYLES*/
-:root {
-  --background: #f6f6f6;
-}
-
-.autoresize {
-  resize: none;
-  overflow: hidden;
 }
 </style>

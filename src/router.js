@@ -6,6 +6,7 @@ import Settings from "@/components/Settings";
 import store from "./store/index.js";
 import Register from "@/components/Register";
 import Login from "@/components/Login";
+import RecoverPassword from "@/components/RecoverPassword";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -15,7 +16,8 @@ const router = createRouter({
         {path: '/', component: LandingPage,
             children: [
                 {path: '', component: Login, name: 'login'},
-                {path: 'register', component: Register, name: 'register'}
+                {path: 'register', component: Register, name: 'register'},
+                {path: 'recover_password', component: RecoverPassword, name: 'recover_password'},
             ],
         },
     ],

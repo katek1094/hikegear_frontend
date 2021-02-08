@@ -1,35 +1,39 @@
 <template>
   <div>
     <form class="auth__form" @submit.prevent="submitForm">
-      <h1 class="auth__title">Login</h1>
+      <h2 class="auth__title">Logowanie</h2>
       <input id="login-email"
              v-model.trim="email"
-             :class="{ invalid: !emailValidity, blurred: email_blurred}"
+             :class="{ invalid: !emailValidity, blurred: email_blurred, activated: email_activated}"
              autofocus
              class="auth__input"
              inputmode="email"
+             maxlength="320"
              name="email"
              placeholder="e-mail"
              required
              type="email"
-             @blur="markAsBlurred">
-      <label for="login-password">{{ info }}</label>
+             @blur="markAsBlurred"
+             @input="activate">
+      <label v-if="info_display" for="login-email" class="auth__label">{{ info }}</label>
       <input id="login-password"
              v-model.trim="password"
-             :class="{ invalid: !passwordValidity, blurred: password_blurred}"
+             :class="{ invalid: !passwordValidity, blurred: password_blurred, activated: password_activated}"
+             :maxlength="max_password_length"
              class="auth__input"
              name="password"
-             placeholder="password"
+             placeholder="hasło"
              required
              type="password"
-             @blur="markAsBlurred">
-      <div class="auth__options_div">
-        <button class="login__option login__forgot_password" type="button">nie pamiętam hasła</button>
-        <router-link to="/register">
-          <button class="login__option login__register" type="button">nie mam konta (rejestracja)</button>
-        </router-link>
-      </div>
+             @blur="markAsBlurred"
+             @input="activate">
+      <label v-if="password_info_display" class="auth__label" for="login-password">{{ password_info }}</label>
       <button class="auth__submit" type="submit" id="login-submit">zaloguj</button>
+      <router-link to="/register" class="login__option login__register" type="button">nie mam konta (rejestracja)
+      </router-link>
+      <router-link to="/recover_password" class="login__option login__forgot_password" type="button">nie pamiętam
+        hasła
+      </router-link>
     </form>
   </div>
 </template>
@@ -42,9 +46,11 @@ export default {
       email: '',
       password: '',
       min_password_length: 8,
-      max_password_length: 30,
+      max_password_length: 128,
       email_blurred: false,
       password_blurred: false,
+      email_activated: false,
+      password_activated: false,
       info: ''
     }
   },
@@ -54,8 +60,28 @@ export default {
       return re.test(String(this.email).toLowerCase());
     },
     passwordValidity() {
-      return this.password.length >= this.min_password_length && this.password.length <= this.max_password_length &&
-          !(/^\d+$/.test(this.password))
+      return this.password_long_enough && this.password_not_too_long && this.password_not_enitirely_numeric
+    },
+    password_long_enough() {
+      return this.password.length >= this.min_password_length
+    },
+    password_not_too_long() {
+      return this.password.length <= this.max_password_length
+    },
+    password_not_enitirely_numeric() {
+      return !(/^\d+$/.test(this.password))
+    },
+    password_info() {
+      if (!this.password_long_enough) return 'hasło jest zbyt krótkie'
+      if (!this.password_not_too_long) return 'hasło jest zbyt długie'
+      if (!this.password_not_enitirely_numeric) return 'hasło nie może składać się tylko z cyfr'
+      return ''
+    },
+    password_info_display() {
+      return this.password_info !== '' && this.password_blurred && this.password_activated
+    },
+    info_display() {
+      return this.info !== '' && this.email_blurred && this.email_activated
     },
     isFormValid() {
       return this.emailValidity && this.passwordValidity
@@ -63,6 +89,8 @@ export default {
   },
   methods: {
     submitForm() {
+      this.info = ''
+      this.password_blurred = true
       if (this.isFormValid) {
         this.$store.dispatch('auth/login', {
           email: this.email,
@@ -73,14 +101,18 @@ export default {
                 this.$store.dispatch('editor/getInitialData')
                     .then(() => this.$router.push('/editor'))
               } else {
-                this.info = status
+                this.info = 'błędny email lub hasło'
               }
             })
       }
     },
     markAsBlurred(e) {
       let name = e.target.getAttribute('name')
-      this[name + '+blurred'] = true
+      this[name + '_blurred'] = true
+    },
+    activate(e) {
+      let name = e.target.getAttribute('name')
+      this[name + '_activated'] = true
     }
   }
 }

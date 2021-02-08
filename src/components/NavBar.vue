@@ -51,7 +51,8 @@ export default {
 <style scoped>
 .navbar {
   --nav_height: 50px;
-  --nav_color: #e5e1e1;
+  /*--nav_color:  #ececea;*/
+  --nav_color: #dbd8d8;
   --nav_hover_color: white;
   --hamburger_height: 33px;
   --hamburger_width: 36px;

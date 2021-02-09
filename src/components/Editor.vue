@@ -26,7 +26,7 @@
                     :prevent-enter="true" class="backpack__name" placeholder="nazwa listy"/>
       <Summary/>
       <div class="progress" :style="{width: saveTimePassed * 100 / saveTimeout + '%' }"></div>
-      <!--    TODO: add pack description-->
+      <!--    TODO: add backpack description-->
       <draggable v-model="organized_list" animation="1000" class="categories" group="categories"
                  handle=".category__handle" item-key="id" @end="drag=false" @start="drag=true">
         <template #item="{element, index}">
@@ -175,6 +175,7 @@ export default {
   border-radius: 4px;
   padding: 8px;
   margin: 10px;
+  width: 300px;
 }
 
 .backpack__list__item {

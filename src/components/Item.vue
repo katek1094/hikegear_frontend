@@ -12,11 +12,11 @@
             @click="markAsConsumable">
       <font-awesome-icon class="fa-sm" icon="sync-alt"/>
     </button>
-    <div class="item__name_wrapper">
+    <div>
       <input v-model.number="item_weight" :max="weight_limit" class="item__weight" min="0" type="number"
              @input="removeLeadingZero" @keydown="preventNumericChars">
     </div>
-    <div class="item__description_wrapper">
+    <div>
       <input v-model.number="item_quantity" :max="quantity_limit" class="item__quantity" min="0" type="number"
              @input="removeLeadingZero" @keydown="preventNumericChars">
     </div>

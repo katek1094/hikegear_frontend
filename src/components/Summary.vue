@@ -78,7 +78,6 @@ td {
 @media (max-width: 479px) {
   .summary__wrapper {
     flex-direction: column;
-    align-items: center;
   }
 
 }
@@ -88,7 +87,10 @@ td {
 }
 
 @media (min-width: 600px) {
-
+  >>> #summary-chart {
+    width: 200px;
+    height: 200px
+  }
 }
 
 @media (min-width: 801px) {

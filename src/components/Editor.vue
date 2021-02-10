@@ -160,6 +160,13 @@ export default {
   beforeUnmount() {
     window.removeEventListener("resize", this.windowResized);
     clearInterval(this.interval)
+  },
+  beforeCreate() {
+    this.$store.dispatch('editor/getInitialData').then(status => {
+      if (status === 'not logged in') {
+        this.$router.push('/login')
+      }
+    })
   }
 }
 </script>

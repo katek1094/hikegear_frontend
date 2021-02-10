@@ -1,3 +1,20 @@
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+
 export default {
     moveCategory({commit}, new_organized_list) {
         let new_list = []
@@ -89,7 +106,7 @@ export default {
         fetch(process.env.VUE_APP_API_URL + '/api/backpacks/' + rootGetters['editor/backpack_id'] + '/', {
             method: 'PATCH',
             headers: {
-                'Authorization': 'token ' + rootGetters['auth/token'],
+                'X-CSRFToken': getCookie('csrftoken'),
                 'Content-Type': 'application/json'
             },
             body: rootGetters['editor/bodyBackpackData']
@@ -106,11 +123,11 @@ export default {
                 }
             })
     },
-    addBackpack({commit, rootGetters}) {
+    addBackpack({commit}) {
         fetch(process.env.VUE_APP_API_URL + '/api/backpacks/', {
             method: 'POST',
             headers: {
-                'Authorization': 'token ' + rootGetters['auth/token'],
+                'X-CSRFToken': getCookie('csrftoken'),
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
@@ -148,7 +165,7 @@ export default {
         return fetch(process.env.VUE_APP_API_URL + '/api/backpacks/' + backpack_id, {
             method: 'DELETE',
             headers: {
-                'Authorization': 'token ' + rootGetters['auth/token'],
+                'X-CSRFToken': getCookie('csrftoken'),
             },
         })
             .then(response => {
@@ -174,10 +191,10 @@ export default {
         commit('copy_and_set_dynamic_backpack', getters['backpacks'][index])
         commit('copy_and_set_static_backpack', getters['backpacks'][index])
     },
-    getInitialData({commit, rootGetters}) {
+    getInitialData({commit}) {
         return fetch(process.env.VUE_APP_API_URL + '/api/initial', {
             method: 'GET',
-            headers: {'Authorization': 'token ' + rootGetters['auth/token']}
+            headers: {'X-CSRFToken': getCookie('csrftoken')}
         })
             .then(response => {
                 if (response.ok) {
@@ -191,12 +208,14 @@ export default {
                             commit('copy_and_set_static_backpack', [])
                             commit('set_backpacks', [])
                         }
+                        return 'data_downloaded'
                     })
                 } else {
+                    if (response.status === 401) {
+                        return 'not logged in'
+                    }
                     console.log(response)
                 }
             })
     }
-
-
 }

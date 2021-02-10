@@ -92,6 +92,11 @@ export default {
       this.info = ''
       this.password_blurred = true
       if (this.isFormValid) {
+        console.log('sending this to the login action')
+        console.log({
+          email: this.email,
+          password: this.password
+        })
         this.$store.dispatch('auth/login', {
           email: this.email,
           password: this.password

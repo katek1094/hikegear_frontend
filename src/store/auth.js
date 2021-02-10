@@ -48,7 +48,11 @@ export default {
                         return 'logged in'
                     }
                     else {
-                        return response.json().then(dt => dt.non_field_errors[0])
+                        console.log(response)
+                        return response.json().then(dt => {
+                            console.log(dt)
+                            return dt.non_field_errors[0]
+                        })
                     }
                 })
         },

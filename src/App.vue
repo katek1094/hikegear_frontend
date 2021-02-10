@@ -1,15 +1,48 @@
 <template>
-  <router-view :key="$route.fullPath"/>
+  <!--  <router-view :key="$route.fullPath"/>-->
+  <h1></h1>
 </template>
 
 <script>
+import Cookies from 'js-cookie'
 
 export default {
   name: 'App',
   beforeCreate() {
-    if (this.$store.getters['auth/is_logged_in']) {
-      this.$store.dispatch('editor/getInitialData')
-    }
+    // if (this.$store.getters['auth/is_logged_in']) {
+    //   this.$store.dispatch('editor/getInitialData')
+    // }
+    fetch(process.env.VUE_APP_API_URL + '/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        // 'X-CSRFToken': 'E1mwaKiIb7KT9cpeZLyKF349kYrHUhymb6asSuyFQwD9iRiThG4ke3OiBVmouAT3'
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        email: 'lucjan@gmail.com',
+        password: 'plokij09'
+      })
+    })
+        .then(response => {
+          console.log(response)
+          response.json().then(data => console.log(data))
+              .then(() => {
+                fetch(process.env.VUE_APP_API_URL + '/api/get', {
+                  method: 'GET',
+                })
+                    .then(response => {
+                      console.log(response)
+                      response.json().then(data => {
+                        console.log(data)
+                      })
+                          .then(() => {
+                            console.log('then')
+                            console.log(Cookies.get())
+                          })
+                    })
+              })
+        })
   }
 }
 </script>
@@ -67,6 +100,7 @@ body {
   html {
     font-size: 17px;
   }
+
   .category {
     width: 700px;
   }

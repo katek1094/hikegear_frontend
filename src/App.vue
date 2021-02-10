@@ -43,8 +43,8 @@ export default {
           console.log(response)
           response.json().then(data => console.log(data))
               .then(() => {
-                fetch(process.env.VUE_APP_API_URL + '/api/get', {
-                  method: 'GET',
+                fetch(process.env.VUE_APP_API_URL + '/api/test', {
+                  method: 'POST',
                 })
                     .then(response => {
                       console.log(response)

@@ -32,6 +32,11 @@ export default {
 
         },
         login(payload) {
+            console.log('inside fetch')
+            console.log({
+                email: payload.email,
+                password: payload.password
+            })
             return fetch(process.env.VUE_APP_API_URL + '/api/login', {
                 method: 'POST',
                 headers: {

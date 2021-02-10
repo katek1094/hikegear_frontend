@@ -33,7 +33,6 @@ export default {
         'Content-Type': 'application/json',
         'X-CSRFToken': getCookie('csrftoken')
       },
-      credentials: 'include',
       body: JSON.stringify({
         email: 'lucjan@gmail.com',
         password: 'plokij09'
@@ -45,6 +44,9 @@ export default {
               .then(() => {
                 fetch(process.env.VUE_APP_API_URL + '/api/test', {
                   method: 'POST',
+                  headers: {
+                    'X-CSRFToken': getCookie('csrftoken')
+                  },
                 })
                     .then(response => {
                       console.log(response)

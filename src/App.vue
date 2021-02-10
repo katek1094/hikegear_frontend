@@ -12,11 +12,26 @@ export default {
     // if (this.$store.getters['auth/is_logged_in']) {
     //   this.$store.dispatch('editor/getInitialData')
     // }
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
     fetch(process.env.VUE_APP_API_URL + '/api/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        // 'X-CSRFToken': 'E1mwaKiIb7KT9cpeZLyKF349kYrHUhymb6asSuyFQwD9iRiThG4ke3OiBVmouAT3'
+        'X-CSRFToken': getCookie('csrftoken')
       },
       credentials: 'include',
       body: JSON.stringify({

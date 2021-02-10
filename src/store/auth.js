@@ -31,7 +31,7 @@ export default {
         logout() {
 
         },
-        login(payload) {
+        login(context, payload) {
             console.log('inside fetch')
             console.log({
                 email: payload.email,

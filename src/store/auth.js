@@ -32,17 +32,13 @@ export default {
 
         },
         login(context, payload) {
-            console.log('inside fetch')
-            console.log({
-                email: payload.email,
-                password: payload.password
-            })
             return fetch(process.env.VUE_APP_API_URL + '/api/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': getCookie('csrftoken')
                 },
+                credentials: 'include',
                 body: JSON.stringify({
                     email: payload.email,
                     password: payload.password
@@ -50,6 +46,7 @@ export default {
             })
                 .then(response => {
                     if (response.ok) {
+                        console.log('logged in')
                         return 'logged in'
                     }
                     else {

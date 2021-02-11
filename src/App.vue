@@ -1,13 +1,18 @@
 <template>
     <router-view :key="$route.fullPath"/>
-  <h1></h1>
 </template>
 
 <script>
 
 export default {
   name: 'App',
-
+  beforeCreate() {
+    this.$store.dispatch('editor/getInitialData').then(status => {
+      if (status === 'not logged in') {
+        this.$router.push('/login')
+      }
+    })
+  }
 
 
 

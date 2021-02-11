@@ -109,6 +109,7 @@ export default {
                 'X-CSRFToken': getCookie('csrftoken'),
                 'Content-Type': 'application/json'
             },
+            credentials: 'include',
             body: rootGetters['editor/bodyBackpackData']
         })
             .then(response => {
@@ -130,6 +131,7 @@ export default {
                 'X-CSRFToken': getCookie('csrftoken'),
                 'Content-Type': 'application/json'
             },
+            credentials: 'include',
             body: JSON.stringify({
                 name: 'nowy plecak',
                 description: '',
@@ -167,6 +169,7 @@ export default {
             headers: {
                 'X-CSRFToken': getCookie('csrftoken'),
             },
+            credentials: 'include',
         })
             .then(response => {
                 if (response.ok) {
@@ -194,7 +197,8 @@ export default {
     getInitialData({commit}) {
         return fetch(process.env.VUE_APP_API_URL + '/api/initial', {
             method: 'GET',
-            headers: {'X-CSRFToken': getCookie('csrftoken')}
+            headers: {'X-CSRFToken': getCookie('csrftoken')},
+            credentials: 'include',
         })
             .then(response => {
                 if (response.ok) {

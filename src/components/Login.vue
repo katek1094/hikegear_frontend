@@ -1,46 +1,51 @@
 <template>
-  <div>
-    <form class="auth__form" @submit.prevent="submitForm">
-      <h2 class="auth__title">Logowanie</h2>
-      <input id="login-email"
-             v-model.trim="email"
-             :class="{ invalid: !emailValidity, blurred: email_blurred, activated: email_activated}"
-             autofocus
-             class="auth__input"
-             inputmode="email"
-             maxlength="320"
-             name="email"
-             placeholder="e-mail"
-             required
-             type="email"
-             @blur="markAsBlurred"
-             @input="activate">
-      <label v-if="info_display" for="login-email" class="auth__label">{{ info }}</label>
-      <input id="login-password"
-             v-model.trim="password"
-             :class="{ invalid: !passwordValidity, blurred: password_blurred, activated: password_activated}"
-             :maxlength="max_password_length"
-             class="auth__input"
-             name="password"
-             placeholder="hasło"
-             required
-             type="password"
-             @blur="markAsBlurred"
-             @input="activate">
-      <label v-if="password_info_display" class="auth__label" for="login-password">{{ password_info }}</label>
-      <button class="auth__submit" type="submit" id="login-submit">zaloguj</button>
-      <router-link to="/register" class="login__option login__register" type="button">nie mam konta (rejestracja)
-      </router-link>
-      <router-link to="/recover_password" class="login__option login__forgot_password" type="button">nie pamiętam
-        hasła
-      </router-link>
-    </form>
-  </div>
+  <LandingPage>
+    <div>
+      <form class="auth__form" @submit.prevent="submitForm">
+        <h2 class="auth__title">Logowanie</h2>
+        <input id="login-email"
+               v-model.trim="email"
+               :class="{ invalid: !emailValidity, blurred: email_blurred, activated: email_activated}"
+               autofocus
+               class="auth__input"
+               inputmode="email"
+               maxlength="320"
+               name="email"
+               placeholder="e-mail"
+               required
+               type="email"
+               @blur="markAsBlurred"
+               @input="activate">
+        <label v-if="info_display" for="login-email" class="auth__label">{{ info }}</label>
+        <input id="login-password"
+               v-model.trim="password"
+               :class="{ invalid: !passwordValidity, blurred: password_blurred, activated: password_activated}"
+               :maxlength="max_password_length"
+               class="auth__input"
+               name="password"
+               placeholder="hasło"
+               required
+               type="password"
+               @blur="markAsBlurred"
+               @input="activate">
+        <label v-if="password_info_display" class="auth__label" for="login-password">{{ password_info }}</label>
+        <button class="auth__submit" type="submit" id="login-submit">zaloguj</button>
+        <router-link to="/register" class="login__option login__register" type="button">nie mam konta (rejestracja)
+        </router-link>
+        <router-link to="/recover_password" class="login__option login__forgot_password" type="button">nie pamiętam
+          hasła
+        </router-link>
+      </form>
+    </div>
+  </LandingPage>
 </template>
 
 <script>
+import LandingPage from "@/components/LandingPage";
+
 export default {
   name: "Login",
+  components: {LandingPage},
   data() {
     return {
       email: '',
@@ -92,11 +97,6 @@ export default {
       this.info = ''
       this.password_blurred = true
       if (this.isFormValid) {
-        console.log('sending this to the login action')
-        console.log({
-          email: this.email,
-          password: this.password
-        })
         this.$store.dispatch('auth/login', {
           email: this.email,
           password: this.password

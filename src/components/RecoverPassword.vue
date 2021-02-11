@@ -1,10 +1,15 @@
 <template>
-  <h1>odzyskaj hasło</h1>
+  <LandingPage>
+    <h1>odzyskaj hasło</h1>
+  </LandingPage>
 </template>
 
 <script>
+import LandingPage from "@/components/LandingPage";
+
 export default {
-name: "RecoverPassword"
+  name: "RecoverPassword",
+  components: {LandingPage}
 }
 </script>
 

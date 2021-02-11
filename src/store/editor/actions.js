@@ -215,10 +215,9 @@ export default {
                         return 'data_downloaded'
                     })
                 } else {
-                    if (response.status === 401) {
+                    if (response.status === 403) {
                         return 'not logged in'
                     }
-                    console.log(response)
                 }
             })
     }

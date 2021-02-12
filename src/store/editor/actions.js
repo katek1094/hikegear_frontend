@@ -1,19 +1,4 @@
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-
+import getCookie from '@/store/functions'
 
 export default {
     moveCategory({commit}, new_organized_list) {
@@ -102,7 +87,7 @@ export default {
     discardChanges({commit, getters}) {
         commit('set_dynamic_list', getters['static_list'])
     },
-    updateBackpack({commit, rootGetters}) {
+    updateBackpack({commit, rootGetters}, payload) {
         fetch(process.env.VUE_APP_API_URL + '/api/backpacks/' + rootGetters['editor/backpack_id'] + '/', {
             method: 'PATCH',
             headers: {
@@ -115,9 +100,11 @@ export default {
             .then(response => {
                 if (response.ok) {
                     response.json().then(data => {
-                        commit('copy_and_set_dynamic_backpack', data)
-                        commit('copy_and_set_static_backpack', data)
-                        commit('update_backpack', {data: data, id: rootGetters['editor/backpack_id']})
+                        if (payload.update_dynamic) {
+                            commit('copy_and_set_dynamic_backpack', data)
+                            commit('copy_and_set_static_backpack', data)
+                        }
+                        commit('update_backpack', {data: data, id: payload.id})
                     })
                 } else {
                     console.log(response)

@@ -98,13 +98,13 @@ export default {
     addCategory() {
       this.$store.dispatch('editor/addCategory')
     },
-    save() {
+    save(update_dynamic) {
       this.edits = 0
       // TODO: add some kind of progress when data is fetching
-      this.$store.dispatch('editor/updateBackpack')
+      this.$store.dispatch('editor/updateBackpack', {id: this.backpack_id, update_dynamic: update_dynamic})
     },
     changeBackpack(index) {
-      if (this.are_changes) this.save()
+      if (this.are_changes) this.save(false)
       this.$store.dispatch('editor/changeBackpack', index)
       this.$forceUpdate()
     },
@@ -147,7 +147,7 @@ export default {
           let x = this.edits
           setTimeout(() => {
             if (x === this.edits && this.are_changes) {
-              this.save()
+              this.save(true)
             }
           }, this.saveTimeout)
         },

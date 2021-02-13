@@ -1,6 +1,6 @@
 <template>
   <div>
-    <router-link to="/"><img alt="logo" src="@/assets/logo.png"></router-link>
+    <router-link to="/"><img alt="logo" src="@/assets/logo.png" class="logo"></router-link>
     <slot></slot>
   </div>
 </template>
@@ -12,6 +12,10 @@ export default {
 </script>
 
 <style scoped>
+.logo:hover {
+  background-color: white;
+  border-radius: 8px;
+}
 
 >>> .auth__form {
   display: flex;

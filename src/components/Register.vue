@@ -86,6 +86,7 @@ export default {
   },
   methods: {
     submitForm() {
+      // TODO: add spinner
       this.email_info = ''
       this.password_info = ''
       this.password2_blurred = true

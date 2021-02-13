@@ -3,12 +3,12 @@
     <div class="wrapper">
       <div>
         <h1>Twoje konto zostało utworzone!</h1>
-        <h3>Aby móc z niego korzystać musisz zweryfikować swój adres email klikając w link aktywacyjny wysłany na adres
-          mailowy podany przy rejestracji. </h3>
-        <h3>Jeżeli nie widzisz wiadomości w skrzynce odbiorczej, należy sprawdzić foldery "Spam", "Oferty" itp. </h3>
-        <h3>Uwaga! Nieaktywowane konto w ciągu 15 minut zostanie usunięte, a link aktywacyjny straci ważność, należy wtedy
-          ponownie się zarejestrować i aktywować konto. </h3>
-        <h4></h4>
+        <p>Aby móc z niego korzystać musisz zweryfikować swój adres email klikając w link aktywacyjny wysłany na adres
+          mailowy podany przy rejestracji. </p>
+        <p>Jeżeli nie widzisz wiadomości w skrzynce odbiorczej, należy sprawdzić foldery "Spam", "Oferty" itp. </p>
+        <p>Uwaga! Konto należy aktywować w ciągu 15 minut.</p>
+        <p>Jeżeli nie aktywowałeś konta w ciągu 15 minut, nadal musisz kliknąć w link aktywacyjny, który usunie założone
+          konto i umożliwi rozpoczęcie procesu rejestracji od nowa. </p>
       </div>
     </div>
   </LandingPage>
@@ -27,6 +27,6 @@ export default {
 .wrapper {
   display: flex;
   justify-content: center;
-  padding: 0 10px;
+  padding: 0 14px;
 }
 </style>

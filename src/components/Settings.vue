@@ -2,7 +2,7 @@
   <BaseApp>
     <div>
       <h1>settings page</h1>
-      <button @click="logout">logout</button>
+      <button @click="logout">wyloguj</button>
     </div>
   </BaseApp>
 </template>
@@ -16,7 +16,7 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch('auth/logout')
-      this.$router.push('/')
+      .then(() => this.$router.push('/'))
     }
   }
 }

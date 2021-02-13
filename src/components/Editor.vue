@@ -22,12 +22,11 @@
           dodaj plecak
         </button>
       </div>
-      {{test}}
       <Autoresizing ref="backpack_name" v-model.trim="pack_name" :maxlength="max_backpack_name_length"
                     :prevent-enter="true" class="backpack__name" placeholder="nazwa listy"/>
       <Summary/>
       <div class="progress" :style="{width: saveTimePassed * 100 / saveTimeout + '%' }"></div>
-      <!--    TODO: add pack description-->
+      <!--    TODO: add backpack description-->
       <draggable v-model="organized_list" animation="1000" class="categories" group="categories"
                  handle=".category__handle" item-key="id" @end="drag=false" @start="drag=true">
         <template #item="{element, index}">
@@ -68,8 +67,7 @@ export default {
       saveTimePassed: 0,
       resizes: 0,
       max_backpack_name_length: 60,
-      interval: {},
-      test: ''
+      interval: {}
     }
   },
   computed: {
@@ -100,13 +98,13 @@ export default {
     addCategory() {
       this.$store.dispatch('editor/addCategory')
     },
-    save() {
+    save(update_dynamic) {
       this.edits = 0
       // TODO: add some kind of progress when data is fetching
-      this.$store.dispatch('editor/updateBackpack')
+      this.$store.dispatch('editor/updateBackpack', {id: this.backpack_id, update_dynamic: update_dynamic})
     },
     changeBackpack(index) {
-      if (this.are_changes) this.save()
+      if (this.are_changes) this.save(false)
       this.$store.dispatch('editor/changeBackpack', index)
       this.$forceUpdate()
     },
@@ -115,65 +113,55 @@ export default {
     },
     deleteBackpack() {
       let confirmation = confirm('na pewno chcesz usunąć ten plecak?')
-      if (confirmation) {
-        this.test = 'true'
-        this.$store.dispatch('editor/deleteBackpack', this.backpack_id)
-      } else {
-        this.test = 'false'
-    }
-  },
-  resizeAllItems() {
-    if (this.editor_data_ready) {
-      for (let i = 0; i < this.categoryRefs.length; i++) {
-        this.categoryRefs[i].resizeAllItems()
+      if (confirmation) this.$store.dispatch('editor/deleteBackpack', this.backpack_id)
+    },
+    resizeAllItems() {
+      if (this.editor_data_ready) {
+        for (let i = 0; i < this.categoryRefs.length; i++) {
+          this.categoryRefs[i].resizeAllItems()
+        }
+        this.$refs.backpack_name.autoresize()
       }
-      this.$refs.backpack_name.autoresize()
-    }
+    },
+    windowResized() {
+      this.resizes += 1
+      let x = this.resizes
+      setTimeout(() => {
+        if (x === this.resizes) this.resizeAllItems()
+      }, 300)
+    },
+    setCategoryRef(el) {
+      if (el) this.categoryRefs.push(el)
+    },
   },
-  windowResized() {
-    this.resizes += 1
-    let x = this.resizes
-    setTimeout(() => {
-      if (x === this.resizes) this.resizeAllItems()
-    }, 300)
+  beforeUpdate() {
+    this.categoryRefs = []
   },
-  setCategoryRef(el) {
-    if (el) this.categoryRefs.push(el)
+  mounted() {
+    window.addEventListener("resize", this.windowResized);
+    this.$store.watch(
+        (state) => state.editor.dynamic,
+        () => {
+          this.saveTimePassed = 0
+          this.edits += 1
+          let x = this.edits
+          setTimeout(() => {
+            if (x === this.edits && this.are_changes) {
+              this.save(true)
+            }
+          }, this.saveTimeout)
+        },
+        {deep: true}
+    );
+    this.interval = setInterval(() => {
+      if (this.editor_data_ready && this.are_changes) this.saveTimePassed += 10
+    }, 10)
   },
-}
-,
-beforeUpdate()
-{
-  this.categoryRefs = []
-}
-,
-mounted()
-{
-  window.addEventListener("resize", this.windowResized);
-  this.$store.watch(
-      (state) => state.editor.dynamic,
-      () => {
-        this.saveTimePassed = 0
-        this.edits += 1
-        let x = this.edits
-        setTimeout(() => {
-          if (x === this.edits && this.are_changes) {
-            this.save()
-          }
-        }, this.saveTimeout)
-      },
-      {deep: true}
-  );
-  this.interval = setInterval(() => {
-    if (this.editor_data_ready && this.are_changes) this.saveTimePassed += 10
-  }, 10)
-}
-,
-beforeUnmount()
-{
-  window.removeEventListener("resize", this.windowResized);
-  clearInterval(this.interval)
-}
+  beforeUnmount() {
+    window.removeEventListener("resize", this.windowResized);
+    clearInterval(this.interval)
+  },
+
 }
 </script>
 
@@ -188,6 +176,7 @@ beforeUnmount()
   border-radius: 4px;
   padding: 8px;
   margin: 10px;
+  width: 300px;
 }
 
 .backpack__list__item {

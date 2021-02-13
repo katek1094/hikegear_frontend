@@ -85,6 +85,9 @@ export default {
         data.name = state.dynamic.name
         data.description = state.dynamic.description
         data.list = state.dynamic.list
+        for (let i = 0; i < data.list.length; i++) {
+            data.list[i].id = i
+        }
         return JSON.stringify(data)
     },
     dynamic_list(state) {

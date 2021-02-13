@@ -6,7 +6,6 @@
         <input v-model.trim="category_name" :maxlength="max_name_length" class="category__name" :size="max_name_length"
                placeholder="nazwa kategorii" type="text">
       </div>
-      <!--    TODO: add category description-->
       <span class="category__weight__label">waga</span>
       <span class="category__quantity__label">ilość</span>
       <button :class="{deletable: !is_the_only_category, invisible: is_the_only_category}" class="category__delete"
@@ -118,7 +117,7 @@ export default {
 }
 
 .category__name {
-  width: 100%;
+  width: 90%;
   box-sizing: border-box;
 }
 
@@ -179,13 +178,13 @@ export default {
 }
 
 .category__weight__label, >>> .item__weight, .category__weight__total {
-  padding: 5px;
+  padding: 5px 8px 5px 2px;
   width: 2.8rem;
   box-sizing: border-box;
 }
 
 .category__quantity__label, >>> .item__quantity, .category__quantity__total {
-  padding: 5px;
+  padding: 5px 8px 5px 2px;
   width: 2.8rem;
   box-sizing: border-box;
 }

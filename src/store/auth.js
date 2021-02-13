@@ -1,37 +1,49 @@
+import getCookie from '@/store/functions'
+
 export default {
     namespaced: true,
     state() {
         return {
-            // token: 'b93292f1450db02bcab752979e2c21c4e0fe344a',
-            token: '',
+            logged_in: false
         }
     },
     mutations: {
-        set_token(state, token) {
-            state.token = token
+        set_logged_in(state, bool) {
+            if (state.logged_in !== bool) state.logged_in = bool
         },
     },
     getters: {
-        token(state) {
-            return state.token
-        },
-        is_logged_in(state) {
-            return state.token !== ''
-        },
-        are_initial_data(state) {
-            return state.id !== 0
-        }
+        is_logged_in: state => state.logged_in
     },
     actions: {
-        logout({commit}) {
-            commit('set_token', '')
+        changeLoggedIn({commit}, bool) {
+            commit('set_logged_in', bool)
         },
-        login({commit}, payload) {
-            return fetch(process.env.VUE_APP_API_URL + '/api/obtain_token', {
+        logout({commit}) {
+            return fetch(process.env.VUE_APP_API_URL + '/api/logout', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
                 },
+                credentials: 'include'
+            })
+                .then(response => {
+                    if (response.ok) {
+                        commit('set_logged_in', false)
+                        return 'you are logged out'
+                    } else console.log(response)
+                })
+        },
+        login({commit}, payload) {
+            return fetch(process.env.VUE_APP_API_URL + '/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                // TODO: credentials are necessary only on local development
+                credentials: 'include',
                 body: JSON.stringify({
                     email: payload.email,
                     password: payload.password
@@ -39,12 +51,13 @@ export default {
             })
                 .then(response => {
                     if (response.ok) {
-                        return response.json().then(data => {
-                            commit('set_token', data.token)
-                            return 'logged in'
-                        })
+                        commit('set_logged_in', true)
+                        return 'logged in'
                     } else {
-                        return response.json().then(dt => dt.non_field_errors[0])
+                        commit('set_logged_in', false)
+                        return response.json().then(dt => {
+                            return dt
+                        })
                     }
                 })
         },

@@ -1,3 +1,5 @@
+import getCookie from '@/store/functions'
+
 export default {
     moveCategory({commit}, new_organized_list) {
         let new_list = []
@@ -85,34 +87,38 @@ export default {
     discardChanges({commit, getters}) {
         commit('set_dynamic_list', getters['static_list'])
     },
-    updateBackpack({commit, rootGetters}) {
+    updateBackpack({commit, rootGetters}, payload) {
         fetch(process.env.VUE_APP_API_URL + '/api/backpacks/' + rootGetters['editor/backpack_id'] + '/', {
             method: 'PATCH',
             headers: {
-                'Authorization': 'token ' + rootGetters['auth/token'],
+                'X-CSRFToken': getCookie('csrftoken'),
                 'Content-Type': 'application/json'
             },
+            credentials: 'include',
             body: rootGetters['editor/bodyBackpackData']
         })
             .then(response => {
                 if (response.ok) {
                     response.json().then(data => {
-                        commit('copy_and_set_dynamic_backpack', data)
-                        commit('copy_and_set_static_backpack', data)
-                        commit('update_backpack', {data: data, id: rootGetters['editor/backpack_id']})
+                        if (payload.update_dynamic) {
+                            commit('copy_and_set_dynamic_backpack', data)
+                            commit('copy_and_set_static_backpack', data)
+                        }
+                        commit('update_backpack', {data: data, id: payload.id})
                     })
                 } else {
                     console.log(response)
                 }
             })
     },
-    addBackpack({commit, rootGetters}) {
+    addBackpack({commit}) {
         fetch(process.env.VUE_APP_API_URL + '/api/backpacks/', {
             method: 'POST',
             headers: {
-                'Authorization': 'token ' + rootGetters['auth/token'],
+                'X-CSRFToken': getCookie('csrftoken'),
                 'Content-Type': 'application/json'
             },
+            credentials: 'include',
             body: JSON.stringify({
                 name: 'nowy plecak',
                 description: '',
@@ -148,8 +154,9 @@ export default {
         return fetch(process.env.VUE_APP_API_URL + '/api/backpacks/' + backpack_id + '/', {
             method: 'DELETE',
             headers: {
-                'Authorization': 'token ' + rootGetters['auth/token'],
+                'X-CSRFToken': getCookie('csrftoken'),
             },
+            credentials: 'include',
         })
             .then(response => {
                 if (response.ok) {
@@ -174,10 +181,11 @@ export default {
         commit('copy_and_set_dynamic_backpack', getters['backpacks'][index])
         commit('copy_and_set_static_backpack', getters['backpacks'][index])
     },
-    getInitialData({commit, rootGetters}) {
+    getInitialData({commit}) {
         return fetch(process.env.VUE_APP_API_URL + '/api/initial', {
             method: 'GET',
-            headers: {'Authorization': 'token ' + rootGetters['auth/token']}
+            headers: {'X-CSRFToken': getCookie('csrftoken')},
+            credentials: 'include',
         })
             .then(response => {
                 if (response.ok) {
@@ -191,12 +199,13 @@ export default {
                             commit('copy_and_set_static_backpack', [])
                             commit('set_backpacks', [])
                         }
+                        return 'data_downloaded'
                     })
                 } else {
-                    console.log(response)
+                    if (response.status === 403) {
+                        return 'not logged in'
+                    }
                 }
             })
     }
-
-
 }

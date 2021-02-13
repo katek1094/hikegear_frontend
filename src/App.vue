@@ -1,15 +1,28 @@
 <template>
-  <router-view :key="$route.fullPath"/>
+  <router-view v-if="fetched" :key="$route.fullPath"/>
 </template>
 
 <script>
 
 export default {
   name: 'App',
-  beforeCreate() {
-    if (this.$store.getters['auth/is_logged_in']) {
-      this.$store.dispatch('editor/getInitialData')
+  data() {
+    return {
+      fetched: false
     }
+  },
+  beforeCreate() {
+    this.$store.dispatch('editor/getInitialData').then(status => {
+      if (status === 'not logged in') {
+        this.$store.dispatch('auth/changeLoggedIn', false)
+        this.fetched = true
+        this.$router.push('/login')
+      } else {
+        this.$store.dispatch('auth/changeLoggedIn', true)
+        this.fetched = true
+        this.$router.push('/editor')
+      }
+    })
   }
 }
 </script>
@@ -67,6 +80,7 @@ body {
   html {
     font-size: 17px;
   }
+
   .category {
     width: 700px;
   }

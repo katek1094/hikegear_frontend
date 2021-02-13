@@ -4,7 +4,7 @@ export default {
     namespaced: true,
     state() {
         return {
-            logged_in: false
+            logged_in: undefined
         }
     },
     mutations: {

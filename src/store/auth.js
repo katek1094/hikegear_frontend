@@ -55,9 +55,11 @@ export default {
                         return 'logged in'
                     } else {
                         commit('set_logged_in', false)
-                        return response.json().then(dt => {
-                            return dt
-                        })
+                        if (response.status === 401) {
+                            return 'bad credentials'
+                        } else if (response.status === 403) {
+                            return 'activate your account'
+                        } else console.log(response)
                     }
                 })
         },

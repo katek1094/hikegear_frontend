@@ -105,8 +105,12 @@ export default {
               if (status === 'logged in') {
                 this.$store.dispatch('editor/getInitialData')
                     .then(() => this.$router.push('/editor'))
-              } else {
+              } else if (status === 'bad credentials') {
                 this.info = 'błędny email lub hasło'
+              } else if (status === 'activate your account') {
+                this.$router.push('/verify_email')
+              } else {
+                throw 'something wrong with response'
               }
             })
       }

@@ -1,8 +1,7 @@
 <template>
   <LandingPage>
-    <div>
       <form class="auth__form" @submit.prevent="submitForm">
-        <h2>Register</h2>
+        <h2>Rejestracja</h2>
         <input id="registration-email" ref="email" v-model.trim="email"
                :class="{ invalid: !emailValidity, blurred: email_blurred, activated: email_activated}"
                class="auth__input"
@@ -22,12 +21,12 @@
         <label v-show="password2_info_display" for="registration-password2">hasła nie są takie same</label>
         <button id="register-submit" class="auth__submit" type="submit">zarejestruj</button>
       </form>
-    </div>
   </LandingPage>
 </template>
 
 <script>
 import LandingPage from "@/components/LandingPage";
+import getCookie from "@/store/functions";
 
 export default {
   name: "Register",
@@ -94,7 +93,8 @@ export default {
         fetch(process.env.VUE_APP_API_URL + '/api/users/', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
           },
           credentials: 'include',
           body: JSON.stringify({
@@ -104,28 +104,15 @@ export default {
         })
             .then(response => {
               if (response.ok) {
-                this.handleSuccess(response.json())
+                this.$router.push('/verify_email')
               } else {
                 this.handleFailure(response.json())
               }
             })
       }
     },
-    handleSuccess(json) {
-      json.then(dt => {
-        dt.password = this.password1
-        this.$store.dispatch('auth/login', dt)
-            .then(status => {
-              if (status === 'logged in') {
-                this.$store.dispatch('editor/getInitialData')
-                    .then(() => this.$router.push('/editor'))
-              } else console.log(status)
-            })
-      })
-    },
     handleFailure(json) {
       json.then(dt => {
-        console.log(dt)
         if (dt.email) {
           this.email_info = 'konto powiązane z tym adresem email już istnieje'
         } else {

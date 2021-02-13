@@ -7,6 +7,7 @@ import Settings from "@/components/Settings";
 import Register from "@/components/Register";
 import Login from "@/components/Login";
 import RecoverPassword from "@/components/RecoverPassword";
+import VerifyYourEmail from "@/components/VerifyYourEmail";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -17,6 +18,7 @@ const router = createRouter({
         {path: '/login', component: Login, name: 'login'},
         {path: '/register', component: Register, name: 'register'},
         {path: '/recover_password', component: RecoverPassword, name: 'recover_password'},
+        {path: '/verify_email', component: VerifyYourEmail, name: 'verify_email'},
     ],
 })
 

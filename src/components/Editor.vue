@@ -224,7 +224,7 @@ export default {
 }
 
 .add-category, >>> .add-item, .add-backpack {
-  margin: 4px 0;
+  margin: 4px;
   border: none;
   background-color: transparent;
   outline: none;

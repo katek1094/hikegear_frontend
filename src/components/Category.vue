@@ -146,7 +146,7 @@ export default {
 }
 
 .category__handle, >>> .item__handle {
-  margin: 0 6px 0 0;
+  margin: 0 4px 0 0;
   padding: 6px;
   cursor: move;
   border-radius: 6px;
@@ -178,13 +178,13 @@ export default {
 }
 
 .category__weight__label, >>> .item__weight, .category__weight__total {
-  padding: 5px 8px 5px 2px;
+  padding: 5px 8px 5px 4px;
   width: 2.8rem;
   box-sizing: border-box;
 }
 
 .category__quantity__label, >>> .item__quantity, .category__quantity__total {
-  padding: 5px 8px 5px 2px;
+  padding: 5px 8px 5px 4px;
   width: 2.8rem;
   box-sizing: border-box;
 }
@@ -215,8 +215,12 @@ export default {
   }
 
   .category__delete, >>> .item__delete {
-    margin: 0 0 0 4px;
+    margin: 0 2px 0 4px;
   }
+  .category__handle, >>> .item__handle {
+    margin-left: 2px;
+  }
+
 
   >>> .item__quantity::-webkit-outer-spin-button,
   >>> .item__quantity::-webkit-inner-spin-button {

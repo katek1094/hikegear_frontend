@@ -1,6 +1,7 @@
 <template>
   <div class="summary__wrapper">
-    <Chart :data_array="summary_data.data" :data_labels="summary_data.labels" :colors_array="colors"/>
+    <Chart v-show="summary_data.total_weight !== 0" :colors_array="colors" :data_array="summary_data.data"
+           :data_labels="summary_data.labels"/>
     <table class="summary__table">
       <tr v-for="(data, index) in summary_data.data" :key="data">
         <td><div class="color" :style="{backgroundColor: colors[index]}"></div>{{ summary_data.labels[index] }}</td>
@@ -43,7 +44,7 @@ export default {
   computed: {
     summary_data() {
       return this.$store.getters['editor/summary_data']
-    }
+    },
   },
 }
 </script>

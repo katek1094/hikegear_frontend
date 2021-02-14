@@ -155,6 +155,7 @@ export default {
     );
     this.interval = setInterval(() => {
       if (this.editor_data_ready && this.are_changes) this.saveTimePassed += 10
+      // TODO: bar loads after fetch because are_changes is waiting for response to change to false
     }, 10)
   },
   beforeUnmount() {

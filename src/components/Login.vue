@@ -32,9 +32,7 @@
         <button class="auth__submit" type="submit" id="login-submit">zaloguj</button>
         <router-link to="/register" class="login__option login__register" type="button">nie mam konta (rejestracja)
         </router-link>
-        <router-link to="/recover_password" class="login__option login__forgot_password" type="button">nie pamiętam
-          hasła
-        </router-link>
+        <a :href="password_reset_url" class="login__option login__forgot_password" type="button">nie pamiętam hasła</a>
       </form>
     </div>
   </LandingPage>
@@ -91,6 +89,9 @@ export default {
     isFormValid() {
       return this.emailValidity && this.passwordValidity
     },
+    password_reset_url() {
+      return process.env.VUE_APP_API_URL + '/accounts/password_reset/'
+    }
   },
   methods: {
     submitForm() {

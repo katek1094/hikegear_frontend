@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import NavBar from "@/components/NavBar";
+import NavBar from "@/components/inside/NavBar";
 
 export default {
   name: "BaseApp",
@@ -27,6 +27,8 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 10px;
+  padding-bottom: 15px;
 }
 
 </style>

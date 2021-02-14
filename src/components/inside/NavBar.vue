@@ -83,11 +83,16 @@ nav {
   cursor: pointer;
   text-decoration: none;
   color: black;
+  margin: 0 1px;
 }
 
 .menu .link:hover, .dropdown-menu .link:hover, .brand:hover {
   background-color: var(--nav_hover_color);
-  border-radius: 4px;
+  border-radius: 2px;
+}
+
+.router-link-active {
+  background-color: var(--background);
 }
 
 .menu {

@@ -2,12 +2,12 @@ import {createRouter, createWebHistory} from 'vue-router'
 
 import store from "./store/index.js";
 
-import Editor from "@/components/Editor";
-import Settings from "@/components/Settings";
-import Register from "@/components/Register";
-import Login from "@/components/Login";
-import RecoverPassword from "@/components/RecoverPassword";
-import VerifyYourEmail from "@/components/VerifyYourEmail";
+import Editor from "@/components/inside/editor/Editor";
+import Settings from "@/components/inside/Settings";
+import Register from "@/components/outside/Register";
+import Login from "@/components/outside/Login";
+import RecoverPassword from "@/components/outside/RecoverPassword";
+import VerifyYourEmail from "@/components/outside/VerifyYourEmail";
 
 const router = createRouter({
     history: createWebHistory(),

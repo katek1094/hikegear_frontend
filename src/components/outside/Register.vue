@@ -1,31 +1,33 @@
 <template>
   <LandingPage>
-      <form class="auth__form" @submit.prevent="submitForm">
-        <h2>Rejestracja</h2>
-        <input id="registration-email" ref="email" v-model.trim="email"
-               :class="{ invalid: !emailValidity, blurred: email_blurred, activated: email_activated}"
-               class="auth__input"
-               inputmode="email" name="email" placeholder="e-mail" required type="email" @blur="markAsBlurred"
-               @input="activate">
-        <label v-if="email_info !== ''" for="registration-email">{{ email_info }}</label>
-        <input id="registration-password1" ref="password1" v-model.trim="password1"
-               :class="{ invalid: !password1Validity, blurred: password1_blurred, activated: password1_activated}"
-               :placeholder="'hasło (min. ' + min_password_length + ' znaków)'" class="auth__input" minlength="8"
-               name="password1" required type="password" @blur="markAsBlurred" @input="activate">
-        <label v-show="password1_info_display" for="registration-password1">{{ password1_info }}</label>
-        <label v-show="password_info !== ''">{{ password_info }}</label>
-        <input id="registration-password2" ref="password2" v-model.trim="password2"
-               :class="{ invalid: !password2Validity, blurred: password2_blurred, activated: password2_activated}"
-               class="auth__input" minlength="8" name="password2" placeholder="powtórz hasło" required type="password"
-               @blur="markAsBlurred" @input="activate">
-        <label v-show="password2_info_display" for="registration-password2">hasła nie są takie same</label>
-        <button id="register-submit" class="auth__submit" type="submit">zarejestruj</button>
-      </form>
+    <form class="auth__form" @submit.prevent="submitForm">
+      <h2>Rejestracja</h2>
+      <input id="registration-email" ref="email" v-model.trim="email"
+             :class="{ invalid: !emailValidity, blurred: email_blurred, activated: email_activated}"
+             class="auth__input"
+             inputmode="email" name="email" placeholder="e-mail" required type="email" @blur="markAsBlurred"
+             @input="activate">
+      <label v-if="email_info !== ''" for="registration-email">{{ email_info }}</label>
+      <input id="registration-password1" ref="password1" v-model.trim="password1"
+             :class="{ invalid: !password1Validity, blurred: password1_blurred, activated: password1_activated}"
+             :maxlength="max_password_length" :minlength="min_password_length"
+             :placeholder="'hasło (min. ' + min_password_length + ' znaków)'" class="auth__input"
+             name="password1" required type="password" @blur="markAsBlurred" @input="activate">
+      <label v-show="password1_info_display" for="registration-password1">{{ password1_info }}</label>
+      <label v-show="password_info !== ''">{{ password_info }}</label>
+      <input id="registration-password2" ref="password2" v-model.trim="password2"
+             :class="{ invalid: !password2Validity, blurred: password2_blurred, activated: password2_activated}"
+             :maxlength="max_password_length" :minlength="min_password_length" class="auth__input" name="password2"
+             placeholder="powtórz hasło" required type="password"
+             @blur="markAsBlurred" @input="activate">
+      <label v-show="password2_info_display" for="registration-password2">hasła nie są takie same</label>
+      <button id="register-submit" class="auth__submit" type="submit">zarejestruj</button>
+    </form>
   </LandingPage>
 </template>
 
 <script>
-import LandingPage from "@/components/LandingPage";
+import LandingPage from "@/components/outside/LandingPage";
 import getCookie from "@/store/functions";
 
 export default {
@@ -78,7 +80,7 @@ export default {
       return this.password1_info !== '' && this.password1_blurred && this.password1_activated
     },
     password2_info_display() {
-      return !this.password2Validity && this.password2_activated
+      return !this.password2Validity && this.password2_blurred && this.password2_activated
     },
     isFormValid() {
       return this.password1Validity && this.password2Validity && this.emailValidity
@@ -117,7 +119,7 @@ export default {
         if (dt.email) {
           this.email_info = 'konto powiązane z tym adresem email już istnieje'
         } else {
-          if (dt[0] === "['This password is too common.']") {
+          if (dt[0] === "['To hasło jest zbyt powszechne.']") {
             this.password_info = 'to hasło jest zbyt popularne'
           } else this.password_info = dt[0]
         }

@@ -43,9 +43,9 @@
 
 <script>
 import draggable from 'vuedraggable'
-import Category from "@/components/Category";
-import Summary from "@/components/Summary";
-import BaseApp from "@/components/BaseApp";
+import Category from "@/components/inside/editor/Category";
+import Summary from "@/components/inside/editor/Summary";
+import BaseApp from "@/components/inside/BaseApp";
 import Autoresizing from "@/components/Autoresizing";
 import {mapGetters} from 'vuex'
 
@@ -175,13 +175,13 @@ export default {
 .backpack__list {
   background-color: #e5e1e1;
   border-radius: 4px;
-  padding: 8px;
-  margin: 10px;
+  padding: 4px;
+  margin: 4px 10px;
   width: 300px;
 }
 
 .backpack__list__item {
-  margin: 10px;
+  margin: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -218,7 +218,7 @@ export default {
 }
 
 .editor {
-  padding: 20px 0;
+  padding-bottom: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -254,7 +254,7 @@ export default {
 
 .backpack__name {
   text-align: center;
-  margin: .2rem 0;
+  margin: .4rem 0;
   font-size: 1.4rem;
 }
 

@@ -4,7 +4,10 @@
            :data_labels="summary_data.labels"/>
     <table class="summary__table">
       <tr v-for="(data, index) in summary_data.data" :key="data">
-        <td><div class="color" :style="{backgroundColor: colors[index]}"></div>{{ summary_data.labels[index] }}</td>
+        <td>
+          <div class="color" :style="{backgroundColor: colors[index]}"></div>
+          {{ summary_data.labels[index] }}
+        </td>
         <td>{{ data }}</td>
       </tr>
       <tr>
@@ -28,7 +31,7 @@
 </template>
 
 <script>
-import Chart from "@/components/Chart";
+import Chart from "@/components/inside/editor/Chart";
 
 export default {
   name: "Summary",
@@ -73,14 +76,10 @@ td {
   font-size: 0.8rem;
 }
 
-
-
-
 @media (max-width: 479px) {
   .summary__wrapper {
     flex-direction: column;
   }
-
 }
 
 @media (min-width: 480px) {

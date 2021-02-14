@@ -37,7 +37,7 @@
 
 <script>
 import draggable from 'vuedraggable'
-import Item from "@/components/Item";
+import Item from "@/components/inside/editor/Item";
 
 export default {
   name: "Category",

@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import LandingPage from "@/components/LandingPage";
+import LandingPage from "@/components/outside/LandingPage";
 
 export default {
   name: "VerifyYourEmail",

@@ -90,7 +90,7 @@ export default {
       return this.emailValidity && this.passwordValidity
     },
     password_reset_url() {
-      return process.env.VUE_APP_API_URL + '/outside/password_reset/'
+      return process.env.VUE_APP_API_URL + '/accounts/password_reset/'
     }
   },
   methods: {

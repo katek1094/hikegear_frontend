@@ -6,7 +6,6 @@ import Editor from "@/components/inside/editor/Editor";
 import Settings from "@/components/inside/Settings";
 import Register from "@/components/outside/Register";
 import Login from "@/components/outside/Login";
-import RecoverPassword from "@/components/outside/RecoverPassword";
 import VerifyYourEmail from "@/components/outside/VerifyYourEmail";
 
 const router = createRouter({
@@ -17,7 +16,6 @@ const router = createRouter({
         {path: '/settings', component: Settings, name: 'settings', meta: {require_auth: true}},
         {path: '/login', component: Login, name: 'login'},
         {path: '/register', component: Register, name: 'register'},
-        {path: '/recover_password', component: RecoverPassword, name: 'recover_password'},
         {path: '/verify_email', component: VerifyYourEmail, name: 'verify_email'},
     ],
 })

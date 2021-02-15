@@ -1,4 +1,4 @@
-import getCookie from '@/store/functions'
+import {getCookie} from '@/store/functions'
 
 export default {
     namespaced: true,

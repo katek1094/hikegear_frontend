@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import getCookie from "@/store/functions";
+import {getCookie} from "@/store/functions";
 
 export default {
   name: "ChangePassword",

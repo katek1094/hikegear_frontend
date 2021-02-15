@@ -24,7 +24,7 @@
       </div>
       <Autoresizing ref="backpack_name" v-model.trim="pack_name" :maxlength="max_backpack_name_length"
                     :prevent-enter="true" class="backpack__name" placeholder="nazwa listy"/>
-      <Summary/>
+      <Summary :summary_data="summary_data"/>
       <div class="progress" :style="{width: saveTimePassed * 100 / saveTimeout + '%' }"></div>
       <!--    TODO: add backpack description-->
       <draggable v-model="organized_list" animation="1000" class="categories" group="categories"
@@ -75,7 +75,8 @@ export default {
       backpack_id: 'editor/backpack_id',
       backpacks: 'editor/backpacks',
       editor_data_ready: 'editor/isEditorDataReady',
-      are_changes: 'editor/are_any_changes'
+      are_changes: 'editor/are_any_changes',
+      summary_data: 'editor/summary_data'
     }),
     organized_list: {
       get() {

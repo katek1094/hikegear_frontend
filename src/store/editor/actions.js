@@ -1,4 +1,4 @@
-import getCookie from '@/store/functions'
+import {getCookie} from '@/store/functions'
 
 export default {
     moveCategory({commit}, new_organized_list) {

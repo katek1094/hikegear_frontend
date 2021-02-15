@@ -36,6 +36,9 @@ import Chart from "@/components/inside/editor/Chart";
 export default {
   name: "Summary",
   components: {Chart},
+  props: {
+    summary_data: Object
+  },
   data() {
     return {
       colors: ['rgb(53,77,232)', 'rgb(63,212,51)', 'rgb(212,32,32)', 'rgb(246,234,58)',
@@ -43,11 +46,6 @@ export default {
         'rgb(73,66,66)', 'rgb(54,154,172)', 'rgb(236,31,167)', 'rgb(217,188,7)',
         'rgb(187,184,183)', 'rgb(206,102,102)', 'rgb(108,134,34)', 'rgb(173,115,208)']
     }
-  },
-  computed: {
-    summary_data() {
-      return this.$store.getters['editor/summary_data']
-    },
   },
 }
 </script>

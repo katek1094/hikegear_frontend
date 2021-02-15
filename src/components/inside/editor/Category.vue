@@ -27,9 +27,6 @@
       </button>
       <span class="category__weight__total">{{ category.total_weight }}</span>
       <span class="category__quantity__total">{{ category.total_quantity }}</span>
-      <button class="category__delete invisible" type="button">
-        <font-awesome-icon class="fa-sm" icon="trash"/>
-      </button>
     </div>
   </div>
 </template>
@@ -104,19 +101,39 @@ export default {
   margin: 16px 0;
 }
 
-.category__header, .category__footer, ::v-deep(.item) {
-  display: flex;
-  padding: 0 3px;
+.category__name {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+$handle_width: auto;
+$worn_consumable_width: auto;
+$weight_width: 2.8rem;
+$quantity_width: auto;
+$delete_width: 30px;
+
+@mixin editor__grid {
+  display: grid;
   align-items: center;
+  column-gap: 1px;
+  padding: 1px 0;
 }
 
 .category__header {
+  @include editor__grid;
   font-size: 1rem;
+  grid-template-columns: $handle_width 1fr $weight_width $quantity_width $delete_width;
 }
 
-.category__name {
-  width: 90%;
-  box-sizing: border-box;
+.category__footer {
+  @include editor__grid;
+  grid-template-columns: 1fr $weight_width $quantity_width $delete_width;
+}
+
+::v-deep(.item) {
+  @include editor__grid;
+  grid-template-columns: $handle_width 1fr 1fr repeat(2, $worn_consumable_width)
+  $weight_width $quantity_width $delete_width;
 }
 
 .items {
@@ -124,134 +141,73 @@ export default {
   border-bottom: 1px solid grey;
 }
 
-.category__delete, ::v-deep(.item__delete) {
-  visibility: hidden;
-  outline: none;
-  border: none;
-  background-color: transparent;
-  padding: 4px 6px;
-}
-
-.category__header:hover .category__delete.deletable, ::v-deep(.item:hover) .item__delete {
-  visibility: visible;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .category__delete:hover, ::v-deep(.item__delete:hover) {
-    color: red;
-    cursor: pointer;
-  }
-}
-
-.category__handle, ::v-deep(.item__handle) {
-  margin: 0 4px 0 0;
-  padding: 6px;
-  cursor: move;
-  border-radius: 6px;
-  font-size: 1.15rem;
-  visibility: hidden;
-}
-
-.category__header:hover .category__handle, ::v-deep(.item:hover) .item__handle {
-  visibility: visible;
-}
-
-.category__handle:hover, ::v-deep(.item__handle:hover) {
-  background-color: white;
-}
-
 .sortable-chosen {
   transform: scale(1.01);
   box-shadow: 4px 4px 4px grey;
 }
 
-.category__weight__label, .category__quantity__label, .category__delete, ::v-deep(.item__delete), ::v-deep(.item__worn),
-::v-deep(.item__consumable), ::v-deep(.item__description), ::v-deep(.item__name), ::v-deep(.item__weight), ::v-deep(.item__quantity),
-.category__quantity__total, .category__weight__total {
-  margin: 0 2px;
+.category__delete, ::v-deep(.item__delete) {
+  outline: none;
+  border: none;
+  font-size: 0.8rem;
+  background-color: transparent;
+  padding: 6px;
+  width: $delete_width;
+  box-sizing: border-box;
 }
 
-.category__weight__label, .category__quantity__label, .category__quantity__total, .category__weight__total {
+@media (hover: hover) and (pointer: fine) {
+  .category__delete, ::v-deep(.item__delete), .category__handle, ::v-deep(.item__handle), {
+    visibility: hidden;
+  }
+  .category__header:hover .category__delete.deletable, ::v-deep(.item:hover .item__delete),
+  .category__header:hover .category__handle, ::v-deep(.item:hover .item__handle), {
+    visibility: visible;
+  }
+  .category__delete:hover, ::v-deep(.item__delete:hover) {
+    color: red;
+    cursor: pointer;
+  }
+  .category__handle:hover, ::v-deep(.item__handle:hover) {
+    background-color: white;
+  }
+  .category__quantity__label, .category__quantity__total, ::v-deep(.item__quantity) {
+    width: 2.8rem;
+    box-sizing: border-box;
+  }
+}
+
+.category__handle, ::v-deep(.item__handle) {
+  margin-right: 6px;
+  padding: 7px 7px 3px 7px;
+  cursor: move;
+  border-radius: 6px;
+  font-size: 1.15rem;
+}
+
+.category__weight__label, .category__quantity__label,
+.category__quantity__total, .category__weight__total, .item {
   font-size: .8rem;
-}
-
-.category__weight__label, ::v-deep(.item__weight), .category__weight__total {
-  padding: 5px 8px 5px 4px;
-  width: 2.8rem;
-  box-sizing: border-box;
-}
-
-.category__quantity__label, ::v-deep(.item__quantity), .category__quantity__total {
-  padding: 5px 8px 5px 4px;
-  width: 2.8rem;
-  box-sizing: border-box;
-}
-
-.category__weight__label, .category__weight__total {
-  margin-left: auto;
 }
 
 .category__weight__label, .category__quantity__label {
   align-self: flex-end;
+  margin-bottom: 3px;
 }
 
 @media (hover: none) and (pointer: coarse) {
-  .category__handle, ::v-deep(.item__handle), .category__delete, ::v-deep(.item__delete), ::v-deep(.item__worn), ::v-deep(.item__consumable) {
-    visibility: visible;
-  }
-
-  .invisible {
-    visibility: hidden;
-  }
-
-  .item__worn:hover:enabled, .item__consumable:hover:enabled {
-    color: grey;
-  }
-
-  .category__quantity__label, ::v-deep(.item__quantity), .category__quantity__total {
+  .category__quantity__label, .category__quantity__total, ::v-deep(.item__quantity) {
     width: 1.8rem;
+    box-sizing: border-box;
   }
-
-  .category__delete, ::v-deep(.item__delete) {
-    margin: 0 2px 0 4px;
-  }
-
-  .category__handle, ::v-deep(.item__handle) {
-    margin-left: 2px;
-  }
-
-
+  /*code below removes arrows from quantity input*/
   ::v-deep(.item__quantity::-webkit-outer-spin-button),
   ::v-deep(.item__quantity::-webkit-inner-spin-button) {
     -webkit-appearance: none;
   }
-
   ::v-deep(.item__quantity[type=number]) {
     -moz-appearance: textfield;
   }
 }
 
-@media (max-width: 479px) {
-
-}
-
-@media (min-width: 480px) {
-
-}
-
-@media (min-width: 600px) {
-
-}
-
-@media (min-width: 801px) {
-
-}
-
-@media (min-width: 1025px) {
-
-}
-
-@media (min-width: 1281px) {
-
-}
 </style>

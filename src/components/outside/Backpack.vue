@@ -1,11 +1,10 @@
 <template>
   <div v-if="backpack" class="backpack">
-    <span class="testing">testing</span>
-    <p class="backpack__name">{{ backpack.name }}</p>
+    <span class="backpack__name">{{ backpack.name }}</span>
     <Summary :summary_data="summary_data"/>
-    <div v-for="category in organized_data" :key="category.id">
+    <div class="category" v-for="category in organized_data" :key="category.id">
       <div class="category__header">
-        <p class="category__name">{{ category.name }}</p>
+        <span class="category__name">{{ category.name }}</span>
         <span class="category__weight__label">waga</span>
         <span class="category__quantity__label">ilość</span>
       </div>
@@ -21,6 +20,7 @@
         </div>
       </div>
       <div class="category__footer">
+        <span></span>
         <span class="category__weight__total">{{ category.total_weight }}</span>
         <span class="category__quantity__total">{{ category.total_quantity }}</span>
       </div>
@@ -72,23 +72,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.testing {
-  width: 100px;
-}
+@import "src/styles/backpack.scss";
 
 .backpack {
   padding-bottom: 20px;
   @include flex-column-center;
-}
-
-.backpack__name, .category__name, .item__name, .item__description,
-.item__weight, .item__quantity {
-  border-radius: 4px;
-  font-size: 1em;
-  border: 1px solid transparent;
-  background-color: transparent;
-  outline: none;
-  padding: 3px;
 }
 
 .backpack__name, .category__name {
@@ -106,42 +94,23 @@ export default {
 }
 
 .category__header, .category__footer, .item {
-  //display: flex;
   padding: 0 3px;
-  align-items: center;
+  width: 100%;
 }
 .category__header, .category__footer {
-  width: 100%;
   display: grid;
-  grid-template-columns: auto 2.8rem 2.8rem;
+  grid-template-columns: 1fr 2.8rem 2.8rem;
 }
 
 .item {
-  width: 100%;
   display: grid;
-  grid-template-columns: auto auto 20px 2.8rem 2.8rem;
-}
-
-
-.category__header {
-  font-size: 1rem;
-}
-
-.category__name {
-  width: 90%;
-  box-sizing: border-box;
-  margin: 0;
+  grid-template-columns: 1fr 1fr 20px 2.8rem 2.8rem;
+  align-items: center;
 }
 
 .items {
   border-top: 1px solid grey;
   border-bottom: 1px solid grey;
-}
-
-.category__weight__label, .category__quantity__label, .item__worn,
-.item__consumable, .item__description, .item__name, .item__weight, .item__quantity,
-.category__quantity__total, .category__weight__total {
-  margin: 0 2px;
 }
 
 .category__weight__label, .category__quantity__label, .category__quantity__total, .category__weight__total {
@@ -160,10 +129,6 @@ export default {
   box-sizing: border-box;
 }
 
-.category__weight__label, .category__weight__total {
-  margin-left: auto;
-}
-
 .category__weight__label, .category__quantity__label {
   align-self: flex-end;
 }
@@ -171,7 +136,6 @@ export default {
 
 .item {
   font-size: .8rem;
-  width: 500px;
 }
 
 .item:not(:last-child) {
@@ -187,6 +151,7 @@ export default {
   padding: 3px;
   font-size: 1.15em;
   color: blue;
+  box-sizing: initial;
 }
 
 

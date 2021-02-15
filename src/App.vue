@@ -16,6 +16,7 @@ export default {
 
 html {
   min-width: 320px;
+  max-width: 100vw;
 }
 
 body {
@@ -51,16 +52,15 @@ body {
   html {
     font-size: 17px;
   }
+  .category {
+    width: 700px;
+  }
 }
 
 @media (min-width: 1025px) {
   /* big landscape tablets, laptops, and desktops */
   html {
     font-size: 17px;
-  }
-
-  .category {
-    width: 700px;
   }
 }
 

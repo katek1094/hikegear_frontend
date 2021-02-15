@@ -221,6 +221,7 @@ export default {
 .editor {
   padding-bottom: 20px;
   @include flex-column-center;
+  max-width: 100vw;
 }
 
 .add-category, ::v-deep(.add-item), .add-backpack {
@@ -242,27 +243,4 @@ export default {
   font-size: 1.4rem;
 }
 
-@media (min-width: 320px) {
-
-}
-
-@media (min-width: 480px) {
-
-}
-
-@media (min-width: 600px) {
-
-}
-
-@media (min-width: 801px) {
-
-}
-
-@media (min-width: 1025px) {
-
-}
-
-@media (min-width: 1281px) {
-
-}
 </style>

@@ -11,15 +11,12 @@
     <button :class="{ checked: item.consumable }" :disabled="item.worn" class="item__consumable"
             @click="markAsConsumable">
       <font-awesome-icon class="fa-sm" icon="sync-alt"/>
+      <!--      TODO: check changing size with icon classes md/sm-->
     </button>
-    <div>
-      <input v-model.number="item_weight" :max="weight_limit" class="item__weight" min="0" type="number"
-             @input="removeLeadingZero" @keydown="preventNumericChars">
-    </div>
-    <div>
-      <input v-model.number="item_quantity" :max="quantity_limit" class="item__quantity" min="0" type="number"
-             @input="removeLeadingZero" @keydown="preventNumericChars">
-    </div>
+    <input v-model.number="item_weight" :max="weight_limit" class="item__weight" min="0" type="number"
+           @input="removeLeadingZero" @keydown="preventNumericChars">
+    <input v-model.number="item_quantity" :max="quantity_limit" class="item__quantity" min="0" type="number"
+           @input="removeLeadingZero" @keydown="preventNumericChars">
     <button class="item__delete" type="button" @click="deleteItem">
       <font-awesome-icon class="fa-sm" icon="trash"/>
     </button>
@@ -135,45 +132,37 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.item {
-  font-size: .8rem;
-}
-
 .item:not(:last-child) {
   border-bottom: 1px dotted grey;
 }
 
-.item__name {
-  width: 100%;
-}
-
-.item__description {
-  width: 100%;
-}
-
-.item:hover .item__worn, .item:hover .item__consumable {
-  visibility: visible;
-}
-
 .item__worn, .item__consumable {
-  visibility: hidden;
   border-radius: 50%;
-  border: 1px solid transparent;
+  border: none;
   background-color: transparent;
   outline: none;
   color: grey;
-  padding: 3px;
+  padding: 4px;
   font-size: 1.15em;
+  margin: 0 2px;
 }
 
 .checked {
-  visibility: visible;
   color: blue;
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .item__worn, .item__consumable {
+    visibility: hidden;
+  }
+  .item:hover .item__worn, .item:hover .item__consumable {
+    visibility: visible;
+  }
   .item__worn:hover:enabled, .item__consumable:hover:enabled {
     color: black;
+  }
+  .checked {
+    visibility: visible;
   }
 }
 
@@ -181,7 +170,7 @@ export default {
   cursor: pointer;
 }
 
-/*code below removes arrows from numeric inputs*/
+/*code below removes arrows from weight input*/
 .item__weight::-webkit-outer-spin-button,
 .item__weight::-webkit-inner-spin-button {
   -webkit-appearance: none;

@@ -1,21 +1,21 @@
 <template>
   <div v-if="backpack" class="backpack">
-    <p class="backpack__name">{{backpack.name}}</p>
+    <p class="backpack__name">{{ backpack.name }}</p>
     <Summary :summary_data="summary_data"/>
     <div v-for="category in organized_data" :key="category.id">
       <div class="category__header">
-        <p class="category__name">{{category.name}}</p>
+        <p class="category__name">{{ category.name }}</p>
         <span class="category__weight__label">waga</span>
         <span class="category__quantity__label">ilość</span>
       </div>
       <div class="items">
         <div class="item" v-for="item in category.items" :key="item.id">
-          <span class="item__name">{{item.name}}</span>
-          <span class="item__description">{{item.description}}</span>
+          <span class="item__name">{{ item.name }}</span>
+          <span class="item__description">{{ item.description }}</span>
           <font-awesome-icon v-if="item.worn" class="fa-sm item__worn" icon="child"/>
           <font-awesome-icon v-if="item.consumable" class="fa-sm item__consumable" icon="sync-alt"/>
-          <span class="item__weight">{{item.weight}}</span>
-          <span class="item__quantity">{{item.quantity}}</span>
+          <span class="item__weight">{{ item.weight }}</span>
+          <span class="item__quantity">{{ item.quantity }}</span>
         </div>
       </div>
       <div class="category__footer">
@@ -114,6 +114,7 @@ export default {
 .category__name {
   width: 90%;
   box-sizing: border-box;
+  margin: 0;
 }
 
 .items {
@@ -212,6 +213,7 @@ export default {
   .category__delete, >>> .item__delete {
     margin: 0 2px 0 4px;
   }
+
   .category__handle, >>> .item__handle {
     margin-left: 2px;
   }
@@ -229,14 +231,11 @@ export default {
 
 .item {
   font-size: .8rem;
+  width: 500px;
 }
 
-.item.first, .item.middle {
+.item:not(:last-child) {
   border-bottom: 1px dotted grey;
-}
-
-.item.first.last {
-  border: none;
 }
 
 .item__name {

@@ -29,8 +29,8 @@
       <!--    TODO: add backpack description-->
       <draggable v-model="organized_list" animation="1000" class="categories" group="categories"
                  handle=".category__handle" item-key="id" @end="drag=false" @start="drag=true">
-        <template #item="{element, index}">
-          <Category :category="element" :index="index" :ref="setCategoryRef"/>
+        <template #item="{element}">
+          <Category :category="element" :ref="setCategoryRef"/>
         </template>
       </draggable>
       <button class="add-category" type="button" @click="addCategory">

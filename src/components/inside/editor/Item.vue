@@ -1,5 +1,5 @@
 <template>
-  <div :class="{first: first, last: last, middle: !last && !first}" class="item">
+  <div class="item">
     <span class="item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
     <Autoresizing ref="name" v-model.trim="item_name" :maxlength="max_name_length" class="item__name"
                   placeholder="nazwa" :prevent-enter="true"/>
@@ -34,9 +34,6 @@ export default {
   components: {Autoresizing},
   props: {
     item: Object,
-    first: Boolean,
-    last: Boolean,
-    index: Number
   },
   data() {
     return {
@@ -142,12 +139,8 @@ export default {
   font-size: .8rem;
 }
 
-.item.first, .item.middle {
+.item:not(:last-child) {
   border-bottom: 1px dotted grey;
-}
-
-.item.first.last {
-  border: none;
 }
 
 .item__name {

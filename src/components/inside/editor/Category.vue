@@ -16,9 +16,8 @@
     </div>
     <draggable v-model="items" animation="700" class="items" group="category__items" item-key="id"
                handle=".item__handle" emptyInsertThreshold="30">
-      <template #item="{element, index}">
-        <Item :first="category.items.indexOf(element) === 0" :item="element" :index="index" :ref="setItemRef"
-              :last="category.items.indexOf(element) === category.items.length - 1"/>
+      <template #item="{element}">
+        <Item :item="element" :ref="setItemRef"/>
       </template>
     </draggable>
     <div class="category__footer">
@@ -44,7 +43,6 @@ export default {
   components: {Item, draggable},
   props: {
     category: Object,
-    index: Number
   },
   data() {
     return {
@@ -217,6 +215,7 @@ export default {
   .category__delete, >>> .item__delete {
     margin: 0 2px 0 4px;
   }
+
   .category__handle, >>> .item__handle {
     margin-left: 2px;
   }

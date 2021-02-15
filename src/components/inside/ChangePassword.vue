@@ -101,7 +101,7 @@ export default {
     },
     markAsBlurred(e) {
       let name = e.target.getAttribute('name')
-      this[name + '_blurred'] = true
+      if (this[name + '_activated'] === true) this[name + '_blurred'] = true
     },
     activate(e) {
       let name = e.target.getAttribute('name')

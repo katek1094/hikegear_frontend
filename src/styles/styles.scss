@@ -1,1 +1,98 @@
-$xd: yellow;
+//some random colors
+$color_a: #f6f6f6;
+$color_b: #e7e6e6;
+$color_c: #ececea;
+
+//variables used in components
+$background: #efeded;
+
+$nav_height: 50px;
+$nav_color: #dbd8d8;
+$nav_hover_color: white;
+
+//reset
+
+//general mixins
+@mixin flex-column-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+//editor mixins
+@mixin editor-add {
+  margin: 4px;
+  border: none;
+  background-color: transparent;
+  outline: none;
+  color: yellowgreen;
+  font-size: .85rem;
+
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+@mixin editor-input__field {
+  border-radius: 4px;
+  font-size: 1em;
+  border: 1px solid transparent;
+  background-color: transparent;
+  outline: none;
+  padding: 3px;
+
+  &:focus {
+    background-color: white;
+    border: 1px solid grey;
+  }
+
+  &:hover {
+    background-color: white;
+    cursor: text;
+  }
+}
+//forms mixins
+@mixin form-input {
+  font-size: 1.2rem;
+  margin: 4px;
+  border-radius: 4px;
+  outline: none;
+  padding: 7px;
+  border: 1px solid white;
+
+  &:focus {
+    border: 1px solid black;
+  }
+}
+
+@mixin form-submit {
+  outline: none;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  border: 1px solid grey;
+  padding: 8px 12px;
+  margin: 4px;
+  background-color: white;
+  transition: all .25s;
+
+  &:hover {
+    cursor: pointer;
+    transform: translate(0, -1px);
+    box-shadow: grey 0 1px;
+  }
+
+  &:active {
+    transition: all .1s;
+    transform: none;
+    box-shadow: none;
+  }
+
+
+
+
+
+
+
+
+}

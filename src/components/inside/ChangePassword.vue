@@ -174,27 +174,11 @@ export default {
 }
 
 form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+@include flex-column-center;
 }
 
 input {
-  font-size: 1.2rem;
-  margin: 4px;
-  border-radius: 4px;
-  outline: none;
-  padding: 7px;
-  border: 1px solid white;
-}
-
-input:hover {
-
-}
-
-input:focus {
-  border: 1px solid black;
+@include form-input;
 }
 
 input.invalid.blurred.activated {
@@ -206,26 +190,7 @@ label {
 }
 
 button {
-  outline: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  border: 1px solid grey;
-  padding: 6px 10px;
-  margin: 4px;
-  background-color: white;
-  transition: all .25s;
-}
-
-button:hover {
-  cursor: pointer;
-  transform: translate(0, -1px);
-  box-shadow: grey 0 1px;
-}
-
-button:active {
-  transition: all .1s;
-  transform: none;
-  box-shadow: none;
+  @include form-submit;
 }
 
 </style>

@@ -25,34 +25,11 @@ export default {
 
 <style lang="scss" scoped>
 .settings {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+@include flex-column-center;
 }
-
 
 button {
-  outline: none;
-  border-radius: 5px;
-  font-size: 1.2rem;
-  border: 1px solid grey;
-  padding: 8px 12px;
-  margin: 4px;
-  background-color: white;
-  transition: all .25s;
+  @include form-submit
 }
-
-button:hover {
-  cursor: pointer;
-  transform: translate(0, -1px);
-  box-shadow: grey 0 1px;
-}
-
-button:active {
-  transition: all .1s;
-  transform: none;
-  box-shadow: none;
-}
-
 
 </style>

@@ -220,33 +220,16 @@ export default {
 
 .editor {
   padding-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @include flex-column-center;
 }
 
 .add-category, ::v-deep(.add-item), .add-backpack {
-  margin: 4px;
-  border: none;
-  background-color: transparent;
-  outline: none;
-  color: yellowgreen;
-  font-size: .85rem;
-}
-
-.add-category:hover, ::v-deep(.add-item:hover), .add-backpack:hover {
-  text-decoration: underline;
-  cursor: pointer;
+  @include editor-add;
 }
 
 .backpack__name, ::v-deep(.category__name), ::v-deep(.item__name), ::v-deep(.item__description),
 ::v-deep(.item__weight), ::v-deep(.item__quantity) {
-  border-radius: 4px;
-  font-size: 1em;
-  border: 1px solid transparent;
-  background-color: transparent;
-  outline: none;
-  padding: 3px;
+  @include editor-input__field;
 }
 
 .backpack__name, ::v-deep(.category__name) {
@@ -257,18 +240,6 @@ export default {
   text-align: center;
   margin: .4rem 0;
   font-size: 1.4rem;
-}
-
-.backpack__name:focus, ::v-deep(.category__name:focus), ::v-deep(.item__name:focus), ::v-deep(.item__description:focus),
-::v-deep(.item__weight:focus), ::v-deep(.item__quantity:focus) {
-  background-color: white;
-  border: 1px solid grey;
-}
-
-.backpack__name:hover, ::v-deep(.category__name:hover), ::v-deep(.item__name:hover), ::v-deep(.item__description:hover),
-::v-deep(.item__weight:hover), ::v-deep(.item__quantity:hover) {
-  background-color: white;
-  cursor: text;
 }
 
 @media (min-width: 320px) {

@@ -85,7 +85,7 @@ td {
 }
 
 @media (min-width: 600px) {
-  >>> #summary-chart {
+  ::v-deep(#summary-chart) {
     width: 200px;
     height: 200px
   }

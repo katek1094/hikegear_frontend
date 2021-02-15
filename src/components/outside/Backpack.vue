@@ -69,16 +69,18 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+
 .backpack {
   padding-bottom: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: $xd;
 }
 
-.backpack__name, >>> .category__name, >>> .item__name, >>> .item__description,
->>> .item__weight, >>> .item__quantity {
+.backpack__name, .category__name, .item__name, .item__description,
+.item__weight, .item__quantity {
   border-radius: 4px;
   font-size: 1em;
   border: 1px solid transparent;
@@ -87,7 +89,7 @@ export default {
   padding: 3px;
 }
 
-.backpack__name, >>> .category__name {
+.backpack__name, .category__name {
   font-weight: bold;
 }
 
@@ -122,7 +124,7 @@ export default {
   border-bottom: 1px solid grey;
 }
 
-.category__delete, >>> .item__delete {
+.category__delete, .item__delete {
   visibility: hidden;
   outline: none;
   border: none;
@@ -130,18 +132,18 @@ export default {
   padding: 4px 6px;
 }
 
-.category__header:hover .category__delete.deletable, >>> .item:hover .item__delete {
+.category__header:hover .category__delete.deletable, .item:hover .item__delete {
   visibility: visible;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .category__delete:hover, >>> .item__delete:hover {
+  .category__delete:hover, .item__delete:hover {
     color: red;
     cursor: pointer;
   }
 }
 
-.category__handle, >>> .item__handle {
+.category__handle, .item__handle {
   margin: 0 4px 0 0;
   padding: 6px;
   cursor: move;
@@ -150,11 +152,11 @@ export default {
   visibility: hidden;
 }
 
-.category__header:hover .category__handle, >>> .item:hover .item__handle {
+.category__header:hover .category__handle, .item:hover .item__handle {
   visibility: visible;
 }
 
-.category__handle:hover, >>> .item__handle:hover {
+.category__handle:hover, .item__handle:hover {
   background-color: white;
 }
 
@@ -163,8 +165,8 @@ export default {
   box-shadow: 4px 4px 4px grey;
 }
 
-.category__weight__label, .category__quantity__label, .category__delete, >>> .item__delete, >>> .item__worn,
->>> .item__consumable, >>> .item__description, >>> .item__name, >>> .item__weight, >>> .item__quantity,
+.category__weight__label, .category__quantity__label, .category__delete, .item__delete, .item__worn,
+.item__consumable, .item__description, .item__name, .item__weight, .item__quantity,
 .category__quantity__total, .category__weight__total {
   margin: 0 2px;
 }
@@ -173,13 +175,13 @@ export default {
   font-size: .8rem;
 }
 
-.category__weight__label, >>> .item__weight, .category__weight__total {
+.category__weight__label, .item__weight, .category__weight__total {
   padding: 5px 8px 5px 4px;
   width: 2.8rem;
   box-sizing: border-box;
 }
 
-.category__quantity__label, >>> .item__quantity, .category__quantity__total {
+.category__quantity__label, .item__quantity, .category__quantity__total {
   padding: 5px 8px 5px 4px;
   width: 2.8rem;
   box-sizing: border-box;
@@ -194,7 +196,7 @@ export default {
 }
 
 @media (hover: none) and (pointer: coarse) {
-  .category__handle, >>> .item__handle, .category__delete, >>> .item__delete, >>> .item__worn, >>> .item__consumable {
+  .category__handle, .item__handle, .category__delete, .item__delete, .item__worn, .item__consumable {
     visibility: visible;
   }
 
@@ -206,25 +208,25 @@ export default {
     color: grey;
   }
 
-  .category__quantity__label, >>> .item__quantity, .category__quantity__total {
+  .category__quantity__label, .item__quantity, .category__quantity__total {
     width: 1.8rem;
   }
 
-  .category__delete, >>> .item__delete {
+  .category__delete, .item__delete {
     margin: 0 2px 0 4px;
   }
 
-  .category__handle, >>> .item__handle {
+  .category__handle, .item__handle {
     margin-left: 2px;
   }
 
 
-  >>> .item__quantity::-webkit-outer-spin-button,
-  >>> .item__quantity::-webkit-inner-spin-button {
+  .item__quantity::-webkit-outer-spin-button,
+  .item__quantity::-webkit-inner-spin-button {
     -webkit-appearance: none;
   }
 
-  >>> .item__quantity[type=number] {
+  .item__quantity[type=number] {
     -moz-appearance: textfield;
   }
 }

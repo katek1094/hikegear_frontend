@@ -11,20 +11,20 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .logo:hover {
   background-color: white;
   border-radius: 8px;
 }
 
->>> .auth__form {
+::v-deep(.auth__form) {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
->>> .auth__input {
+::v-deep(.auth__input) {
   font-size: 1.2rem;
   margin: 4px;
   border-radius: 4px;
@@ -33,23 +33,23 @@ export default {
   border: 1px solid white;
 }
 
->>> .auth__input:hover {
+::v-deep(.auth__input:hover) {
 
 }
 
->>> .auth__input:focus {
+::v-deep(.auth__input:focus) {
   border: 1px solid black;
 }
 
->>> .auth__input.invalid.blurred.activated {
+::v-deep(.auth__input.invalid.blurred.activated) {
   border-color: red;
 }
 
->>> .auth__label {
+::v-deep(.auth__label) {
   margin: 10px 4px;
 }
 
->>> .auth__submit {
+::v-deep(.auth__submit) {
   outline: none;
   border-radius: 5px;
   font-size: 1.2rem;
@@ -60,25 +60,25 @@ export default {
   transition: all .25s;
 }
 
->>> .auth__submit:hover {
+::v-deep(.auth__submit:hover) {
   cursor: pointer;
   transform: translate(0, -1px);
   box-shadow: grey 0 1px;
 }
 
->>> .auth__submit:active {
+::v-deep(.auth__submit:active) {
   transition: all .1s;
   transform: none;
   box-shadow: none;
 }
 
->>> .login__option {
+::v-deep(.login__option) {
   margin-top: 20px;
   color: black;
   text-decoration: none;
 }
 
->>> .login__option:hover {
+::v-deep(.login__option:hover) {
   text-decoration: underline;
 }
 

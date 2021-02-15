@@ -16,7 +16,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .base_app {
   overflow: hidden;
   background-color: var(--background);

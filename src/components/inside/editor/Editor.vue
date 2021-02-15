@@ -167,7 +167,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .progress {
   height: 1px;
   background-color: grey;
@@ -225,7 +225,7 @@ export default {
   align-items: center;
 }
 
-.add-category, >>> .add-item, .add-backpack {
+.add-category, ::v-deep(.add-item), .add-backpack {
   margin: 4px;
   border: none;
   background-color: transparent;
@@ -234,13 +234,13 @@ export default {
   font-size: .85rem;
 }
 
-.add-category:hover, >>> .add-item:hover, .add-backpack:hover {
+.add-category:hover, ::v-deep(.add-item:hover), .add-backpack:hover {
   text-decoration: underline;
   cursor: pointer;
 }
 
-.backpack__name, >>> .category__name, >>> .item__name, >>> .item__description,
->>> .item__weight, >>> .item__quantity {
+.backpack__name, ::v-deep(.category__name), ::v-deep(.item__name), ::v-deep(.item__description),
+::v-deep(.item__weight), ::v-deep(.item__quantity) {
   border-radius: 4px;
   font-size: 1em;
   border: 1px solid transparent;
@@ -249,7 +249,7 @@ export default {
   padding: 3px;
 }
 
-.backpack__name, >>> .category__name {
+.backpack__name, ::v-deep(.category__name) {
   font-weight: bold;
 }
 
@@ -259,14 +259,14 @@ export default {
   font-size: 1.4rem;
 }
 
-.backpack__name:focus, >>> .category__name:focus, >>> .item__name:focus, >>> .item__description:focus,
->>> .item__weight:focus, >>> .item__quantity:focus {
+.backpack__name:focus, ::v-deep(.category__name:focus), ::v-deep(.item__name:focus), ::v-deep(.item__description:focus),
+::v-deep(.item__weight:focus), ::v-deep(.item__quantity:focus) {
   background-color: white;
   border: 1px solid grey;
 }
 
-.backpack__name:hover, >>> .category__name:hover, >>> .item__name:hover, >>> .item__description:hover,
->>> .item__weight:hover, >>> .item__quantity:hover {
+.backpack__name:hover, ::v-deep(.category__name:hover), ::v-deep(.item__name:hover), ::v-deep(.item__description:hover),
+::v-deep(.item__weight:hover), ::v-deep(.item__quantity:hover) {
   background-color: white;
   cursor: text;
 }

@@ -48,7 +48,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 textarea {
   resize: none;
   overflow: hidden;

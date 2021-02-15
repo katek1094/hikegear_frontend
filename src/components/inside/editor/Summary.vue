@@ -50,7 +50,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .summary__wrapper {
   display: flex;
   margin-bottom: 15px;

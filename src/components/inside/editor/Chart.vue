@@ -63,7 +63,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .canvas__wrapper {
   margin: 10px;
 }

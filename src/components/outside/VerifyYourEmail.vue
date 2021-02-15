@@ -23,7 +23,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .wrapper {
   display: flex;
   justify-content: center;

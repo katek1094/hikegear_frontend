@@ -48,7 +48,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .navbar {
   --nav_height: 50px;
   /*--nav_color:  #ececea;*/

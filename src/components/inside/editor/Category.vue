@@ -112,26 +112,19 @@ $weight_width: 2.8rem;
 $quantity_width: auto;
 $delete_width: 30px;
 
-@mixin editor__grid {
-  display: grid;
-  align-items: center;
-  column-gap: 1px;
-  padding: 1px 0;
-}
-
 .category__header {
-  @include editor__grid;
+  @include editor-category_grid;
   font-size: 1rem;
   grid-template-columns: $handle_width 1fr $weight_width $quantity_width $delete_width;
 }
 
 .category__footer {
-  @include editor__grid;
+  @include editor-category_grid;
   grid-template-columns: 1fr $weight_width $quantity_width $delete_width;
 }
 
 ::v-deep(.item) {
-  @include editor__grid;
+  @include editor-category_grid;
   grid-template-columns: $handle_width 1fr 1fr repeat(2, $worn_consumable_width)
   $weight_width $quantity_width $delete_width;
 }
@@ -190,9 +183,13 @@ $delete_width: 30px;
   font-size: .8rem;
 }
 
+.category__weight__label, .category__quantity__label,
+.category__quantity__total, .category__weight__total {
+  @include editor-input_and_label;
+}
+
 .category__weight__label, .category__quantity__label {
   align-self: flex-end;
-  margin-bottom: 3px;
 }
 
 @media (hover: none) and (pointer: coarse) {

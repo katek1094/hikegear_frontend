@@ -35,12 +35,16 @@ $nav_hover_color: white;
   }
 }
 
-@mixin editor-input__field {
-  border-radius: 4px;
+@mixin editor-input_and_label {
+  padding: 3px;
   border: 1px solid transparent;
+}
+
+@mixin editor-input__field {
+  @include editor-input_and_label;
+  border-radius: 4px;
   background-color: transparent;
   outline: none;
-  padding: 3px;
   font-size: 1em;
 
   &:focus {
@@ -53,6 +57,14 @@ $nav_hover_color: white;
     cursor: text;
   }
 }
+
+@mixin editor-category_grid {
+  display: grid;
+  align-items: center;
+  column-gap: 1px;
+  padding: 1px 0;
+}
+
 //forms mixins
 @mixin form-input {
   font-size: 1.2rem;
@@ -88,12 +100,6 @@ $nav_hover_color: white;
     transform: none;
     box-shadow: none;
   }
-
-
-
-
-
-
 
 
 }

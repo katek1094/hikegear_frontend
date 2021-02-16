@@ -2,27 +2,29 @@
   <div v-if="backpack" class="backpack">
     <span class="backpack__name">{{ backpack.name }}</span>
     <Summary :summary_data="summary_data"/>
-    <div class="category" v-for="category in organized_data" :key="category.id">
-      <div class="category__header">
-        <span class="category__name">{{ category.name }}</span>
-        <span class="category__weight__label">waga</span>
-        <span class="category__quantity__label">ilość</span>
-      </div>
-      <div class="items">
-        <div class="item" v-for="item in category.items" :key="item.id">
-          <span class="item__name">{{ item.name }}</span>
-          <span class="item__description">{{ item.description }}</span>
-<!--          <font-awesome-icon v-if="item.worn" class="fa-sm item__worn" icon="child"/>-->
-          <font-awesome-icon class="fa-sm item__worn" icon="child"/>
-<!--          <font-awesome-icon v-if="item.consumable" class="fa-sm item__consumable" icon="sync-alt"/>-->
-          <span class="item__weight">{{ item.weight }}</span>
-          <span class="item__quantity">{{ item.quantity }}</span>
+    <div class="categories">
+      <div class="category" v-for="category in organized_data" :key="category.id">
+        <div class="category__header">
+          <span class="category__name">{{ category.name }}</span>
+          <span class="category__weight__label">waga</span>
+          <span class="category__quantity__label">ilość</span>
         </div>
-      </div>
-      <div class="category__footer">
-        <span></span>
-        <span class="category__weight__total">{{ category.total_weight }}</span>
-        <span class="category__quantity__total">{{ category.total_quantity }}</span>
+        <div class="items">
+          <div class="item" v-for="item in category.items" :key="item.id">
+            <span class="item__name">{{ item.name }}</span>
+            <span class="item__description">{{ item.description }}</span>
+            <font-awesome-icon v-if="item.worn" class="fa-sm item__worn" icon="child"/>
+            <font-awesome-icon v-else-if="item.consumable" class="fa-sm item__consumable" icon="sync-alt"/>
+            <font-awesome-icon v-else class="fa-sm item__consumable invisible" icon="sync-alt"/>
+            <span class="item__weight">{{ item.weight }}</span>
+            <span class="item__quantity">{{ item.quantity }}</span>
+          </div>
+        </div>
+        <div class="category__footer">
+          <span></span>
+          <span class="category__weight__total">{{ category.total_weight }}</span>
+          <span class="category__quantity__total">{{ category.total_quantity }}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -77,6 +79,13 @@ export default {
 .backpack {
   padding-bottom: 20px;
   @include flex-column-center;
+  max-width: 100vw;
+}
+
+.backpack__name, .category__name, .item__name, .item__description,
+.item__weight, .item__quantity, .category__weight__label, .category__quantity__label,
+.category__quantity__total, .category__weight__total {
+  padding: 3px;
 }
 
 .backpack__name, .category__name {
@@ -93,19 +102,28 @@ export default {
   margin: 16px 0;
 }
 
-.category__header, .category__footer, .item {
-  padding: 0 3px;
+.category__name {
   width: 100%;
+  box-sizing: border-box;
 }
-.category__header, .category__footer {
-  display: grid;
-  grid-template-columns: 1fr 2.8rem 2.8rem;
+
+$weight_width: 2.8rem;
+$quantity_width: 2rem;
+
+.category__header {
+  @include editor-category_grid;
+  font-size: 1rem;
+  grid-template-columns: 1fr $weight_width $quantity_width;
+}
+
+.category__footer {
+  @include editor-category_grid;
+  grid-template-columns: 1fr $weight_width $quantity_width;
 }
 
 .item {
-  display: grid;
-  grid-template-columns: 1fr 1fr 20px 2.8rem 2.8rem;
-  align-items: center;
+  @include editor-category_grid;
+  grid-template-columns: 1fr 1fr auto $weight_width $quantity_width;
 }
 
 .items {
@@ -113,46 +131,32 @@ export default {
   border-bottom: 1px solid grey;
 }
 
-.category__weight__label, .category__quantity__label, .category__quantity__total, .category__weight__total {
+.invisible {
+  visibility: hidden;
+}
+
+.category__weight__label, .category__quantity__label,
+.category__quantity__total, .category__weight__total, .item {
   font-size: .8rem;
-}
-
-.category__weight__label, .item__weight, .category__weight__total {
-  padding: 5px 8px 5px 4px;
-  width: 2.8rem;
-  box-sizing: border-box;
-}
-
-.category__quantity__label, .item__quantity, .category__quantity__total {
-  padding: 5px 8px 5px 4px;
-  width: 2.8rem;
-  box-sizing: border-box;
 }
 
 .category__weight__label, .category__quantity__label {
   align-self: flex-end;
 }
 
-
-.item {
-  font-size: .8rem;
-}
-
 .item:not(:last-child) {
   border-bottom: 1px dotted grey;
 }
 
-
 .item__worn, .item__consumable {
   border-radius: 50%;
-  border: 1px solid transparent;
+  border: none;
   background-color: transparent;
   outline: none;
-  padding: 3px;
-  font-size: 1.15em;
   color: blue;
-  box-sizing: initial;
+  padding: 4px;
+  font-size: 1.15em;
+  margin: 0 3px;
 }
-
 
 </style>

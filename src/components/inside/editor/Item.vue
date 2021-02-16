@@ -144,7 +144,7 @@ export default {
   color: grey;
   padding: 4px;
   font-size: 1.15em;
-  margin: 0 2px;
+  margin: 0 3px;
 }
 
 .checked {

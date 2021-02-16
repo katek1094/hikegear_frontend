@@ -1,22 +1,22 @@
 <template>
   <div class="item">
     <span class="item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
-    <Autoresizing ref="name" v-model.trim="item_name" :maxlength="max_name_length" class="item__name"
-                  placeholder="nazwa" :prevent-enter="true"/>
+    <Autoresizing ref="name" v-model.trim="item_name" :maxlength="max_name_length" :prevent-enter="true"
+                  class="item__name" placeholder="nazwa"/>
     <Autoresizing ref="description" v-model="item_description" :maxlength="max_description_length"
                   class="item__description" placeholder="opis"/>
     <button :class="{ checked: item.worn }" :disabled="item.consumable" class="item__worn" @click="markAsWorn">
-      <font-awesome-icon class="fa-sm" icon="child"/>
+      <font-awesome-icon class="fa-md" icon="child"/>
     </button>
     <button :class="{ checked: item.consumable }" :disabled="item.worn" class="item__consumable"
             @click="markAsConsumable">
-      <font-awesome-icon class="fa-sm" icon="sync-alt"/>
+      <font-awesome-icon class="fa-md" icon="sync-alt"/>
       <!--      TODO: check changing size with icon classes md/sm-->
     </button>
-    <input v-model.number="item_weight" :max="weight_limit" class="item__weight" min="0" type="number"
-           @input="removeLeadingZero" @keydown="preventNumericChars">
-    <input v-model.number="item_quantity" :max="quantity_limit" class="item__quantity" min="0" type="number"
-           @input="removeLeadingZero" @keydown="preventNumericChars">
+    <input v-model.number="item_weight" :max="weight_limit" class="item__weight" min="0" name="item_weight"
+           type="number" @blur="fillWithZero" @input="removeLeadingZero" @keydown="preventNumericChars">
+    <input v-model.number="item_quantity" :max="quantity_limit" class="item__quantity" min="0" name="item_quantity"
+           type="number" @blur="fillWithZero" @input="removeLeadingZero" @keydown="preventNumericChars">
     <button class="item__delete" type="button" @click="deleteItem">
       <font-awesome-icon class="fa-sm" icon="trash"/>
     </button>
@@ -125,6 +125,11 @@ export default {
     removeLeadingZero(e) {
       if ((String(e.target.value)[0] === '0') && (e.target.value.length > 1)) {
         e.target.value = String(e.target.value).slice(1)
+      }
+    },
+    fillWithZero(e) {
+      if (e.target.value === '') {
+        this[e.target.getAttribute('name')] = 0
       }
     }
   },

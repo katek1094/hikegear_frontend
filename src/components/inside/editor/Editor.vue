@@ -99,13 +99,15 @@ export default {
     addCategory() {
       this.$store.dispatch('editor/addCategory')
     },
-    save(update_dynamic) {
-      this.edits = 0
-      // TODO: add some kind of progress when data is fetching
-      this.$store.dispatch('editor/updateBackpack', {id: this.backpack_id, update_dynamic: update_dynamic})
+    save(update_dynamic = true) {
+      if (this.are_changes) {
+        this.edits = 0
+        // TODO: add some kind of progress when data is fetching
+        this.$store.dispatch('editor/updateBackpack', {id: this.backpack_id, update_dynamic: update_dynamic})
+      }
     },
     changeBackpack(index) {
-      if (this.are_changes) this.save(false)
+      this.save(false)
       this.$store.dispatch('editor/changeBackpack', index)
       this.$forceUpdate()
     },
@@ -134,11 +136,18 @@ export default {
     setCategoryRef(el) {
       if (el) this.categoryRefs.push(el)
     },
+    ctrlS(e) {
+      if (e.key === 's' && e.ctrlKey === true) {
+        e.preventDefault()
+        this.save()
+      }
+    }
   },
   beforeUpdate() {
     this.categoryRefs = []
   },
   mounted() {
+    window.addEventListener('keydown', this.ctrlS);
     window.addEventListener("resize", this.windowResized);
     this.$store.watch(
         (state) => state.editor.dynamic,
@@ -147,8 +156,8 @@ export default {
           this.edits += 1
           let x = this.edits
           setTimeout(() => {
-            if (x === this.edits && this.are_changes) {
-              this.save(true)
+            if (x === this.edits) {
+              this.save()
             }
           }, this.saveTimeout)
         },
@@ -161,6 +170,7 @@ export default {
   },
   beforeUnmount() {
     window.removeEventListener("resize", this.windowResized);
+    window.removeEventListener("keydown", this.ctrlS);
     clearInterval(this.interval)
   },
 
@@ -219,7 +229,7 @@ export default {
 }
 
 .editor {
-  padding-bottom: 20px;
+  padding-bottom: 30px;
   @include flex-column-center;
   max-width: 100vw;
 }

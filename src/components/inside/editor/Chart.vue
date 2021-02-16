@@ -52,13 +52,11 @@ export default {
       this.chart.update()
     },
   },
-  watch: {
-    data_array: function () {
-      this.updateChart()
-    }
-  },
   mounted() {
     this.createChart()
+  },
+  updated() {
+    this.updateChart()
   }
 }
 </script>

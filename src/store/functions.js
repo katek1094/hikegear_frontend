@@ -17,18 +17,19 @@ export function getCookie(name) {
 export function summarize_elements_list(elements_list) {
     let results = {data: [], labels: [], total_weight: 0, consumable_weight: 0, worn_weight: 0}
     for (let i = 0; i < elements_list.length; i++) {
-        let dt = elements_list[i]
-        if (dt.type === 'category') {
+        let el = elements_list[i]
+        if (el.type === 'category') {
             results.data.push(0)
-            results.labels.push(dt.name)
+            results.labels.push(el.name)
         } else {
-            results.data[results.data.length - 1] += (dt.weight * dt.quantity)
-            results.total_weight += (dt.weight * dt.quantity)
-            if (dt.consumable) {
-                results.consumable_weight += (dt.weight * dt.quantity)
+            let item_weight = el.weight
+            results.data[results.data.length - 1] += (item_weight * el.quantity)
+            results.total_weight += (item_weight * el.quantity)
+            if (el.consumable) {
+                results.consumable_weight += (item_weight * el.quantity)
             }
-            if (dt.worn) {
-                results.worn_weight += dt.weight
+            if (el.worn) {
+                results.worn_weight += item_weight
             }
         }
     }
@@ -54,7 +55,8 @@ export function format_elements_list(elements_list) {
             organized.push(element)
         } else if (element.type === 'item') {
             organized[organized.length - 1].items.push(element)
-            organized[organized.length - 1].total_weight += element.weight
+            organized[organized.length - 1].total_weight += element.weight * element.quantity
+            if (element.quantity === '') element.quantity = 0
             organized[organized.length - 1].total_quantity += element.quantity
         } else throw 'backpack list element is neither category nor item!'
     }

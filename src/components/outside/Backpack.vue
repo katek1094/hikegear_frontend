@@ -1,29 +1,33 @@
 <template>
-  <div v-if="backpack" class="backpack">
-    <span class="backpack__name">{{ backpack.name }}</span>
-    <Summary :summary_data="summary_data"/>
-    <div class="categories">
-      <div class="category" v-for="category in organized_data" :key="category.id">
-        <div class="category__header">
-          <span class="category__name">{{ category.name }}</span>
-          <span class="category__weight__label">waga</span>
-          <span class="category__quantity__label">ilość</span>
-        </div>
-        <div class="items">
-          <div class="item" v-for="item in category.items" :key="item.id">
-            <span class="item__name">{{ item.name }}</span>
-            <span class="item__description">{{ item.description }}</span>
-            <font-awesome-icon v-if="item.worn" class="fa-sm item__worn" icon="child"/>
-            <font-awesome-icon v-else-if="item.consumable" class="fa-sm item__consumable" icon="sync-alt"/>
-            <font-awesome-icon v-else class="fa-sm item__consumable invisible" icon="sync-alt"/>
-            <span class="item__weight">{{ item.weight }}</span>
-            <span class="item__quantity">{{ item.quantity }}</span>
+  <div class="wrapper">
+    <div v-if="backpack" class="backpack">
+      <span class="backpack__name">{{ backpack.name }}</span>
+      <Summary :summary_data="summary_data"/>
+      <div class="categories">
+        <div class="category" v-for="category in organized_data" :key="category.id">
+          <div class="category__header">
+            <span class="category__name">{{ category.name }}</span>
+            <span class="category__weight__label">waga</span>
+            <span class="category__quantity__label">ilość</span>
           </div>
-        </div>
-        <div class="category__footer">
-          <span></span>
-          <span class="category__weight__total">{{ category.total_weight }}</span>
-          <span class="category__quantity__total">{{ category.total_quantity }}</span>
+          <div class="items">
+            <div class="item" v-for="item in category.items" :key="item.id">
+              <span class="item__name">{{ item.name }}</span>
+              <span class="item__description">{{ item.description }}</span>
+              <div class="item__worn item__consumable">
+                <font-awesome-icon v-if="item.worn" class="fa-md" icon="child"/>
+                <font-awesome-icon v-else-if="item.consumable" class="fa-md" icon="sync-alt"/>
+                <font-awesome-icon v-else class="fa-md invisible" icon="sync-alt"/>
+              </div>
+              <span class="item__weight">{{ item.weight }}</span>
+              <span class="item__quantity">{{ item.quantity }}</span>
+            </div>
+          </div>
+          <div class="category__footer">
+            <span></span>
+            <span class="category__weight__total">{{ category.total_weight }}</span>
+            <span class="category__quantity__total">{{ category.total_quantity }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -76,8 +80,12 @@ export default {
 <style lang="scss" scoped>
 @import "src/styles/backpack.scss";
 
+.wrapper {
+  @include flex-column-center;
+}
+
 .backpack {
-  padding-bottom: 20px;
+  padding-bottom: 30px;
   @include flex-column-center;
   max-width: 100vw;
 }
@@ -86,6 +94,10 @@ export default {
 .item__weight, .item__quantity, .category__weight__label, .category__quantity__label,
 .category__quantity__total, .category__weight__total {
   padding: 3px;
+}
+
+.item__name, .item__description {
+  word-wrap: anywhere;
 }
 
 .backpack__name, .category__name {
@@ -155,7 +167,6 @@ $quantity_width: 2rem;
   outline: none;
   color: blue;
   padding: 4px;
-  font-size: 1.15em;
   margin: 0 3px;
 }
 

@@ -25,10 +25,10 @@
       <Autoresizing ref="backpack_name" v-model.trim="backpack_name" :maxlength="max_backpack_name_length"
                     :prevent-enter="true" class="backpack__name" placeholder="nazwa plecaka"/>
       <Summary :summary_data="summary_data"/>
-      <div class="progress" :style="{width: saveTimePassed * 100 / saveTimeout + '%' }"></div>
       <Autoresizing ref="backpack_description" v-model.trim="backpack_description"
                     :maxlength="max_backpack_description_length" class="backpack__description"
                     placeholder="opis plecaka"/>
+      <div class="progress" :style="{width: saveTimePassed * 100 / saveTimeout + '%' }"></div>
       <draggable v-model="organized_list" animation="1000" class="categories" group="categories"
                  handle=".category__handle" item-key="id" @end="drag=false" @start="drag=true">
         <template #item="{element}">
@@ -268,6 +268,7 @@ export default {
 .backpack__description {
   width: 85%;
   font-size: .85rem;
+  margin: 6px 0;
 }
 
 </style>

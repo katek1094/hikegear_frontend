@@ -52,9 +52,6 @@ body {
   html {
     font-size: 17px;
   }
-  .category {
-    width: 700px;
-  }
 }
 
 @media (min-width: 1025px) {
@@ -70,5 +67,4 @@ body {
     font-size: 17px;
   }
 }
-
 </style>

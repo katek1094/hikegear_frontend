@@ -98,7 +98,7 @@ export default {
 
 <style lang="scss" scoped>
 .category {
-  margin: 16px 0;
+  margin-top: 10px;
 }
 
 .category__name {

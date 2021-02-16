@@ -3,6 +3,7 @@
     <div v-if="backpack" class="backpack">
       <span class="backpack__name">{{ backpack.name }}</span>
       <Summary :summary_data="summary_data"/>
+      <span class="backpack__description">{{ backpack.description }}</span>
       <div class="categories">
         <div class="category" v-for="category in organized_data" :key="category.id">
           <div class="category__header">
@@ -87,7 +88,7 @@ export default {
 .backpack {
   padding-bottom: 30px;
   @include flex-column-center;
-  max-width: 100vw;
+  max-width: 100%;
 }
 
 .backpack__name, .category__name, .item__name, .item__description,
@@ -108,6 +109,18 @@ export default {
   text-align: center;
   margin: .4rem 0;
   font-size: 1.4rem;
+}
+
+.backpack__description {
+  max-width: 85%;
+  overflow-wrap: break-word;
+  font-size: .85rem;
+}
+
+.categories {
+  width: 100%;
+  padding: 0 2px;
+  box-sizing: border-box;
 }
 
 .category {
@@ -168,6 +181,44 @@ $quantity_width: 2rem;
   color: blue;
   padding: 4px;
   margin: 0 3px;
+}
+
+@media (max-width: 479px) {
+  /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
+  .backpack {
+    width: 100%;
+  }
+}
+
+@media (min-width: 480px) {
+  /* smartphones, Android phones, landscape iPhone */
+  .backpack {
+    width: 480px;
+  }
+}
+
+@media (min-width: 600px) {
+  /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
+  .backpack {
+    width: 560px;
+  }
+}
+
+@media (min-width: 801px) {
+  /* tablet, landscape iPad, lo-res laptops ands desktops */
+
+}
+
+@media (min-width: 1025px) {
+  /* big landscape tablets, laptops, and desktops */
+  .backpack {
+    width: 640px;
+  }
+}
+
+@media (min-width: 1281px) {
+  /* hi-res laptops and desktops */
+
 }
 
 </style>

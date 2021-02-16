@@ -48,21 +48,15 @@ export default {
 }
 </script>
 
-<style scoped>
-.navbar {
-  --nav_height: 50px;
-  /*--nav_color:  #ececea;*/
-  --nav_color: #dbd8d8;
-  --nav_hover_color: white;
-  --hamburger_height: 33px;
-  --hamburger_width: 36px;
-  --hamburger-padding: 7px 16px;
-}
+<style lang="scss" scoped>
+$hamburger_height: 33px;
+$hamburger_width: 36px;
+$hamburger-padding: 7px 16px;
 
 nav {
-  background-color: var(--nav_color);
-  height: var(--nav_height);
-  line-height: var(--nav_height);
+  background-color: $nav_color;
+  height: $nav_height;
+  line-height: $nav_height;
   padding: 0;
   text-align: right;
   overflow: hidden;
@@ -76,18 +70,23 @@ nav {
 
 .link {
   font-size: 1.3rem;
-  line-height: var(--nav_height);
+  line-height: $nav_height;
   padding: 0 14px;
   display: inline-block;
   white-space: nowrap;
   cursor: pointer;
   text-decoration: none;
   color: black;
+  margin: 0 1px;
 }
 
 .menu .link:hover, .dropdown-menu .link:hover, .brand:hover {
-  background-color: var(--nav_hover_color);
-  border-radius: 4px;
+  background-color: $nav_hover_color;
+  border-radius: 2px;
+}
+
+.router-link-active {
+  background-color: $background;
 }
 
 .menu {
@@ -112,14 +111,14 @@ nav {
 }
 
 .navbar--active {
-  height: calc(var(--nav_height) * 3);
+  height: $nav_height * 3 + 4px;
   line-height: initial;
 }
 
 
 /*HAMBURGER STYLES*/
 .hamburger {
-  padding: var(--hamburger-padding);
+  padding: $hamburger-padding;
   display: none;
   cursor: pointer;
   background-color: transparent;
@@ -137,8 +136,8 @@ nav {
 }
 
 .hamburger__box {
-  width: var(--hamburger_width);
-  height: var(--hamburger_height);
+  width: $hamburger_width;
+  height: $hamburger_height;
   display: inline-block;
   position: relative;
 }

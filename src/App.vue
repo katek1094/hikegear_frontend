@@ -1,49 +1,28 @@
 <template>
-  <router-view v-if="fetched" :key="$route.fullPath"/>
+  <router-view :key="$route.fullPath"/>
 </template>
 
 <script>
 
 export default {
   name: 'App',
-  data() {
-    return {
-      fetched: false
-    }
-  },
-  beforeCreate() {
-    this.$store.dispatch('editor/getInitialData').then(status => {
-      if (status === 'not logged in') {
-        this.$store.dispatch('auth/changeLoggedIn', false)
-        this.fetched = true
-        this.$router.push('/login')
-      } else {
-        this.$store.dispatch('auth/changeLoggedIn', true)
-        this.fetched = true
-        this.$router.push('/editor')
-      }
-    })
-  }
 }
 </script>
 
-<style>
+<style lang="scss">
 * {
   font-family: Arial, sans-serif;
 }
 
 html {
-  font-size: 16px;
   min-width: 320px;
-  /*--background: #f6f6f6;*/
-  --background: #efeded;
-  /*--background: #e7e6e6;*/
+  max-width: 100vw;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
-  background-color: var(--background);
+  background-color: $background;
 }
 
 @media (max-width: 479px) {
@@ -80,10 +59,6 @@ body {
   html {
     font-size: 17px;
   }
-
-  .category {
-    width: 700px;
-  }
 }
 
 @media (min-width: 1281px) {
@@ -92,5 +67,4 @@ body {
     font-size: 17px;
   }
 }
-
 </style>

@@ -22,15 +22,18 @@
           dodaj plecak
         </button>
       </div>
-      <Autoresizing ref="backpack_name" v-model.trim="pack_name" :maxlength="max_backpack_name_length"
-                    :prevent-enter="true" class="backpack__name" placeholder="nazwa listy"/>
-      <Summary/>
+      <router-link class="backpack__link" :to="'/backpack/' + backpack_id">link do plecaka</router-link>
+      <Autoresizing ref="backpack_name" v-model.trim="backpack_name" :maxlength="max_backpack_name_length"
+                    :prevent-enter="true" class="backpack__name" placeholder="nazwa plecaka"/>
+      <Summary :summary_data="summary_data"/>
+      <Autoresizing ref="backpack_description" v-model.trim="backpack_description"
+                    :maxlength="max_backpack_description_length" class="backpack__description"
+                    placeholder="opis plecaka"/>
       <div class="progress" :style="{width: saveTimePassed * 100 / saveTimeout + '%' }"></div>
-      <!--    TODO: add backpack description-->
       <draggable v-model="organized_list" animation="1000" class="categories" group="categories"
                  handle=".category__handle" item-key="id" @end="drag=false" @start="drag=true">
-        <template #item="{element, index}">
-          <Category :category="element" :index="index" :ref="setCategoryRef"/>
+        <template #item="{element}">
+          <Category :category="element" :ref="setCategoryRef"/>
         </template>
       </draggable>
       <button class="add-category" type="button" @click="addCategory">
@@ -43,9 +46,9 @@
 
 <script>
 import draggable from 'vuedraggable'
-import Category from "@/components/Category";
-import Summary from "@/components/Summary";
-import BaseApp from "@/components/BaseApp";
+import Category from "@/components/inside/editor/Category";
+import Summary from "@/components/inside/editor/Summary";
+import BaseApp from "@/components/inside/BaseApp";
 import Autoresizing from "@/components/Autoresizing";
 import {mapGetters} from 'vuex'
 
@@ -67,7 +70,8 @@ export default {
       saveTimePassed: 0,
       resizes: 0,
       max_backpack_name_length: 60,
-      interval: {}
+      interval: {},
+      max_backpack_description_length: 1000
     }
   },
   computed: {
@@ -75,7 +79,8 @@ export default {
       backpack_id: 'editor/backpack_id',
       backpacks: 'editor/backpacks',
       editor_data_ready: 'editor/isEditorDataReady',
-      are_changes: 'editor/are_any_changes'
+      are_changes: 'editor/are_any_changes',
+      summary_data: 'editor/summary_data'
     }),
     organized_list: {
       get() {
@@ -85,26 +90,36 @@ export default {
         this.$store.dispatch('editor/moveCategory', val)
       }
     },
-    pack_name: {
+    backpack_name: {
       get() {
-        return this.$store.getters['editor/pack_name']
+        return this.$store.getters['editor/backpack_name']
       },
       set(val) {
-        this.$store.dispatch('editor/renamePack', val)
+        this.$store.dispatch('editor/renameBackpack', val)
       }
     },
+    backpack_description: {
+      get() {
+        return this.$store.getters['editor/backpack_description']
+      },
+      set(val) {
+        this.$store.dispatch('editor/changeBackpackDescription', val)
+      }
+    }
   },
   methods: {
     addCategory() {
       this.$store.dispatch('editor/addCategory')
     },
-    save(update_dynamic) {
-      this.edits = 0
-      // TODO: add some kind of progress when data is fetching
-      this.$store.dispatch('editor/updateBackpack', {id: this.backpack_id, update_dynamic: update_dynamic})
+    save(update_dynamic = true) {
+      if (this.are_changes) {
+        this.edits = 0
+        // TODO: add some kind of progress when data is fetching
+        this.$store.dispatch('editor/updateBackpack', {id: this.backpack_id, update_dynamic: update_dynamic})
+      }
     },
     changeBackpack(index) {
-      if (this.are_changes) this.save(false)
+      this.save(false)
       this.$store.dispatch('editor/changeBackpack', index)
       this.$forceUpdate()
     },
@@ -121,6 +136,7 @@ export default {
           this.categoryRefs[i].resizeAllItems()
         }
         this.$refs.backpack_name.autoresize()
+        this.$refs.backpack_description.autoresize()
       }
     },
     windowResized() {
@@ -133,11 +149,18 @@ export default {
     setCategoryRef(el) {
       if (el) this.categoryRefs.push(el)
     },
+    ctrlS(e) {
+      if (e.key === 's' && e.ctrlKey === true) {
+        e.preventDefault()
+        this.save()
+      }
+    }
   },
   beforeUpdate() {
     this.categoryRefs = []
   },
   mounted() {
+    window.addEventListener('keydown', this.ctrlS);
     window.addEventListener("resize", this.windowResized);
     this.$store.watch(
         (state) => state.editor.dynamic,
@@ -146,8 +169,8 @@ export default {
           this.edits += 1
           let x = this.edits
           setTimeout(() => {
-            if (x === this.edits && this.are_changes) {
-              this.save(true)
+            if (x === this.edits) {
+              this.save()
             }
           }, this.saveTimeout)
         },
@@ -155,17 +178,19 @@ export default {
     );
     this.interval = setInterval(() => {
       if (this.editor_data_ready && this.are_changes) this.saveTimePassed += 10
+      // TODO: bar loads after fetch because are_changes is waiting for response to change to false
     }, 10)
   },
   beforeUnmount() {
     window.removeEventListener("resize", this.windowResized);
+    window.removeEventListener("keydown", this.ctrlS);
     clearInterval(this.interval)
   },
 
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .progress {
   height: 1px;
   background-color: grey;
@@ -174,13 +199,13 @@ export default {
 .backpack__list {
   background-color: #e5e1e1;
   border-radius: 4px;
-  padding: 8px;
-  margin: 10px;
+  padding: 4px;
+  margin: 4px 10px;
   width: 300px;
 }
 
 .backpack__list__item {
-  margin: 10px;
+  margin: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -209,6 +234,16 @@ export default {
   margin-left: 10px;
 }
 
+.backpack__link {
+  color: black;
+  text-decoration: none;
+  margin: 10px 0;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 @media (hover: hover) and (pointer: fine) {
   .backpack__delete:hover {
     color: red;
@@ -217,79 +252,60 @@ export default {
 }
 
 .editor {
-  padding: 20px 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  padding-bottom: 30px;
+  @include flex-column-center;
+  max-width: 100vw;
 }
 
-.add-category, >>> .add-item, .add-backpack {
-  margin: 4px 0;
-  border: none;
-  background-color: transparent;
-  outline: none;
-  color: yellowgreen;
-  font-size: .85rem;
+.add-category, ::v-deep(.add-item), .add-backpack {
+  @include editor-add;
 }
 
-.add-category:hover, >>> .add-item:hover, .add-backpack:hover {
-  text-decoration: underline;
-  cursor: pointer;
+.backpack__name, .backpack__description, ::v-deep(.category__name), ::v-deep(.item__name), ::v-deep(.item__description),
+::v-deep(.item__weight), ::v-deep(.item__quantity) {
+  @include editor-input__field;
 }
 
-.backpack__name, >>> .category__name, >>> .item__name, >>> .item__description,
->>> .item__weight, >>> .item__quantity {
-  border-radius: 4px;
-  font-size: 1em;
-  border: 1px solid transparent;
-  background-color: transparent;
-  outline: none;
-  padding: 3px;
-}
-
-.backpack__name, >>> .category__name {
+.backpack__name, ::v-deep(.category__name) {
   font-weight: bold;
 }
 
 .backpack__name {
   text-align: center;
-  margin: .2rem 0;
+  margin: .4rem 0;
   font-size: 1.4rem;
 }
 
-.backpack__name:focus, >>> .category__name:focus, >>> .item__name:focus, >>> .item__description:focus,
->>> .item__weight:focus, >>> .item__quantity:focus {
-  background-color: white;
-  border: 1px solid grey;
-}
-
-.backpack__name:hover, >>> .category__name:hover, >>> .item__name:hover, >>> .item__description:hover,
->>> .item__weight:hover, >>> .item__quantity:hover {
-  background-color: white;
-  cursor: text;
-}
-
-@media (min-width: 320px) {
-
+.backpack__description {
+  width: 85%;
+  font-size: .85rem;
+  margin: 6px 0;
 }
 
 @media (min-width: 480px) {
+  /* smartphones, Android phones, landscape iPhone */
 
 }
 
 @media (min-width: 600px) {
+  /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
 
 }
 
 @media (min-width: 801px) {
-
+  /* tablet, landscape iPad, lo-res laptops ands desktops */
+  .editor, .categories {
+    width: 660px;
+  }
 }
 
 @media (min-width: 1025px) {
+  /* big landscape tablets, laptops, and desktops */
 
 }
 
 @media (min-width: 1281px) {
+  /* hi-res laptops and desktops */
 
 }
 </style>

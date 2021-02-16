@@ -1,25 +1,22 @@
 <template>
-  <div :class="{first: first, last: last, middle: !last && !first}" class="item">
+  <div class="item">
     <span class="item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
-    <Autoresizing ref="name" v-model.trim="item_name" :maxlength="max_name_length" class="item__name"
-                  placeholder="nazwa" :prevent-enter="true"/>
+    <Autoresizing ref="name" v-model.trim="item_name" :maxlength="max_name_length" :prevent-enter="true"
+                  class="item__name" placeholder="nazwa"/>
     <Autoresizing ref="description" v-model="item_description" :maxlength="max_description_length"
                   class="item__description" placeholder="opis"/>
     <button :class="{ checked: item.worn }" :disabled="item.consumable" class="item__worn" @click="markAsWorn">
-      <font-awesome-icon class="fa-sm" icon="child"/>
+      <font-awesome-icon class="fa-md" icon="child"/>
     </button>
     <button :class="{ checked: item.consumable }" :disabled="item.worn" class="item__consumable"
             @click="markAsConsumable">
-      <font-awesome-icon class="fa-sm" icon="sync-alt"/>
+      <font-awesome-icon class="fa-md" icon="sync-alt"/>
+      <!--      TODO: check changing size with icon classes md/sm-->
     </button>
-    <div>
-      <input v-model.number="item_weight" :max="weight_limit" class="item__weight" min="0" type="number"
-             @input="removeLeadingZero" @keydown="preventNumericChars">
-    </div>
-    <div>
-      <input v-model.number="item_quantity" :max="quantity_limit" class="item__quantity" min="0" type="number"
-             @input="removeLeadingZero" @keydown="preventNumericChars">
-    </div>
+    <input v-model.number="item_weight" :max="weight_limit" class="item__weight" min="0" name="item_weight"
+           type="number" @blur="fillWithZero" @input="removeLeadingZero" @keydown="preventNumericChars">
+    <input v-model.number="item_quantity" :max="quantity_limit" class="item__quantity" min="0" name="item_quantity"
+           type="number" @blur="fillWithZero" @input="removeLeadingZero" @keydown="preventNumericChars">
     <button class="item__delete" type="button" @click="deleteItem">
       <font-awesome-icon class="fa-sm" icon="trash"/>
     </button>
@@ -34,9 +31,6 @@ export default {
   components: {Autoresizing},
   props: {
     item: Object,
-    first: Boolean,
-    last: Boolean,
-    index: Number
   },
   data() {
     return {
@@ -132,55 +126,48 @@ export default {
       if ((String(e.target.value)[0] === '0') && (e.target.value.length > 1)) {
         e.target.value = String(e.target.value).slice(1)
       }
+    },
+    fillWithZero(e) {
+      if (e.target.value === '') {
+        this[e.target.getAttribute('name')] = 0
+      }
     }
   },
 }
 </script>
 
-<style scoped>
-.item {
-  font-size: .8rem;
-}
-
-.item.first, .item.middle {
+<style lang="scss" scoped>
+.item:not(:last-child) {
   border-bottom: 1px dotted grey;
 }
 
-.item.first.last {
-  border: none;
-}
-
-.item__name {
-  width: 100%;
-}
-
-.item__description {
-  width: 100%;
-}
-
-.item:hover .item__worn, .item:hover .item__consumable {
-  visibility: visible;
-}
-
 .item__worn, .item__consumable {
-  visibility: hidden;
   border-radius: 50%;
-  border: 1px solid transparent;
+  border: none;
   background-color: transparent;
   outline: none;
   color: grey;
-  padding: 3px;
+  padding: 4px;
   font-size: 1.15em;
+  margin: 0 3px;
 }
 
 .checked {
-  visibility: visible;
   color: blue;
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .item__worn, .item__consumable {
+    visibility: hidden;
+  }
+  .item:hover .item__worn, .item:hover .item__consumable {
+    visibility: visible;
+  }
   .item__worn:hover:enabled, .item__consumable:hover:enabled {
     color: black;
+  }
+  .checked {
+    visibility: visible;
   }
 }
 
@@ -188,7 +175,7 @@ export default {
   cursor: pointer;
 }
 
-/*code below removes arrows from numeric inputs*/
+/*code below removes arrows from weight input*/
 .item__weight::-webkit-outer-spin-button,
 .item__weight::-webkit-inner-spin-button {
   -webkit-appearance: none;

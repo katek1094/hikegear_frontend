@@ -32,16 +32,14 @@
         <button class="auth__submit" type="submit" id="login-submit">zaloguj</button>
         <router-link to="/register" class="login__option login__register" type="button">nie mam konta (rejestracja)
         </router-link>
-        <router-link to="/recover_password" class="login__option login__forgot_password" type="button">nie pamiętam
-          hasła
-        </router-link>
+        <a :href="password_reset_url" class="login__option login__forgot_password" type="button">nie pamiętam hasła</a>
       </form>
     </div>
   </LandingPage>
 </template>
 
 <script>
-import LandingPage from "@/components/LandingPage";
+import LandingPage from "@/components/outside/LandingPage";
 
 export default {
   name: "Login",
@@ -91,6 +89,9 @@ export default {
     isFormValid() {
       return this.emailValidity && this.passwordValidity
     },
+    password_reset_url() {
+      return process.env.VUE_APP_API_URL + '/accounts/password_reset/'
+    }
   },
   methods: {
     submitForm() {
@@ -105,15 +106,19 @@ export default {
               if (status === 'logged in') {
                 this.$store.dispatch('editor/getInitialData')
                     .then(() => this.$router.push('/editor'))
-              } else {
+              } else if (status === 'bad credentials') {
                 this.info = 'błędny email lub hasło'
+              } else if (status === 'activate your account') {
+                this.$router.push('/verify_email')
+              } else {
+                throw 'something wrong with response'
               }
             })
       }
     },
     markAsBlurred(e) {
       let name = e.target.getAttribute('name')
-      this[name + '_blurred'] = true
+      if (this[name + '_activated'] === true) this[name + '_blurred'] = true
     },
     activate(e) {
       let name = e.target.getAttribute('name')
@@ -123,6 +128,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 </style>

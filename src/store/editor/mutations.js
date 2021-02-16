@@ -15,6 +15,9 @@ export default {
     set_backpack_name(state, new_name) {
         state.dynamic.name = new_name
     },
+    set_backpack_description(state, new_description) {
+        state.dynamic.description = new_description
+    },
     remove_elements(state, payload) {
         state.dynamic.list.splice(payload.start, payload.amount)
     },

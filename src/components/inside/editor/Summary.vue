@@ -1,9 +1,13 @@
 <template>
   <div class="summary__wrapper">
-    <Chart :data_array="summary_data.data" :data_labels="summary_data.labels" :colors_array="colors"/>
+    <Chart v-show="summary_data.total_weight !== 0" :colors_array="colors" :data_array="summary_data.data"
+           :data_labels="summary_data.labels"/>
     <table class="summary__table">
       <tr v-for="(data, index) in summary_data.data" :key="data">
-        <td><div class="color" :style="{backgroundColor: colors[index]}"></div>{{ summary_data.labels[index] }}</td>
+        <td>
+          <div class="color" :style="{backgroundColor: colors[index]}"></div>
+          {{ summary_data.labels[index] }}
+        </td>
         <td>{{ data }}</td>
       </tr>
       <tr>
@@ -27,11 +31,14 @@
 </template>
 
 <script>
-import Chart from "@/components/Chart";
+import Chart from "@/components/inside/editor/Chart";
 
 export default {
   name: "Summary",
   components: {Chart},
+  props: {
+    summary_data: Object
+  },
   data() {
     return {
       colors: ['rgb(53,77,232)', 'rgb(63,212,51)', 'rgb(212,32,32)', 'rgb(246,234,58)',
@@ -40,19 +47,14 @@ export default {
         'rgb(187,184,183)', 'rgb(206,102,102)', 'rgb(108,134,34)', 'rgb(173,115,208)']
     }
   },
-  computed: {
-    summary_data() {
-      return this.$store.getters['editor/summary_data']
-    }
-  },
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .summary__wrapper {
   display: flex;
   margin-bottom: 15px;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -72,14 +74,10 @@ td {
   font-size: 0.8rem;
 }
 
-
-
-
 @media (max-width: 479px) {
   .summary__wrapper {
     flex-direction: column;
   }
-
 }
 
 @media (min-width: 480px) {
@@ -87,7 +85,7 @@ td {
 }
 
 @media (min-width: 600px) {
-  >>> #summary-chart {
+  ::v-deep(#summary-chart) {
     width: 200px;
     height: 200px
   }

@@ -54,7 +54,7 @@ export default {
 .summary__wrapper {
   display: flex;
   margin-bottom: 15px;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 }
 

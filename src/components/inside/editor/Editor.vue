@@ -22,6 +22,7 @@
           dodaj plecak
         </button>
       </div>
+      <router-link class="backpack__link" :to="'/backpack/' + backpack_id">link do plecaka</router-link>
       <Autoresizing ref="backpack_name" v-model.trim="backpack_name" :maxlength="max_backpack_name_length"
                     :prevent-enter="true" class="backpack__name" placeholder="nazwa plecaka"/>
       <Summary :summary_data="summary_data"/>
@@ -233,6 +234,16 @@ export default {
   margin-left: 10px;
 }
 
+.backpack__link {
+  color: black;
+  text-decoration: none;
+  margin: 10px 0;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 @media (hover: hover) and (pointer: fine) {
   .backpack__delete:hover {
     color: red;
@@ -271,4 +282,30 @@ export default {
   margin: 6px 0;
 }
 
+@media (min-width: 480px) {
+  /* smartphones, Android phones, landscape iPhone */
+
+}
+
+@media (min-width: 600px) {
+  /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
+
+}
+
+@media (min-width: 801px) {
+  /* tablet, landscape iPad, lo-res laptops ands desktops */
+  .editor, .categories {
+    width: 660px;
+  }
+}
+
+@media (min-width: 1025px) {
+  /* big landscape tablets, laptops, and desktops */
+
+}
+
+@media (min-width: 1281px) {
+  /* hi-res laptops and desktops */
+
+}
 </style>

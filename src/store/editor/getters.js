@@ -20,8 +20,11 @@ export default {
     isEditorDataReady(state) {
         return state.dynamic.list
     },
-    pack_name(state) {
+    backpack_name(state) {
         return state.dynamic.name
+    },
+    backpack_description(state) {
+      return state.dynamic.description
     },
     backpack_id(state) {
         return state.dynamic.id

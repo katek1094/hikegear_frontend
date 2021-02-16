@@ -108,7 +108,7 @@ export default {
 
 $handle_width: auto;
 $worn_consumable_width: auto;
-$weight_width: 2.8rem;
+$weight_width: 3rem;
 $quantity_width: auto;
 $delete_width: 30px;
 

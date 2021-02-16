@@ -71,8 +71,11 @@ export default {
     deleteItem({commit}, list_index) {
         commit('splice_dynamic_list', [list_index, 1])
     },
-    renamePack({commit}, new_name) {
+    renameBackpack({commit}, new_name) {
         commit('set_backpack_name', new_name)
+    },
+    changeBackpackDescription({commit}, new_description) {
+        commit('set_backpack_description', new_description)
     },
     changeElementProperty({commit}, payload) {
         // payload = type, list_index, property, new_value

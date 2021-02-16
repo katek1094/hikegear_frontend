@@ -22,11 +22,13 @@
           dodaj plecak
         </button>
       </div>
-      <Autoresizing ref="backpack_name" v-model.trim="pack_name" :maxlength="max_backpack_name_length"
-                    :prevent-enter="true" class="backpack__name" placeholder="nazwa listy"/>
+      <Autoresizing ref="backpack_name" v-model.trim="backpack_name" :maxlength="max_backpack_name_length"
+                    :prevent-enter="true" class="backpack__name" placeholder="nazwa plecaka"/>
       <Summary :summary_data="summary_data"/>
       <div class="progress" :style="{width: saveTimePassed * 100 / saveTimeout + '%' }"></div>
-      <!--    TODO: add backpack description-->
+      <Autoresizing ref="backpack_description" v-model.trim="backpack_description"
+                    :maxlength="max_backpack_description_length" class="backpack__description"
+                    placeholder="opis plecaka"/>
       <draggable v-model="organized_list" animation="1000" class="categories" group="categories"
                  handle=".category__handle" item-key="id" @end="drag=false" @start="drag=true">
         <template #item="{element}">
@@ -67,7 +69,8 @@ export default {
       saveTimePassed: 0,
       resizes: 0,
       max_backpack_name_length: 60,
-      interval: {}
+      interval: {},
+      max_backpack_description_length: 1000
     }
   },
   computed: {
@@ -86,14 +89,22 @@ export default {
         this.$store.dispatch('editor/moveCategory', val)
       }
     },
-    pack_name: {
+    backpack_name: {
       get() {
-        return this.$store.getters['editor/pack_name']
+        return this.$store.getters['editor/backpack_name']
       },
       set(val) {
-        this.$store.dispatch('editor/renamePack', val)
+        this.$store.dispatch('editor/renameBackpack', val)
       }
     },
+    backpack_description: {
+      get() {
+        return this.$store.getters['editor/backpack_description']
+      },
+      set(val) {
+        this.$store.dispatch('editor/changeBackpackDescription', val)
+      }
+    }
   },
   methods: {
     addCategory() {
@@ -124,6 +135,7 @@ export default {
           this.categoryRefs[i].resizeAllItems()
         }
         this.$refs.backpack_name.autoresize()
+        this.$refs.backpack_description.autoresize()
       }
     },
     windowResized() {
@@ -238,7 +250,7 @@ export default {
   @include editor-add;
 }
 
-.backpack__name, ::v-deep(.category__name), ::v-deep(.item__name), ::v-deep(.item__description),
+.backpack__name, .backpack__description, ::v-deep(.category__name), ::v-deep(.item__name), ::v-deep(.item__description),
 ::v-deep(.item__weight), ::v-deep(.item__quantity) {
   @include editor-input__field;
 }
@@ -251,6 +263,11 @@ export default {
   text-align: center;
   margin: .4rem 0;
   font-size: 1.4rem;
+}
+
+.backpack__description {
+  width: 85%;
+  font-size: .85rem;
 }
 
 </style>

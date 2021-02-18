@@ -3,8 +3,8 @@
     <div class="category__header">
       <span class="category__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
       <div>
-        <input v-model.trim="category_name" :maxlength="max_name_length" class="category__name" :size="max_name_length"
-               placeholder="nazwa kategorii" type="text">
+        <input ref="name" v-model.trim="category_name" :maxlength="max_name_length" :size="max_name_length"
+               class="category__name" placeholder="nazwa kategorii" type="text">
       </div>
       <span class="category__weight__label">waga</span>
       <span class="category__quantity__label">ilość</span>
@@ -14,7 +14,7 @@
         <font-awesome-icon class="fa-sm" icon="trash"/>
       </button>
     </div>
-    <draggable v-model="items" animation="700" class="items" :group="{name: 'items', pull: pullPolicy, put: true}"
+    <draggable v-model="items" animation="700" class="items" :group="{name: 'items', pull: pullPolicy, put: ['items']}"
                item-key="id"
                handle=".item__handle" emptyInsertThreshold="30" :copy="deepCopy">
       <template #item="{element}">
@@ -75,12 +75,15 @@ export default {
     },
   },
   methods: {
-    addItem() {
-      this.$store.dispatch('editor/addItem', this.category.list_index)
+    async addItem() {
+      await this.$store.dispatch('editor/addItem', this.category.list_index)
+      this.itemRefs[this.itemRefs.length - 1].focusName()
     },
     deleteCategory() {
-      let confirmation = confirm("na pewno chcesz usunąć tę kategorię?")
-      if (confirmation) this.$store.dispatch('editor/deleteCategory', this.category.list_index)
+      if (this.items.length !== 0) {
+        let confirmation = confirm("na pewno chcesz usunąć tę kategorię?")
+        if (confirmation) this.$store.dispatch('editor/deleteCategory', this.category.list_index)
+      } else this.$store.dispatch('editor/deleteCategory', this.category.list_index)
     },
     setItemRef(el) {
       if (el) this.itemRefs.push(el)
@@ -96,11 +99,12 @@ export default {
     },
     deepCopy(original) {
       let deep_copy = JSON.parse(JSON.stringify(original))
-      let copy = {quantity: 1, worn: false, consumable: false}
-      copy.name = deep_copy.name
-      copy.description = deep_copy.description
-      copy.weight = deep_copy.weight
-      return copy
+      return {
+        name: deep_copy.name, description: deep_copy.description, weight: deep_copy.weight,
+      }
+    },
+    focusName() {
+      this.$refs.name.focus()
     }
   },
   beforeUpdate() {

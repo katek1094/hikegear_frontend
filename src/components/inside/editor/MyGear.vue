@@ -3,15 +3,15 @@
     <div class="header">
       <h2>mój sprzęt</h2>
     </div>
-    <draggable v-model="items" class="my-gear_items" :group="{name: 'items', pull: 'clone', put: true}"
+    <draggable v-model="items" class="my-gear_items" :group="{name: 'items', pull: 'clone', put: ['items']}"
                item-key="id" handle=".item__handle" emptyInsertThreshold="30" animation="700"
                :clone="deepCopy">
       <template #item="{element}">
         <div class="item">
           <span class="item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
-          <span class="">{{ element.name }}</span>
-          <span class="">{{ element.description }}</span>
-          <span class="">{{ element.weight }}</span>
+          <span class="name">{{ element.name }}</span>
+          <span class="description">{{ element.description }}</span>
+          <span class="weight">{{ element.weight }}</span>
         </div>
       </template>
     </draggable>
@@ -65,10 +65,11 @@ export default {
   methods: {
     deepCopy(original) {
       let deep_copy = JSON.parse(JSON.stringify(original))
-      let copy = {type: 'item', name: deep_copy.name, description: deep_copy.description,
-        weight: deep_copy.weight, id: this.$store.getters['editor/new_element_id']
+      return {
+        type: 'item', name: deep_copy.name, description: deep_copy.description,
+        weight: deep_copy.weight, id: this.$store.getters['editor/new_element_id'],
+        worn: false, consumable: false, quantity: 1
       }
-      return copy
     },
     updatePrivateGear(data) {
       apiFetch('private_gear', {
@@ -92,7 +93,7 @@ export default {
 .my-gear_frame {
   margin-left: 50px;
   background: $windows_color;
-  width: 300px;
+  width: 400px;
   height: 80vh;
   border-radius: 4px;
   position: -webkit-sticky;
@@ -129,6 +130,10 @@ export default {
 
 .sortable-chosen {
   @include sort-chosen;
+}
+
+.item .name, .item .description {
+  word-wrap: anywhere;
 }
 
 </style>

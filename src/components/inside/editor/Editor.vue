@@ -112,8 +112,10 @@ export default {
     }
   },
   methods: {
-    addCategory() {
-      this.$store.dispatch('editor/addCategory')
+    async addCategory() {
+      await this.$store.dispatch('editor/addCategory')
+      this.$refs['cat' + (this.organized_list.length - 1)].focusName()
+      window.scrollTo(0, document.body.scrollHeight)
     },
     save(update_dynamic = true) {
       if (this.are_changes) {

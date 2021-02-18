@@ -2,7 +2,7 @@
   <div class="item">
     <span class="item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
     <Autoresizing ref="name" v-model.trim="item_name" :maxlength="max_name_length" :prevent-enter="true"
-                  class="item__name" placeholder="nazwa"/>
+                  class="item__name" placeholder="nazwa" @keydown="handleEnter"/>
     <Autoresizing ref="description" v-model="item_description" :maxlength="max_description_length"
                   class="item__description" placeholder="opis"/>
     <button :class="{ checked: item.worn }" :disabled="item.consumable" class="item__worn" @click="markAsWorn">
@@ -131,6 +131,12 @@ export default {
       if (e.target.value === '') {
         this[e.target.getAttribute('name')] = 0
       }
+    },
+    handleEnter(event) {
+      if (event.keyCode === 13) this.$refs.description.$el.focus()
+    },
+    focusName() {
+      this.$refs.name.$el.focus()
     }
   },
 }
@@ -164,6 +170,10 @@ export default {
 .my-gear_frame .item__worn, .my-gear_frame .item__consumable, .my-gear_frame .item__quantity,
 .my-gear_frame .item__delete {
   display: none;
+}
+
+.sortable-chosen {
+  font-size: .8rem;
 }
 
 @media (hover: hover) and (pointer: fine) {

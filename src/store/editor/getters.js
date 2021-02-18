@@ -52,6 +52,7 @@ export default {
         data.list = state.dynamic.list
         for (let i = 0; i < data.list.length; i++) {
             data.list[i].id = i
+            delete data.list[i].list_index
         }
         return JSON.stringify(data)
     },

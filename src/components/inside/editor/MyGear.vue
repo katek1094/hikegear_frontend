@@ -20,6 +20,7 @@
 
 <script>
 import draggable from 'vuedraggable'
+import {getCookie} from "@/store/functions";
 
 export default {
   name: "MyGear",
@@ -53,10 +54,11 @@ export default {
   computed: {
     items: {
       get() {
-        return this.items_list
+        return this.$store.getters['my_gear/get_my_gear']
       },
       set(val) {
-        this.items_list = val
+        this.$store.dispatch('my_gear/changeMyGear', val)
+        this.updatePrivateGear(val)
       }
     }
   },
@@ -65,6 +67,24 @@ export default {
       let deep_copy = JSON.parse(JSON.stringify(original))
       deep_copy.id = this.$store.getters['editor/new_element_id']
       return deep_copy
+    },
+    updatePrivateGear(data) {
+      fetch(process.env.VUE_APP_API_URL + '/api/private_gear', {
+        method: 'PATCH',
+        headers: {
+          'X-CSRFToken': getCookie('csrftoken'),
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify({'private_gear': data})
+      })
+      .then(response => {
+        if (response.ok) {
+          response.json().then(data => {
+            this.$store.dispatch('my_gear/changeMyGear', data['private_gear'])
+          })
+        } else console.log(response)
+      })
     }
   }
 }
@@ -74,13 +94,14 @@ export default {
 .my-gear_frame {
   margin-left: 50px;
   background: $windows_color;
-  width: 400px;
+  width: 300px;
   height: 80vh;
   border-radius: 4px;
   position: -webkit-sticky;
   position: sticky;
   top: 10vh;
-  padding: 4px;
+  padding: 8px;
+  box-sizing: border-box;
 }
 
 .header {
@@ -97,6 +118,7 @@ export default {
 .my-gear_items {
   @include editor-items;
   font-size: .8rem;
+  background-color: $background;
 }
 
 .item:not(:last-child) {

@@ -202,6 +202,7 @@ export default {
                             commit('copy_and_set_static_backpack', [])
                             commit('set_backpacks', [])
                         }
+                        commit('my_gear/set_my_gear', data['private_gear'], {root: true})
                         return 'data_downloaded'
                     })
                 } else {

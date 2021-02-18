@@ -99,6 +99,7 @@ export default {
       copy.name = deep_copy.name
       copy.description = deep_copy.description
       copy.weight = deep_copy.weight
+
       return copy
     }
   },

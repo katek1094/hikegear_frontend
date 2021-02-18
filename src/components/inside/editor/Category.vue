@@ -14,8 +14,8 @@
         <font-awesome-icon class="fa-sm" icon="trash"/>
       </button>
     </div>
-    <draggable v-model="items" animation="700" class="items" group="items" item-key="id"
-               handle=".item__handle" emptyInsertThreshold="30">
+    <draggable v-model="items" animation="700" class="items" :group="{name: 'items', pull: pullPolicy, put: true}" item-key="id"
+               handle=".item__handle" emptyInsertThreshold="30" :copy="deepCopy">
       <template #item="{element}">
         <Item :item="element" :ref="setItemRef"/>
       </template>
@@ -88,6 +88,18 @@ export default {
       for (let i = 0; i < this.itemRefs.length; i++) {
         this.itemRefs[i].resizeAll()
       }
+    },
+    pullPolicy(to) {
+      if (to.el.className === 'my-gear_items') return 'clone'
+      else if (to.el.className === 'items') return true
+    },
+    deepCopy(original) {
+      let deep_copy = JSON.parse(JSON.stringify(original))
+      let copy = {quantity: 1, worn: false, consumable: false}
+      copy.name = deep_copy.name
+      copy.description = deep_copy.description
+      copy.weight = deep_copy.weight
+      return copy
     }
   },
   beforeUpdate() {

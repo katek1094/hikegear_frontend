@@ -79,7 +79,7 @@ $nav_hover_color: white;
   font-size: 1.15rem;
 
   @media (hover: hover) and (pointer: fine) {
-    &:hover {
+    &:hover  {
       background-color: white;
     }
   }

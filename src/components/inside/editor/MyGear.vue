@@ -1,10 +1,11 @@
 <template>
-  <div class="frame">
+  <div class="my-gear_frame">
     <div class="header">
       <h2>mój sprzęt</h2>
     </div>
-    <draggable v-model="items" class="items" :group="{name: 'items', pull: 'clone', put: false}"
-               item-key="id" handle=".item__handle" emptyInsertThreshold="30" animation="700">
+    <draggable v-model="items" class="my-gear_items" :group="{name: 'items', pull: 'clone', put: true}"
+               item-key="id" handle=".item__handle" emptyInsertThreshold="30" animation="700"
+    :clone="deepCopy">
       <template #item="{element}">
         <div class="item">
           <span class="item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
@@ -27,26 +28,24 @@ export default {
     return {
       items_list: [
         {
+          id: 1,
+          name: 'XD',
           type: 'item',
-          name: 'karimata',
           description: 'Quechua m100',
-          weight: 200,
+          weight: 11,
           quantity: 1,
           worn: false,
           consumable: false,
-          index: 0,
-          id: 1
         },
         {
-          type: 'item',
+          id: 1,
           name: 'liner',
+          type: 'item',
           description: 'jedwabny decathlon',
-          weight: 110,
+          weight: 69,
           quantity: 1,
           worn: false,
           consumable: false,
-          index: 0,
-          id: 1
         },
       ]
     }
@@ -62,13 +61,17 @@ export default {
     }
   },
   methods: {
-
+    deepCopy(original) {
+      let deep_copy = JSON.parse(JSON.stringify(original))
+      deep_copy.id = this.$store.getters['editor/new_element_id']
+      return deep_copy
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.frame {
+.my-gear_frame {
   margin-left: 50px;
   background: $windows_color;
   width: 400px;
@@ -91,7 +94,7 @@ export default {
   padding: 2px 0 ;
 }
 
-.items {
+.my-gear_items {
   @include editor-items;
   font-size: .8rem;
 }
@@ -106,6 +109,6 @@ export default {
 
 .sortable-chosen {
   @include sort-chosen;
-
 }
+
 </style>

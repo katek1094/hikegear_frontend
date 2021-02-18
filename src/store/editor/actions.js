@@ -91,7 +91,7 @@ export default {
         commit('set_dynamic_list', getters['static_list'])
     },
     updateBackpack({commit, rootGetters}, payload) {
-        fetch(process.env.VUE_APP_API_URL + '/api/backpacks/' + rootGetters['editor/backpack_id'] + '/', {
+        return fetch(process.env.VUE_APP_API_URL + '/api/backpacks/' + rootGetters['editor/backpack_id'] + '/', {
             method: 'PATCH',
             headers: {
                 'X-CSRFToken': getCookie('csrftoken'),

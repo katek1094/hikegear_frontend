@@ -25,9 +25,9 @@
                       placeholder="opis plecaka"/>
         <div class="progress" :style="{width: saveTimePassed * 100 / saveTimeout + '%' }"></div>
         <draggable v-model="organized_list" animation="1000" class="categories" group="categories"
-                   handle=".category__handle" item-key="id" @end="drag=false" @start="drag=true">
+                   handle=".category__handle" item-key="id" @end="clearRefs">
           <template #item="{element}">
-            <Category :category="element" :ref="setCategoryRef"/>
+            <Category :category="element" :ref="'cat' + element.category_index" @end="clearRefs"/>
           </template>
         </draggable>
         <button class="add-category" type="button" @click="addCategory">
@@ -135,10 +135,10 @@ export default {
       let confirmation = confirm('na pewno chcesz usunąć ten plecak?')
       if (confirmation) this.$store.dispatch('editor/deleteBackpack', this.backpack_id)
     },
-    resizeAllItems() {
+    resizeAll() {
       if (this.editor_data_ready) {
-        for (let i = 0; i < this.categoryRefs.length; i++) {
-          this.categoryRefs[i].resizeAllItems()
+        for (let i of this.organized_list) {
+          this.$refs['cat' + i.category_index].resizeAllItems()
         }
         this.$refs.backpack_name.autoresize()
         this.$refs.backpack_description.autoresize()
@@ -148,21 +148,18 @@ export default {
       this.resizes += 1
       let x = this.resizes
       setTimeout(() => {
-        if (x === this.resizes) this.resizeAllItems()
+        if (x === this.resizes) this.resizeAll()
       }, 300)
-    },
-    setCategoryRef(el) {
-      if (el) this.categoryRefs.push(el)
     },
     ctrlS(e) {
       if (e.key === 's' && e.ctrlKey === true) {
         e.preventDefault()
         this.save()
       }
+    },
+    clearRefs() {
+      this.categoryRefs = []
     }
-  },
-  beforeUpdate() {
-    this.categoryRefs = []
   },
   mounted() {
     window.addEventListener('keydown', this.ctrlS);

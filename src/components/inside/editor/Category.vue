@@ -14,7 +14,7 @@
         <font-awesome-icon class="fa-sm" icon="trash"/>
       </button>
     </div>
-    <draggable v-model="items" animation="700" class="items" group="category__items" item-key="id"
+    <draggable v-model="items" animation="700" class="items" group="items" item-key="id"
                handle=".item__handle" emptyInsertThreshold="30">
       <template #item="{element}">
         <Item :item="element" :ref="setItemRef"/>
@@ -130,13 +130,11 @@ $delete_width: 30px;
 }
 
 .items {
-  border-top: 1px solid grey;
-  border-bottom: 1px solid grey;
+  @include editor-items;
 }
 
 .sortable-chosen {
-  transform: scale(1.01);
-  box-shadow: 4px 4px 4px grey;
+  @include sort-chosen;
 }
 
 .category__delete, ::v-deep(.item__delete) {
@@ -161,9 +159,6 @@ $delete_width: 30px;
     color: red;
     cursor: pointer;
   }
-  .category__handle:hover, ::v-deep(.item__handle:hover) {
-    background-color: white;
-  }
   .category__quantity__label, .category__quantity__total, ::v-deep(.item__quantity) {
     width: 2.8rem;
     box-sizing: border-box;
@@ -171,11 +166,7 @@ $delete_width: 30px;
 }
 
 .category__handle, ::v-deep(.item__handle) {
-  margin-right: 6px;
-  padding: 7px 7px 3px 7px;
-  cursor: move;
-  border-radius: 6px;
-  font-size: 1.15rem;
+  @include sort-handle;
 }
 
 .category__weight__label, .category__quantity__label,

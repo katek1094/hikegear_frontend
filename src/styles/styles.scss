@@ -5,6 +5,7 @@ $color_c: #ececea;
 
 //variables used in components
 $background: #efeded;
+$windows_color: #e5e1e1;
 
 $nav_height: 50px;
 $nav_color: #dbd8d8;
@@ -64,6 +65,31 @@ $nav_hover_color: white;
   column-gap: 1px;
   padding: 1px 0;
 }
+
+@mixin sort-chosen {
+  transform: scale(1.01);
+  box-shadow: 4px 4px 4px grey;
+}
+
+@mixin sort-handle {
+  margin-right: 6px;
+  padding: 6px 7px 4px 7px;
+  cursor: move;
+  border-radius: 6px;
+  font-size: 1.15rem;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: white;
+    }
+  }
+}
+
+@mixin editor-items {
+  border-top: 1px solid grey;
+  border-bottom: 1px solid grey;
+}
+
 
 //forms mixins
 @mixin form-input {

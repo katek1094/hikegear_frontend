@@ -119,7 +119,7 @@ export default {
         if (dt.email) {
           this.email_info = 'konto powiązane z tym adresem email już istnieje'
         } else {
-          if (dt[0] === "['To hasło jest zbyt powszechne.']") {
+          if (dt[0] === "['This password is too common.']") {
             this.password_info = 'to hasło jest zbyt popularne'
           } else this.password_info = dt[0]
         }

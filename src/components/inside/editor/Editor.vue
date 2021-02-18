@@ -1,44 +1,47 @@
 <template>
   <BaseApp>
-    <div v-if="!editor_data_ready">
+    <div v-if="editor_data_ready" class="wrapper">
+      <div class="editor">
+        <div class="backpack__list">
+          <div class="backpack__list__item" v-for="(backpack, index) in backpacks" :key="backpack.id"
+               @click="changeBackpack(index)">
+            <span v-if="backpack.name !== ''" :class="{active: backpack.id === backpack_id}">{{ backpack.name }}</span>
+            <span v-if="backpack.name === ''" :class="{active: backpack.id === backpack_id}">bez nazwy</span>
+            <button v-if="backpack.id === backpack_id" class="backpack__delete" type="button" @click="deleteBackpack">
+              <font-awesome-icon class="fa-sm" icon="trash"/>
+            </button>
+          </div>
+          <button class="add-backpack" type="button" @click="addBackpack">
+            <font-awesome-icon class="fa-md" icon="plus"/>
+            dodaj plecak
+          </button>
+        </div>
+        <router-link class="backpack__link" :to="'/backpack/' + backpack_id">link do plecaka</router-link>
+        <Autoresizing ref="backpack_name" v-model.trim="backpack_name" :maxlength="max_backpack_name_length"
+                      :prevent-enter="true" class="backpack__name" placeholder="nazwa plecaka"/>
+        <Summary :summary_data="summary_data"/>
+        <Autoresizing ref="backpack_description" v-model.trim="backpack_description"
+                      :maxlength="max_backpack_description_length" class="backpack__description"
+                      placeholder="opis plecaka"/>
+        <div class="progress" :style="{width: saveTimePassed * 100 / saveTimeout + '%' }"></div>
+        <draggable v-model="organized_list" animation="1000" class="categories" group="categories"
+                   handle=".category__handle" item-key="id" @end="drag=false" @start="drag=true">
+          <template #item="{element}">
+            <Category :category="element" :ref="setCategoryRef"/>
+          </template>
+        </draggable>
+        <button class="add-category" type="button" @click="addCategory">
+          <font-awesome-icon class="fa-md" icon="plus"/>
+          dodaj kategorię
+        </button>
+      </div>
+      <MyGear/>
+    </div>
+    <div v-else>
       <p>nie masz żadnych plecaków</p>
       <button class="add-backpack" type="button" @click="addBackpack">
         <font-awesome-icon class="fa-md" icon="plus"/>
         dodaj plecak
-      </button>
-    </div>
-    <div class="editor" v-if="editor_data_ready">
-      <div class="backpack__list">
-        <div class="backpack__list__item" v-for="(backpack, index) in backpacks" :key="backpack.id"
-             @click="changeBackpack(index)">
-          <span v-if="backpack.name !== ''" :class="{active: backpack.id === backpack_id}">{{ backpack.name }}</span>
-          <span v-if="backpack.name === ''" :class="{active: backpack.id === backpack_id}">bez nazwy</span>
-          <button v-if="backpack.id === backpack_id" class="backpack__delete" type="button" @click="deleteBackpack">
-            <font-awesome-icon class="fa-sm" icon="trash"/>
-          </button>
-        </div>
-        <button class="add-backpack" type="button" @click="addBackpack">
-          <font-awesome-icon class="fa-md" icon="plus"/>
-          dodaj plecak
-        </button>
-      </div>
-      <router-link class="backpack__link" :to="'/backpack/' + backpack_id">link do plecaka</router-link>
-      <Autoresizing ref="backpack_name" v-model.trim="backpack_name" :maxlength="max_backpack_name_length"
-                    :prevent-enter="true" class="backpack__name" placeholder="nazwa plecaka"/>
-      <Summary :summary_data="summary_data"/>
-      <Autoresizing ref="backpack_description" v-model.trim="backpack_description"
-                    :maxlength="max_backpack_description_length" class="backpack__description"
-                    placeholder="opis plecaka"/>
-      <div class="progress" :style="{width: saveTimePassed * 100 / saveTimeout + '%' }"></div>
-      <draggable v-model="organized_list" animation="1000" class="categories" group="categories"
-                 handle=".category__handle" item-key="id" @end="drag=false" @start="drag=true">
-        <template #item="{element}">
-          <Category :category="element" :ref="setCategoryRef"/>
-        </template>
-      </draggable>
-      <button class="add-category" type="button" @click="addCategory">
-        <font-awesome-icon class="fa-md" icon="plus"/>
-        dodaj kategorię
       </button>
     </div>
   </BaseApp>
@@ -51,11 +54,13 @@ import Summary from "@/components/inside/editor/Summary";
 import BaseApp from "@/components/inside/BaseApp";
 import Autoresizing from "@/components/Autoresizing";
 import {mapGetters} from 'vuex'
+import MyGear from "@/components/inside/editor/MyGear";
 
 
 export default {
   name: "Editor",
   components: {
+    MyGear,
     Autoresizing,
     BaseApp,
     Summary,
@@ -191,13 +196,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.wrapper {
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
 .progress {
   height: 1px;
   background-color: grey;
 }
 
 .backpack__list {
-  background-color: #e5e1e1;
+  background-color: $windows_color;
   border-radius: 4px;
   padding: 4px;
   margin: 4px 10px;

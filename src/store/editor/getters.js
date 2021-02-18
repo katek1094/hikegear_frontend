@@ -37,11 +37,11 @@ export default {
     },
     new_element_id(state) {
         let ids = []
-        for (let i = 0; i < state.dynamic.list.length; i++) {
-            ids.push(state.dynamic.list[i].id)
+        for (const element of state.dynamic.list) {
+            ids.push(element.id)
         }
-        for (let i = 0; i < 1000 + ids.length; i++) {
-            if (!ids.includes(i)) return i
+        for (const integer of [...Array(1000).keys()]) {
+            if (!ids.includes(integer)) return integer
         }
         throw 'loop iterated 1000 times in searching for new, free id, something is wrong!'
     },

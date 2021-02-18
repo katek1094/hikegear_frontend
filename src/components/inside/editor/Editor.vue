@@ -25,9 +25,9 @@
                       placeholder="opis plecaka"/>
         <div class="progress" :style="{width: saveTimePassed * 100 / saveTimeout + '%' }"></div>
         <draggable v-model="organized_list" animation="1000" class="categories" group="categories"
-                   handle=".category__handle" item-key="id" @end="clearRefs">
+                   handle=".category__handle" item-key="id">
           <template #item="{element}">
-            <Category :category="element" :ref="'cat' + element.category_index" @end="clearRefs"/>
+            <Category :category="element" :ref="'cat' + element.category_index"/>
           </template>
         </draggable>
         <button class="add-category" type="button" @click="addCategory">
@@ -69,7 +69,6 @@ export default {
   },
   data() {
     return {
-      categoryRefs: [],
       edits: 0,
       saveTimeout: 3000,
       saveTimePassed: 0,
@@ -157,9 +156,6 @@ export default {
         this.save()
       }
     },
-    clearRefs() {
-      this.categoryRefs = []
-    }
   },
   mounted() {
     window.addEventListener('keydown', this.ctrlS);
@@ -171,9 +167,7 @@ export default {
           this.edits += 1
           let x = this.edits
           setTimeout(() => {
-            if (x === this.edits) {
-              this.save()
-            }
+            if (x === this.edits) this.save()
           }, this.saveTimeout)
         },
         {deep: true}

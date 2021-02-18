@@ -5,7 +5,7 @@
     </div>
     <draggable v-model="items" class="my-gear_items" :group="{name: 'items', pull: 'clone', put: true}"
                item-key="id" handle=".item__handle" emptyInsertThreshold="30" animation="700"
-    :clone="deepCopy">
+               :clone="deepCopy">
       <template #item="{element}">
         <div class="item">
           <span class="item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
@@ -20,7 +20,7 @@
 
 <script>
 import draggable from 'vuedraggable'
-import {getCookie} from "@/store/functions";
+import {apiFetch} from "@/store/functions";
 
 export default {
   name: "MyGear",
@@ -65,26 +65,24 @@ export default {
   methods: {
     deepCopy(original) {
       let deep_copy = JSON.parse(JSON.stringify(original))
-      deep_copy.id = this.$store.getters['editor/new_element_id']
-      return deep_copy
+      let copy = {type: 'item', name: deep_copy.name, description: deep_copy.description,
+        weight: deep_copy.weight, id: this.$store.getters['editor/new_element_id']
+      }
+      return copy
     },
     updatePrivateGear(data) {
-      fetch(process.env.VUE_APP_API_URL + '/api/private_gear', {
+      apiFetch('private_gear', {
         method: 'PATCH',
-        headers: {
-          'X-CSRFToken': getCookie('csrftoken'),
-          'Content-Type': 'application/json'
-        },
-        credentials: 'include',
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({'private_gear': data})
       })
-      .then(response => {
-        if (response.ok) {
-          response.json().then(data => {
-            this.$store.dispatch('my_gear/changeMyGear', data['private_gear'])
+          .then(response => {
+            if (response.ok) {
+              response.json().then(data => {
+                this.$store.dispatch('my_gear/changeMyGear', data['private_gear'])
+              })
+            } else console.log(response)
           })
-        } else console.log(response)
-      })
     }
   }
 }
@@ -112,7 +110,7 @@ export default {
 .item {
   @include editor-category_grid;
   grid-template-columns: auto 1fr 1fr 3rem;
-  padding: 2px 0 ;
+  padding: 2px 0;
 }
 
 .my-gear_items {

@@ -14,6 +14,13 @@ export function getCookie(name) {
     return cookieValue;
 }
 
+export function apiFetch(endpoint, options) {
+    if (options.headers === undefined) options.headers = {}
+    options.headers['X-CSRFToken'] = getCookie('csrftoken')
+    options.credentials = 'include'
+    return fetch(process.env.VUE_APP_API_URL + '/api/' + endpoint, options)
+}
+
 export function summarize_elements_list(elements_list) {
     let results = {data: [], labels: [], total_weight: 0, consumable_weight: 0, worn_weight: 0}
     for (let i = 0; i < elements_list.length; i++) {

@@ -28,7 +28,7 @@
 
 <script>
 import LandingPage from "@/components/outside/LandingPage";
-import {getCookie} from "@/store/functions";
+import {apiFetch} from "@/store/functions";
 
 export default {
   name: "Register",
@@ -93,13 +93,9 @@ export default {
       this.password_info = ''
       this.password2_blurred = true
       if (this.isFormValid) {
-        fetch(process.env.VUE_APP_API_URL + '/api/users/', {
+        apiFetch('users/', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCookie('csrftoken')
-          },
-          credentials: 'include',
+          headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
             email: this.email,
             password: this.password1

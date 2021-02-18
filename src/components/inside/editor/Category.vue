@@ -14,7 +14,8 @@
         <font-awesome-icon class="fa-sm" icon="trash"/>
       </button>
     </div>
-    <draggable v-model="items" animation="700" class="items" :group="{name: 'items', pull: pullPolicy, put: true}" item-key="id"
+    <draggable v-model="items" animation="700" class="items" :group="{name: 'items', pull: pullPolicy, put: true}"
+               item-key="id"
                handle=".item__handle" emptyInsertThreshold="30" :copy="deepCopy">
       <template #item="{element}">
         <Item :item="element" :ref="setItemRef"/>
@@ -99,7 +100,6 @@ export default {
       copy.name = deep_copy.name
       copy.description = deep_copy.description
       copy.weight = deep_copy.weight
-
       return copy
     }
   },

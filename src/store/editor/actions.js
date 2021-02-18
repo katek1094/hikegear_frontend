@@ -1,4 +1,4 @@
-import {getCookie} from '@/store/functions'
+import {apiFetch} from '@/store/functions'
 
 export default {
     moveCategory({commit}, new_organized_list) {
@@ -91,13 +91,9 @@ export default {
         commit('set_dynamic_list', getters['static_list'])
     },
     updateBackpack({commit, rootGetters}, payload) {
-        return fetch(process.env.VUE_APP_API_URL + '/api/backpacks/' + rootGetters['editor/backpack_id'] + '/', {
+        return apiFetch('backpacks/' + rootGetters['editor/backpack_id'] + '/', {
             method: 'PATCH',
-            headers: {
-                'X-CSRFToken': getCookie('csrftoken'),
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include',
+            headers: {'Content-Type': 'application/json'},
             body: rootGetters['editor/bodyBackpackData']
         })
             .then(response => {
@@ -115,13 +111,9 @@ export default {
             })
     },
     addBackpack({commit}) {
-        fetch(process.env.VUE_APP_API_URL + '/api/backpacks/', {
+        apiFetch('backpacks/', {
             method: 'POST',
-            headers: {
-                'X-CSRFToken': getCookie('csrftoken'),
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include',
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 name: 'nowy plecak',
                 description: '',
@@ -154,12 +146,8 @@ export default {
             })
     },
     deleteBackpack({commit, rootGetters}, backpack_id) {
-        return fetch(process.env.VUE_APP_API_URL + '/api/backpacks/' + backpack_id, {
-            method: 'DELETE',
-            headers: {
-                'X-CSRFToken': getCookie('csrftoken'),
-            },
-            credentials: 'include',
+        return apiFetch('backpacks/' + backpack_id, {
+            method: 'DELETE'
         })
             .then(response => {
                 if (response.ok) {
@@ -185,10 +173,8 @@ export default {
         commit('copy_and_set_static_backpack', getters['backpacks'][index])
     },
     getInitialData({commit}) {
-        return fetch(process.env.VUE_APP_API_URL + '/api/initial', {
-            method: 'GET',
-            headers: {'X-CSRFToken': getCookie('csrftoken')},
-            credentials: 'include',
+        return apiFetch('initial', {
+            method: 'GET'
         })
             .then(response => {
                 if (response.ok) {

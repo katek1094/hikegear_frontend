@@ -15,8 +15,7 @@
       </button>
     </div>
     <draggable v-model="items" animation="700" class="items" :group="{name: 'items', pull: pullPolicy, put: ['items']}"
-               item-key="id"
-               handle=".item__handle" emptyInsertThreshold="30" :copy="deepCopy">
+               item-key="id" handle=".item__handle" emptyInsertThreshold="30" :clone="deepCopy">
       <template #item="{element}">
         <Item :item="element" :ref="setItemRef"/>
       </template>
@@ -165,7 +164,7 @@ $delete_width: 30px;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .category__delete, ::v-deep(.item__delete), .category__handle, ::v-deep(.item__handle), {
+  .category__delete, ::v-deep(.item__delete){
     visibility: hidden;
   }
   .category__header:hover .category__delete.deletable, ::v-deep(.item:hover .item__delete),

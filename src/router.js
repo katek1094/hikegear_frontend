@@ -8,6 +8,7 @@ import Register from "@/components/outside/Register";
 import Login from "@/components/outside/Login";
 import VerifyYourEmail from "@/components/outside/VerifyYourEmail";
 import Backpack from "@/components/outside/Backpack";
+import MyGearEditor from "@/components/inside/MyGearEditor";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -19,6 +20,7 @@ const router = createRouter({
         {path: '/register', component: Register, name: 'register'},
         {path: '/verify_email', component: VerifyYourEmail, name: 'verify_email'},
         {path: '/backpack/:id', component: Backpack, name: 'backpack', props: true},
+        {path: '/my_gear', component: MyGearEditor, name: 'my_gear', meta: {require_auth: true}},
     ],
 })
 

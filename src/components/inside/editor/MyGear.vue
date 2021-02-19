@@ -27,28 +27,7 @@ export default {
   components: {draggable},
   data() {
     return {
-      items_list: [
-        {
-          id: 1,
-          name: 'XD',
-          type: 'item',
-          description: 'Quechua m100',
-          weight: 11,
-          quantity: 1,
-          worn: false,
-          consumable: false,
-        },
-        {
-          id: 1,
-          name: 'liner',
-          type: 'item',
-          description: 'jedwabny decathlon',
-          weight: 69,
-          quantity: 1,
-          worn: false,
-          consumable: false,
-        },
-      ]
+
     }
   },
   computed: {
@@ -91,16 +70,17 @@ export default {
 
 <style lang="scss" scoped>
 .my-gear_frame {
-  margin-left: 50px;
+  margin-left: 20px;
   background: $windows_color;
   width: 400px;
-  height: 80vh;
+  max-height: 90vh;
   border-radius: 4px;
   position: -webkit-sticky;
   position: sticky;
-  top: 10vh;
+  top: 5vh;
   padding: 8px;
   box-sizing: border-box;
+  @include flex-column-center;
 }
 
 .header {
@@ -112,20 +92,26 @@ export default {
   @include editor-category_grid;
   grid-template-columns: auto 1fr 1fr 3rem;
   padding: 2px 0;
+  border-bottom: 1px dotted grey;
 }
 
 .my-gear_items {
-  @include editor-items;
+  //@include editor-items;
   font-size: .8rem;
   background-color: $background;
-}
-
-.item:not(:last-child) {
-  border-bottom: 1px dotted grey;
+  overflow-y: auto;
+  width: 100%;
+  height: 100%;
 }
 
 .item__handle {
   @include sort-handle;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .item:hover .item__handle {
+    visibility: visible;
+  }
 }
 
 .sortable-chosen {

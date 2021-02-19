@@ -1,21 +1,21 @@
 <template>
   <BaseApp>
     <div v-if="editor_data_ready" class="wrapper">
-      <div class="editor">
-        <div class="backpack__list">
-          <div class="backpack__list__item" v-for="(backpack, index) in backpacks" :key="backpack.id"
-               @click="changeBackpack(index)">
-            <span v-if="backpack.name !== ''" :class="{active: backpack.id === backpack_id}">{{ backpack.name }}</span>
-            <span v-if="backpack.name === ''" :class="{active: backpack.id === backpack_id}">bez nazwy</span>
-            <button v-if="backpack.id === backpack_id" class="backpack__delete" type="button" @click="deleteBackpack">
-              <font-awesome-icon class="fa-sm" icon="trash"/>
-            </button>
-          </div>
-          <button class="add-backpack" type="button" @click="addBackpack">
-            <font-awesome-icon class="fa-md" icon="plus"/>
-            dodaj plecak
+      <div class="backpack__list">
+        <div class="backpack__list__item" v-for="(backpack, index) in backpacks" :key="backpack.id"
+             @click="changeBackpack(index)">
+          <span v-if="backpack.name !== ''" :class="{active: backpack.id === backpack_id}">{{ backpack.name }}</span>
+          <span v-if="backpack.name === ''" :class="{active: backpack.id === backpack_id}">bez nazwy</span>
+          <button v-if="backpack.id === backpack_id" class="backpack__delete" type="button" @click="deleteBackpack">
+            <font-awesome-icon class="fa-sm" icon="trash"/>
           </button>
         </div>
+        <button class="add-backpack" type="button" @click="addBackpack">
+          <font-awesome-icon class="fa-md" icon="plus"/>
+          dodaj plecak
+        </button>
+      </div>
+      <div class="editor">
         <router-link class="backpack__link" :to="'/backpack/' + backpack_id">link do plecaka</router-link>
         <Autoresizing ref="backpack_name" v-model.trim="backpack_name" :maxlength="max_backpack_name_length"
                       :prevent-enter="true" class="backpack__name" placeholder="nazwa plecaka"/>
@@ -117,17 +117,19 @@ export default {
       this.$refs['cat' + (this.organized_list.length - 1)].focusName()
       window.scrollTo(0, document.body.scrollHeight)
     },
-    save(update_dynamic = true) {
+    async save(update_dynamic = true) {
       if (this.are_changes) {
         this.edits = 0
         // TODO: add some kind of progress when data is fetching
-        this.$store.dispatch('editor/updateBackpack', {id: this.backpack_id, update_dynamic: update_dynamic})
+        await this.$store.dispatch('editor/updateBackpack', {id: this.backpack_id, update_dynamic: update_dynamic})
+        this.resizeAll()
       }
     },
-    changeBackpack(index) {
-      this.save(false)
-      this.$store.dispatch('editor/changeBackpack', index)
-      this.$forceUpdate()
+    async changeBackpack(index) {
+      await this.save(false)
+      await this.$store.dispatch('editor/changeBackpack', index)
+      // this.$forceUpdate()
+      this.resizeAll()
     },
     addBackpack() {
       this.$store.dispatch('editor/addBackpack')
@@ -191,7 +193,7 @@ export default {
 <style lang="scss" scoped>
 .wrapper {
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: []auto auto auto;
 }
 
 .progress {
@@ -200,10 +202,11 @@ export default {
 }
 
 .backpack__list {
+  align-self: flex-start;
   background-color: $windows_color;
   border-radius: 4px;
   padding: 4px;
-  margin: 4px 10px;
+  margin: 4px;
   width: 300px;
 }
 
@@ -217,6 +220,7 @@ export default {
 .backpack__list__item span {
   padding: 4px 8px;
   border-radius: 4px;
+  word-wrap: anywhere;
 }
 
 .backpack__list__item span.active {

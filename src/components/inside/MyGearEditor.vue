@@ -1,12 +1,15 @@
 <template>
-  <div>
+  <BaseApp>
     <h1>My gear editor</h1>
-  </div>
+  </BaseApp>
 </template>
 
 <script>
+import BaseApp from "@/components/inside/BaseApp";
+
 export default {
-name: "MyGearEditor"
+  name: "MyGearEditor",
+  components: {BaseApp}
 }
 </script>
 

@@ -21,7 +21,8 @@ export default {
   min-height: 100vh;
 }
 .slot {
-  @include flex-column-center;
+  display: flex;
+  justify-content: center;
   padding-top: 10px;
   padding-bottom: 15px;
 }

@@ -16,9 +16,9 @@
         </button>
       </div>
       <div class="editor">
-        <router-link class="backpack__link" :to="'/backpack/' + backpack_id">link do plecaka</router-link>
         <Autoresizing ref="backpack_name" v-model.trim="backpack_name" :maxlength="max_backpack_name_length"
                       :prevent-enter="true" class="backpack__name" placeholder="nazwa plecaka"/>
+        <router-link class="backpack__link" :to="'/backpack/' + backpack_id">link do plecaka</router-link>
         <Summary :summary_data="summary_data"/>
         <Autoresizing ref="backpack_description" v-model.trim="backpack_description"
                       :maxlength="max_backpack_description_length" class="backpack__description"
@@ -192,8 +192,50 @@ export default {
 
 <style lang="scss" scoped>
 .wrapper {
-  display: grid;
-  grid-template-columns: []auto auto auto;
+  width: 100%;
+}
+
+
+//TODO: move summary to the left along with the backpack_list
+@media (min-width: $first_threshold) {
+  .wrapper {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-items: center;
+    padding: 0 $grid_wrapper_padding;
+    column-gap: $grid_gap;
+  }
+  .backpack__list {
+    align-self: flex-start;
+  }
+}
+
+@media (min-width: $second_threshold) and (max-width: $first_threshold - 1px) {
+  .wrapper {
+    display: grid;
+    justify-items: center;
+    padding: 0 $grid_wrapper_padding;
+    column-gap: $grid_gap;
+  }
+  .backpack__list {
+    grid-column: 1;
+  }
+  .editor {
+    grid-column: 1;
+  }
+  .my-gear_frame {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+}
+
+@media (max-width: $second_threshold - 1px) {
+  .wrapper {
+    @include flex-column-center;
+  }
+  .my-gear_frame {
+    display: none;
+  }
 }
 
 .progress {
@@ -202,12 +244,12 @@ export default {
 }
 
 .backpack__list {
-  align-self: flex-start;
   background-color: $windows_color;
   border-radius: 4px;
   padding: 4px;
-  margin: 4px;
-  width: 300px;
+  width: $backpack_list_width;
+  min-width: $backpack_list_width;
+  box-sizing: border-box;
 }
 
 .backpack__list__item {
@@ -299,11 +341,16 @@ export default {
 
 }
 
-@media (min-width: 801px) {
+@media (min-width: $editor_big_width + 20px) {
   /* tablet, landscape iPad, lo-res laptops ands desktops */
   .editor, .categories {
-    width: 660px;
+    width: $editor_big_width;
   }
+}
+
+@media (min-width: 801px) {
+  /* tablet, landscape iPad, lo-res laptops ands desktops */
+
 }
 
 @media (min-width: 1025px) {

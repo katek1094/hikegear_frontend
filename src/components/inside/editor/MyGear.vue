@@ -70,9 +70,9 @@ export default {
 
 <style lang="scss" scoped>
 .my-gear_frame {
-  margin-left: 20px;
   background: $windows_color;
-  width: 400px;
+  max-width: $my_gear_max_width;
+  min-width: $my_gear_min_width;
   max-height: 90vh;
   border-radius: 4px;
   position: -webkit-sticky;
@@ -90,16 +90,17 @@ export default {
 
 .item {
   @include editor-category_grid;
-  grid-template-columns: auto 1fr 1fr 3rem;
+  grid-template-columns: auto 2fr 3fr 3rem;
+  column-gap: 2px;
   padding: 2px 0;
   border-bottom: 1px dotted grey;
 }
 
 .my-gear_items {
-  //@include editor-items;
   font-size: .8rem;
   background-color: $background;
   overflow-y: auto;
+  overflow-x: hidden;
   width: 100%;
   height: 100%;
 }
@@ -120,6 +121,10 @@ export default {
 
 .item .name, .item .description {
   word-wrap: anywhere;
+}
+
+.description {
+  margin-right: 3px;
 }
 
 </style>

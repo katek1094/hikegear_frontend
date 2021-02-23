@@ -121,6 +121,7 @@ export default {
       if (this.are_changes) {
         this.edits = 0
         // TODO: add some kind of progress when data is fetching
+        // TODO: do not reload elements list when dragging
         await this.$store.dispatch('editor/updateBackpack', {id: this.backpack_id, update_dynamic: update_dynamic})
         this.resizeAll()
       }
@@ -329,6 +330,7 @@ export default {
   width: 85%;
   font-size: .85rem;
   margin: 6px 0;
+  padding: 5px;
 }
 
 @media (min-width: 480px) {

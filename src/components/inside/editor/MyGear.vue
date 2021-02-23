@@ -7,7 +7,7 @@
                item-key="id" handle=".item__handle" emptyInsertThreshold="30" animation="700"
                :clone="deepCopy">
       <template #item="{element}">
-        <div class="item">
+        <div class="my-item">
           <span class="item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
           <span class="name">{{ element.name }}</span>
           <span class="description">{{ element.description }}</span>
@@ -36,6 +36,15 @@ export default {
         return this.$store.getters['my_gear/get_my_gear']
       },
       set(val) {
+        for (let i = 0; i < val.length; i++) {
+          if (val[i].quantity !== undefined) {
+            let empty = {}
+            empty.description = val[i].description
+            empty.weight = val[i].weight
+            empty.name = val[i].name
+            val[i] = empty
+          }
+        }
         this.$store.dispatch('my_gear/changeMyGear', val)
         this.updatePrivateGear(val)
       }
@@ -70,6 +79,7 @@ export default {
 
 <style lang="scss" scoped>
 .my-gear_frame {
+  width: 100%;
   background: $windows_color;
   max-width: $my_gear_max_width;
   min-width: $my_gear_min_width;
@@ -81,16 +91,18 @@ export default {
   padding: 8px;
   box-sizing: border-box;
   @include flex-column-center;
+  overflow: hidden;
 }
 
 .header {
   display: flex;
   justify-content: center;
+  height: 8vh;
 }
 
-.item {
+.my-item {
   @include editor-category_grid;
-  grid-template-columns: auto 2fr 3fr 3rem;
+  grid-template-columns: auto 3fr 4fr 2.8rem;
   column-gap: 2px;
   padding: 2px 0;
   border-bottom: 1px dotted grey;
@@ -110,21 +122,26 @@ export default {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .item:hover .item__handle {
+  .my-item:hover .item__handle {
     visibility: visible;
   }
 }
 
 .sortable-chosen {
   @include sort-chosen;
+  //background-color: red;
 }
 
-.item .name, .item .description {
+.my-item .name, .my-item .description {
   word-wrap: anywhere;
 }
 
 .description {
   margin-right: 3px;
 }
+.sortable-chosen {
+  font-size: .8rem;
+}
+
 
 </style>

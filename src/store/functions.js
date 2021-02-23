@@ -64,7 +64,11 @@ export function format_elements_list(elements_list) {
             organized[organized.length - 1].total_weight += element.weight * element.quantity
             if (element.quantity === '') element.quantity = 0
             organized[organized.length - 1].total_quantity += element.quantity
-        } else throw 'backpack list element is neither category nor item!'
+        } else {
+            console.log(element)
+            throw 'backpack list element is neither category nor item!'
+        }
+
     }
     return organized
 }

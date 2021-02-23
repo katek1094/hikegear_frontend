@@ -15,7 +15,7 @@
       </button>
     </div>
     <draggable v-model="items" animation="700" class="items" :group="{name: 'items', pull: pullPolicy, put: ['items']}"
-               item-key="id" handle=".item__handle" emptyInsertThreshold="30" :clone="deepCopy">
+               item-key="id" handle=".item__handle" emptyInsertThreshold="30">
       <template #item="{element}">
         <Item :item="element" :ref="setItemRef"/>
       </template>
@@ -93,13 +93,11 @@ export default {
       }
     },
     pullPolicy(to) {
-      if (to.el.className === 'my-gear_items') return 'clone'
-      else if (to.el.className === 'items') return true
-    },
-    deepCopy(original) {
-      let deep_copy = JSON.parse(JSON.stringify(original))
-      return {
-        name: deep_copy.name, description: deep_copy.description, weight: deep_copy.weight,
+      if (to.el.className === 'my-gear_items') {
+        return false
+      }
+      else if (to.el.className === 'items') {
+        return true
       }
     },
     focusName() {
@@ -141,7 +139,7 @@ $delete_width: 30px;
 
 ::v-deep(.item) {
   @include editor-category_grid;
-  grid-template-columns: $handle_width 1fr 1fr repeat(2, $worn_consumable_width)
+  grid-template-columns: $handle_width 3fr 4fr repeat(2, $worn_consumable_width)
   $weight_width $quantity_width $delete_width;
 }
 
@@ -151,6 +149,7 @@ $delete_width: 30px;
 
 .sortable-chosen {
   @include sort-chosen;
+  //background-color: red;
 }
 
 .category__delete, ::v-deep(.item__delete) {

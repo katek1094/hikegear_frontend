@@ -162,20 +162,6 @@ export default {
   color: blue;
 }
 
-.my-gear_frame .item {
-  display: grid;
-  grid-template-columns: auto 1fr 1fr 3rem;
-}
-
-.my-gear_frame .item__worn, .my-gear_frame .item__consumable, .my-gear_frame .item__quantity,
-.my-gear_frame .item__delete {
-  display: none;
-}
-
-.sortable-chosen {
-  font-size: .8rem;
-}
-
 @media (hover: hover) and (pointer: fine) {
   .item__worn, .item__consumable {
     visibility: hidden;

@@ -129,7 +129,6 @@ export default {
     async changeBackpack(index) {
       await this.save(false)
       await this.$store.dispatch('editor/changeBackpack', index)
-      // this.$forceUpdate()
       this.resizeAll()
     },
     addBackpack() {

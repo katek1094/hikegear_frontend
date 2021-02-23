@@ -14,6 +14,7 @@ export default {
             // profile: {
             //     user_id: 1
             // },
+            // description: '',
             // created: '',
             // updated
             // list: []

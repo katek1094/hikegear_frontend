@@ -91,6 +91,10 @@ export default {
         commit('set_dynamic_list', getters['static_list'])
     },
     updateBackpack({commit, rootGetters}, payload) {
+        if (payload.update_dynamic) {
+            commit('copy_and_set_dynamic_backpack', rootGetters['editor/dynamic_backpack_data'])
+            commit('copy_and_set_static_backpack', rootGetters['editor/dynamic_backpack_data'])
+        }
         return apiFetch('backpacks/' + rootGetters['editor/backpack_id'] + '/', {
             method: 'PATCH',
             headers: {'Content-Type': 'application/json'},
@@ -99,10 +103,6 @@ export default {
             .then(response => {
                 if (response.ok) {
                     response.json().then(data => {
-                        if (payload.update_dynamic) {
-                            commit('copy_and_set_dynamic_backpack', data)
-                            commit('copy_and_set_static_backpack', data)
-                        }
                         commit('update_backpack', {data: data, id: payload.id})
                     })
                 } else {

@@ -50,11 +50,10 @@ export default {
         data.name = state.dynamic.name
         data.description = state.dynamic.description
         data.list = state.dynamic.list
-        for (let i = 0; i < data.list.length; i++) {
-            data.list[i].id = i
-            delete data.list[i].list_index
-        }
         return JSON.stringify(data)
+    },
+    dynamic_backpack_data(state) {
+        return state.dynamic
     },
     dynamic_list(state) {
         return JSON.parse(JSON.stringify(state.dynamic.list))

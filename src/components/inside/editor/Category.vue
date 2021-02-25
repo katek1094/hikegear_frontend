@@ -3,7 +3,7 @@
     <div class="category__header">
       <span class="category__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
       <div>
-        <input ref="name" v-model.trim="category_name" :maxlength="max_name_length" :size="max_name_length"
+        <input ref="name_input" v-model.trim="category_name" :maxlength="max_name_length" :size="max_name_length"
                class="category__name" placeholder="nazwa kategorii" type="text">
       </div>
       <span class="category__weight__label">waga</span>
@@ -34,6 +34,8 @@
 <script>
 import draggable from 'vuedraggable'
 import Item from "@/components/inside/editor/Item";
+import {ref, computed, onBeforeUpdate} from 'vue';
+import {useStore} from 'vuex';
 
 export default {
   name: "Category",
@@ -41,72 +43,62 @@ export default {
   props: {
     category: Object,
   },
-  data() {
+  setup(props) {
+    const store = useStore()
+
+    const items_refs = ref([]) //array of template refs created with setItemRef()
+    const max_name_length = 30
+    const name_input = ref(null) //template ref
+
+    const category_name = computed({
+      get: () => props.category.name,
+      set: (val) => store.dispatch('editor/changeElementProperty', {
+        type: 'category',
+        list_index: props.category.list_index,
+        property: 'name',
+        new_value: val
+      })
+    })
+    const is_the_only_category = computed(() => store.getters['editor/organized_list'].length === 1)
+    const items = computed({
+      get: () => props.category.items,
+      set: (val) => store.dispatch('editor/moveItem', {
+        new_category: val,
+        category_index: props.category.category_index
+      })
+    })
+    const addItem = async () => {
+      await store.dispatch('editor/addItem', props.category.list_index)
+      items_refs.value[items_refs.value.length - 1].focusName()
+      const added_item = items_refs.value[items_refs.value.length - 1].$el
+      window.scrollTo(0, added_item.scrollHeight + document.documentElement.scrollTop)
+    }
+    const deleteCategory = () => {
+      if (items.value.length !== 0) {
+        const confirmation = confirm("na pewno chcesz usunąć tę kategorię?")
+        if (confirmation) store.dispatch('editor/deleteCategory', props.category.list_index)
+      } else store.dispatch('editor/deleteCategory', props.category.list_index)
+    }
+    const setItemRef = (el) => {
+      if (el) items_refs.value.push(el)
+    }
+    const resizeAllItems = () => {
+      for (const item_ref of items_refs.value) item_ref.resizeAll()
+    }
+    const pullPolicy = (to) => {
+      if (to.el.className === 'my-gear_items') return false
+      else if (to.el.className === 'items') return true
+    }
+    const focusName = () => name_input.value.focus()
+
+    onBeforeUpdate(() => items_refs.value = [])
+
     return {
-      itemRefs: [],
-      max_name_length: 30
+      max_name_length, name_input,
+      category_name, is_the_only_category, items,
+      addItem, deleteCategory, setItemRef, resizeAllItems, pullPolicy, focusName
     }
-  },
-  computed: {
-    is_the_only_category() {
-      return this.category.category_index === 0 && this.$store.getters['editor/organized_list'].length === 1
-    },
-    category_name: {
-      get() {
-        return this.category.name
-      },
-      set(val) {
-        this.$store.dispatch('editor/changeElementProperty', {
-          type: 'category',
-          list_index: this.category.list_index,
-          property: 'name',
-          new_value: val
-        })
-      }
-    },
-    items: {
-      get() {
-        return this.category.items
-      },
-      set(val) {
-        this.$store.dispatch('editor/moveItem', {new_category: val, category_index: this.category.category_index})
-      }
-    },
-  },
-  methods: {
-    async addItem() {
-      await this.$store.dispatch('editor/addItem', this.category.list_index)
-      this.itemRefs[this.itemRefs.length - 1].focusName()
-    },
-    deleteCategory() {
-      if (this.items.length !== 0) {
-        let confirmation = confirm("na pewno chcesz usunąć tę kategorię?")
-        if (confirmation) this.$store.dispatch('editor/deleteCategory', this.category.list_index)
-      } else this.$store.dispatch('editor/deleteCategory', this.category.list_index)
-    },
-    setItemRef(el) {
-      if (el) this.itemRefs.push(el)
-    },
-    resizeAllItems() {
-      for (let i = 0; i < this.itemRefs.length; i++) {
-        this.itemRefs[i].resizeAll()
-      }
-    },
-    pullPolicy(to) {
-      if (to.el.className === 'my-gear_items') {
-        return false
-      }
-      else if (to.el.className === 'items') {
-        return true
-      }
-    },
-    focusName() {
-      this.$refs.name.focus()
-    }
-  },
-  beforeUpdate() {
-    this.itemRefs = []
-  },
+  }
 }
 </script>
 
@@ -163,7 +155,7 @@ $delete_width: 30px;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .category__delete, ::v-deep(.item__delete){
+  .category__delete, ::v-deep(.item__delete) {
     visibility: hidden;
   }
   .category__header:hover .category__delete.deletable, ::v-deep(.item:hover .item__delete),

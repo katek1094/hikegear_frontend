@@ -26,9 +26,7 @@ export default {
   name: "MyGear",
   components: {draggable},
   data() {
-    return {
-
-    }
+    return {}
   },
   computed: {
     items: {
@@ -36,15 +34,6 @@ export default {
         return this.$store.getters['my_gear/get_my_gear']
       },
       set(val) {
-        for (let i = 0; i < val.length; i++) {
-          if (val[i].quantity !== undefined) {
-            let empty = {}
-            empty.description = val[i].description
-            empty.weight = val[i].weight
-            empty.name = val[i].name
-            val[i] = empty
-          }
-        }
         this.$store.dispatch('my_gear/changeMyGear', val)
         this.updatePrivateGear(val)
       }
@@ -109,12 +98,14 @@ export default {
 }
 
 .my-gear_items {
-  font-size: .8rem;
+  font-size: .7rem;
   background-color: $background;
   overflow-y: auto;
   overflow-x: hidden;
   width: 100%;
   height: 100%;
+  padding: 2px;
+  box-sizing: border-box;
 }
 
 .item__handle {
@@ -129,7 +120,10 @@ export default {
 
 .sortable-chosen {
   @include sort-chosen;
-  //background-color: red;
+}
+
+.categories .sortable-chosen {
+  font-size: .8rem;
 }
 
 .my-item .name, .my-item .description {
@@ -138,9 +132,6 @@ export default {
 
 .description {
   margin-right: 3px;
-}
-.sortable-chosen {
-  font-size: .8rem;
 }
 
 

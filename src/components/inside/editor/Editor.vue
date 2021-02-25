@@ -16,18 +16,18 @@
         </button>
       </div>
       <div class="editor">
-        <Autoresizing ref="backpack_name" v-model.trim="backpack_name" :maxlength="max_backpack_name_length"
+        <Autoresizing ref="backpack_name_input" v-model.trim="backpack_name" :maxlength="max_backpack_name_length"
                       :prevent-enter="true" class="backpack__name" placeholder="nazwa plecaka"/>
         <router-link class="backpack__link" :to="'/backpack/' + backpack_id">link do plecaka</router-link>
         <Summary :summary_data="summary_data"/>
-        <Autoresizing ref="backpack_description" v-model.trim="backpack_description"
+        <Autoresizing ref="backpack_description_input" v-model.trim="backpack_description"
                       :maxlength="max_backpack_description_length" class="backpack__description"
                       placeholder="opis plecaka"/>
-        <div class="progress" :style="{width: saveTimePassed * 100 / saveTimeout + '%' }"></div>
+        <div class="progress" :style="{width: save_time_passed * 100 / timeout_before_save + '%' }"></div>
         <draggable v-model="organized_list" animation="1000" class="categories" group="categories"
                    handle=".category__handle" item-key="id">
           <template #item="{element}">
-            <Category :category="element" :ref="'cat' + element.category_index"/>
+            <Category :category="element" :ref="setCategoryRef"/>
           </template>
         </draggable>
         <button class="add-category" type="button" @click="addCategory">
@@ -53,140 +53,122 @@ import Category from "@/components/inside/editor/Category";
 import Summary from "@/components/inside/editor/Summary";
 import BaseApp from "@/components/inside/BaseApp";
 import Autoresizing from "@/components/Autoresizing";
-import {mapGetters} from 'vuex'
 import MyGear from "@/components/inside/editor/MyGear";
+import {ref, computed, onMounted, onBeforeUnmount} from 'vue';
+import {useStore} from 'vuex';
 
 
 export default {
   name: "Editor",
-  components: {
-    MyGear,
-    Autoresizing,
-    BaseApp,
-    Summary,
-    Category,
-    draggable,
-  },
-  data() {
-    return {
-      edits: 0,
-      saveTimeout: 3000,
-      saveTimePassed: 0,
-      resizes: 0,
-      max_backpack_name_length: 60,
-      interval: {},
-      max_backpack_description_length: 1000
+  components: {MyGear, Autoresizing, BaseApp, Summary, Category, draggable},
+  setup() {
+    const store = useStore()
+
+    const edits_counter = ref(0) //every time some data in editor is changed, it increments, in handleDataChange()
+    const timeout_before_save = ref(3000) //time between last change and saving data to the server
+    const save_time_passed = ref(0) //how many time passed since last edit, edited in increaseSaveTimePassed()
+    const resizes_counter = ref(0) //every time window is resized, it increments, in handleWindowResize()
+    const max_backpack_name_length = ref(60)
+    const max_backpack_description_length = ref(1000)
+    const timer_function_id = ref(null) //id of interval settled in onMounted, cleared in onBeforeUnmount
+
+    const categories_refs = ref([])  //array of template refs created with setCategoryRef()
+    const backpack_name_input = ref(null)  //template ref
+    const backpack_description_input = ref(null)  //template ref
+
+    const backpack_id = computed(() => store.getters['editor/backpack_id'])
+    const backpacks = computed(() => store.getters['editor/backpacks'])
+    const editor_data_ready = computed(() => store.getters['editor/isEditorDataReady'])
+    const are_changes = computed(() => store.getters['editor/are_any_changes'])
+    const summary_data = computed(() => store.getters['editor/summary_data'])
+    const organized_list = computed({
+      get: () => store.getters['editor/organized_list'],
+      set: (val) => store.dispatch('editor/moveCategory', val)
+    })
+    const backpack_name = computed({
+      get: () => store.getters['editor/backpack_name'],
+      set: (val) => store.dispatch('editor/renameBackpack', val)
+    })
+    const backpack_description = computed({
+      get: () => store.getters['editor/backpack_description'],
+      set: (val) => store.dispatch('editor/changeBackpackDescription', val)
+    })
+    const setCategoryRef = (el) => {
+      if (el) categories_refs.value.push(el)
     }
-  },
-  computed: {
-    ...mapGetters({
-      backpack_id: 'editor/backpack_id',
-      backpacks: 'editor/backpacks',
-      editor_data_ready: 'editor/isEditorDataReady',
-      are_changes: 'editor/are_any_changes',
-      summary_data: 'editor/summary_data'
-    }),
-    organized_list: {
-      get() {
-        return this.$store.getters['editor/organized_list']
-      },
-      set(val) {
-        this.$store.dispatch('editor/moveCategory', val)
-      }
-    },
-    backpack_name: {
-      get() {
-        return this.$store.getters['editor/backpack_name']
-      },
-      set(val) {
-        this.$store.dispatch('editor/renameBackpack', val)
-      }
-    },
-    backpack_description: {
-      get() {
-        return this.$store.getters['editor/backpack_description']
-      },
-      set(val) {
-        this.$store.dispatch('editor/changeBackpackDescription', val)
-      }
-    }
-  },
-  methods: {
-    async addCategory() {
-      await this.$store.dispatch('editor/addCategory')
-      this.$refs['cat' + (this.organized_list.length - 1)].focusName()
+    const addCategory = async () => {
+      await store.dispatch('editor/addCategory')
+      categories_refs.value[categories_refs.value.length - 1].focusName()
       window.scrollTo(0, document.body.scrollHeight)
-    },
-    async save(update_dynamic = true) {
-      if (this.are_changes) {
-        this.edits = 0
-        // TODO: add some kind of progress when data is fetching
-        // TODO: do not reload elements list when dragging
-        await this.$store.dispatch('editor/updateBackpack', {id: this.backpack_id, update_dynamic: update_dynamic})
-        this.resizeAll()
+    }
+    const save = async (update_dynamic = true) => {
+      if (are_changes.value) {
+        edits_counter.value = 0
+        await store.dispatch('editor/updateBackpack', {id: backpack_id.value, update_dynamic: update_dynamic})
+        resizeAll()
       }
-    },
-    async changeBackpack(index) {
-      await this.save(false)
-      await this.$store.dispatch('editor/changeBackpack', index)
-      this.resizeAll()
-    },
-    addBackpack() {
-      this.$store.dispatch('editor/addBackpack')
-    },
-    deleteBackpack() {
+    }
+    const changeBackpack = async (index) => {
+      await save(false)
+      await store.dispatch('editor/changeBackpack', index)
+      resizeAll()
+    }
+    const addBackpack = () => store.dispatch('editor/addBackpack')
+    const deleteBackpack = () => {
       let confirmation = confirm('na pewno chcesz usunąć ten plecak?')
-      if (confirmation) this.$store.dispatch('editor/deleteBackpack', this.backpack_id)
-    },
-    resizeAll() {
-      if (this.editor_data_ready) {
-        for (let i of this.organized_list) {
-          this.$refs['cat' + i.category_index].resizeAllItems()
-        }
-        this.$refs.backpack_name.autoresize()
-        this.$refs.backpack_description.autoresize()
+      if (confirmation) store.dispatch('editor/deleteBackpack', backpack_id.value)
+    }
+    const resizeAll = () => {
+      if (editor_data_ready.value) {
+        for (const category_ref of categories_refs.value) category_ref.resizeAllItems()
+        backpack_name_input.value.autoresize()
+        backpack_description_input.value.autoresize()
       }
-    },
-    windowResized() {
-      this.resizes += 1
-      let x = this.resizes
+    }
+    const handleWindowResize = () => {
+      resizes_counter.value += 1
+      const x = resizes_counter.value
       setTimeout(() => {
-        if (x === this.resizes) this.resizeAll()
+        if (x === resizes_counter.value) resizeAll()
       }, 300)
-    },
-    ctrlS(e) {
+    }
+    const handleCtrlS = (e) => {
       if (e.key === 's' && e.ctrlKey === true) {
         e.preventDefault()
-        this.save()
+        save()
       }
-    },
-  },
-  mounted() {
-    window.addEventListener('keydown', this.ctrlS);
-    window.addEventListener("resize", this.windowResized);
-    this.$store.watch(
-        (state) => state.editor.dynamic,
-        () => {
-          this.saveTimePassed = 0
-          this.edits += 1
-          let x = this.edits
-          setTimeout(() => {
-            if (x === this.edits) this.save()
-          }, this.saveTimeout)
-        },
-        {deep: true}
-    );
-    this.interval = setInterval(() => {
-      if (this.editor_data_ready && this.are_changes) this.saveTimePassed += 10
-      // TODO: bar loads after fetch because are_changes is waiting for response to change to false
-    }, 10)
-  },
-  beforeUnmount() {
-    window.removeEventListener("resize", this.windowResized);
-    window.removeEventListener("keydown", this.ctrlS);
-    clearInterval(this.interval)
-  },
+    }
+    const handleDataChange = () => {
+      save_time_passed.value = 0
+      edits_counter.value += 1
+      const x = edits_counter.value
+      setTimeout(() => {
+        if (x === edits_counter.value) save()
+      }, timeout_before_save.value)
+    }
+    const increaseSaveTimePassed = () => {
+      if (editor_data_ready.value && are_changes.value) save_time_passed.value += 10
+    }
+    onMounted(() => {
+      window.addEventListener('keydown', handleCtrlS);
+      window.addEventListener("resize", handleWindowResize);
+      store.watch((state) => state.editor.dynamic, handleDataChange, {deep: true});
+      timer_function_id.value = setInterval(increaseSaveTimePassed, 10)
+    })
+    onBeforeUnmount(() => {
+      window.removeEventListener("resize", handleWindowResize);
+      window.removeEventListener("keydown", handleCtrlS);
+      clearInterval(timer_function_id.value)
+    })
 
+    return {
+      timeout_before_save, save_time_passed, max_backpack_name_length, max_backpack_description_length,
+      backpack_name_input, backpack_description_input,
+      backpack_id, backpacks, editor_data_ready, summary_data, organized_list, backpack_name,
+      backpack_description,
+      setCategoryRef, addCategory, changeBackpack, addBackpack, deleteBackpack
+    }
+  },
 }
 </script>
 

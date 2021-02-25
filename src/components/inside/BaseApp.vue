@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="base_app">
     <NavBar/>
     <div class="slot">
       <slot></slot>
@@ -17,9 +17,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.base_app {
+  min-height: 100vh;
+}
 .slot {
-  @include flex-column-center;
+  display: flex;
+  justify-content: center;
   padding-top: 10px;
   padding-bottom: 15px;
 }

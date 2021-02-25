@@ -1,4 +1,4 @@
-import {getCookie} from '@/store/functions'
+import {apiFetch} from '@/store/functions'
 
 export default {
     namespaced: true,
@@ -20,13 +20,8 @@ export default {
             commit('set_logged_in', bool)
         },
         logout({commit}) {
-            return fetch(process.env.VUE_APP_API_URL + '/api/logout', {
+            return apiFetch('logout', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken')
-                },
-                credentials: 'include'
             })
                 .then(response => {
                     if (response.ok) {
@@ -36,14 +31,9 @@ export default {
                 })
         },
         login({commit}, payload) {
-            return fetch(process.env.VUE_APP_API_URL + '/api/login', {
+            return apiFetch('login', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken')
-                },
-                // TODO: credentials are necessary only on local development
-                credentials: 'include',
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     email: payload.email,
                     password: payload.password

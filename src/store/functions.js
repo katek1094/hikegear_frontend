@@ -4,7 +4,6 @@ export function getCookie(name) {
         const cookies = document.cookie.split(';');
         for (let i = 0; i < cookies.length; i++) {
             const cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
             if (cookie.substring(0, name.length + 1) === (name + '=')) {
                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                 break;
@@ -12,6 +11,13 @@ export function getCookie(name) {
         }
     }
     return cookieValue;
+}
+
+export function apiFetch(endpoint, options) {
+    if (options.headers === undefined) options.headers = {}
+    options.headers['X-CSRFToken'] = getCookie('csrftoken')
+    options.credentials = 'include'
+    return fetch(process.env.VUE_APP_API_URL + '/api/' + endpoint, options)
 }
 
 export function summarize_elements_list(elements_list) {

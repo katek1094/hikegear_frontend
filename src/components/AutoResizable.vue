@@ -4,14 +4,14 @@
       v-model="value"
       :placeholder="placeholder"
       :maxlength="maxlength"
-      @input="autoresize"
+      @input="resize"
       @keydown="prevent"
   ></textarea>
 </template>
 
 <script>
 export default {
-  name: "Autoresizing",
+  name: "AutoResizable",
   props: {
     placeholder: String,
     maxlength: Number,
@@ -29,7 +29,7 @@ export default {
     }
   },
   methods: {
-    autoresize() {
+    resize() {
       const textarea = this.$refs.textarea
       let padding = parseInt(getComputedStyle(textarea).padding.replace('px', ''))
       let font_size = parseInt(getComputedStyle(textarea).fontSize.replace('px', ''))
@@ -43,7 +43,7 @@ export default {
     }
   },
   mounted() {
-    this.autoresize()
+    this.resize()
   }
 }
 </script>

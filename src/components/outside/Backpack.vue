@@ -152,8 +152,7 @@ $quantity_width: 2rem;
 }
 
 .items {
-  border-top: 1px solid grey;
-  border-bottom: 1px solid grey;
+  @include editor-items;
 }
 
 .invisible {

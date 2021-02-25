@@ -8,6 +8,7 @@ import Register from "@/components/outside/Register";
 import Login from "@/components/outside/Login";
 import VerifyYourEmail from "@/components/outside/VerifyYourEmail";
 import Backpack from "@/components/outside/Backpack";
+import MyGearEditor from "@/components/inside/my_gear_editor/MyGearEditor";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -19,6 +20,7 @@ const router = createRouter({
         {path: '/register', component: Register, name: 'register'},
         {path: '/verify_email', component: VerifyYourEmail, name: 'verify_email'},
         {path: '/backpack/:id', component: Backpack, name: 'backpack', props: true},
+        {path: '/my_gear', component: MyGearEditor, name: 'my_gear', meta: {require_auth: true}},
     ],
 })
 
@@ -29,7 +31,7 @@ router.beforeEach((to, from, next) => {
         else next({name: 'login'})
     }
 
-    if (store.getters['auth/is_logged_in'] === undefined) {
+    if (!store.getters['auth/is_logged_in']) {
         store.dispatch('editor/getInitialData').then(status => {
             if (status === 'not logged in') store.dispatch('auth/changeLoggedIn', false)
             else store.dispatch('auth/changeLoggedIn', true)

@@ -25,6 +25,7 @@ export default {
       active: false,
       items: [
         {name: 'edytor', route: '/editor'},
+        {name: 'mój sprzęt', route: '/my_gear'},
         {name: 'ustawienia', route: '/settings'},
       ]
     }
@@ -111,7 +112,7 @@ nav {
 }
 
 .navbar--active {
-  height: $nav_height * 3 + 4px;
+  height: $nav_height * 4 + 4px;
   line-height: initial;
 }
 

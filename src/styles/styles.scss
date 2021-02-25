@@ -5,10 +5,28 @@ $color_c: #ececea;
 
 //variables used in components
 $background: #efeded;
+$windows_color: #e5e1e1;
 
 $nav_height: 50px;
 $nav_color: #dbd8d8;
 $nav_hover_color: white;
+
+
+$my_gear_min_width: 270px;
+$my_gear_max_width: 550px;
+
+$backpack_list_width: 300px;
+
+$editor_big_width: 660px;
+
+$grid_gap: 8px;
+$grid_wrapper_padding: 4px;
+
+$first_threshold: ($my_gear_max_width + $backpack_list_width + $editor_big_width
++ 2 * $grid_wrapper_padding + 2 * $grid_gap);
+
+$second_threshold: ($my_gear_min_width + $editor_big_width
++ $grid_wrapper_padding + $grid_gap);
 
 //reset
 
@@ -65,6 +83,32 @@ $nav_hover_color: white;
   padding: 1px 0;
 }
 
+@mixin sort-chosen {
+  transform: scale(1.01);
+  box-shadow: 4px 4px 4px grey;
+}
+
+@mixin sort-handle {
+  margin-right: 6px;
+  padding: 5px 6px 3px 6px;
+  cursor: move;
+  border-radius: 6px;
+  font-size: 1.15rem;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: white;
+    }
+    visibility: hidden;
+  }
+}
+
+@mixin editor-items {
+  border-top: 1px solid grey;
+  border-bottom: 1px solid grey;
+}
+
+
 //forms mixins
 @mixin form-input {
   font-size: 1.2rem;
@@ -100,6 +144,5 @@ $nav_hover_color: white;
     transform: none;
     box-shadow: none;
   }
-
-
 }
+

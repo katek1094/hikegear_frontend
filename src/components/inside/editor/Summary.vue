@@ -12,19 +12,19 @@
       </tr>
       <tr>
         <td>total</td>
-        <td>{{ summary_data.total_weight }}</td>
+        <td>{{ summary_data.total_weight }} g</td>
       </tr>
       <tr>
         <td>konsumpcyjne</td>
-        <td>{{ summary_data.consumable_weight }}</td>
+        <td>{{ summary_data.consumable_weight }} g</td>
       </tr>
       <tr>
         <td>na sobie</td>
-        <td>{{ summary_data.worn_weight }}</td>
+        <td>{{ summary_data.worn_weight }} g</td>
       </tr>
       <tr>
         <td>waga bazowa</td>
-        <td>{{ summary_data.base_weight }}</td>
+        <td>{{ summary_data.base_weight }} g</td>
       </tr>
     </table>
   </div>

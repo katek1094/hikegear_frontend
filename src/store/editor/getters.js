@@ -9,8 +9,7 @@ export default {
         if (state.static.description !== state.dynamic.description) return true
         if (state.dynamic.list === []) return false
         if (state.dynamic.list.length !== state.static.list.length) return true
-        const len = (state.dynamic.list.length >= state.static.list.length) ? state.dynamic.list.length : state.static.list.length
-        for (let i = 0; i < len; i++) {
+        for (let i = 0; i < state.dynamic.list.length; i++) {
             for (const [key, value] of Object.entries(state.static.list[i])) {
                 if (value !== state.dynamic.list[i][key]) return true
             }
@@ -18,7 +17,7 @@ export default {
         return false
     },
     isEditorDataReady(state) {
-        return state.dynamic.list
+        return Boolean(state.dynamic.list)
     },
     backpack_name(state) {
         return state.dynamic.name
@@ -37,11 +36,11 @@ export default {
     },
     new_element_id(state) {
         let ids = []
-        for (let i = 0; i < state.dynamic.list.length; i++) {
-            ids.push(state.dynamic.list[i].id)
+        for (const element of state.dynamic.list) {
+            ids.push(element.id)
         }
-        for (let i = 0; i < 1000 + ids.length; i++) {
-            if (!ids.includes(i)) return i
+        for (const integer of [...Array(1000).keys()]) {
+            if (!ids.includes(integer)) return integer
         }
         throw 'loop iterated 1000 times in searching for new, free id, something is wrong!'
     },
@@ -50,10 +49,10 @@ export default {
         data.name = state.dynamic.name
         data.description = state.dynamic.description
         data.list = state.dynamic.list
-        for (let i = 0; i < data.list.length; i++) {
-            data.list[i].id = i
-        }
         return JSON.stringify(data)
+    },
+    dynamic_backpack_data(state) {
+        return state.dynamic
     },
     dynamic_list(state) {
         return JSON.parse(JSON.stringify(state.dynamic.list))

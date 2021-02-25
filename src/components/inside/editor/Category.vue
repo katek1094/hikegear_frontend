@@ -2,10 +2,10 @@
   <div class="category">
     <div class="category__header">
       <span class="category__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
-      <div>
-        <input v-model.trim="category_name" :maxlength="max_name_length" class="category__name" :size="max_name_length"
-               placeholder="nazwa kategorii" type="text">
-      </div>
+<!--      <div>-->
+        <input ref="name_input" v-model.trim="category_name" :maxlength="max_name_length" :size="max_name_length"
+               class="category__name" placeholder="nazwa kategorii" type="text">
+<!--      </div>-->
       <span class="category__weight__label">waga</span>
       <span class="category__quantity__label">ilość</span>
       <button :class="{deletable: !is_the_only_category, invisible: is_the_only_category}" class="category__delete"
@@ -14,8 +14,8 @@
         <font-awesome-icon class="fa-sm" icon="trash"/>
       </button>
     </div>
-    <draggable v-model="items" animation="700" class="items" group="category__items" item-key="id"
-               handle=".item__handle" emptyInsertThreshold="30">
+    <draggable v-model="items" animation="700" class="items" :group="{name: 'items', pull: pullPolicy, put: ['items']}"
+               item-key="id" handle=".item__handle" emptyInsertThreshold="50">
       <template #item="{element}">
         <Item :item="element" :ref="setItemRef"/>
       </template>
@@ -34,6 +34,8 @@
 <script>
 import draggable from 'vuedraggable'
 import Item from "@/components/inside/editor/Item";
+import {ref, computed, onBeforeUpdate} from 'vue';
+import {useStore} from 'vuex';
 
 export default {
   name: "Category",
@@ -41,58 +43,62 @@ export default {
   props: {
     category: Object,
   },
-  data() {
+  setup(props) {
+    const store = useStore()
+
+    const items_refs = ref([]) //array of template refs created with setItemRef()
+    const max_name_length = 30
+    const name_input = ref(null) //template ref
+
+    const category_name = computed({
+      get: () => props.category.name,
+      set: (val) => store.dispatch('editor/changeElementProperty', {
+        type: 'category',
+        list_index: props.category.list_index,
+        property: 'name',
+        new_value: val
+      })
+    })
+    const is_the_only_category = computed(() => store.getters['editor/organized_list'].length === 1)
+    const items = computed({
+      get: () => props.category.items,
+      set: (val) => store.dispatch('editor/moveItem', {
+        new_category: val,
+        category_index: props.category.category_index
+      })
+    })
+    const addItem = async () => {
+      await store.dispatch('editor/addItem', props.category.list_index)
+      items_refs.value[items_refs.value.length - 1].focusName()
+      const added_item = items_refs.value[items_refs.value.length - 1].$el
+      window.scrollTo(0, added_item.scrollHeight + document.documentElement.scrollTop)
+    }
+    const deleteCategory = () => {
+      if (items.value.length !== 0) {
+        const confirmation = confirm("na pewno chcesz usunąć tę kategorię?")
+        if (confirmation) store.dispatch('editor/deleteCategory', props.category.list_index)
+      } else store.dispatch('editor/deleteCategory', props.category.list_index)
+    }
+    const setItemRef = (el) => {
+      if (el) items_refs.value.push(el)
+    }
+    const resizeAllItems = () => {
+      for (const item_ref of items_refs.value) item_ref.resizeAll()
+    }
+    const pullPolicy = (to) => {
+      if (to.el.className === 'my-gear_items') return false
+      else if (to.el.className === 'items') return true
+    }
+    const focusName = () => name_input.value.focus()
+
+    onBeforeUpdate(() => items_refs.value = [])
+
     return {
-      itemRefs: [],
-      max_name_length: 30
+      max_name_length, name_input,
+      category_name, is_the_only_category, items,
+      addItem, deleteCategory, setItemRef, resizeAllItems, pullPolicy, focusName
     }
-  },
-  computed: {
-    is_the_only_category() {
-      return this.category.category_index === 0 && this.$store.getters['editor/organized_list'].length === 1
-    },
-    category_name: {
-      get() {
-        return this.category.name
-      },
-      set(val) {
-        this.$store.dispatch('editor/changeElementProperty', {
-          type: 'category',
-          list_index: this.category.list_index,
-          property: 'name',
-          new_value: val
-        })
-      }
-    },
-    items: {
-      get() {
-        return this.category.items
-      },
-      set(val) {
-        this.$store.dispatch('editor/moveItem', {new_category: val, category_index: this.category.category_index})
-      }
-    },
-  },
-  methods: {
-    addItem() {
-      this.$store.dispatch('editor/addItem', this.category.list_index)
-    },
-    deleteCategory() {
-      let confirmation = confirm("na pewno chcesz usunąć tę kategorię?")
-      if (confirmation) this.$store.dispatch('editor/deleteCategory', this.category.list_index)
-    },
-    setItemRef(el) {
-      if (el) this.itemRefs.push(el)
-    },
-    resizeAllItems() {
-      for (let i = 0; i < this.itemRefs.length; i++) {
-        this.itemRefs[i].resizeAll()
-      }
-    }
-  },
-  beforeUpdate() {
-    this.itemRefs = []
-  },
+  }
 }
 </script>
 
@@ -125,18 +131,17 @@ $delete_width: 30px;
 
 ::v-deep(.item) {
   @include editor-category_grid;
-  grid-template-columns: $handle_width 1fr 1fr repeat(2, $worn_consumable_width)
+  grid-template-columns: $handle_width 3fr 4fr repeat(2, $worn_consumable_width)
   $weight_width $quantity_width $delete_width;
 }
 
 .items {
-  border-top: 1px solid grey;
-  border-bottom: 1px solid grey;
+  @include editor-items;
 }
 
 .sortable-chosen {
-  transform: scale(1.01);
-  box-shadow: 4px 4px 4px grey;
+  @include sort-chosen;
+  //background-color: red;
 }
 
 .category__delete, ::v-deep(.item__delete) {
@@ -150,7 +155,7 @@ $delete_width: 30px;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .category__delete, ::v-deep(.item__delete), .category__handle, ::v-deep(.item__handle), {
+  .category__delete, ::v-deep(.item__delete) {
     visibility: hidden;
   }
   .category__header:hover .category__delete.deletable, ::v-deep(.item:hover .item__delete),
@@ -161,9 +166,6 @@ $delete_width: 30px;
     color: red;
     cursor: pointer;
   }
-  .category__handle:hover, ::v-deep(.item__handle:hover) {
-    background-color: white;
-  }
   .category__quantity__label, .category__quantity__total, ::v-deep(.item__quantity) {
     width: 2.8rem;
     box-sizing: border-box;
@@ -171,11 +173,7 @@ $delete_width: 30px;
 }
 
 .category__handle, ::v-deep(.item__handle) {
-  margin-right: 6px;
-  padding: 7px 7px 3px 7px;
-  cursor: move;
-  border-radius: 6px;
-  font-size: 1.15rem;
+  @include sort-handle;
 }
 
 .category__weight__label, .category__quantity__label,

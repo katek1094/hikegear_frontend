@@ -1,4 +1,4 @@
-import {getCookie} from '@/store/functions'
+import {apiFetch} from '@/store/functions'
 
 export default {
     moveCategory({commit}, new_organized_list) {
@@ -87,26 +87,19 @@ export default {
     switchWorn({commit}, list_index) {
         commit('toggle_worn', list_index)
     },
-    discardChanges({commit, getters}) {
-        commit('set_dynamic_list', getters['static_list'])
-    },
     updateBackpack({commit, rootGetters}, payload) {
-        fetch(process.env.VUE_APP_API_URL + '/api/backpacks/' + rootGetters['editor/backpack_id'] + '/', {
+        if (payload.update_dynamic) {
+            commit('copy_and_set_dynamic_backpack', rootGetters['editor/dynamic_backpack_data'])
+            commit('copy_and_set_static_backpack', rootGetters['editor/dynamic_backpack_data'])
+        }
+        return apiFetch('backpacks/' + rootGetters['editor/backpack_id'] + '/', {
             method: 'PATCH',
-            headers: {
-                'X-CSRFToken': getCookie('csrftoken'),
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include',
+            headers: {'Content-Type': 'application/json'},
             body: rootGetters['editor/bodyBackpackData']
         })
             .then(response => {
                 if (response.ok) {
                     response.json().then(data => {
-                        if (payload.update_dynamic) {
-                            commit('copy_and_set_dynamic_backpack', data)
-                            commit('copy_and_set_static_backpack', data)
-                        }
                         commit('update_backpack', {data: data, id: payload.id})
                     })
                 } else {
@@ -115,13 +108,9 @@ export default {
             })
     },
     addBackpack({commit}) {
-        fetch(process.env.VUE_APP_API_URL + '/api/backpacks/', {
+        apiFetch('backpacks/', {
             method: 'POST',
-            headers: {
-                'X-CSRFToken': getCookie('csrftoken'),
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include',
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 name: 'nowy plecak',
                 description: '',
@@ -154,12 +143,8 @@ export default {
             })
     },
     deleteBackpack({commit, rootGetters}, backpack_id) {
-        return fetch(process.env.VUE_APP_API_URL + '/api/backpacks/' + backpack_id + '/', {
-            method: 'DELETE',
-            headers: {
-                'X-CSRFToken': getCookie('csrftoken'),
-            },
-            credentials: 'include',
+        return apiFetch('backpacks/' + backpack_id, {
+            method: 'DELETE'
         })
             .then(response => {
                 if (response.ok) {
@@ -185,10 +170,8 @@ export default {
         commit('copy_and_set_static_backpack', getters['backpacks'][index])
     },
     getInitialData({commit}) {
-        return fetch(process.env.VUE_APP_API_URL + '/api/initial', {
-            method: 'GET',
-            headers: {'X-CSRFToken': getCookie('csrftoken')},
-            credentials: 'include',
+        return apiFetch('initial', {
+            method: 'GET'
         })
             .then(response => {
                 if (response.ok) {
@@ -202,6 +185,11 @@ export default {
                             commit('copy_and_set_static_backpack', [])
                             commit('set_backpacks', [])
                         }
+                        if (data['private_gear'].length === 0) {
+                            data['private_gear'] = [{is_item: false, name: "mój sprzęt", id: 0}]
+                        }
+                        commit('my_gear/copy_and_set_static', data['private_gear'], {root: true})
+                        commit('my_gear/copy_and_set_dynamic', data['private_gear'], {root: true})
                         return 'data_downloaded'
                     })
                 } else {

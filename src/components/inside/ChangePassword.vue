@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import {getCookie} from "@/store/functions";
+import {apiFetch} from "@/store/functions";
 
 export default {
   name: "ChangePassword",
@@ -117,13 +117,9 @@ export default {
       this.old_password_info = ''
       this.new_password2_blurred = true
       if (this.is_form_valid) {
-        fetch(process.env.VUE_APP_API_URL + '/api/users/change_password/', {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCookie('csrftoken')
-          },
-          credentials: 'include',
+        apiFetch('users/change_password', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
             old_password: this.password,
             new_password: this.new_password1
@@ -174,11 +170,11 @@ export default {
 }
 
 form {
-@include flex-column-center;
+  @include flex-column-center;
 }
 
 input {
-@include form-input;
+  @include form-input;
 }
 
 input.invalid.blurred.activated {

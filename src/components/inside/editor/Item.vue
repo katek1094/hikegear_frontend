@@ -1,22 +1,23 @@
 <template>
   <div class="item">
     <span class="item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
-    <Autoresizing ref="name" v-model.trim="item_name" :maxlength="max_name_length" :prevent-enter="true"
-                  class="item__name" placeholder="nazwa"/>
-    <Autoresizing ref="description" v-model="item_description" :maxlength="max_description_length"
+    <AutoResizable ref="name_input" v-model.trim="item_name" :maxlength="max_name_length" :prevent-enter="true"
+                  class="item__name" placeholder="nazwa" @keydown="handleEnter"/>
+    <AutoResizable ref="description_input" v-model="item_description" :maxlength="max_description_length"
                   class="item__description" placeholder="opis"/>
-    <button :class="{ checked: item.worn }" :disabled="item.consumable" class="item__worn" @click="markAsWorn">
+    <button :class="{ checked: item.worn }" :disabled="item.consumable" class="item__worn" @click="switchWorn">
       <font-awesome-icon class="fa-md" icon="child"/>
     </button>
     <button :class="{ checked: item.consumable }" :disabled="item.worn" class="item__consumable"
-            @click="markAsConsumable">
+            @click="switchConsumable">
       <font-awesome-icon class="fa-md" icon="sync-alt"/>
-      <!--      TODO: check changing size with icon classes md/sm-->
     </button>
-    <input v-model.number="item_weight" :max="weight_limit" class="item__weight" min="0" name="item_weight"
-           type="number" @blur="fillWithZero" @input="removeLeadingZero" @keydown="preventNumericChars">
-    <input v-model.number="item_quantity" :max="quantity_limit" class="item__quantity" min="0" name="item_quantity"
-           type="number" @blur="fillWithZero" @input="removeLeadingZero" @keydown="preventNumericChars">
+    <input ref='weight_input' v-model.number="item_weight" :max="weight_limit" class="item__weight" min="0"
+           name="item_weight" type="number" @blur="fillWithZero" @input="removeLeadingZero"
+           @keydown="preventNumericChars">
+    <input ref="quantity_input" v-model.number="item_quantity" :max="quantity_limit" class="item__quantity" min="0"
+           name="item_quantity" type="number" @blur="fillWithZero" @input="removeLeadingZero"
+           @keydown="preventNumericChars">
     <button class="item__delete" type="button" @click="deleteItem">
       <font-awesome-icon class="fa-sm" icon="trash"/>
     </button>
@@ -24,113 +25,106 @@
 </template>
 
 <script>
-import Autoresizing from "@/components/Autoresizing";
+import AutoResizable from "@/components/AutoResizable";
+import {ref, computed} from 'vue';
+import {useStore} from 'vuex';
 
 export default {
   name: "Item",
-  components: {Autoresizing},
+  components: {AutoResizable},
   props: {
     item: Object,
   },
-  data() {
-    return {
-      weight_limit: 99999,
-      quantity_limit: 99,
-      max_name_length: 60,
-      max_description_length: 700,
-      name_ref: {},
-      description_ref: {},
-    }
-  },
-  computed: {
-    item_name: {
-      get() {
-        return this.item.name
-      },
-      set(val) {
-        this.$store.dispatch('editor/changeElementProperty', {
-          type: 'item',
-          list_index: this.item.list_index,
-          property: 'name',
-          new_value: val
-        })
-      }
-    },
-    item_description: {
-      get() {
-        return this.item.description
-      },
-      set(val) {
-        this.$store.dispatch('editor/changeElementProperty', {
-          type: 'item',
-          list_index: this.item.list_index,
-          property: 'description',
-          new_value: val
-        })
-      }
-    },
-    item_weight: {
-      get() {
-        return this.item.weight
-      },
-      set(val) {
-        if ((val <= this.weight_limit) && (val >= 0) && (String(val).length <= String(this.weight_limit).length)) {
-          this.$store.dispatch('editor/changeElementProperty', {
+  setup(props) {
+    const store = useStore()
+
+    const weight_limit = 99999
+    const quantity_limit = 99
+    const max_name_length = 60
+    const max_description_length = 700
+    const name_input = ref(null)  //template ref
+    const description_input = ref(null)  //template ref
+    const weight_input = ref(null)  //template ref
+    const quantity_input = ref(null)  //template ref
+
+    const item_name = computed({
+      get: () => props.item.name,
+      set: (val) => store.dispatch('editor/changeElementProperty', {
+        type: 'item',
+        list_index: props.item.list_index,
+        property: 'name',
+        new_value: val
+      })
+    })
+    const item_description = computed({
+      get: () => props.item.description,
+      set: (val) => store.dispatch('editor/changeElementProperty', {
+        type: 'item',
+        list_index: props.item.list_index,
+        property: 'description',
+        new_value: val
+      })
+    })
+    const item_weight = computed({
+      get: () => props.item.weight,
+      set: (val) => {
+        if ((val <= weight_limit) && (val >= 0) && (String(val).length <= String(weight_limit).length)) {
+          store.dispatch('editor/changeElementProperty', {
             type: 'item',
-            list_index: this.item.list_index,
+            list_index: props.item.list_index,
             property: 'weight',
             new_value: val
           })
-        } else this.$forceUpdate()
+        } else weight_input.value.value = props.item.weight
       }
-    },
-    item_quantity: {
-      get() {
-        return this.item.quantity
-      },
-      set(val) {
-        if ((val <= this.quantity_limit) && (val >= 0)) {
-          this.$store.dispatch('editor/changeElementProperty', {
+    })
+    const item_quantity = computed({
+      get: () => props.item.quantity,
+      set: (val) => {
+        if ((val <= quantity_limit) && (val >= 0)) {
+          store.dispatch('editor/changeElementProperty', {
             type: 'item',
-            list_index: this.item.list_index,
+            list_index: props.item.list_index,
             property: 'quantity',
             new_value: val
           })
-        } else this.$forceUpdate()
+        } else quantity_input.value.value = props.item.quantity
       }
-    },
-  },
-  methods: {
-    markAsWorn() {
-      this.$store.dispatch('editor/switchWorn', this.item.list_index)
-    },
-    markAsConsumable() {
-      this.$store.dispatch('editor/switchConsumable', this.item.list_index)
-    },
-    deleteItem() {
-      this.$store.dispatch('editor/deleteItem', this.item.list_index)
-    },
-    preventNumericChars(e) {
-      if ((e.keyCode === 69) || (e.keyCode === 189)) {
-        e.preventDefault()
-      }
-      if ((e.target.className === 'item__quantity') && (e.keyCode === 190)) {
-        e.preventDefault()
-      }
-    },
-    resizeAll() {
-      this.$refs.name.autoresize()
-      this.$refs.description.autoresize()
-    },
-    removeLeadingZero(e) {
+    })
+
+    const switchWorn = () => store.dispatch('editor/switchWorn', props.item.list_index)
+    const switchConsumable = () => store.dispatch('editor/switchConsumable', props.item.list_index)
+    const deleteItem = () => store.dispatch('editor/deleteItem', props.item.list_index)
+    const preventNumericChars = (e) => {
+      if ((e.keyCode === 69) || (e.keyCode === 189)) e.preventDefault()
+      if ((e.target.className === 'item__quantity') && (e.keyCode === 190)) e.preventDefault()
+    }
+    const resizeAll = () => {
+      name_input.value.resize()
+      description_input.value.resize()
+    }
+    const removeLeadingZero = (e) => {
       if ((String(e.target.value)[0] === '0') && (e.target.value.length > 1)) {
         e.target.value = String(e.target.value).slice(1)
       }
-    },
-    fillWithZero(e) {
+    }
+    const fillWithZero = (e) => {
       if (e.target.value === '') {
-        this[e.target.getAttribute('name')] = 0
+        if (e.target.getAttribute('name') === 'item_quantity') item_quantity.value = 0
+        else if (e.target.getAttribute('name') === 'item_weight') item_weight.value = 0
       }
+    }
+    const handleEnter = (event) => {
+      if (event.keyCode === 13) description_input.value.$el.focus()
+    }
+    const focusName = () => name_input.value.$el.focus()
+
+    return {
+      weight_limit, quantity_limit, max_name_length, max_description_length, //data
+      name_input, description_input, weight_input, quantity_input,  //refs
+      item_name, item_description, item_weight, item_quantity, //computed
+      switchWorn, switchConsumable, deleteItem, preventNumericChars, resizeAll, removeLeadingZero, fillWithZero,
+      handleEnter, focusName  //methods
     }
   },
 }
@@ -185,3 +179,4 @@ export default {
   -moz-appearance: textfield;
 }
 </style>
+

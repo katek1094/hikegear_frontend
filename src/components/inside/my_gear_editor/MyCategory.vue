@@ -51,7 +51,7 @@ export default {
         new_value: val
       })
     })
-    const is_the_only_category = computed(() => store.getters['editor/organized_list'].length === 1)
+    const is_the_only_category = computed(() => store.getters['my_gear/organized_list'].length === 1)
     const items = computed({
       get: () => props.category.items,
       set: (val) => store.dispatch('my_gear/moveItem', {

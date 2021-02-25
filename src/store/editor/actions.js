@@ -185,6 +185,9 @@ export default {
                             commit('copy_and_set_static_backpack', [])
                             commit('set_backpacks', [])
                         }
+                        if (data['private_gear'].length === 0) {
+                            data['private_gear'] = [{is_item: false, name: "mój sprzęt", id: 0}]
+                        }
                         commit('my_gear/copy_and_set_static', data['private_gear'], {root: true})
                         commit('my_gear/copy_and_set_dynamic', data['private_gear'], {root: true})
                         return 'data_downloaded'

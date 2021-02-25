@@ -31,7 +31,7 @@ export default {
   computed: {
     items: {
       get() {
-        return this.$store.getters['my_gear/get_my_gear']
+        return this.$store.getters['my_gear/dynamic_list']
       },
       set(val) {
         this.$store.dispatch('my_gear/changeMyGear', val)

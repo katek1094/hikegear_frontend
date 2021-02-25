@@ -16,11 +16,11 @@
         </button>
       </div>
       <div class="editor">
-        <Autoresizing ref="backpack_name_input" v-model.trim="backpack_name" :maxlength="max_backpack_name_length"
+        <AutoResizable ref="backpack_name_input" v-model.trim="backpack_name" :maxlength="max_backpack_name_length"
                       :prevent-enter="true" class="backpack__name" placeholder="nazwa plecaka"/>
         <router-link class="backpack__link" :to="'/backpack/' + backpack_id">link do plecaka</router-link>
         <Summary :summary_data="summary_data"/>
-        <Autoresizing ref="backpack_description_input" v-model.trim="backpack_description"
+        <AutoResizable ref="backpack_description_input" v-model.trim="backpack_description"
                       :maxlength="max_backpack_description_length" class="backpack__description"
                       placeholder="opis plecaka"/>
         <div class="progress" :style="{width: save_time_passed * 100 / timeout_before_save + '%' }"></div>
@@ -52,7 +52,7 @@ import draggable from 'vuedraggable'
 import Category from "@/components/inside/editor/Category";
 import Summary from "@/components/inside/editor/Summary";
 import BaseApp from "@/components/inside/BaseApp";
-import Autoresizing from "@/components/Autoresizing";
+import AutoResizable from "@/components/AutoResizable";
 import MyGear from "@/components/inside/editor/MyGear";
 import {ref, computed, onMounted, onBeforeUnmount} from 'vue';
 import {useStore} from 'vuex';
@@ -60,7 +60,7 @@ import {useStore} from 'vuex';
 
 export default {
   name: "Editor",
-  components: {MyGear, Autoresizing, BaseApp, Summary, Category, draggable},
+  components: {MyGear, AutoResizable, BaseApp, Summary, Category, draggable},
   setup() {
     const store = useStore()
 
@@ -105,7 +105,6 @@ export default {
       if (are_changes.value) {
         edits_counter.value = 0
         await store.dispatch('editor/updateBackpack', {id: backpack_id.value, update_dynamic: update_dynamic})
-        resizeAll()
       }
     }
     const changeBackpack = async (index) => {
@@ -121,8 +120,8 @@ export default {
     const resizeAll = () => {
       if (editor_data_ready.value) {
         for (const category_ref of categories_refs.value) category_ref.resizeAllItems()
-        backpack_name_input.value.autoresize()
-        backpack_description_input.value.autoresize()
+        backpack_name_input.value.resize()
+        backpack_description_input.value.resize()
       }
     }
     const handleWindowResize = () => {
@@ -139,6 +138,7 @@ export default {
       }
     }
     const handleDataChange = () => {
+      categories_refs.value = []
       save_time_passed.value = 0
       edits_counter.value += 1
       const x = edits_counter.value

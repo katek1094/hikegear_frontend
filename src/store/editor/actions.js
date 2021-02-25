@@ -87,9 +87,6 @@ export default {
     switchWorn({commit}, list_index) {
         commit('toggle_worn', list_index)
     },
-    discardChanges({commit, getters}) {
-        commit('set_dynamic_list', getters['static_list'])
-    },
     updateBackpack({commit, rootGetters}, payload) {
         if (payload.update_dynamic) {
             commit('copy_and_set_dynamic_backpack', rootGetters['editor/dynamic_backpack_data'])
@@ -188,7 +185,8 @@ export default {
                             commit('copy_and_set_static_backpack', [])
                             commit('set_backpacks', [])
                         }
-                        commit('my_gear/set_my_gear', data['private_gear'], {root: true})
+                        commit('my_gear/copy_and_set_static', data['private_gear'], {root: true})
+                        commit('my_gear/copy_and_set_dynamic', data['private_gear'], {root: true})
                         return 'data_downloaded'
                     })
                 } else {

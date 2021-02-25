@@ -9,8 +9,7 @@ export default {
         if (state.static.description !== state.dynamic.description) return true
         if (state.dynamic.list === []) return false
         if (state.dynamic.list.length !== state.static.list.length) return true
-        const len = (state.dynamic.list.length >= state.static.list.length) ? state.dynamic.list.length : state.static.list.length
-        for (let i = 0; i < len; i++) {
+        for (let i = 0; i < state.dynamic.list.length; i++) {
             for (const [key, value] of Object.entries(state.static.list[i])) {
                 if (value !== state.dynamic.list[i][key]) return true
             }
@@ -18,7 +17,7 @@ export default {
         return false
     },
     isEditorDataReady(state) {
-        return state.dynamic.list
+        return Boolean(state.dynamic.list)
     },
     backpack_name(state) {
         return state.dynamic.name

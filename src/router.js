@@ -8,7 +8,7 @@ import Register from "@/components/outside/Register";
 import Login from "@/components/outside/Login";
 import VerifyYourEmail from "@/components/outside/VerifyYourEmail";
 import Backpack from "@/components/outside/Backpack";
-import MyGearEditor from "@/components/inside/MyGearEditor";
+import MyGearEditor from "@/components/inside/my_gear_editor/MyGearEditor";
 
 const router = createRouter({
     history: createWebHistory(),

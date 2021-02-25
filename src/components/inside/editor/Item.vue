@@ -1,9 +1,9 @@
 <template>
   <div class="item">
     <span class="item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
-    <Autoresizing ref="name_input" v-model.trim="item_name" :maxlength="max_name_length" :prevent-enter="true"
+    <AutoResizable ref="name_input" v-model.trim="item_name" :maxlength="max_name_length" :prevent-enter="true"
                   class="item__name" placeholder="nazwa" @keydown="handleEnter"/>
-    <Autoresizing ref="description_input" v-model="item_description" :maxlength="max_description_length"
+    <AutoResizable ref="description_input" v-model="item_description" :maxlength="max_description_length"
                   class="item__description" placeholder="opis"/>
     <button :class="{ checked: item.worn }" :disabled="item.consumable" class="item__worn" @click="switchWorn">
       <font-awesome-icon class="fa-md" icon="child"/>
@@ -25,13 +25,13 @@
 </template>
 
 <script>
-import Autoresizing from "@/components/Autoresizing";
+import AutoResizable from "@/components/AutoResizable";
 import {ref, computed} from 'vue';
 import {useStore} from 'vuex';
 
 export default {
   name: "Item",
-  components: {Autoresizing},
+  components: {AutoResizable},
   props: {
     item: Object,
   },
@@ -100,8 +100,8 @@ export default {
       if ((e.target.className === 'item__quantity') && (e.keyCode === 190)) e.preventDefault()
     }
     const resizeAll = () => {
-      name_input.value.autoresize()
-      description_input.value.autoresize()
+      name_input.value.resize()
+      description_input.value.resize()
     }
     const removeLeadingZero = (e) => {
       if ((String(e.target.value)[0] === '0') && (e.target.value.length > 1)) {
@@ -179,3 +179,4 @@ export default {
   -moz-appearance: textfield;
 }
 </style>
+

@@ -11,7 +11,7 @@
       </button>
     </div>
     <draggable v-model="items" animation="700" class="my_items" group="items" item-key="id" handle=".my_item__handle"
-               emptyInsertThreshold="30">
+               emptyInsertThreshold="5  0">
       <template #item="{element}">
         <MyItem :item="element" :ref="setItemRef"/>
       </template>
@@ -93,6 +93,74 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.my_category {
+  margin-top: 10px;
+}
 
+.category__name {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+$handle_width: auto;
+$weight_width: 3rem;
+$delete_width: 30px;
+
+.my_category__header {
+  @include editor-category_grid;
+  font-size: 1rem;
+  grid-template-columns: $handle_width 1fr $delete_width;
+}
+
+.my_category__footer {
+  @include editor-category_grid;
+  grid-template-columns: 1fr;
+}
+
+::v-deep(.my_item) {
+  @include editor-category_grid;
+  grid-template-columns: $handle_width 3fr 4fr $weight_width $delete_width;
+}
+
+.my_items {
+  @include editor-items;
+}
+
+.sortable-chosen {
+  @include sort-chosen;
+  //background-color: red;
+}
+
+.category__delete, ::v-deep(.item__delete) {
+  outline: none;
+  border: none;
+  font-size: 0.8rem;
+  background-color: transparent;
+  padding: 6px;
+  width: $delete_width;
+  box-sizing: border-box;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .category__delete, ::v-deep(.item__delete) {
+    visibility: hidden;
+  }
+  .my_category__header:hover .category__delete.deletable, ::v-deep(.my_item:hover .item__delete),
+  .my_category__header:hover .my_category__handle, ::v-deep(.my_item:hover .my_item__handle), {
+    visibility: visible;
+  }
+  .category__delete:hover, ::v-deep(.item__delete:hover) {
+    color: red;
+    cursor: pointer;
+  }
+}
+
+.my_category__handle, ::v-deep(.my_item__handle) {
+  @include sort-handle;
+}
+
+::v-deep(.my_item) {
+  font-size: .8rem;
+}
 </style>

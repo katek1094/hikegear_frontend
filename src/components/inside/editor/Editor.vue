@@ -177,8 +177,7 @@ export default {
   width: 100%;
 }
 
-
-//TODO: move summary to the left along with the backpack_list
+//TODO: move summary to the left along with the backpack_list?
 @media (min-width: $first_threshold) {
   .wrapper {
     display: grid;

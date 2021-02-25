@@ -15,7 +15,7 @@
       </button>
     </div>
     <draggable v-model="items" animation="700" class="items" :group="{name: 'items', pull: pullPolicy, put: ['items']}"
-               item-key="id" handle=".item__handle" emptyInsertThreshold="30">
+               item-key="id" handle=".item__handle" emptyInsertThreshold="50">
       <template #item="{element}">
         <Item :item="element" :ref="setItemRef"/>
       </template>

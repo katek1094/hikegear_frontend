@@ -97,6 +97,20 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.my_item:not(:last-child) {
+  border-bottom: 1px dotted grey;
+}
+
+/*code below removes arrows from weight input*/
+.item__weight::-webkit-outer-spin-button,
+.item__weight::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.item__weight[type=number] {
+  -moz-appearance: textfield;
+}
+
 
 </style>

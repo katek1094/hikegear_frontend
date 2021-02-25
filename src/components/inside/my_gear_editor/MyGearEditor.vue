@@ -110,6 +110,35 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.progress {
+  height: 1px;
+  background-color: grey;
+}
+
+.my-gear_editor{
+  padding-bottom: 30px;
+  @include flex-column-center;
+  max-width: 100vw;
+}
+
+.add-category, ::v-deep(.add-item) {
+  @include editor-add;
+}
+
+::v-deep(.category__name), ::v-deep(.item__name), ::v-deep(.item__description), ::v-deep(.item__weight) {
+  @include editor-input__field;
+}
+
+::v-deep(.category__name) {
+  font-weight: bold;
+}
+
+@media (min-width: $editor_big_width + 20px) {
+  /* tablet, landscape iPad, lo-res laptops ands desktops */
+  .editor, .categories {
+    width: $editor_big_width;
+  }
+}
 
 </style>

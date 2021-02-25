@@ -3,15 +3,19 @@
     <div class="header">
       <h2>mój sprzęt</h2>
     </div>
-    <draggable v-model="items" class="my-gear_items" :group="{name: 'items', pull: 'clone', put: ['items']}"
-               item-key="id" handle=".item__handle" emptyInsertThreshold="30" animation="700"
-               :clone="deepCopy">
+    <draggable v-model="items" :clone="deepCopy" :group="{name: 'items', pull: 'clone', put: ['items']}"
+               :sort="false" animation="700" class="my-gear_items" emptyInsertThreshold="30" handle=".item__handle"
+               item-key="id">
       <template #item="{element}">
-        <div class="my-item">
+        <div v-if="element.is_item" class="my-item">
           <span class="item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
           <span class="name">{{ element.name }}</span>
           <span class="description">{{ element.description }}</span>
           <span class="weight">{{ element.weight }}</span>
+        </div>
+        <div v-else class="my-category">
+          <span class="item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
+          <span class="category_name">{{element.name}}</span>
         </div>
       </template>
     </draggable>
@@ -20,7 +24,6 @@
 
 <script>
 import draggable from 'vuedraggable'
-import {apiFetch} from "@/store/functions";
 
 export default {
   name: "MyGear",
@@ -29,15 +32,7 @@ export default {
     return {}
   },
   computed: {
-    items: {
-      get() {
-        return this.$store.getters['my_gear/dynamic_list']
-      },
-      set(val) {
-        this.$store.dispatch('my_gear/changeMyGear', val)
-        this.updatePrivateGear(val)
-      }
-    }
+    items() {return this.$store.getters['my_gear/dynamic_list']}
   },
   methods: {
     deepCopy(original) {
@@ -48,20 +43,6 @@ export default {
         worn: false, consumable: false, quantity: 1
       }
     },
-    updatePrivateGear(data) {
-      apiFetch('private_gear', {
-        method: 'PATCH',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({'private_gear': data})
-      })
-          .then(response => {
-            if (response.ok) {
-              response.json().then(data => {
-                this.$store.dispatch('my_gear/changeMyGear', data['private_gear'])
-              })
-            } else console.log(response)
-          })
-    }
   }
 }
 </script>
@@ -87,6 +68,16 @@ export default {
   display: flex;
   justify-content: center;
   height: 8vh;
+}
+
+.my-category {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  padding: 2px 0;
+  border-bottom: 1px dotted grey;
+  font-size: .85rem;
+  font-weight: bold;
 }
 
 .my-item {

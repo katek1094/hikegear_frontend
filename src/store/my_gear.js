@@ -55,7 +55,7 @@ export default {
     },
     actions: {
         changeMyGear({commit}, new_data) {
-            commit('set_my_gear', new_data)
+            commit('set_dynamic', new_data)
         },
         moveCategory({commit}, new_organized_list) {
             let new_list = []

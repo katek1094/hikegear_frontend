@@ -1,6 +1,6 @@
 <template>
   <div class="summary__wrapper">
-    <Chart v-show="summary_data.total_weight !== 0" :colors_array="colors" :data_array="summary_data.data"
+    <Chart v-if="showChart" :colors_array="colors" :data_array="summary_data.data"
            :data_labels="summary_data.labels"/>
     <table class="summary__table">
       <tr v-for="(data, index) in summary_data.data" :key="data">
@@ -47,6 +47,11 @@ export default {
         'rgb(187,184,183)', 'rgb(206,102,102)', 'rgb(108,134,34)', 'rgb(173,115,208)']
     }
   },
+  computed: {
+    showChart() {
+      return this.summary_data.total_weight !== 0
+    }
+  }
 }
 </script>
 

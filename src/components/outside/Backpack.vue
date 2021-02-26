@@ -1,4 +1,5 @@
 <template>
+  <router-link to="/"><img alt="logo" src="@/assets/logo.png" class="logo"></router-link>
   <div class="wrapper">
     <div v-if="backpack" class="backpack">
       <span class="backpack__name">{{ backpack.name }}</span>
@@ -79,6 +80,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.logo:hover {
+  background-color: white;
+  border-radius: 8px;
+}
 @import "src/styles/backpack.scss";
 
 .wrapper {

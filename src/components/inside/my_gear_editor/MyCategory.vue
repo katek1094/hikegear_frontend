@@ -4,6 +4,7 @@
       <span class="my_category__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
       <input ref="name_input" v-model.trim="category_name" :maxlength="max_name_length" :size="max_name_length"
              class="category__name" placeholder="nazwa kategorii" type="text">
+      <span class="category__weight__label">waga</span>
       <button :class="{deletable: !is_the_only_category, invisible: is_the_only_category}" class="category__delete"
               type="button"
               @click="deleteCategory">
@@ -110,7 +111,7 @@ $delete_width: 30px;
 .my_category__header {
   @include editor-category_grid;
   font-size: 1rem;
-  grid-template-columns: $handle_width 1fr $delete_width;
+  grid-template-columns: $handle_width 1fr $weight_width $delete_width;
 }
 
 .my_category__footer {
@@ -160,7 +161,12 @@ $delete_width: 30px;
   @include sort-handle;
 }
 
-::v-deep(.my_item) {
+.category__weight__label, ::v-deep(.my_item) {
   font-size: .8rem;
+}
+
+.category__weight__label {
+  @include editor-input_and_label;
+  align-self: flex-end;
 }
 </style>

@@ -78,6 +78,7 @@ export default {
   border-bottom: 1px dotted grey;
   font-size: .85rem;
   font-weight: bold;
+  background-color: $color_a;
 }
 
 .my-item {

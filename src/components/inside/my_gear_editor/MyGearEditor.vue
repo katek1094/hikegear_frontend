@@ -136,7 +136,7 @@ export default {
 
 @media (min-width: $editor_big_width + 20px) {
   /* tablet, landscape iPad, lo-res laptops ands desktops */
-  .editor, .categories {
+  .my-gear_editor, .my_categories {
     width: $editor_big_width;
   }
 }

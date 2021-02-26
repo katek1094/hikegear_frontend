@@ -164,8 +164,7 @@ export default {
     return {
       timeout_before_save, save_time_passed, max_backpack_name_length, max_backpack_description_length,
       backpack_name_input, backpack_description_input,
-      backpack_id, backpacks, editor_data_ready, summary_data, organized_list, backpack_name,
-      backpack_description,
+      backpack_id, backpacks, editor_data_ready, summary_data, organized_list, backpack_name, backpack_description,
       setCategoryRef, addCategory, changeBackpack, addBackpack, deleteBackpack
     }
   },

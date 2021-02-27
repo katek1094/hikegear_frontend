@@ -1,11 +1,13 @@
 # hikegear.pl frontend
 
-## web app for hikers and tourists which helps to manage their gear and optimize backpack weight
-### inspired by <https://lighterpack.com/>, which is unfortunately very buggy and no longer maintained
+### web app for hikers and tourists which helps to manage their gear and optimize backpack weight
+#### inspired by <https://lighterpack.com/>, which is unfortunately very buggy and no longer maintained
 
-### frontend is written in Vue 3 as a Single Page Application, for backend repository [click here](https://github.com/katek1094/hikegear_backend)
+#### you can see it on <https://hikegear.pl/> using prepared account for guests or register new account
 
-### frontend app currently has following features:
+#### frontend is written in Vue 3 as a Single Page Application, for backend repository [click here](https://github.com/katek1094/hikegear_backend)
+
+#### frontend app currently has following features:
 - account registration form
 - login form
 - password reset form
@@ -20,5 +22,5 @@
 - my_gear editor, which is simpler version of backpacks editor, only for gear which later can be used across components
 - backpack share view, for sharing backpacks
 
-### tech stack: Vue 3, Vuex, Vue Router, vue.draggable.next (SortableJS for Vue), chart.js
-### app uses django sessions cookies and CSRF-Token cookie for csrf protection
+#### tech stack: Vue 3, Vuex, Vue Router, vue.draggable.next (SortableJS for Vue), chart.js
+#### app uses django sessions cookies and CSRF-Token cookie for csrf protection

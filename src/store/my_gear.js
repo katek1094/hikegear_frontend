@@ -1,4 +1,4 @@
-import {apiFetch} from "@/store/functions";
+import {apiFetch} from "@/functions";
 
 export default {
     namespaced: true,
@@ -51,7 +51,6 @@ export default {
                 state.dynamic[payload.list_index][payload.property] = payload.new_value
             } else throw "You are trying to change a property of the element of different type than declared!"
         },
-
     },
     actions: {
         changeMyGear({commit}, new_data) {

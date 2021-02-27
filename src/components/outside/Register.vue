@@ -28,7 +28,7 @@
 
 <script>
 import LandingPage from "@/components/outside/LandingPage";
-import {apiFetch} from "@/store/functions";
+import {apiFetch} from "@/functions";
 
 export default {
   name: "Register",

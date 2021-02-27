@@ -1,4 +1,4 @@
-import {apiFetch} from '@/store/functions'
+import {apiFetch} from '@/functions'
 
 export default {
     moveCategory({commit}, new_organized_list) {

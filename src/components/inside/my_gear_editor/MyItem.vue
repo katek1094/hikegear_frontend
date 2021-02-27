@@ -112,5 +112,4 @@ export default {
   -moz-appearance: textfield;
 }
 
-
 </style>

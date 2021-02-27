@@ -1,4 +1,4 @@
-import {apiFetch} from '@/store/functions'
+import {apiFetch} from '@/functions'
 
 export default {
     namespaced: true,

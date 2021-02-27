@@ -85,10 +85,6 @@ td {
   }
 }
 
-@media (min-width: 480px) {
-
-}
-
 @media (min-width: 600px) {
   ::v-deep(#summary-chart) {
     width: 200px;
@@ -96,15 +92,4 @@ td {
   }
 }
 
-@media (min-width: 801px) {
-
-}
-
-@media (min-width: 1025px) {
-
-}
-
-@media (min-width: 1281px) {
-
-}
 </style>

@@ -1,4 +1,4 @@
-import {format_elements_list, summarize_elements_list} from "@/store/functions";
+import {format_elements_list, summarize_elements_list} from "@/functions";
 
 export default {
     backpacks(state) {

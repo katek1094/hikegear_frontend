@@ -1,24 +1,24 @@
-# lekkiplecak
+# hikegear.pl frontend
 
-## Project setup
-```
-npm install
-```
+## web app for hikers and tourists which helps to manage their gear and optimize backpack weight
+### inspired by <https://lighterpack.com/>, which is unfortunately very buggy and no longer maintained
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+### frontend is written in Vue 3 as a Single Page Application, for backend repository [click here](https://github.com/katek1094/hikegear_backend)
 
-### Compiles and minifies for production
-```
-npm run build
-```
+### frontend app currently has following features:
+- account registration form
+- login form
+- password reset form
+- backpacks editor (main feature) :
+    - creating and deleting backpacks (gear lists)
+    - changing name and description of backpacks
+    - adding, deleting and editing items
+    - grouping items into categories, and sorting both categories and items with drag&drop option 
+      (implemented with [vue.draggable.next](https://github.com/SortableJS/vue.draggable.next))
+    - adding items from my_gear list, which is available from all backpacks
+    - summary weight table and pie chart with weights of all categories
+- my_gear editor, which is simpler version of backpacks editor, only for gear which later can be used across components
+- backpack share view, for sharing backpacks
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### tech stack: Vue 3, Vuex, Vue Router, vue.draggable.next (SortableJS for Vue), chart.js
+### app uses django sessions cookies and CSRF-Token cookie for csrf protection

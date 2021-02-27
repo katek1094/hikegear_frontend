@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import {apiFetch} from "@/store/functions";
+import {apiFetch} from "@/functions";
 
 export default {
   name: "ChangePassword",

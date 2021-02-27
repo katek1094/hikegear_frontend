@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import {format_elements_list, getCookie, summarize_elements_list} from "@/store/functions";
+import {format_elements_list, apiFetch, summarize_elements_list} from "@/functions";
 import Summary from "@/components/inside/editor/Summary";
 
 export default {
@@ -59,14 +59,9 @@ export default {
       return format_elements_list(this.backpack.list)
     }
   },
-  methods: {},
   beforeCreate() {
-    fetch(process.env.VUE_APP_API_URL + '/api/backpacks/' + this.id + '/', {
+    apiFetch('backpacks/' + this.id + '/', {
       method: 'GET',
-      headers: {
-        'X-CSRFToken': getCookie('csrftoken')
-      },
-      credentials: 'include',
     })
         .then(response => {
           if (response.ok) {
@@ -84,7 +79,6 @@ export default {
   background-color: white;
   border-radius: 8px;
 }
-@import "src/styles/backpack.scss";
 
 .wrapper {
   @include flex-column-center;
@@ -208,21 +202,10 @@ $quantity_width: 2rem;
   }
 }
 
-@media (min-width: 801px) {
-  /* tablet, landscape iPad, lo-res laptops ands desktops */
-
-}
-
 @media (min-width: 1025px) {
   /* big landscape tablets, laptops, and desktops */
   .backpack {
     width: 640px;
   }
 }
-
-@media (min-width: 1281px) {
-  /* hi-res laptops and desktops */
-
-}
-
 </style>

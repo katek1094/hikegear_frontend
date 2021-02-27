@@ -17,12 +17,12 @@
       </div>
       <div class="editor">
         <AutoResizable ref="backpack_name_input" v-model.trim="backpack_name" :maxlength="max_backpack_name_length"
-                      :prevent-enter="true" class="backpack__name" placeholder="nazwa plecaka"/>
+                       :prevent-enter="true" class="backpack__name" placeholder="nazwa plecaka"/>
         <router-link class="backpack__link" :to="'/backpack/' + backpack_id">link do plecaka</router-link>
         <Summary :summary_data="summary_data"/>
         <AutoResizable ref="backpack_description_input" v-model.trim="backpack_description"
-                      :maxlength="max_backpack_description_length" class="backpack__description"
-                      placeholder="opis plecaka"/>
+                       :maxlength="max_backpack_description_length" class="backpack__description"
+                       placeholder="opis plecaka"/>
         <div class="progress" :style="{width: save_time_passed * 100 / timeout_before_save + '%' }"></div>
         <draggable v-model="organized_list" animation="1000" class="categories" group="categories"
                    handle=".category__handle" item-key="id">
@@ -56,7 +56,6 @@ import AutoResizable from "@/components/AutoResizable";
 import MyGear from "@/components/inside/editor/MyGear";
 import {ref, computed, onMounted, onBeforeUnmount} from 'vue';
 import {useStore} from 'vuex';
-
 
 export default {
   name: "Editor",
@@ -176,7 +175,6 @@ export default {
   width: 100%;
 }
 
-//TODO: move summary to the left along with the backpack_list?
 @media (min-width: $first_threshold) {
   .wrapper {
     display: grid;

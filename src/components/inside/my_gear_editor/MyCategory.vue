@@ -87,10 +87,7 @@ export default {
       category_name, is_the_only_category, items,
       addItem, deleteCategory, setItemRef, resizeAllItems, focusName
     }
-
-
   }
-
 }
 </script>
 
@@ -130,7 +127,6 @@ $delete_width: 30px;
 
 .sortable-chosen {
   @include sort-chosen;
-  //background-color: red;
 }
 
 .category__delete, ::v-deep(.item__delete) {

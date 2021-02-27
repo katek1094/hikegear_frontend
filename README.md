@@ -1,9 +1,8 @@
 # hikegear.pl frontend
 
 ### web app for hikers and tourists which helps to manage their gear and optimize backpack weight
-#### inspired by <https://lighterpack.com/>, which is unfortunately very buggy and no longer maintained
 
-#### you can see it on <https://hikegear.pl/> using prepared account for guests or register new account
+#### <ins>you can see it</ins> on <https://hikegear.pl/> using prepared account for guests or register new account
 
 #### frontend is written in Vue 3 as a Single Page Application, for backend repository [click here](https://github.com/katek1094/hikegear_backend)
 

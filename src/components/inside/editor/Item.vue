@@ -50,7 +50,7 @@ export default {
     const item_name = computed({
       get: () => props.item.name,
       set: (val) => store.dispatch('editor/changeElementProperty', {
-        type: 'item',
+        is_item: true,
         list_index: props.item.list_index,
         property: 'name',
         new_value: val
@@ -59,7 +59,7 @@ export default {
     const item_description = computed({
       get: () => props.item.description,
       set: (val) => store.dispatch('editor/changeElementProperty', {
-        type: 'item',
+        is_item: true,
         list_index: props.item.list_index,
         property: 'description',
         new_value: val
@@ -70,7 +70,7 @@ export default {
       set: (val) => {
         if ((val <= weight_limit) && (val >= 0) && (String(val).length <= String(weight_limit).length)) {
           store.dispatch('editor/changeElementProperty', {
-            type: 'item',
+            is_item: true,
             list_index: props.item.list_index,
             property: 'weight',
             new_value: val
@@ -83,7 +83,7 @@ export default {
       set: (val) => {
         if ((val <= quantity_limit) && (val >= 0)) {
           store.dispatch('editor/changeElementProperty', {
-            type: 'item',
+            is_item: true,
             list_index: props.item.list_index,
             property: 'quantity',
             new_value: val

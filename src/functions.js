@@ -24,7 +24,11 @@ export function summarize_elements_list(elements_list) {
     let results = {data: [], labels: [], total_weight: 0, consumable_weight: 0, worn_weight: 0}
     for (let i = 0; i < elements_list.length; i++) {
         let el = elements_list[i]
-        if (el.type === 'category') {
+        if (el.type) {
+            // TODO: delete this after data refactor
+            throw 'el.type is not undefined, data needs to be refactored!'
+        }
+        if (el.is_item === false) {
             results.data.push(0)
             results.labels.push(el.name)
         } else {
@@ -46,20 +50,20 @@ export function summarize_elements_list(elements_list) {
 export function format_elements_list(elements_list) {
     let organized = []
     let category_counter = 0
-    if (elements_list[0].type !== 'category') {
+    if (elements_list[0].is_item !== false) {
         throw 'first item of backpack list is not a category! something is wrong'
     }
     for (let i = 0; i < elements_list.length; i++) {
         let element = elements_list[i]
         element.list_index = i
-        if (element.type === 'category') {
+        if (element.is_item === false) {
             element.items = []
             element.category_index = category_counter
             element.total_weight = 0
             element.total_quantity = 0
             category_counter++
             organized.push(element)
-        } else if (element.type === 'item') {
+        } else if (element.is_item === true) {
             organized[organized.length - 1].items.push(element)
             organized[organized.length - 1].total_weight += element.weight * element.quantity
             if (element.quantity === '') element.quantity = 0

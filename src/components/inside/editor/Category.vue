@@ -51,7 +51,7 @@ export default {
     const category_name = computed({
       get: () => props.category.name,
       set: (val) => store.dispatch('editor/changeElementProperty', {
-        type: 'category',
+        is_item: false,
         list_index: props.category.list_index,
         property: 'name',
         new_value: val

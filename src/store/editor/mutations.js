@@ -22,10 +22,10 @@ export default {
         state.dynamic.list.splice(payload.start, payload.amount)
     },
     set_element_property(state, payload) {
-        // payload = type, list_index, property, new_value
-        if (state.dynamic.list[payload.list_index].type === payload.type) {
+        // payload = is_item, list_index, property, new_value
+        if (state.dynamic.list[payload.list_index].is_item === payload.is_item) {
             state.dynamic.list[payload.list_index][payload.property] = payload.new_value
-        } else throw "You are trying to change a property of the element of different type than declared!"
+        } else throw "You are trying to change a property of the element of different type (is_item_ than declared!"
     },
     push_to_dynamic_list(state, new_element) {
         state.dynamic.list.push(new_element)

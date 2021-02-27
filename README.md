@@ -6,7 +6,8 @@
 
 #### frontend is written in Vue 3 as a Single Page Application, for backend repository [click here](https://github.com/katek1094/hikegear_backend)
 
-#### frontend app currently has following features:
+frontend app currently has following features:
+- mobile friendly and responsive SCSS styles
 - account registration form
 - login form
 - password reset form
@@ -23,3 +24,4 @@
 
 #### tech stack: Vue 3, Vuex, Vue Router, vue.draggable.next (SortableJS for Vue), chart.js
 #### app uses django sessions cookies and CSRF-Token cookie for csrf protection
+#### app is deployed using DigitalOcean App Platform

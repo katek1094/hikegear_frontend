@@ -64,5 +64,4 @@ export default {
         return state.dynamic
     }
 
-
 }

@@ -6,7 +6,7 @@ export default {
         // this loop transforms organized list into raw list
         for (let i = 0; i < new_organized_list.length; i++) {
             new_list.push({
-                type: new_organized_list[i].type,
+                is_item: new_organized_list[i].is_item,
                 name: new_organized_list[i].name,
                 description: new_organized_list[i].description,
                 id: new_organized_list[i].id
@@ -24,11 +24,11 @@ export default {
         let unique_cat = 0
         const dynamic_list = getters['dynamic_list']
         for (let i = 0; i < dynamic_list.length; i++) {
-            if ((founded) && (dynamic_list[i].type === 'category')) {
+            if ((founded) && (dynamic_list[i].is_item === false)) {
                 next_index = dynamic_list.indexOf(dynamic_list[i])
                 break
             }
-            if (dynamic_list[i].type === 'category') {
+            if (dynamic_list[i].is_item === false) {
                 if (unique_cat === payload.category_index) {
                     index = dynamic_list.indexOf(dynamic_list[i])
                     founded = true
@@ -43,7 +43,7 @@ export default {
     addCategory({commit, getters}) {
         commit('push_to_dynamic_list', {
             id: getters['new_element_id'],
-            type: 'category',
+            is_item: false,
             name: '',
             description: ''
         })
@@ -55,7 +55,7 @@ export default {
         const new_item = {
             id: getters['new_element_id'],
             name: '',
-            type: 'item',
+            is_item: true,
             description: '',
             weight: 0,
             quantity: 1,
@@ -78,7 +78,7 @@ export default {
         commit('set_backpack_description', new_description)
     },
     changeElementProperty({commit}, payload) {
-        // payload = type, list_index, property, new_value
+        // payload = is_item, list_index, property, new_value
         commit('set_element_property', payload)
     },
     switchConsumable({commit}, list_index) {
@@ -102,9 +102,7 @@ export default {
                     response.json().then(data => {
                         commit('update_backpack', {data: data, id: payload.id})
                     })
-                } else {
-                    console.log(response)
-                }
+                } else console.log(response)
             })
     },
     addBackpack({commit}) {
@@ -116,13 +114,13 @@ export default {
                 description: '',
                 list: [
                     {
-                        type: 'category',
+                        is_item: false,
                         name: '',
                         description: '',
                         id: 0
                     },
                     {
-                        type: 'item',
+                        is_item: true,
                         name: '',
                         description: '',
                         id: 1,
@@ -197,7 +195,7 @@ export default {
                 } else {
                     if (response.status === 403) {
                         return 'not logged in'
-                    }
+                    } else console.log(response)
                 }
             })
     }

@@ -26,7 +26,7 @@ export default {
       items: [
         {name: 'edytor', route: '/editor'},
         {name: 'mój sprzęt', route: '/my_gear'},
-        {name: 'ustawienia', route: '/settings'},
+        {name: 'konto', route: '/settings'},
       ]
     }
   },
@@ -72,7 +72,7 @@ nav {
 .link {
   font-size: 1.3rem;
   line-height: $nav_height;
-  padding: 0 14px;
+  padding: 0 20px;
   display: inline-block;
   white-space: nowrap;
   cursor: pointer;
@@ -112,7 +112,7 @@ nav {
 }
 
 .navbar--active {
-  height: $nav_height * 4 + 4px;
+  height: $nav_height * 6 + 4px;
   line-height: initial;
 }
 

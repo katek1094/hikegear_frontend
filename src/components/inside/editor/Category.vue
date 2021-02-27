@@ -2,10 +2,8 @@
   <div class="category">
     <div class="category__header">
       <span class="category__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
-      <!--      <div>-->
       <input ref="name_input" v-model.trim="category_name" :maxlength="max_name_length" :size="max_name_length"
              class="category__name" placeholder="nazwa kategorii" type="text">
-      <!--      </div>-->
       <span class="category__weight__label">waga</span>
       <span class="category__quantity__label">ilość</span>
       <button :class="{deletable: !is_the_only_category, invisible: is_the_only_category}" class="category__delete"

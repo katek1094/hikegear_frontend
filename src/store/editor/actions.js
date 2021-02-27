@@ -118,12 +118,14 @@ export default {
                     {
                         type: 'category',
                         name: '',
-                        description: ''
+                        description: '',
+                        id: 0
                     },
                     {
                         type: 'item',
                         name: '',
                         description: '',
+                        id: 1,
                         weight: 0,
                         quantity: 1,
                         worn: false,

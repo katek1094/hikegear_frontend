@@ -163,9 +163,8 @@ export default {
                         return 'data_downloaded'
                     })
                 } else {
-                    if (response.status === 403) {
-                        return 'not logged in'
-                    } else console.log(response)
+                    if (response.status === 403) return 'not logged in'
+                    else console.log(response)
                 }
             })
     }

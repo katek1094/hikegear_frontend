@@ -197,6 +197,7 @@ export default {
   }
   .backpack__list {
     grid-column: 1;
+    align-self: flex-start;
   }
   .editor {
     grid-column: 1;

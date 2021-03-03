@@ -6,7 +6,7 @@
       <Summary :summary_data="summary_data"/>
       <span class="backpack__description">{{ backpack.description }}</span>
       <div class="categories">
-        <div class="category" v-for="category in organized_data" :key="category.id">
+        <div class="category" v-for="category in backpack.list" :key="category.id">
           <div class="category__header">
             <span class="category__name">{{ category.name }}</span>
             <span class="category__weight__label">waga</span>
@@ -27,8 +27,8 @@
           </div>
           <div class="category__footer">
             <span></span>
-            <span class="category__weight__total">{{ category.total_weight }}</span>
-            <span class="category__quantity__total">{{ category.total_quantity }}</span>
+            <span class="category__weight__total">{{ totalWeight(category.items) }}</span>
+            <span class="category__quantity__total">{{ totalQuantity(category.items)}}</span>
           </div>
         </div>
       </div>
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import {format_elements_list, apiFetch, summarize_elements_list} from "@/functions";
+import {apiFetch, summarize_elements_list} from "@/functions";
 import Summary from "@/components/inside/editor/Summary";
 
 export default {
@@ -55,8 +55,17 @@ export default {
     summary_data() {
       return summarize_elements_list(this.backpack.list)
     },
-    organized_data() {
-      return format_elements_list(this.backpack.list)
+  },
+  methods: {
+    totalWeight(items) {
+      let result = 0
+      for (const item of items) result += item.weight * item.quantity
+      return result
+    },
+    totalQuantity(items) {
+      let result = 0
+      for (const item of items) result += item.quantity
+      return result
     }
   },
   beforeCreate() {
@@ -64,11 +73,8 @@ export default {
       method: 'GET',
     })
         .then(response => {
-          if (response.ok) {
-            response.json().then(data => {
-              this.backpack = data
-            })
-          } else console.log(response)
+          if (response.ok) response.json().then(data => this.backpack = data)
+          else console.log(response)
         })
   }
 }

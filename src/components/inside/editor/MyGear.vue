@@ -3,19 +3,19 @@
     <div class="header">
       <h2>mój sprzęt</h2>
     </div>
-    <draggable v-model="items" :clone="deepCopy" :group="{name: 'items', pull: 'clone', put: ['items']}"
+    <draggable v-model="elements" :clone="deepCopy" :group="{name: 'items', pull: 'clone', put: ['items']}"
                :sort="false" animation="700" class="my-gear_items" emptyInsertThreshold="30" handle=".item__handle"
                item-key="id">
       <template #item="{element}">
-        <div v-if="element.is_item" class="my-item">
+        <div v-if="!element.is_item" class="my-category">
+          <span class="item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
+          <span class="category_name">{{ element.name }}</span>
+        </div>
+        <div v-else class="my-item">
           <span class="item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
           <span class="name">{{ element.name }}</span>
           <span class="description">{{ element.description }}</span>
           <span class="weight">{{ element.weight }}</span>
-        </div>
-        <div v-else class="my-category">
-          <span class="item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
-          <span class="category_name">{{element.name}}</span>
         </div>
       </template>
     </draggable>
@@ -32,14 +32,26 @@ export default {
     return {}
   },
   computed: {
-    items() {return this.$store.getters['my_gear/dynamic_list']}
+    elements() {
+      const categories = this.$store.getters['my_gear/dynamic_list']
+      const result = []
+      for (const cat of categories) {
+        result.push(cat)
+        result[result.length - 1].is_item = false
+        for (const item of cat.items) {
+          result.push(item)
+          result[result.length - 1].is_item = true
+        }
+      }
+      return result
+    }
   },
   methods: {
     deepCopy(original) {
       let deep_copy = JSON.parse(JSON.stringify(original))
       return {
         type: 'item', name: deep_copy.name, description: deep_copy.description,
-        weight: deep_copy.weight, id: this.$store.getters['editor/new_element_id'],
+        weight: deep_copy.weight, id: this.$store.getters['editor/new_item_id'],
         worn: false, consumable: false, quantity: 1
       }
     },

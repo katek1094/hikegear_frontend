@@ -14,7 +14,7 @@
     <draggable v-model="items" animation="700" class="my_items" group="items" item-key="id" handle=".my_item__handle"
                emptyInsertThreshold="5  0">
       <template #item="{element}">
-        <MyItem :item="element" :ref="setItemRef"/>
+        <MyItem :item="element" :category_id="category.id" :ref="setItemRef"/>
       </template>
     </draggable>
     <div class="my_category__footer">
@@ -45,23 +45,21 @@ export default {
 
     const category_name = computed({
       get: () => props.category.name,
-      set: (val) => store.dispatch('my_gear/changeElementProperty', {
-        is_item: false,
-        list_index: props.category.list_index,
-        property: 'name',
+      set: (val) => store.dispatch('my_gear/changeCategoryName', {
+        category_id: props.category.id,
         new_value: val
       })
     })
-    const is_the_only_category = computed(() => store.getters['my_gear/organized_list'].length === 1)
+    const is_the_only_category = computed(() => store.getters['my_gear/dynamic_list'].length === 1)
     const items = computed({
       get: () => props.category.items,
       set: (val) => store.dispatch('my_gear/moveItem', {
-        new_category: val,
-        category_index: props.category.category_index
+        new_category_items: val,
+        category_id: props.category.id
       })
     })
     const addItem = async () => {
-      await store.dispatch('my_gear/addItem', props.category.list_index)
+      await store.dispatch('my_gear/addItem', props.category.id)
       items_refs.value[items_refs.value.length - 1].focusName()
       const added_item = items_refs.value[items_refs.value.length - 1].$el
       window.scrollTo(0, added_item.scrollHeight + document.documentElement.scrollTop)
@@ -69,8 +67,8 @@ export default {
     const deleteCategory = () => {
       if (items.value.length !== 0) {
         const confirmation = confirm("na pewno chcesz usunąć tę kategorię?")
-        if (confirmation) store.dispatch('my_gear/deleteCategory', props.category.list_index)
-      } else store.dispatch('my_gear/deleteCategory', props.category.list_index)
+        if (confirmation) store.dispatch('my_gear/deleteCategory', props.category.id)
+      } else store.dispatch('my_gear/deleteCategory', props.category.id)
     }
     const setItemRef = (el) => {
       if (el) items_refs.value.push(el)

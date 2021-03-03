@@ -41,7 +41,7 @@ export default {
     const are_changes = computed(() => store.getters['my_gear/are_any_changes'])
 
     const categories = computed({
-      get: () => store.getters['my_gear/organized_list'],
+      get: () => store.getters['my_gear/dynamic_list'],
       set: (val) => store.dispatch('my_gear/moveCategory', val)
     })
     const setCategoryRef = (el) => {
@@ -116,7 +116,7 @@ export default {
   background-color: grey;
 }
 
-.my-gear_editor{
+.my-gear_editor {
   padding-bottom: 30px;
   @include flex-column-center;
   max-width: 100vw;

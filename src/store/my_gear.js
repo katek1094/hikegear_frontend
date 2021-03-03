@@ -6,23 +6,6 @@ export default {
         return {
             static: {},
             dynamic: {}
-            /*
-            data structure
-            static and dynamic are list [] of elements
-            elements are items or categories
-            item = {
-                is_item: true,
-                name: '',
-                description: '',
-                weight: '',
-                id: undefined
-            }
-            category: {
-                is_item: false',
-                name: '',
-                id: undefined
-            }
-             */
         }
     },
     mutations: {
@@ -39,91 +22,73 @@ export default {
             // it should receive a array of arguments which first two are 'start' and 'deleteCount' and next are new objects
             state.dynamic.splice(...payload)
         },
+        set_dynamic_category_items(state, payload) {
+            let category = state.dynamic.find(category => category.id === payload.category_id)
+            category.items = payload.new_category_items
+        },
+        add_item_to_dynamic_category(state, payload) {
+            let category = state.dynamic.find(category => category.id === payload.category_id)
+            category.items.push(payload.new_item)
+        },
+        splice_dynamic_category_items(state, payload) {
+            state.dynamic[payload.category_index].items.splice(...payload.splice_data)
+        },
         push_to_dynamic(state, new_element) {
             state.dynamic.push(new_element)
         },
-        remove_elements(state, payload) {
-            state.dynamic.splice(payload.start, payload.amount)
+        set_item_property(state, payload) {
+            // payload = category_id, id, property, new_value
+            const category = state.dynamic.find(category => category.id === payload.category_id)
+            category.items.find(item => item.id === payload.id)[payload.property] = payload.new_value
         },
-        set_element_property(state, payload) {
-            // payload = id_item, list_index, property, new_value
-            if (state.dynamic[payload.list_index].is_item === payload.is_item) {
-                state.dynamic[payload.list_index][payload.property] = payload.new_value
-            } else throw "You are trying to change a property of the element of different type than declared!"
+        set_category_name(state, payload) {
+            state.dynamic.find(category => category.id === payload.category_id).name = payload.new_value
         },
     },
     actions: {
         changeMyGear({commit}, new_data) {
             commit('set_dynamic', new_data)
         },
-        moveCategory({commit}, new_organized_list) {
-            let new_list = []
-            // this loop transforms organized list into raw list
-            for (let i = 0; i < new_organized_list.length; i++) {
-                new_list.push({
-                    is_item: new_organized_list[i].is_item,
-                    name: new_organized_list[i].name,
-                    id: new_organized_list[i].id
-                })
-                for (let n = 0; n < new_organized_list[i].items.length; n++) {
-                    new_list.push(new_organized_list[i].items[n])
-                    delete new_list[new_list.length - 1].list_index
-                }
-            }
+        moveCategory({commit}, new_list) {
             commit('set_dynamic', new_list)
         },
-        moveItem({commit, getters}, payload) {
-            let index, next_index
-            let founded = false
-            let unique_cat = 0
-            const dynamic_list = getters['dynamic_list']
-            for (let i = 0; i < dynamic_list.length; i++) {
-                if ((founded) && (dynamic_list[i].is_item === false)) {
-                    next_index = dynamic_list.indexOf(dynamic_list[i])
-                    break
-                }
-                if (dynamic_list[i].is_item === false) {
-                    if (unique_cat === payload.category_index) {
-                        index = dynamic_list.indexOf(dynamic_list[i])
-                        founded = true
-                    } else unique_cat++
-                }
-            }
-            if (next_index === undefined) next_index = dynamic_list.length
-            commit('splice_dynamic', [index + 1, next_index - index - 1, ...payload.new_category])
+        moveItem({commit}, payload) {
+            commit('set_dynamic_category_items', payload)
         },
         addCategory({commit, getters}) {
             commit('push_to_dynamic', {
-                id: getters['new_element_id'],
-                is_item: false,
+                id: getters['new_category_id'],
                 name: '',
-                description: ''
+                items: []
             })
         },
-        addItem({commit, getters}, category_list_index) {
-            const organized = getters['organized_list']
-            const index = organized.findIndex(el => el.list_index === category_list_index)
-            const final_list_index = category_list_index + organized[index].items.length + 1
+        addItem({commit, getters}, category_id) {
             const new_item = {
-                id: getters['new_element_id'],
+                id: getters['new_item_id'],
                 name: '',
-                is_item: true,
                 description: '',
                 weight: 0,
             }
-            commit('splice_dynamic', [final_list_index, 0, new_item])
+            console.log()
+            commit('add_item_to_dynamic_category', {category_id, new_item})
         },
-        deleteCategory({commit, getters}, list_index) {
-            const index = getters['organized_list'].findIndex(el => el.list_index === list_index)
-            const items_amount = getters['organized_list'][index].items.length
-            commit('remove_elements', {start: list_index, amount: items_amount + 1})
+        deleteCategory({commit, getters}, category_id) {
+            const category_index = getters['dynamic_list'].findIndex(category => category.id === category_id)
+            commit('splice_dynamic', [category_index, 1])
         },
-        deleteItem({commit}, list_index) {
-            commit('splice_dynamic', [list_index, 1])
+        deleteItem({commit, getters}, payload) {
+            const category = getters['dynamic_list'].find(category => category.id === payload.category_id)
+            const category_index = getters['dynamic_list'].indexOf(category)
+            const item_index = category.items.findIndex(item => item.id === payload.item_id)
+            commit('splice_dynamic_category_items', {category_index, splice_data: [item_index, 1]})
         },
-        changeElementProperty({commit}, payload) {
-            // payload = is_item, list_index, property, new_value
-            commit('set_element_property', payload)
+        changeCategoryName({commit}, payload) {
+            commit('set_category_name', payload)
+        },
+        changeItemProperty({commit}, payload) {
+            // payload = category_id, id, property, new_value
+            console.log(payload)
+            commit('set_item_property', payload)
         },
         updateMyGear({commit, rootGetters}) {
             return apiFetch('private_gear', {
@@ -142,37 +107,37 @@ export default {
         }
     },
     getters: {
-        dynamic_list: state => state.dynamic,
-        is_my_gear_data_ready: state => Boolean(state.dynamic),
+        dynamic_list(state) {
+            return state.dynamic
+        },
+        is_my_gear_data_ready(state) {
+            return Boolean(state.dynamic)
+        },
         are_any_changes: state => {
             if (state.dynamic.length !== state.static.length) return true
-            for (let i = 0; i < state.dynamic.length; i++) {
-                for (const [key, value] of Object.entries(state.static[i])) {
-                    if (value !== state.dynamic[i][key]) return true
+            for (let c = 0; c < state.dynamic.length; c++) {
+                if (state.dynamic[c].items.length !== state.static[c].items.length) return true
+                for (let i = 0; i < state.dynamic[c].items.length; i++) {
+                    for (const [key, value] of Object.entries(state.static[c].items[i])) {
+                        if (value !== state.dynamic[c].items[i][key]) return true
+                    }
                 }
             }
             return false
         },
-        organized_list: state => {
-            const elements_list = JSON.parse(JSON.stringify(state.dynamic))
-            let organized = []
-            let category_counter = 0
-            if (elements_list[0].is_item) throw 'first item of my_gear_list is not a category! something is wrong'
-            for (let i = 0; i < elements_list.length; i++) {
-                let element = elements_list[i]
-                element.list_index = i
-                if (!element.is_item) {
-                    element.items = []
-                    element.category_index = category_counter
-                    category_counter++
-                    organized.push(element)
-                } else organized[organized.length - 1].items.push(element)
-            }
-            return organized
-        },
-        new_element_id: state => {
+        new_item_id: state => {
             let ids = []
-            for (const elements of state.dynamic) ids.push(elements.id)
+            for (const category of state.dynamic) {
+                for (const item of category.items) ids.push(item.id)
+            }
+            for (const integer of [...Array(3000).keys()]) {
+                if (!ids.includes(integer)) return integer
+            }
+            throw 'loop iterated 3000 times in searching for new, free id, something is wrong!'
+        },
+        new_category_id(state) {
+            let ids = []
+            for (const category of state.dynamic) ids.push(category.id)
             for (const integer of [...Array(1000).keys()]) {
                 if (!ids.includes(integer)) return integer
             }

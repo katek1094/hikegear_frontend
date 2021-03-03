@@ -22,7 +22,7 @@ import {computed, ref} from "vue";
 export default {
   name: "MyItem",
   components: {AutoResizable},
-  props: {item: Object},
+  props: {item: Object, category_id: Number},
   setup(props) {
     const store = useStore()
 
@@ -35,18 +35,18 @@ export default {
 
     const item_name = computed({
       get: () => props.item.name,
-      set: (val) => store.dispatch('my_gear/changeElementProperty', {
-        is_item: true,
-        list_index: props.item.list_index,
+      set: (val) => store.dispatch('my_gear/changeItemProperty', {
+        category_id: props.category_id,
+        id: props.item.id,
         property: 'name',
         new_value: val
       })
     })
     const item_description = computed({
       get: () => props.item.description,
-      set: (val) => store.dispatch('my_gear/changeElementProperty', {
-        is_item: true,
-        list_index: props.item.list_index,
+      set: (val) => store.dispatch('my_gear/changeItemProperty', {
+        category_id: props.category_id,
+        id: props.item.id,
         property: 'description',
         new_value: val
       })
@@ -55,16 +55,18 @@ export default {
       get: () => props.item.weight,
       set: (val) => {
         if ((val <= weight_limit) && (val >= 0) && (String(val).length <= String(weight_limit).length)) {
-          store.dispatch('my_gear/changeElementProperty', {
-            is_item: true,
-            list_index: props.item.list_index,
+          store.dispatch('my_gear/changeItemProperty', {
+            category_id: props.category_id,
+            id: props.item.id,
             property: 'weight',
             new_value: val
           })
         } else weight_input.value.value = props.item.weight
       }
     })
-    const deleteItem = () => store.dispatch('my_gear/deleteItem', props.item.list_index)
+    const deleteItem = () => store.dispatch('my_gear/deleteItem', {
+      item_id: props.item.id, category_id: props.category_id
+    })
     const preventNumericChars = (e) => {
       if ((e.keyCode === 69) || (e.keyCode === 189)) e.preventDefault()
     }

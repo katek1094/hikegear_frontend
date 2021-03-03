@@ -6,6 +6,17 @@ export default {
         // it should receive a array of arguments which first two are 'start' and 'deleteCount' and next are new objects
         state.dynamic.list.splice(...payload)
     },
+    set_dynamic_category_items(state, payload) {
+        let category = state.dynamic.list.find(category => category.id === payload.category_id)
+        category.items = payload.new_category_items
+    },
+    add_item_to_dynamic_category(state, payload) {
+        let category = state.dynamic.list.find(category => category.id === payload.category_id)
+        category.items.push(payload.new_item)
+    },
+    splice_dynamic_category_items(state, payload) {
+        state.dynamic.list[payload.category_index].items.splice(...payload.splice_data)
+    },
     copy_and_set_static_backpack(state, backpack) {
         state.static = JSON.parse(JSON.stringify(backpack))
     },
@@ -18,23 +29,21 @@ export default {
     set_backpack_description(state, new_description) {
         state.dynamic.description = new_description
     },
-    remove_elements(state, payload) {
-        state.dynamic.list.splice(payload.start, payload.amount)
+    set_item_property(state, payload) {
+        // payload = category_id, id, property, new_value
+        const category = state.dynamic.list.find(category => category.id === payload.category_id)
+        category.items.find(item => item.id === payload.id)[payload.property] = payload.new_value
     },
-    set_element_property(state, payload) {
-        // payload = is_item, list_index, property, new_value
-        if (state.dynamic.list[payload.list_index].is_item === payload.is_item) {
-            state.dynamic.list[payload.list_index][payload.property] = payload.new_value
-        } else throw "You are trying to change a property of the element of different type (is_item_ than declared!"
+    set_category_name(state, payload) {
+        state.dynamic.list.find(category => category.id === payload.category_id).name = payload.new_value
     },
     push_to_dynamic_list(state, new_element) {
         state.dynamic.list.push(new_element)
     },
-    toggle_consumable(state, list_index) {
-        state.dynamic.list[list_index].consumable = !state.dynamic.list[list_index].consumable
-    },
-    toggle_worn(state, list_index) {
-        state.dynamic.list[list_index].worn = !state.dynamic.list[list_index].worn
+    toggle_property(state, payload) {
+        const category = state.dynamic.list.find(category => category.id === payload.category_id)
+        const item = category.items.find(item => item.id === payload.id)
+        item[payload.property] = !item[payload.property]
     },
     set_backpacks(state, backpacks) {
         state.backpacks = backpacks

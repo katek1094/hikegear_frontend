@@ -15,7 +15,7 @@
     <draggable v-model="items" animation="700" class="items" :group="{name: 'items', pull: pullPolicy, put: ['items']}"
                item-key="id" handle=".item__handle" emptyInsertThreshold="50">
       <template #item="{element}">
-        <Item :item="element" :ref="setItemRef"/>
+        <Item :item="element" :category_id="category.id" :ref="setItemRef"/>
       </template>
     </draggable>
     <div class="category__footer">
@@ -23,8 +23,8 @@
         <font-awesome-icon class="fa-md" icon="plus"/>
         dodaj przedmiot
       </button>
-      <span class="category__weight__total">{{ category.total_weight }}</span>
-      <span class="category__quantity__total">{{ category.total_quantity }}</span>
+      <span class="category__weight__total">{{ total_weight }}</span>
+      <span class="category__quantity__total">{{ total_quantity }}</span>
     </div>
   </div>
 </template>
@@ -50,23 +50,35 @@ export default {
 
     const category_name = computed({
       get: () => props.category.name,
-      set: (val) => store.dispatch('editor/changeElementProperty', {
-        is_item: false,
-        list_index: props.category.list_index,
-        property: 'name',
+      set: (val) => store.dispatch('editor/changeCategoryName', {
+        category_id: props.category.id,
         new_value: val
       })
     })
-    const is_the_only_category = computed(() => store.getters['editor/organized_list'].length === 1)
+    const is_the_only_category = computed(() => store.getters['editor/dynamic_list'].length === 1)
     const items = computed({
       get: () => props.category.items,
       set: (val) => store.dispatch('editor/moveItem', {
-        new_category: val,
-        category_index: props.category.category_index
+        new_category_items: val,
+        category_id: props.category.id
       })
     })
+    const total_weight = computed(() => {
+      let result = 0
+      for (const item of props.category.items) {
+        result += item.weight * item.quantity
+      }
+      return result
+    })
+    const total_quantity = computed(() => {
+      let result = 0
+      for (const item of props.category.items) {
+        result += item.quantity
+      }
+      return result
+    })
     const addItem = async () => {
-      await store.dispatch('editor/addItem', props.category.list_index)
+      await store.dispatch('editor/addItem', props.category.id)
       items_refs.value[items_refs.value.length - 1].focusName()
       const added_item = items_refs.value[items_refs.value.length - 1].$el
       window.scrollTo(0, added_item.scrollHeight + document.documentElement.scrollTop)
@@ -74,8 +86,8 @@ export default {
     const deleteCategory = () => {
       if (items.value.length !== 0) {
         const confirmation = confirm("na pewno chcesz usunąć tę kategorię?")
-        if (confirmation) store.dispatch('editor/deleteCategory', props.category.list_index)
-      } else store.dispatch('editor/deleteCategory', props.category.list_index)
+        if (confirmation) store.dispatch('editor/deleteCategory', props.category.id)
+      } else store.dispatch('editor/deleteCategory', props.category.id)
     }
     const setItemRef = (el) => {
       if (el) items_refs.value.push(el)
@@ -93,7 +105,7 @@ export default {
 
     return {
       max_name_length, name_input,
-      category_name, is_the_only_category, items,
+      category_name, is_the_only_category, items, total_weight, total_quantity,
       addItem, deleteCategory, setItemRef, resizeAllItems, pullPolicy, focusName
     }
   }

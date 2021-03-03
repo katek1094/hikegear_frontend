@@ -1,75 +1,40 @@
 import {apiFetch} from '@/functions'
 
 export default {
-    moveCategory({commit}, new_organized_list) {
-        let new_list = []
-        // this loop transforms organized list into raw list
-        for (let i = 0; i < new_organized_list.length; i++) {
-            new_list.push({
-                is_item: new_organized_list[i].is_item,
-                name: new_organized_list[i].name,
-                description: new_organized_list[i].description,
-                id: new_organized_list[i].id
-            })
-            for (let n = 0; n < new_organized_list[i].items.length; n++) {
-                new_list.push(new_organized_list[i].items[n])
-                delete new_list[new_list.length - 1].list_index
-            }
-        }
+    moveCategory({commit}, new_list) {
         commit('set_dynamic_list', new_list)
     },
-    moveItem({commit, getters}, payload) {
-        let index, next_index
-        let founded = false
-        let unique_cat = 0
-        const dynamic_list = getters['dynamic_list']
-        for (let i = 0; i < dynamic_list.length; i++) {
-            if ((founded) && (dynamic_list[i].is_item === false)) {
-                next_index = dynamic_list.indexOf(dynamic_list[i])
-                break
-            }
-            if (dynamic_list[i].is_item === false) {
-                if (unique_cat === payload.category_index) {
-                    index = dynamic_list.indexOf(dynamic_list[i])
-                    founded = true
-                } else unique_cat++
-            }
-        }
-        if (next_index === undefined) {
-            next_index = dynamic_list.length
-        }
-        commit('splice_dynamic_list', [index + 1, next_index - index - 1, ...payload.new_category])
+    moveItem({commit}, payload) {
+        commit('set_dynamic_category_items', payload)
     },
     addCategory({commit, getters}) {
         commit('push_to_dynamic_list', {
-            id: getters['new_element_id'],
-            is_item: false,
+            id: getters['new_category_id'],
             name: '',
-            description: ''
+            items: []
         })
     },
-    addItem({commit, getters}, category_list_index) {
-        const organized = getters['organized_list']
-        const index = organized.findIndex(el => el.list_index === category_list_index)
-        const final_list_index = category_list_index + organized[index].items.length + 1
+    addItem({commit, getters}, category_id) {
         const new_item = {
-            id: getters['new_element_id'],
+            id: getters['new_item_id'],
             name: '',
-            is_item: true,
             description: '',
             weight: 0,
             quantity: 1,
+            consumable: false,
             worn: false
         }
-        commit('splice_dynamic_list', [final_list_index, 0, new_item])
+        commit('add_item_to_dynamic_category', {category_id, new_item})
     },
-    deleteCategory({commit, getters}, list_index) {
-        const index = getters['organized_list'].findIndex(el => el.list_index === list_index)
-        const items_amount = getters['organized_list'][index].items.length
-        commit('remove_elements', {start: list_index, amount: items_amount + 1})
+    deleteCategory({commit, getters}, category_id) {
+        const category_index = getters['dynamic_list'].findIndex(category => category.id === category_id)
+        commit('splice_dynamic_list', [category_index, 1])
     },
-    deleteItem({commit}, list_index) {
-        commit('splice_dynamic_list', [list_index, 1])
+    deleteItem({commit, getters}, payload) {
+        const category = getters['dynamic_list'].find(category => category.id === payload.category_id)
+        const category_index = getters['dynamic_list'].indexOf(category)
+        const item_index = category.items.findIndex(item => item.id === payload.item_id)
+        commit('splice_dynamic_category_items', {category_index, splice_data: [item_index, 1]})
     },
     renameBackpack({commit}, new_name) {
         commit('set_backpack_name', new_name)
@@ -77,15 +42,20 @@ export default {
     changeBackpackDescription({commit}, new_description) {
         commit('set_backpack_description', new_description)
     },
-    changeElementProperty({commit}, payload) {
-        // payload = is_item, list_index, property, new_value
-        commit('set_element_property', payload)
+    changeCategoryName({commit}, payload) {
+        commit('set_category_name', payload)
     },
-    switchConsumable({commit}, list_index) {
-        commit('toggle_consumable', list_index)
+    changeItemProperty({commit}, payload) {
+        // payload = category_id, id, property, new_value
+        commit('set_item_property', payload)
     },
-    switchWorn({commit}, list_index) {
-        commit('toggle_worn', list_index)
+    switchConsumable({commit}, payload) {
+        payload.property = 'consumable'
+        commit('toggle_property', payload)
+    },
+    switchWorn({commit}, payload) {
+        payload.property = 'worn'
+        commit('toggle_property', payload)
     },
     updateBackpack({commit, rootGetters}, payload) {
         if (payload.update_dynamic) {
@@ -114,21 +84,21 @@ export default {
                 description: '',
                 list: [
                     {
-                        is_item: false,
                         name: '',
-                        description: '',
-                        id: 0
-                    },
-                    {
-                        is_item: true,
-                        name: '',
-                        description: '',
-                        id: 1,
-                        weight: 0,
-                        quantity: 1,
-                        worn: false,
-                        consumable: false,
-                    },
+                        id: 0,
+                        items: [
+
+                            {
+                                name: '',
+                                description: '',
+                                id: 0,
+                                weight: 0,
+                                quantity: 1,
+                                worn: false,
+                                consumable: false,
+                            }
+                        ]
+                    }
                 ]
             })
         })

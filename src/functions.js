@@ -24,19 +24,6 @@ export function summarize_elements_list(elements_list) {
     let results = {data: [], labels: [], total_weight: 0, consumable_weight: 0, worn_weight: 0}
     for (let i = 0; i < elements_list.length; i++) {
         let el = elements_list[i]
-        if (el.type === 'category') {
-            el.is_item = false
-            delete el.type
-        }
-        if (el.type === 'item') {
-            el.is_item = true
-            delete el.type
-        }
-        if (el.type) {
-            // TODO: delete this after data refactor
-            throw 'el.type is not undefined, data needs to be refactored!'
-        }
-
         if (el.is_item === false) {
             results.data.push(0)
             results.labels.push(el.name)

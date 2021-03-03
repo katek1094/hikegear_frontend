@@ -2,9 +2,9 @@
   <div class="item">
     <span class="item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
     <AutoResizable ref="name_input" v-model.trim="item_name" :maxlength="max_name_length" :prevent-enter="true"
-                  class="item__name" placeholder="nazwa" @keydown="handleEnter"/>
+                   class="item__name" placeholder="nazwa" @keydown="handleEnter"/>
     <AutoResizable ref="description_input" v-model="item_description" :maxlength="max_description_length"
-                  class="item__description" placeholder="opis"/>
+                   class="item__description" placeholder="opis"/>
     <button :class="{ checked: item.worn }" :disabled="item.consumable" class="item__worn" @click="switchWorn">
       <font-awesome-icon class="fa-md" icon="child"/>
     </button>
@@ -34,6 +34,7 @@ export default {
   components: {AutoResizable},
   props: {
     item: Object,
+    category_id: Number
   },
   setup(props) {
     const store = useStore()
@@ -49,18 +50,18 @@ export default {
 
     const item_name = computed({
       get: () => props.item.name,
-      set: (val) => store.dispatch('editor/changeElementProperty', {
-        is_item: true,
-        list_index: props.item.list_index,
+      set: (val) => store.dispatch('editor/changeItemProperty', {
+        category_id: props.category_id,
+        id: props.item.id,
         property: 'name',
         new_value: val
       })
     })
     const item_description = computed({
       get: () => props.item.description,
-      set: (val) => store.dispatch('editor/changeElementProperty', {
-        is_item: true,
-        list_index: props.item.list_index,
+      set: (val) => store.dispatch('editor/changeItemProperty', {
+        category_id: props.category_id,
+        id: props.item.id,
         property: 'description',
         new_value: val
       })
@@ -69,9 +70,9 @@ export default {
       get: () => props.item.weight,
       set: (val) => {
         if ((val <= weight_limit) && (val >= 0) && (String(val).length <= String(weight_limit).length)) {
-          store.dispatch('editor/changeElementProperty', {
-            is_item: true,
-            list_index: props.item.list_index,
+          store.dispatch('editor/changeItemProperty', {
+            category_id: props.category_id,
+            id: props.item.id,
             property: 'weight',
             new_value: val
           })
@@ -82,19 +83,26 @@ export default {
       get: () => props.item.quantity,
       set: (val) => {
         if ((val <= quantity_limit) && (val >= 0)) {
-          store.dispatch('editor/changeElementProperty', {
-            is_item: true,
-            list_index: props.item.list_index,
+          store.dispatch('editor/changeItemProperty', {
+            category_id: props.category_id,
+            id: props.item.id,
             property: 'quantity',
             new_value: val
           })
         } else quantity_input.value.value = props.item.quantity
       }
     })
-
-    const switchWorn = () => store.dispatch('editor/switchWorn', props.item.list_index)
-    const switchConsumable = () => store.dispatch('editor/switchConsumable', props.item.list_index)
-    const deleteItem = () => store.dispatch('editor/deleteItem', props.item.list_index)
+    const switchWorn = () => store.dispatch('editor/switchWorn', {
+      category_id: props.category_id,
+      id: props.item.id
+    })
+    const switchConsumable = () => store.dispatch('editor/switchConsumable', {
+      category_id: props.category_id,
+      id: props.item.id
+    })
+    const deleteItem = () => store.dispatch('editor/deleteItem', {
+      item_id: props.item.id, category_id: props.category_id
+    })
     const preventNumericChars = (e) => {
       if ((e.keyCode === 69) || (e.keyCode === 189)) e.preventDefault()
       if ((e.target.className === 'item__quantity') && (e.keyCode === 190)) e.preventDefault()

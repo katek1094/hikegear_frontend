@@ -24,7 +24,7 @@
                        :maxlength="max_backpack_description_length" class="backpack__description"
                        placeholder="opis plecaka"/>
         <div class="progress" :style="{width: save_time_passed * 100 / timeout_before_save + '%' }"></div>
-        <draggable v-model="organized_list" animation="1000" class="categories" group="categories"
+        <draggable v-model="dynamic_list" animation="1000" class="categories" group="categories"
                    handle=".category__handle" item-key="id">
           <template #item="{element}">
             <Category :category="element" :ref="setCategoryRef"/>
@@ -80,8 +80,8 @@ export default {
     const editor_data_ready = computed(() => store.getters['editor/isEditorDataReady'])
     const are_changes = computed(() => store.getters['editor/are_any_changes'])
     const summary_data = computed(() => store.getters['editor/summary_data'])
-    const organized_list = computed({
-      get: () => store.getters['editor/organized_list'],
+    const dynamic_list = computed({
+      get: () => store.getters['editor/dynamic_list'],
       set: (val) => store.dispatch('editor/moveCategory', val)
     })
     const backpack_name = computed({
@@ -163,7 +163,7 @@ export default {
     return {
       timeout_before_save, save_time_passed, max_backpack_name_length, max_backpack_description_length,
       backpack_name_input, backpack_description_input,
-      backpack_id, backpacks, editor_data_ready, summary_data, organized_list, backpack_name, backpack_description,
+      backpack_id, backpacks, editor_data_ready, summary_data, dynamic_list, backpack_name, backpack_description,
       setCategoryRef, addCategory, changeBackpack, addBackpack, deleteBackpack
     }
   },

@@ -10,15 +10,29 @@
             <font-awesome-icon class="fa-sm" icon="trash"/>
           </button>
         </div>
-        <button class="add-backpack" type="button" @click="addBackpack">
-          <font-awesome-icon class="fa-md" icon="plus"/>
-          dodaj plecak
-        </button>
+        <div class="backpack_buttons">
+          <button class="add-backpack" type="button" @click="addBackpack">
+            <font-awesome-icon class="fa-md" icon="plus"/>
+            dodaj plecak
+          </button>
+          <button class="import-backpack" type="button" @click="$refs.importModal.openModal()">
+            <font-awesome-icon class="fa-md" icon="cloud-download-alt"/>
+            importuj
+          </button>
+          <modal ref="importModal">
+            <template v-slot:header>
+              <h2>importuj plecak z lighterpack.com</h2>
+            </template>
+            <template v-slot:body>
+              <p>tutaj importuj</p>
+            </template>
+          </modal>
+        </div>
       </div>
       <div class="editor">
+        <router-link class="backpack__link" :to="'/backpack/' + backpack_id">link do plecaka</router-link>
         <AutoResizable ref="backpack_name_input" v-model.trim="backpack_name" :maxlength="max_backpack_name_length"
                        :prevent-enter="true" class="backpack__name" placeholder="nazwa plecaka"/>
-        <router-link class="backpack__link" :to="'/backpack/' + backpack_id">link do plecaka</router-link>
         <Summary :summary_data="summary_data"/>
         <AutoResizable ref="backpack_description_input" v-model.trim="backpack_description"
                        :maxlength="max_backpack_description_length" class="backpack__description"
@@ -56,10 +70,11 @@ import AutoResizable from "@/components/AutoResizable";
 import MyGear from "@/components/inside/editor/MyGear";
 import {ref, computed, onMounted, onBeforeUnmount} from 'vue';
 import {useStore} from 'vuex';
+import Modal from "@/components/Modal";
 
 export default {
   name: "Editor",
-  components: {MyGear, AutoResizable, BaseApp, Summary, Category, draggable},
+  components: {Modal, MyGear, AutoResizable, BaseApp, Summary, Category, draggable},
   setup() {
     const store = useStore()
 
@@ -112,6 +127,9 @@ export default {
       resizeAll()
     }
     const addBackpack = () => store.dispatch('editor/addBackpack')
+    const importBackpackClicked = () => {
+
+    }
     const deleteBackpack = () => {
       let confirmation = confirm('na pewno chcesz usunąć ten plecak?')
       if (confirmation) store.dispatch('editor/deleteBackpack', backpack_id.value)
@@ -164,7 +182,7 @@ export default {
       timeout_before_save, save_time_passed, max_backpack_name_length, max_backpack_description_length,
       backpack_name_input, backpack_description_input,
       backpack_id, backpacks, editor_data_ready, summary_data, dynamic_list, backpack_name, backpack_description,
-      setCategoryRef, addCategory, changeBackpack, addBackpack, deleteBackpack
+      setCategoryRef, addCategory, changeBackpack, addBackpack, deleteBackpack, importBackpackClicked
     }
   },
 }
@@ -272,6 +290,11 @@ export default {
   }
 }
 
+.backpack_buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
 @media (hover: hover) and (pointer: fine) {
   .backpack__delete:hover {
     color: red;
@@ -285,8 +308,12 @@ export default {
   max-width: 100vw;
 }
 
-.add-category, ::v-deep(.add-item), .add-backpack {
+.add-category, ::v-deep(.add-item), .add-backpack, .import-backpack {
   @include editor-add;
+}
+
+.add-backpack, .import-backpack {
+  font-size: 1rem;
 }
 
 .backpack__name, .backpack__description, ::v-deep(.category__name), ::v-deep(.item__name), ::v-deep(.item__description),

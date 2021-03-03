@@ -28,6 +28,10 @@ body {
   background-color: $background;
 }
 
+.overflow-hidden {
+  overflow: hidden;
+}
+
 @media (max-width: 479px) {
   /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
   html {

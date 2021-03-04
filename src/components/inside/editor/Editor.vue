@@ -1,29 +1,33 @@
 <template>
   <BaseApp>
     <div v-if="editor_data_ready" class="wrapper">
-      <div class="backpack__list">
-        <div class="backpack__list__item" v-for="(backpack, index) in backpacks" :key="backpack.id"
-             @click="changeBackpack(index)">
-          <span v-if="backpack.name !== ''" :class="{active: backpack.id === backpack_id}">{{ backpack.name }}</span>
-          <span v-if="backpack.name === ''" :class="{active: backpack.id === backpack_id}">bez nazwy</span>
-          <button v-if="backpack.id === backpack_id" class="backpack__delete" type="button" @click="deleteBackpack">
-            <font-awesome-icon class="fa-sm" icon="trash"/>
-          </button>
+      <div class="b_list_and_options">
+        <div class="backpack__list">
+          <div class="backpack__list__item" v-for="(backpack, index) in backpacks" :key="backpack.id"
+               @click="changeBackpack(index)">
+            <span v-if="backpack.name !== ''" :class="{active: backpack.id === backpack_id}">{{ backpack.name }}</span>
+            <span v-if="backpack.name === ''" :class="{active: backpack.id === backpack_id}">bez nazwy</span>
+            <button v-if="backpack.id === backpack_id" class="backpack__delete" type="button" @click="deleteBackpack">
+              <font-awesome-icon class="fa-sm" icon="trash"/>
+            </button>
+          </div>
+          <div class="backpack_buttons">
+            <button class="add-backpack" type="button" @click="addBackpack">
+              <font-awesome-icon class="fa-md" icon="plus"/>
+              dodaj plecak
+            </button>
+            <button class="import-backpack" type="button" @click="$refs.lpImport.openModal()">
+              <font-awesome-icon class="fa-md" icon="cloud-download-alt"/>
+              importuj
+            </button>
+            <LpImport ref="lpImport"/>
+          </div>
         </div>
-        <div class="backpack_buttons">
-          <button class="add-backpack" type="button" @click="addBackpack">
-            <font-awesome-icon class="fa-md" icon="plus"/>
-            dodaj plecak
-          </button>
-          <button class="import-backpack" type="button" @click="$refs.lpImport.openModal()">
-            <font-awesome-icon class="fa-md" icon="cloud-download-alt"/>
-            importuj
-          </button>
-          <LpImport ref="lpImport"/>
+        <div class="options">
+          <router-link class="backpack__link" :to="'/backpack/' + backpack_id">link do plecaka</router-link>
         </div>
       </div>
       <div class="editor">
-        <router-link class="backpack__link" :to="'/backpack/' + backpack_id">link do plecaka</router-link>
         <AutoResizable ref="backpack_name_input" v-model.trim="backpack_name" :maxlength="max_backpack_name_length"
                        :prevent-enter="true" class="backpack__name" placeholder="nazwa plecaka"/>
         <Summary :summary_data="summary_data"/>
@@ -191,8 +195,8 @@ export default {
     padding: 0 $grid_wrapper_padding;
     column-gap: $grid_gap;
   }
-  .backpack__list {
-    align-self: flex-start;
+  .b_list_and_options {
+    grid-column: 1;
   }
 }
 
@@ -203,9 +207,8 @@ export default {
     padding: 0 $grid_wrapper_padding;
     column-gap: $grid_gap;
   }
-  .backpack__list {
+  .b_list_and_options {
     grid-column: 1;
-    align-self: flex-start;
   }
   .editor {
     grid-column: 1;
@@ -237,6 +240,7 @@ export default {
   width: $backpack_list_width;
   min-width: $backpack_list_width;
   box-sizing: border-box;
+  align-self: flex-start;
 }
 
 .backpack__list__item {
@@ -283,6 +287,11 @@ export default {
 .backpack_buttons {
   display: flex;
   justify-content: space-between;
+}
+
+.options {
+  display: flex;
+  justify-content: center;
 }
 
 @media (hover: hover) and (pointer: fine) {

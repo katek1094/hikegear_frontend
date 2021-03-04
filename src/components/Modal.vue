@@ -31,13 +31,14 @@ export default {
   },
   methods: {
     closeModal(e) {
-      if (!this.hide_on_outside_click && (e.target.className === "modal__backdrop")) return false
+      if (!this.hide_on_outside_click && e && (e.target.className === "modal__backdrop")) return false
       this.show = false;
       this.$emit('close-modal')
       document.querySelector("body").classList.remove("overflow-hidden");
     },
     openModal() {
       this.show = true;
+      this.$emit('open-modal')
       document.querySelector("body").classList.add("overflow-hidden");
     }
   }

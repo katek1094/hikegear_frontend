@@ -73,8 +73,7 @@ export default {
                   if (data['detail'] === 'Not found.') {
                     this.info = 'podany plecak nie istnieje'
                     this.show_info = true
-                  }
-                  else console.log(response)
+                  } else console.log(response)
                 })
                 this.waiting_for_response = false
               }
@@ -84,7 +83,7 @@ export default {
         this.show_info = true
       }
     }
-  }
+  },
 }
 </script>
 

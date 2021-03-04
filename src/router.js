@@ -13,14 +13,14 @@ import MyGearEditor from "@/components/inside/my_gear_editor/MyGearEditor";
 const router = createRouter({
     history: createWebHistory(),
     routes: [
-        {path: '/', redirect: '/editor'},
-        {path: '/editor', component: Editor, name: 'editor', meta: {require_auth: true}},
-        {path: '/settings', component: Settings, name: 'settings', meta: {require_auth: true}},
-        {path: '/login', component: Login, name: 'login'},
-        {path: '/register', component: Register, name: 'register'},
-        {path: '/verify_email', component: VerifyYourEmail, name: 'verify_email'},
-        {path: '/backpack/:id', component: Backpack, name: 'backpack', props: true},
-        {path: '/my_gear', component: MyGearEditor, name: 'my_gear', meta: {require_auth: true}},
+        {path: '/', redirect: '/edytor'},
+        {path: '/edytor', component: Editor, name: 'editor', meta: {require_auth: true}},
+        {path: '/ustawienia', component: Settings, name: 'settings', meta: {require_auth: true}},
+        {path: '/logowanie', component: Login, name: 'login'},
+        {path: '/rejestracja', component: Register, name: 'register'},
+        {path: '/weryfikacja_email', component: VerifyYourEmail, name: 'verify_email'},
+        {path: '/plecak/:id', component: Backpack, name: 'backpack', props: true},
+        {path: '/moj_sprzet', component: MyGearEditor, name: 'my_gear', meta: {require_auth: true}},
     ],
 })
 
@@ -31,7 +31,7 @@ router.beforeEach((to, from, next) => {
         else next({name: 'login'})
     }
 
-    if (!store.getters['auth/is_logged_in']) {
+    if (!store.getters['auth/is_logged_in'] === undefined) {
         store.dispatch('editor/getInitialData').then(status => {
             if (status === 'not logged in') store.dispatch('auth/changeLoggedIn', false)
             else store.dispatch('auth/changeLoggedIn', true)

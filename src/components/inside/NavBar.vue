@@ -1,17 +1,17 @@
 <template>
   <nav class="navbar" :class="{'navbar--active': active}">
-    <router-link to="/editor"><img class="brand" alt="logo" src="@/assets/logo.png"></router-link>
+    <router-link :to="{name: 'editor'}"><img class="brand" alt="logo" src="@/assets/logo.png"></router-link>
     <button class="hamburger" :class="{'hamburger--active': active}" @click="handleClick">
                 <span class="hamburger__box">
                     <span class="hamburger__inner"></span>
                 </span>
     </button>
     <div class="menu">
-      <router-link v-for="(item, index) in items" :key="index" :to="item.route" class="link">{{ item.name }}
+      <router-link v-for="(item, index) in items" :key="index" :to="item.to" class="link">{{ item.name }}
       </router-link>
     </div>
     <div class="dropdown-menu">
-      <router-link v-for="(item, index) in items" :key="index" :to="item.route" class="link">{{ item.name }}
+      <router-link v-for="(item, index) in items" :key="index" :to="item.to" class="link">{{ item.name }}
       </router-link>
     </div>
   </nav>
@@ -24,9 +24,9 @@ export default {
     return {
       active: false,
       items: [
-        {name: 'edytor', route: '/editor'},
-        {name: 'mój sprzęt', route: '/my_gear'},
-        {name: 'konto', route: '/settings'},
+        {name: 'edytor', to: {name: 'editor'}},
+        {name: 'mój sprzęt', to: {name: 'my_gear'}},
+        {name: 'konto', to: {name: 'settings'}},
       ]
     }
   },

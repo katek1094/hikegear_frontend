@@ -30,7 +30,7 @@
                @input="activate">
         <label v-if="password_info_display" class="auth__label" for="login-password">{{ password_info }}</label>
         <button class="auth__submit" type="submit" id="login-submit">zaloguj</button>
-        <router-link to="/register" class="login__option login__register" type="button">nie mam konta (rejestracja)
+        <router-link :to="{name: 'register'}" class="login__option login__register" type="button">nie mam konta (rejestracja)
         </router-link>
         <a :href="password_reset_url" class="login__option login__forgot_password" type="button">nie pamiętam hasła</a>
       </form>
@@ -105,11 +105,11 @@ export default {
             .then(status => {
               if (status === 'logged in') {
                 this.$store.dispatch('editor/getInitialData')
-                    .then(() => this.$router.push('/editor'))
+                    .then(() => this.$router.push({name: 'editor'}))
               } else if (status === 'bad credentials') {
                 this.info = 'błędny email lub hasło'
               } else if (status === 'activate your account') {
-                this.$router.push('/verify_email')
+                this.$router.push({name: 'verify_email'})
               } else {
                 throw 'something wrong with response'
               }

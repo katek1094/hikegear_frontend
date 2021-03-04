@@ -21,7 +21,8 @@
              placeholder="powtórz hasło" required type="password"
              @blur="markAsBlurred" @input="activate">
       <label v-show="password2_info_display" for="registration-password2">hasła nie są takie same</label>
-      <button id="register-submit" class="auth__submit" type="submit">zarejestruj</button>
+      <button v-show="!waiting_for_response" id="register-submit" class="auth__submit" type="submit">zarejestruj</button>
+      <div v-if="waiting_for_response" class="spinner"></div>
     </form>
   </LandingPage>
 </template>
@@ -48,6 +49,7 @@ export default {
       email_activated: false,
       password1_activated: false,
       password2_activated: false,
+      waiting_for_response: false
     }
   },
   computed: {
@@ -88,10 +90,10 @@ export default {
   },
   methods: {
     submitForm() {
-      // TODO: add spinner
       this.email_info = ''
       this.password_info = ''
       this.password2_blurred = true
+      this.waiting_for_response = true
       if (this.isFormValid) {
         apiFetch('users/', {
           method: 'POST',
@@ -103,10 +105,11 @@ export default {
         })
             .then(response => {
               if (response.ok) {
-                this.$router.push('/verify_email')
+                this.$router.push({name: 'verify_email'})
               } else {
                 this.handleFailure(response.json())
               }
+              this.waiting_for_response = false
             })
       }
     },
@@ -134,5 +137,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.spinner {
+  align-self: center;
+  @include spinner;
+}
 </style>

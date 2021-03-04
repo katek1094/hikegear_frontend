@@ -2,7 +2,6 @@
   <transition name="fade">
     <div class="modal" v-if="show">
       <div class="modal__backdrop" @click="closeModal"/>
-
       <div class="modal__dialog">
         <div class="modal__header">
           <slot name="header"/>
@@ -10,11 +9,9 @@
             <font-awesome-icon class="fa-md" icon="times"/>
           </button>
         </div>
-
         <div class="modal__body">
           <slot name="body"/>
         </div>
-
         <div class="modal__footer">
           <slot name="footer"/>
         </div>
@@ -26,14 +23,17 @@
 <script>
 export default {
   name: "Modal",
+  props: {hide_on_outside_click: {type: Boolean, default: true}},
   data() {
     return {
       show: false
     }
   },
   methods: {
-    closeModal() {
+    closeModal(e) {
+      if (!this.hide_on_outside_click && (e.target.className === "modal__backdrop")) return false
       this.show = false;
+      this.$emit('close-modal')
       document.querySelector("body").classList.remove("overflow-hidden");
     },
     openModal() {
@@ -54,8 +54,9 @@ export default {
   bottom: 0;
   left: 0;
   z-index: 9;
+
   &__backdrop {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.4);
     position: fixed;
     top: 0;
     right: 0;
@@ -63,11 +64,12 @@ export default {
     left: 0;
     z-index: 1;
   }
+
   &__dialog {
-    background-color: #ffffff;
+    background-color: $windows_color;
     position: relative;
     width: 600px;
-    margin: 50px auto;
+    margin: 15vh auto;
     display: flex;
     flex-direction: column;
     border-radius: 5px;
@@ -76,6 +78,7 @@ export default {
       width: 90%;
     }
   }
+
   &__close {
     border: none;
     border-radius: 50%;
@@ -85,16 +88,19 @@ export default {
     height: 2.3rem;
     outline: none;
   }
+
   &__close:hover {
     cursor: pointer;
     color: red;
   }
+
   &__header {
     padding: 20px 20px 10px;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
   }
+
   &__body {
     padding: 10px 20px 10px;
     overflow: auto;
@@ -102,14 +108,17 @@ export default {
     flex-direction: column;
     align-items: stretch;
   }
+
   &__footer {
     padding: 10px 20px 20px;
   }
 }
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.2s;
 }
+
 .fade-enter,
 .fade-leave-to {
   opacity: 0;

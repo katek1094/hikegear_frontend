@@ -112,6 +112,11 @@ export default {
                 } else console.log(response)
             })
     },
+    addImportedBackpack({commit}, backpack) {
+        commit('copy_and_set_dynamic_backpack', backpack)
+        commit('copy_and_set_static_backpack', backpack)
+        commit('add_backpack', backpack)
+    },
     deleteBackpack({commit, rootGetters}, backpack_id) {
         return apiFetch('backpacks/' + backpack_id, {
             method: 'DELETE'

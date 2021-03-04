@@ -15,18 +15,11 @@
             <font-awesome-icon class="fa-md" icon="plus"/>
             dodaj plecak
           </button>
-          <button class="import-backpack" type="button" @click="$refs.importModal.openModal()">
+          <button class="import-backpack" type="button" @click="$refs.lpImport.openModal()">
             <font-awesome-icon class="fa-md" icon="cloud-download-alt"/>
             importuj
           </button>
-          <modal ref="importModal">
-            <template v-slot:header>
-              <h2>importuj plecak z lighterpack.com</h2>
-            </template>
-            <template v-slot:body>
-              <p>tutaj importuj</p>
-            </template>
-          </modal>
+          <LpImport ref="lpImport"/>
         </div>
       </div>
       <div class="editor">
@@ -70,11 +63,11 @@ import AutoResizable from "@/components/AutoResizable";
 import MyGear from "@/components/inside/editor/MyGear";
 import {ref, computed, onMounted, onBeforeUnmount} from 'vue';
 import {useStore} from 'vuex';
-import Modal from "@/components/Modal";
+import LpImport from "@/components/inside/editor/LpImport";
 
 export default {
   name: "Editor",
-  components: {Modal, MyGear, AutoResizable, BaseApp, Summary, Category, draggable},
+  components: {LpImport, MyGear, AutoResizable, BaseApp, Summary, Category, draggable},
   setup() {
     const store = useStore()
 
@@ -127,9 +120,6 @@ export default {
       resizeAll()
     }
     const addBackpack = () => store.dispatch('editor/addBackpack')
-    const importBackpackClicked = () => {
-
-    }
     const deleteBackpack = () => {
       let confirmation = confirm('na pewno chcesz usunąć ten plecak?')
       if (confirmation) store.dispatch('editor/deleteBackpack', backpack_id.value)
@@ -182,7 +172,7 @@ export default {
       timeout_before_save, save_time_passed, max_backpack_name_length, max_backpack_description_length,
       backpack_name_input, backpack_description_input,
       backpack_id, backpacks, editor_data_ready, summary_data, dynamic_list, backpack_name, backpack_description,
-      setCategoryRef, addCategory, changeBackpack, addBackpack, deleteBackpack, importBackpackClicked
+      setCategoryRef, addCategory, changeBackpack, addBackpack, deleteBackpack
     }
   },
 }

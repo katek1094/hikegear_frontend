@@ -141,6 +141,7 @@ export default {
             })
     },
     changeBackpack({commit, getters}, index) {
+        console.log('change backpack')
         commit('copy_and_set_dynamic_backpack', getters['backpacks'][index])
         commit('copy_and_set_static_backpack', getters['backpacks'][index])
     },

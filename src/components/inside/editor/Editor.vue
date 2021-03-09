@@ -3,13 +3,18 @@
     <div v-if="editor_data_ready" class="wrapper">
       <div class="b_list_and_options">
         <div class="backpack__list">
-          <div class="backpack__list__item" v-for="(backpack, index) in backpacks" :key="backpack.id"
-               @click="changeBackpack(index)">
-            <span v-if="backpack.name !== ''" :class="{active: backpack.id === backpack_id}">{{ backpack.name }}</span>
-            <span v-if="backpack.name === ''" :class="{active: backpack.id === backpack_id}">bez nazwy</span>
-            <button v-if="backpack.id === backpack_id" class="backpack__delete" type="button" @click="deleteBackpack">
+          <div class="backpack__list__item" v-for="(backpack, index) in backpacks" :key="backpack.id">
+            <span v-if="backpack.name !== ''" :class="{active: backpack.id === backpack_id}"
+                  @click="changeBackpack(index)">{{ backpack.name }}</span>
+            <span v-if="backpack.name === ''" :class="{active: backpack.id === backpack_id}"
+                  @click="changeBackpack(index)">bez nazwy</span>
+            <button v-if="backpack.id === backpack_id" class="backpack__delete" type="button"
+                    @click="displayDeleteDialog">
               <font-awesome-icon class="fa-sm" icon="trash"/>
             </button>
+            <ConfirmationDialog ref="confirmation_dialog" @confirmed="deleteBackpack">
+              <template v-slot:header>na pewno chcesz usunąć ten plecak?</template>
+            </ConfirmationDialog>
           </div>
           <div class="backpack_buttons">
             <button class="add-backpack" type="button" @click="addBackpack">
@@ -71,10 +76,11 @@ import MyGear from "@/components/inside/editor/MyGear";
 import {ref, computed, onMounted, onBeforeUnmount} from 'vue';
 import {useStore} from 'vuex';
 import LpImport from "@/components/inside/editor/LpImport";
+import ConfirmationDialog from "@/components/ConfirmationDialog";
 
 export default {
   name: "Editor",
-  components: {LpImport, MyGear, AutoResizable, BaseApp, Summary, Category, draggable},
+  components: {ConfirmationDialog, LpImport, MyGear, AutoResizable, BaseApp, Summary, Category, draggable},
   setup() {
     const store = useStore()
 
@@ -89,6 +95,7 @@ export default {
     const categories_refs = ref([])  //array of template refs created with setCategoryRef()
     const backpack_name_input = ref(null)  //template ref
     const backpack_description_input = ref(null)  //template ref
+    const confirmation_dialog = ref(null) //template ref
 
     const backpack_id = computed(() => store.getters['editor/backpack_id'])
     const backpacks = computed(() => store.getters['editor/backpacks'])
@@ -127,10 +134,8 @@ export default {
       resizeAll()
     }
     const addBackpack = () => store.dispatch('editor/addBackpack')
-    const deleteBackpack = () => {
-      let confirmation = confirm('na pewno chcesz usunąć ten plecak?')
-      if (confirmation) store.dispatch('editor/deleteBackpack', backpack_id.value)
-    }
+    const deleteBackpack = () => store.dispatch('editor/deleteBackpack', backpack_id.value)
+    const displayDeleteDialog = () => confirmation_dialog.value.openModal()
     const resizeAll = () => {
       if (editor_data_ready.value) {
         for (const category_ref of categories_refs.value) category_ref.resizeAllItems()
@@ -177,9 +182,9 @@ export default {
 
     return {
       timeout_before_save, save_time_passed, max_backpack_name_length, max_backpack_description_length,
-      backpack_name_input, backpack_description_input,
+      backpack_name_input, backpack_description_input, confirmation_dialog,
       backpack_id, backpacks, editor_data_ready, summary_data, dynamic_list, backpack_name, backpack_description,
-      setCategoryRef, addCategory, changeBackpack, addBackpack, deleteBackpack
+      setCategoryRef, addCategory, changeBackpack, addBackpack, deleteBackpack, displayDeleteDialog
     }
   },
 }

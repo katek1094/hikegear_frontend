@@ -8,9 +8,12 @@
       <span class="category__quantity__label">ilość</span>
       <button :class="{deletable: !is_the_only_category, invisible: is_the_only_category}" class="category__delete"
               type="button"
-              @click="deleteCategory">
+              @click="displayDeleteDialog">
         <font-awesome-icon class="fa-sm" icon="trash"/>
       </button>
+      <ConfirmationDialog ref="confirmation_dialog" @confirmed="deleteCategory">
+        <template v-slot:header>na pewno chcesz usunąć tą kategorię?</template>
+      </ConfirmationDialog>
     </div>
     <draggable v-model="items" animation="700" class="items" :group="{name: 'items', pull: pullPolicy, put: ['items']}"
                item-key="id" handle=".item__handle" emptyInsertThreshold="50">
@@ -34,10 +37,11 @@ import draggable from 'vuedraggable'
 import Item from "@/components/inside/editor/Item";
 import {ref, computed, onBeforeUpdate} from 'vue';
 import {useStore} from 'vuex';
+import ConfirmationDialog from "@/components/ConfirmationDialog";
 
 export default {
   name: "Category",
-  components: {Item, draggable},
+  components: {ConfirmationDialog, Item, draggable},
   props: {
     category: Object,
   },
@@ -47,6 +51,7 @@ export default {
     const items_refs = ref([]) //array of template refs created with setItemRef()
     const max_name_length = 30
     const name_input = ref(null) //template ref
+    const confirmation_dialog = ref(null) //template ref
 
     const category_name = computed({
       get: () => props.category.name,
@@ -83,11 +88,10 @@ export default {
       const added_item = items_refs.value[items_refs.value.length - 1].$el
       window.scrollTo(0, added_item.scrollHeight + document.documentElement.scrollTop)
     }
-    const deleteCategory = () => {
-      if (items.value.length !== 0) {
-        const confirmation = confirm("na pewno chcesz usunąć tę kategorię?")
-        if (confirmation) store.dispatch('editor/deleteCategory', props.category.id)
-      } else store.dispatch('editor/deleteCategory', props.category.id)
+    const deleteCategory = () => store.dispatch('editor/deleteCategory', props.category.id)
+    const displayDeleteDialog = () => {
+      if (items.value.length !== 0) confirmation_dialog.value.openModal()
+      else deleteCategory()
     }
     const setItemRef = (el) => {
       if (el) items_refs.value.push(el)
@@ -104,9 +108,9 @@ export default {
     onBeforeUpdate(() => items_refs.value = [])
 
     return {
-      max_name_length, name_input,
+      max_name_length, name_input, confirmation_dialog,
       category_name, is_the_only_category, items, total_weight, total_quantity,
-      addItem, deleteCategory, setItemRef, resizeAllItems, pullPolicy, focusName
+      addItem, displayDeleteDialog, deleteCategory, setItemRef, resizeAllItems, pullPolicy, focusName
     }
   }
 }

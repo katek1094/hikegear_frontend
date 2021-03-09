@@ -12,21 +12,21 @@
             <option v-for="backpack in backpacks" :key="backpack.id" :value="backpack.id">{{ backpack.name }}</option>
           </select>
           <div v-if="selected_backpack_id !== ''" class="items_picker" ref="checks">
-            <p>zaznacz elementy i kategorie, które chcesz dodać</p>
+            <p class="info">zaznacz przedmioty i kategorie, które chcesz dodać</p>
             <div class="select_buttons">
               <button class="select_button" type="button" @click="checkEverything">zaznacz wszystko</button>
               <button class="select_button" type="button" @click="uncheckEverything">odznacz wszystko</button>
             </div>
             <div v-for="category in filtered_categories" :key="category.id" class="category">
               <div class="category_header">
-                <input :id="'category' + category.id" v-model="selected_categories" :value="category.id" type="checkbox"
-                       @click="handleCategoryClick(category.id)">
+                <input :id="'category' + category.id" v-model="selected_categories" :value="category.id"
+                       class="category_checkbox" type="checkbox" @click="handleCategoryClick(category.id)">
                 <span :for="'category' + category.id">{{ category.name }}</span>
               </div>
               <div class="items">
                 <div v-for="item in category.items" :key="item.id" class="item_div">
-                  <input :id="'item' + item.id" v-model="selected_items" :value="item.id" type="checkbox"
-                         @click="handleItemClick(category.id, item.id)">
+                  <input :id="'item' + item.id" v-model="selected_items" :value="item.id" class="item_checkbox"
+                         type="checkbox" @click="handleItemClick(category.id, item.id)">
                   <span :for="'item' + item.id" class="item_data">
                   <span>{{ item.name }}</span><span>{{ item.description }}</span><span>{{ item.weight }}</span>
                 </span>
@@ -34,11 +34,13 @@
               </div>
             </div>
           </div>
-          <div v-if="selected_items.length !== 0">
-            <p>{{ summary_text }}</p>
-            <button @click="addToMyGear">dodaj</button>
-          </div>
         </div>
+      </div>
+    </template>
+    <template v-slot:footer>
+      <div class="footer" v-if="selected_items.length !== 0">
+        <p class="info">{{ summary_text }}</p>
+        <button class="submit" @click="addToMyGear">dodaj</button>
       </div>
     </template>
   </modal>
@@ -70,11 +72,13 @@ export default {
     summary_text() {
       let items, will, add
       const len = this.selected_items.length
+      const str_len = len.toString()
       if (len === 1) {
         items = 'przedmiot'
         will = 'zostanie'
         add = 'dodany'
-      } else if (len > 1 && len < 5) {
+        // } else if (len > 1 && len < 5) {
+      } else if ((len > 20 || len < 5) && (str_len.slice(-1) === '2' || str_len.slice(-1) === '3' || str_len.slice(-1) === '4')) {
         items = 'przedmioty'
         will = 'zostaną'
         add = 'dodane'
@@ -198,13 +202,16 @@ export default {
       }
       this.$store.dispatch('my_gear/changeMyGear', this.$store.getters['my_gear/dynamic_list'].concat(new_my_categories))
       this.$store.dispatch('my_gear/updateMyGear')
+      this.$refs.modal.closeModal()
     }
   }
 }
 </script>
 
 <style scoped lang="scss">
-
+.info {
+  font-size: 1rem;
+}
 
 .select_backpack {
   outline: none;
@@ -224,8 +231,8 @@ export default {
 
 .select_button {
   @include form-submit;
-  font-size: .8rem;
-  padding: 4px;
+  font-size: .9rem;
+  padding: 5px;
 }
 
 .items_picker {
@@ -244,6 +251,11 @@ export default {
 
 .items {
 
+}
+
+.category_checkbox, .item_checkbox {
+  height: 18px;
+  width: 18px;
 }
 
 .item_div {
@@ -265,5 +277,16 @@ export default {
   align-items: center;
 }
 
+.footer {
+  display: flex;
+  justify-items: center;
+  justify-content: space-evenly;
+}
+
+.submit {
+  @include form-submit;
+  font-size: 1rem;
+  padding: 7px;
+}
 
 </style>

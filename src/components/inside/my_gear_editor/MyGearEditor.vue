@@ -1,7 +1,7 @@
 <template>
   <BaseApp>
     <div class="my-gear_editor">
-      <button type="button" class="import__gear" @click="$refs.importGear.openModal">dodaj sprzęt z list sprzętu
+      <button type="button" class="import__gear" @click="$refs.importGear.openModal">dodaj sprzęt z plecaka
       </button>
       <ImportToMyGear ref="importGear"/>
       <div class="progress" :style="{width: save_time_passed * 100 / timeout_before_save + '%' }"></div>

@@ -1,7 +1,8 @@
 <template>
   <BaseApp>
     <div class="my-gear_editor">
-      <button type="button" class="import__gear" @click="$refs.importGear.openModal">dodaj sprzęt</button>
+      <button type="button" class="import__gear" @click="$refs.importGear.openModal">dodaj sprzęt z list sprzętu
+      </button>
       <ImportToMyGear ref="importGear"/>
       <div class="progress" :style="{width: save_time_passed * 100 / timeout_before_save + '%' }"></div>
       <draggable v-model="categories" animation="1000" class="my_categories" group="categories"
@@ -45,13 +46,13 @@ export default {
 
     const categories = computed({
       get: () => store.getters['my_gear/dynamic_list'],
-      set: (val) => store.dispatch('my_gear/moveCategory', val)
+      set: (val) => store.dispatch('my_gear/changeMyGear', val)
     })
     const setCategoryRef = (el) => {
       if (el) categories_refs.value.push(el)
     }
     const addCategory = async () => {
-      await store.dispatch('my_gear/addCategory')
+      await store.dispatch('my_gear/addNewCategory')
       categories_refs.value[categories_refs.value.length - 1].focusName()
       window.scrollTo(0, document.body.scrollHeight)
     }
@@ -117,6 +118,12 @@ export default {
 .progress {
   height: 1px;
   background-color: grey;
+}
+
+.import__gear {
+  @include form-submit;
+  font-size: .9rem;
+  padding: 6px;
 }
 
 .my-gear_editor {

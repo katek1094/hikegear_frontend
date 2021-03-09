@@ -46,30 +46,26 @@ export default {
         },
     },
     actions: {
-        changeMyGear({commit}, new_data) {
-            commit('set_dynamic', new_data)
-        },
-        moveCategory({commit}, new_list) {
+        changeMyGear({commit}, new_list) {
             commit('set_dynamic', new_list)
         },
         moveItem({commit}, payload) {
             commit('set_dynamic_category_items', payload)
         },
-        addCategory({commit, getters}) {
+        addNewCategory({commit, getters}) {
             commit('push_to_dynamic', {
                 id: getters['new_category_id'],
                 name: '',
                 items: []
             })
         },
-        addItem({commit, getters}, category_id) {
+        addNewItem({commit, getters}, category_id) {
             const new_item = {
                 id: getters['new_item_id'],
                 name: '',
                 description: '',
                 weight: 0,
             }
-            console.log()
             commit('add_item_to_dynamic_category', {category_id, new_item})
         },
         deleteCategory({commit, getters}, category_id) {
@@ -104,7 +100,11 @@ export default {
                         })
                     } else console.log(response)
                 })
-        }
+        },
+        addCategory({commit}, category) {
+            commit('push_to_dynamic', category)
+        },
+
     },
     getters: {
         dynamic_list(state) {

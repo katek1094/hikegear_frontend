@@ -59,7 +59,7 @@ export default {
       })
     })
     const addItem = async () => {
-      await store.dispatch('my_gear/addItem', props.category.id)
+      await store.dispatch('my_gear/addNewItem', props.category.id)
       items_refs.value[items_refs.value.length - 1].focusName()
       const added_item = items_refs.value[items_refs.value.length - 1].$el
       window.scrollTo(0, added_item.scrollHeight + document.documentElement.scrollTop)

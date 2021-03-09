@@ -112,7 +112,7 @@ nav {
 }
 
 .navbar--active {
-  height: $nav_height * 6 + 4px;
+  height: $nav_height * 4 + 4px;
   line-height: initial;
 }
 

@@ -7,30 +7,40 @@
       <div class="outer_div">
         <div class="inner_div">
           <label for="plecak">wybierz plecak, z którego chcesz importować sprzęt: </label>
-          <select id="plecak" v-model="selected_backpack_id">
+          <select id="plecak" v-model="selected_backpack_id" class="select_backpack">
             <option disabled hidden selected value=""></option>
             <option v-for="backpack in backpacks" :key="backpack.id" :value="backpack.id">{{ backpack.name }}</option>
           </select>
           <div v-if="selected_backpack_id !== ''" class="items_picker" ref="checks">
-            <button class="select_button" type="button" @click="checkEverything">zaznacz wszystko</button>
-            <button class="select_button" type="button" @click="uncheckEverything">odznacz wszystko</button>
-            <div v-for="category in backpack_list" :key="category.id" class="category_div">
-              <input :id="'category' + category.id" v-model="selected_categories" :value="category.id" type="checkbox"
-                     @click="handleCategoryClick(category.id)">
-              <label :for="'category' + category.id">{{ category.name }}</label>
-              <div v-for="item in category.items" :key="item.id" class="item_div">
-                <input :id="'item' + item.id" v-model="selected_items" :value="item.id" type="checkbox"
-                       @click="handleItemClick(category.id, item.id)">
-                <label :for="'item' + item.id" class="item_label">
+            <p>zaznacz elementy i kategorie, które chcesz dodać</p>
+            <div class="select_buttons">
+              <button class="select_button" type="button" @click="checkEverything">zaznacz wszystko</button>
+              <button class="select_button" type="button" @click="uncheckEverything">odznacz wszystko</button>
+            </div>
+            <div v-for="category in filtered_categories" :key="category.id" class="category">
+              <div class="category_header">
+                <input :id="'category' + category.id" v-model="selected_categories" :value="category.id" type="checkbox"
+                       @click="handleCategoryClick(category.id)">
+                <span :for="'category' + category.id">{{ category.name }}</span>
+              </div>
+              <div class="items">
+                <div v-for="item in category.items" :key="item.id" class="item_div">
+                  <input :id="'item' + item.id" v-model="selected_items" :value="item.id" type="checkbox"
+                         @click="handleItemClick(category.id, item.id)">
+                  <span :for="'item' + item.id" class="item_data">
                   <span>{{ item.name }}</span><span>{{ item.description }}</span><span>{{ item.weight }}</span>
-                </label>
+                </span>
+                </div>
               </div>
             </div>
+          </div>
+          <div v-if="selected_items.length !== 0">
+            <p>{{ summary_text }}</p>
+            <button @click="addToMyGear">dodaj</button>
           </div>
         </div>
       </div>
     </template>
-
   </modal>
 </template>
 
@@ -54,6 +64,27 @@ export default {
     backpack_list() {
       return this.backpacks.find(backpack => backpack.id === this.selected_backpack_id).list
     },
+    filtered_categories() {
+      return this.backpack_list.filter(category => category.items.length !== 0)
+    },
+    summary_text() {
+      let items, will, add
+      const len = this.selected_items.length
+      if (len === 1) {
+        items = 'przedmiot'
+        will = 'zostanie'
+        add = 'dodany'
+      } else if (len > 1 && len < 5) {
+        items = 'przedmioty'
+        will = 'zostaną'
+        add = 'dodane'
+      } else if (len > 4) {
+        items = 'przedmiotów'
+        will = 'zostanie'
+        add = 'dodanych'
+      }
+      return len + ' ' + items + " " + will + " " + add + " do twojego sprzętu"
+    }
   },
   methods: {
     openModal() {
@@ -65,10 +96,7 @@ export default {
       this.selected_items = []
     },
     handleCategoryClick(category_id) {
-      // if (this.selected_items === []) this.$forceUpdate()
-      if (this.selected_items === []) console.log('xd')
-      // this.$forceUpdate()
-      console.log(this.selected_items)
+      if (this.selected_items.length === 0) this.$forceUpdate()
       const items = this.backpack_list.find(category => category.id === category_id).items
       if (this.selected_categories.includes(category_id)) {
         for (const item of items) {
@@ -102,28 +130,140 @@ export default {
       this.selected_categories = []
       this.selected_items = []
     },
+    new_category_id(categories_ids) {
+      for (const integer of [...Array(1000).keys()]) {
+        if (!categories_ids.includes(integer)) return integer
+      }
+    },
+    new_item_id(items_ids) {
+      for (const integer of [...Array(3000).keys()]) {
+        if (!items_ids.includes(integer)) return integer
+      }
+    },
+    addToMyGear() {
+      // checked categories are added as separate categories
+      // checked items in not checked categories are added all together in new category 'imported from $backpack_name'
+      let new_my_categories = []
+      let selected_items_ids = this.selected_items
+      let category_ids = []
+      let items_ids = []
+      for (const cat of this.backpack_list) {
+        category_ids.push(cat.id)
+        for (const item of cat.items) items_ids.push(item.id)
+      }
+      for (const category_id of this.selected_categories) {
+        const category_data = this.backpack_list.find(cat => cat.id === category_id)
+        if (category_data.items.length !== 0) {
+          let my_category = {
+            id: this.new_category_id(category_ids),
+            name: category_data.name,
+            items: []
+          }
+          category_ids.push(my_category.id)
+          for (const item of category_data.items) {
+            my_category.items.push({
+              id: this.new_item_id(items_ids),
+              name: item.name,
+              weight: item.weight,
+              description: item.description
+            })
+            items_ids.push(my_category.items[my_category.items.length - 1].id)
+            selected_items_ids.splice(selected_items_ids.findIndex(item_id => item.id === item_id), 1)
+          }
+          new_my_categories.push(my_category)
+        }
+      }
+      if (selected_items_ids.length !== 0) {
+        let new_category = {
+          id: this.new_category_id(category_ids),
+          name: 'imported from ' + this.backpacks.find(backpack => backpack.id === this.selected_backpack_id).name,
+          items: []
+        }
+        category_ids.push(new_category.id)
+        let all_items_data = []
+        for (const cat of this.backpack_list) {
+          all_items_data = all_items_data.concat(cat.items)
+        }
+        for (const item_id of selected_items_ids) {
+          const item_data = all_items_data.find(item => item.id === item_id)
+          new_category.items.push({
+            id: this.new_item_id(items_ids),
+            name: item_data.name,
+            weight: item_data.weight,
+            description: item_data.description
+          })
+          items_ids.push(new_category.items[new_category.items.length - 1].id)
+        }
+        new_my_categories.push(new_category)
+      }
+      this.$store.dispatch('my_gear/changeMyGear', this.$store.getters['my_gear/dynamic_list'].concat(new_my_categories))
+      this.$store.dispatch('my_gear/updateMyGear')
+    }
   }
 }
 </script>
 
 <style scoped lang="scss">
+
+
+.select_backpack {
+  outline: none;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 1rem;
+  padding: 1px;
+  margin: 4px 0;
+}
+
+.select_buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  padding: 4px 8px;
+}
+
+.select_button {
+  @include form-submit;
+  font-size: .8rem;
+  padding: 4px;
+}
+
 .items_picker {
   font-size: .9rem;
 }
 
-.category_div {
+.category {
   //margin-left: 10px;
 }
 
-.item_div {
-  margin-left: 30px;
+.category_header {
   display: flex;
+  align-items: center;
+  font-size: 1rem;
 }
 
-.item_label {
+.items {
+
+}
+
+.item_div {
+  //margin-left: 20px;
+  display: flex;
+  align-items: center;
+  margin: 5px 0 5px 20px;
+
+  &:not(:last-child) {
+    border-bottom: 1px dotted grey;
+  }
+}
+
+.item_data {
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr 4rem;
   column-gap: 8px;
+  align-items: center;
 }
+
+
 </style>

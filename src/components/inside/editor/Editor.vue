@@ -24,7 +24,10 @@
           </div>
         </div>
         <div class="options">
-          <router-link class="backpack__link" :to="{ name: 'backpack', params: { id: backpack_id }}">link do plecaka</router-link>
+          <router-link class="backpack__link" :to="{ name: 'backpack', params: { id: backpack_id }}">
+            <font-awesome-icon class="fa-md" icon="share"/>
+            link do plecaka
+          </router-link>
         </div>
       </div>
       <div class="editor">

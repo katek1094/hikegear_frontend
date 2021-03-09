@@ -1,6 +1,8 @@
 <template>
   <BaseApp>
     <div class="my-gear_editor">
+      <button type="button" class="import__gear" @click="$refs.importGear.openModal">dodaj sprzęt</button>
+      <ImportToMyGear ref="importGear"/>
       <div class="progress" :style="{width: save_time_passed * 100 / timeout_before_save + '%' }"></div>
       <draggable v-model="categories" animation="1000" class="my_categories" group="categories"
                  handle=".my_category__handle" item-key="id">
@@ -22,10 +24,11 @@ import draggable from 'vuedraggable'
 import MyCategory from "@/components/inside/my_gear_editor/MyCategory";
 import {useStore} from 'vuex'
 import {computed, onBeforeUnmount, onMounted, ref} from "vue";
+import ImportToMyGear from "@/components/inside/my_gear_editor/ImportToMyGear";
 
 export default {
   name: "MyGearEditor",
-  components: {MyCategory, BaseApp, draggable},
+  components: {ImportToMyGear, MyCategory, BaseApp, draggable},
   setup() {
     const store = useStore()
 

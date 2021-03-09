@@ -11,7 +11,7 @@
         <td>{{ data }}</td>
       </tr>
       <tr>
-        <td>total</td>
+        <td>waga całkowita</td>
         <td>{{ summary_data.total_weight }} g</td>
       </tr>
       <tr>

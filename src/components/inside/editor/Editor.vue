@@ -16,7 +16,7 @@
               <font-awesome-icon class="fa-md" icon="plus"/>
               dodaj plecak
             </button>
-            <button class="import-backpack" type="button" @click="$refs.lpImport.openModal()">
+            <button class="import-backpack" type="button" @click="$refs.lpImport.openModal">
               <font-awesome-icon class="fa-md" icon="cloud-download-alt"/>
               importuj
             </button>

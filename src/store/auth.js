@@ -9,7 +9,7 @@ export default {
     },
     mutations: {
         set_logged_in(state, bool) {
-            if (state.logged_in !== bool) state.logged_in = bool
+            state.logged_in = bool
         },
     },
     getters: {

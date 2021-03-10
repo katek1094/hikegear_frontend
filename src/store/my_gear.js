@@ -83,7 +83,6 @@ export default {
         },
         changeItemProperty({commit}, payload) {
             // payload = category_id, id, property, new_value
-            console.log(payload)
             commit('set_item_property', payload)
         },
         updateMyGear({commit, rootGetters}) {
@@ -94,9 +93,10 @@ export default {
             })
                 .then(response => {
                     if (response.ok) {
-                        response.json().then(data => {
+                        return response.json().then(data => {
                             commit('copy_and_set_static', data['private_gear'])
                             commit('copy_and_set_dynamic', data['private_gear'])
+                            return 'success'
                         })
                     } else console.log(response)
                 })

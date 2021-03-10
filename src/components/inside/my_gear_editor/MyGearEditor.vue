@@ -4,7 +4,7 @@
       <button type="button" class="import__gear" @click="$refs.importGear.openModal">dodaj sprzęt z plecaka
       </button>
       <ImportToMyGear ref="importGear"/>
-      <div class="progress" :style="{width: save_time_passed * 100 / timeout_before_save + '%' }"></div>
+      <SaveProgress :data_ready="editor_data_ready" :are_changes="are_changes" ref="save_progress" @save="save"/>
       <draggable v-model="categories" animation="1000" class="my_categories" group="categories"
                  handle=".my_category__handle" item-key="id">
         <template #item="{element}">
@@ -26,20 +26,19 @@ import MyCategory from "@/components/inside/my_gear_editor/MyCategory";
 import {useStore} from 'vuex'
 import {computed, onBeforeUnmount, onMounted, ref} from "vue";
 import ImportToMyGear from "@/components/inside/my_gear_editor/ImportToMyGear";
+import SaveProgress from "@/components/inside/SaveProgress";
 
 export default {
   name: "MyGearEditor",
-  components: {ImportToMyGear, MyCategory, BaseApp, draggable},
+  components: {SaveProgress, ImportToMyGear, MyCategory, BaseApp, draggable},
   setup() {
     const store = useStore()
 
-    const edits_counter = ref(0) //every time some data in editor is changed, it increments, in handleDataChange()
-    const timeout_before_save = ref(3000) //time between last change and saving data to the server
-    const save_time_passed = ref(0) //how many time passed since last edit, edited in increaseSaveTimePassed()
     const resizes_counter = ref(0) //every time window is resized, it increments, in handleWindowResize()
-    const timer_function_id = ref(null) //id of interval settled in onMounted, cleared in onBeforeUnmount
 
     const categories_refs = ref([])  //array of template refs created with setCategoryRef()
+    // TODO: add confirmation dialog like in editor
+    const save_progress = ref(null) //template ref
 
     const editor_data_ready = computed(() => store.getters['my_gear/is_my_gear_data_ready'])
     const are_changes = computed(() => store.getters['my_gear/are_any_changes'])
@@ -58,9 +57,11 @@ export default {
     }
     const save = async () => {
       if (are_changes.value) {
-        edits_counter.value = 0
         await store.dispatch('my_gear/updateMyGear')
-        resizeAll()
+            .then(status => {
+              if (status === 'success') save_progress.value.handleSaveSuccess()
+            })
+        resizeAll() //TODO: is this necessary?
       }
     }
     const resizeAll = () => {
@@ -83,32 +84,21 @@ export default {
     }
     const handleDataChange = () => {
       categories_refs.value = []
-      save_time_passed.value = 0
-      edits_counter.value += 1
-      const x = edits_counter.value
-      setTimeout(() => {
-        if (x === edits_counter.value) save()
-      }, timeout_before_save.value)
-    }
-    const increaseSaveTimePassed = () => {
-      if (editor_data_ready.value && are_changes.value) save_time_passed.value += 10
+      save_progress.value.handleEdit(are_changes.value)
     }
     onMounted(() => {
       window.addEventListener('keydown', handleCtrlS);
       window.addEventListener("resize", handleWindowResize);
       store.watch((state) => state.my_gear.dynamic, handleDataChange, {deep: true});
-      timer_function_id.value = setInterval(increaseSaveTimePassed, 10)
     })
     onBeforeUnmount(() => {
       window.removeEventListener("resize", handleWindowResize);
       window.removeEventListener("keydown", handleCtrlS);
-      clearInterval(timer_function_id.value)
     })
 
     return {
-      timeout_before_save, save_time_passed,
-      editor_data_ready, categories,
-      setCategoryRef, addCategory
+      editor_data_ready, categories, save_progress, are_changes,
+      setCategoryRef, addCategory, save
     }
   }
 }

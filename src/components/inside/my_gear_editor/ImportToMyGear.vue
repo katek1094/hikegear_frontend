@@ -279,7 +279,7 @@ export default {
 
 .footer {
   display: flex;
-  justify-items: center;
+  align-items: center;
   justify-content: space-evenly;
 }
 

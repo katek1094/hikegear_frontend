@@ -69,8 +69,9 @@ export default {
         })
             .then(response => {
                 if (response.ok) {
-                    response.json().then(data => {
+                    return response.json().then(data => {
                         commit('update_backpack', {data: data, id: payload.id})
+                        return 'success'
                     })
                 } else console.log(response)
             })
@@ -141,7 +142,6 @@ export default {
             })
     },
     changeBackpack({commit, getters}, index) {
-        console.log('change backpack')
         commit('copy_and_set_dynamic_backpack', getters['backpacks'][index])
         commit('copy_and_set_static_backpack', getters['backpacks'][index])
     },

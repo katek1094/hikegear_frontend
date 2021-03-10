@@ -33,6 +33,7 @@
             <font-awesome-icon class="fa-md" icon="share"/>
             link do plecaka
           </router-link>
+          <SaveProgress :data_ready="editor_data_ready" :are_changes="are_changes" ref="save_progress" @save="save"/>
         </div>
       </div>
       <div class="editor">
@@ -42,7 +43,6 @@
         <AutoResizable ref="backpack_description_input" v-model.trim="backpack_description"
                        :maxlength="max_backpack_description_length" class="backpack__description"
                        placeholder="opis plecaka"/>
-        <div class="progress" :style="{width: save_time_passed * 100 / timeout_before_save + '%' }"></div>
         <draggable v-model="dynamic_list" animation="1000" class="categories" group="categories"
                    handle=".category__handle" item-key="id">
           <template #item="{element}">
@@ -77,25 +77,33 @@ import {ref, computed, onMounted, onBeforeUnmount} from 'vue';
 import {useStore} from 'vuex';
 import LpImport from "@/components/inside/editor/LpImport";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
+import SaveProgress from "@/components/inside/SaveProgress";
 
 export default {
   name: "Editor",
-  components: {ConfirmationDialog, LpImport, MyGear, AutoResizable, BaseApp, Summary, Category, draggable},
+  components: {
+    SaveProgress,
+    ConfirmationDialog,
+    LpImport,
+    MyGear,
+    AutoResizable,
+    BaseApp,
+    Summary,
+    Category,
+    draggable
+  },
   setup() {
     const store = useStore()
 
-    const edits_counter = ref(0) //every time some data in editor is changed, it increments, in handleDataChange()
-    const timeout_before_save = ref(3000) //time between last change and saving data to the server
-    const save_time_passed = ref(0) //how many time passed since last edit, edited in increaseSaveTimePassed()
     const resizes_counter = ref(0) //every time window is resized, it increments, in handleWindowResize()
     const max_backpack_name_length = ref(60)
     const max_backpack_description_length = ref(1000)
-    const timer_function_id = ref(null) //id of interval settled in onMounted, cleared in onBeforeUnmount
 
     const categories_refs = ref([])  //array of template refs created with setCategoryRef()
     const backpack_name_input = ref(null)  //template ref
     const backpack_description_input = ref(null)  //template ref
     const confirmation_dialog = ref(null) //template ref
+    const save_progress = ref(null) //template ref
 
     const backpack_id = computed(() => store.getters['editor/backpack_id'])
     const backpacks = computed(() => store.getters['editor/backpacks'])
@@ -124,8 +132,10 @@ export default {
     }
     const save = async (update_dynamic = true) => {
       if (are_changes.value) {
-        edits_counter.value = 0
         await store.dispatch('editor/updateBackpack', {id: backpack_id.value, update_dynamic: update_dynamic})
+            .then(status => {
+              if (status === 'success') save_progress.value.handleSaveSuccess()
+            })
       }
     }
     const changeBackpack = async (index) => {
@@ -153,38 +163,30 @@ export default {
     const handleCtrlS = (e) => {
       if (e.key === 's' && e.ctrlKey === true) {
         e.preventDefault()
+        save_progress.value.handleCtrlS()
         save()
       }
     }
     const handleDataChange = () => {
       categories_refs.value = []
-      save_time_passed.value = 0
-      edits_counter.value += 1
-      const x = edits_counter.value
-      setTimeout(() => {
-        if (x === edits_counter.value) save()
-      }, timeout_before_save.value)
-    }
-    const increaseSaveTimePassed = () => {
-      if (editor_data_ready.value && are_changes.value) save_time_passed.value += 10
+      save_progress.value.handleEdit(are_changes.value)
     }
     onMounted(() => {
       window.addEventListener('keydown', handleCtrlS);
       window.addEventListener("resize", handleWindowResize);
       store.watch((state) => state.editor.dynamic, handleDataChange, {deep: true});
-      timer_function_id.value = setInterval(increaseSaveTimePassed, 10)
     })
     onBeforeUnmount(() => {
       window.removeEventListener("resize", handleWindowResize);
       window.removeEventListener("keydown", handleCtrlS);
-      clearInterval(timer_function_id.value)
     })
 
     return {
-      timeout_before_save, save_time_passed, max_backpack_name_length, max_backpack_description_length,
-      backpack_name_input, backpack_description_input, confirmation_dialog,
+      max_backpack_name_length, max_backpack_description_length,
+      backpack_name_input, backpack_description_input, confirmation_dialog, save_progress,
       backpack_id, backpacks, editor_data_ready, summary_data, dynamic_list, backpack_name, backpack_description,
-      setCategoryRef, addCategory, changeBackpack, addBackpack, deleteBackpack, displayDeleteDialog
+      are_changes,
+      setCategoryRef, addCategory, changeBackpack, addBackpack, deleteBackpack, displayDeleteDialog, save
     }
   },
 }
@@ -202,9 +204,13 @@ export default {
     justify-items: center;
     padding: 0 $grid_wrapper_padding;
     column-gap: $grid_gap;
+    align-items: start;
   }
   .b_list_and_options {
     grid-column: 1;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 5vh;
   }
 }
 

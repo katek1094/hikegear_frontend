@@ -1,10 +1,11 @@
 <template>
   <BaseApp>
     <div class="my-gear_editor">
-      <button type="button" class="import__gear" @click="$refs.importGear.openModal">dodaj sprzęt z plecaka
-      </button>
-      <ImportToMyGear ref="importGear"/>
-      <SaveProgress :data_ready="editor_data_ready" :are_changes="are_changes" ref="save_progress" @save="save"/>
+      <div class="options">
+        <button type="button" class="import__gear" @click="$refs.importGear.openModal">dodaj sprzęt z plecaka</button>
+        <ImportToMyGear ref="importGear"/>
+        <SaveProgress :data_ready="editor_data_ready" :are_changes="are_changes" ref="save_progress" @save="save"/>
+      </div>
       <draggable v-model="categories" animation="1000" class="my_categories" group="categories"
                  handle=".my_category__handle" item-key="id">
         <template #item="{element}">
@@ -120,6 +121,12 @@ export default {
   padding-bottom: 30px;
   @include flex-column-center;
   max-width: 100vw;
+}
+
+.options {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
 }
 
 .add-category, ::v-deep(.add-item) {

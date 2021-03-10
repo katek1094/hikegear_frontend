@@ -4,7 +4,10 @@
       <div class="bar" :style="{width: progress_bar_width + '%'}"></div>
     </div>
     <div v-show="display_spinner" class="spinner"></div>
-    <span v-show="display_info" class="info">zmiany zapisane</span>
+    <span v-show="display_info" class="info">
+      <font-awesome-icon class="fa-sm check_icon" icon="check-circle"/>
+      zmiany zapisane
+    </span>
   </div>
 </template>
 
@@ -23,7 +26,8 @@ export default {
       edits_counter: 0,
       interval_function_id: undefined,
       data_saved: true,
-      display_spinner: false
+      display_spinner: false,
+      saves_counter: 0
     }
   },
   computed: {
@@ -34,7 +38,7 @@ export default {
       return !this.data_saved
     },
     display_info() {
-      return this.data_saved && !this.display_spinner
+      return this.data_saved && !this.display_spinner && this.saves_counter !== 0
     }
   },
   methods: {
@@ -56,11 +60,11 @@ export default {
     handleSaveSuccess() {
       this.data_saved = true
       this.display_spinner = false
+      this.saves_counter += 1
     },
     handleCtrlS() {
       this.display_spinner = true
     }
-
   },
   mounted() {
     this.interval_function_id = setInterval(this.increaseTimePassed, this.refresh_time)
@@ -95,7 +99,7 @@ export default {
 }
 
 .bar {
-  background-color: $windows_color;
+  background-color: $nav_color;
 }
 
 .spinner {
@@ -103,9 +107,13 @@ export default {
   @include spinner;
 }
 
+.check_icon {
+  color: green;
+}
+
 .info {
   width: 100%;
-  font-size: .8rem;
+  font-size: .9rem;
   text-align: center;
 }
 </style>

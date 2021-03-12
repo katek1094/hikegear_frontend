@@ -37,14 +37,14 @@
 </template>
 
 <script>
-import {apiFetch, summarize_elements_list} from "@/functions";
+import {apiFetch, summarize_elements_list, hashids} from "@/functions";
 import Summary from "@/components/inside/editor/Summary";
 
 export default {
   name: "Backpack",
   components: {Summary},
   props: {
-    id: String
+    hash: String
   },
   data() {
     return {
@@ -69,7 +69,8 @@ export default {
     }
   },
   beforeCreate() {
-    apiFetch('backpacks/' + this.id + '/', {
+    const id = hashids.decode(this.hash)
+    apiFetch('backpacks/' + id + '/', {
       method: 'GET',
     })
         .then(response => {

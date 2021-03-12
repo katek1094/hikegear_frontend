@@ -36,3 +36,6 @@ export function summarize_elements_list(categories) {
     results.base_weight = results.total_weight - results.consumable_weight - results.worn_weight
     return results
 }
+
+const Hashids = require("hashids")
+export const hashids = new Hashids.default('hikegear salt', 6)

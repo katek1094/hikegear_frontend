@@ -1,12 +1,12 @@
 <template>
   <modal ref="modal" @close-modal="reset" :hide_on_outside_click="false">
     <template v-slot:header>
-      <h2 class="header">dodaj sprzęt</h2>
+      <h2 class="header">dodaj przedmioty do mojego sprzętu</h2>
     </template>
     <template v-slot:body>
       <div class="outer_div">
         <div class="inner_div">
-          <label for="plecak">wybierz plecak, z którego chcesz importować sprzęt: </label>
+          <label for="plecak">wybierz plecak, z którego chcesz dodać sprzęt: </label>
           <select id="plecak" v-model="selected_backpack_id" class="select_backpack">
             <option disabled hidden selected value=""></option>
             <option v-for="backpack in backpacks" :key="backpack.id" :value="backpack.id">{{ backpack.name }}</option>

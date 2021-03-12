@@ -1,28 +1,31 @@
 <template>
   <transition name="fade">
-    <div class="modal" v-if="show">
-      <div class="modal__backdrop" @click="closeModal"/>
-      <div class="modal__dialog">
-        <div class="modal__header">
-          <slot name="header"/>
-          <button type="button" class="modal__close" @click="closeModal">
-            <font-awesome-icon class="fa-md" icon="times"/>
-          </button>
-        </div>
-        <div class="modal__body">
-          <slot name="body"/>
-        </div>
-        <div class="modal__footer">
-          <slot name="footer"/>
+    <teleport to="body">
+      <div class="modal" v-if="show">
+        <div class="modal__backdrop" @click="closeModal"/>
+        <div class="modal__dialog">
+          <div class="modal__header">
+            <slot name="header"/>
+            <button type="button" class="modal__close" @click="closeModal">
+              <font-awesome-icon class="fa-md" icon="times"/>
+            </button>
+          </div>
+          <div class="modal__body">
+            <slot name="body"/>
+          </div>
+          <div class="modal__footer">
+            <slot name="footer"/>
+          </div>
         </div>
       </div>
-    </div>
+    </teleport>
   </transition>
 </template>
 
 <script>
 export default {
   name: "Modal",
+  emits: ['open-modal', 'close-modal'],
   props: {hide_on_outside_click: {type: Boolean, default: true}},
   data() {
     return {
@@ -63,7 +66,7 @@ export default {
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: 1;
+    z-index: 6;
   }
 
   &__dialog {
@@ -74,8 +77,8 @@ export default {
     display: flex;
     flex-direction: column;
     border-radius: 5px;
-    z-index: 2;
-    @media screen and (max-width: 992px) {
+    z-index: 7;
+    @media (max-width: 630px) {
       width: 90%;
     }
   }

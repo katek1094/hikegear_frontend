@@ -28,15 +28,16 @@
             <LpImport ref="lpImport"/>
           </div>
         </div>
+      </div>
+      <div class="editor">
         <div class="options">
-          <router-link class="backpack__link" :to="{ name: 'backpack', params: { id: backpack_id }}">
+          <!--          <router-link class="backpack__link" :to="{ name: 'backpack', params: { id: backpack_id }}">-->
+          <router-link class="backpack__link" :to="{ name: 'backpack', params: { hash: backpack_hash }}">
             <font-awesome-icon class="fa-md" icon="share"/>
             link do plecaka
           </router-link>
           <SaveProgress :data_ready="editor_data_ready" :are_changes="are_changes" ref="save_progress" @save="save"/>
         </div>
-      </div>
-      <div class="editor">
         <AutoResizable ref="backpack_name_input" v-model.trim="backpack_name" :maxlength="max_backpack_name_length"
                        :prevent-enter="true" class="backpack__name" placeholder="nazwa plecaka"/>
         <Summary :summary_data="summary_data"/>
@@ -78,6 +79,7 @@ import {useStore} from 'vuex';
 import LpImport from "@/components/inside/editor/LpImport";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import SaveProgress from "@/components/inside/SaveProgress";
+import {hashids} from "@/functions";
 
 export default {
   name: "Editor",
@@ -122,6 +124,7 @@ export default {
       get: () => store.getters['editor/backpack_description'],
       set: (val) => store.dispatch('editor/changeBackpackDescription', val)
     })
+    const backpack_hash = computed(() => hashids.encode(backpack_id.value))
     const setCategoryRef = (el) => {
       if (el) categories_refs.value.push(el)
     }
@@ -185,7 +188,7 @@ export default {
       max_backpack_name_length, max_backpack_description_length,
       backpack_name_input, backpack_description_input, confirmation_dialog, save_progress,
       backpack_id, backpacks, editor_data_ready, summary_data, dynamic_list, backpack_name, backpack_description,
-      are_changes,
+      are_changes, backpack_hash,
       setCategoryRef, addCategory, changeBackpack, addBackpack, deleteBackpack, displayDeleteDialog, save
     }
   },
@@ -305,7 +308,8 @@ export default {
 
 .options {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
+  width: 100%;
 }
 
 @media (hover: hover) and (pointer: fine) {

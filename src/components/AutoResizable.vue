@@ -12,6 +12,7 @@
 <script>
 export default {
   name: "AutoResizable",
+  emits: ['update:modelValue'],
   props: {
     placeholder: String,
     maxlength: Number,

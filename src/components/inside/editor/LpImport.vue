@@ -1,5 +1,5 @@
 <template>
-  <modal ref="modal" @close-modal="reset" :hide_on_outside_click="false">
+  <modal ref="modal" @close-modal="reset">
     <template v-slot:header>
       <h2 class="header">importuj plecak z lighterpack.com</h2>
     </template>

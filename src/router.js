@@ -19,7 +19,7 @@ const router = createRouter({
         {path: '/logowanie', component: Login, name: 'login'},
         {path: '/rejestracja', component: Register, name: 'register'},
         {path: '/weryfikacja_email', component: VerifyYourEmail, name: 'verify_email'},
-        {path: '/plecak/:id', component: Backpack, name: 'backpack', props: true},
+        {path: '/plecak/:hash', component: Backpack, name: 'backpack', props: true},
         {path: '/moj_sprzet', component: MyGearEditor, name: 'my_gear', meta: {require_auth: true}},
     ],
 })

@@ -19,6 +19,7 @@ import Modal from "@/components/Modal";
 
 export default {
   name: "ConfirmationDialog",
+  emits: ['confirmed'],
   components: {Modal},
   methods: {
     openModal() {

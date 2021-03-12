@@ -1,6 +1,6 @@
 <template>
   <BaseApp>
-    <div class="my-gear_editor">
+    <div v-if="editor_data_ready" class="my-gear_editor">
       <div class="options">
         <button type="button" class="import__gear" @click="$refs.importGear.openModal">dodaj sprzęt z plecaka</button>
         <ImportToMyGear ref="importGear"/>
@@ -38,7 +38,6 @@ export default {
     const resizes_counter = ref(0) //every time window is resized, it increments, in handleWindowResize()
 
     const categories_refs = ref([])  //array of template refs created with setCategoryRef()
-    // TODO: add confirmation dialog like in editor
     const save_progress = ref(null) //template ref
 
     const editor_data_ready = computed(() => store.getters['my_gear/is_my_gear_data_ready'])
@@ -60,9 +59,8 @@ export default {
       if (are_changes.value) {
         await store.dispatch('my_gear/updateMyGear')
             .then(status => {
-              if (status === 'success') save_progress.value.handleSaveSuccess()
+              if (status === 'success' && save_progress.value) save_progress.value.handleSaveSuccess()
             })
-        resizeAll() //TODO: is this necessary?
       }
     }
     const resizeAll = () => {
@@ -80,6 +78,7 @@ export default {
     const handleCtrlS = (e) => {
       if (e.key === 's' && e.ctrlKey === true) {
         e.preventDefault()
+        if (are_changes.value) save_progress.value.handleCtrlS()
         save()
       }
     }
@@ -95,6 +94,7 @@ export default {
     onBeforeUnmount(() => {
       window.removeEventListener("resize", handleWindowResize);
       window.removeEventListener("keydown", handleCtrlS);
+      save()
     })
 
     return {

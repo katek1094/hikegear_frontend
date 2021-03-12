@@ -7,9 +7,12 @@
       <span class="category__weight__label">waga</span>
       <button :class="{deletable: !is_the_only_category, invisible: is_the_only_category}" class="category__delete"
               type="button"
-              @click="deleteCategory">
+              @click="displayDeleteDialog">
         <font-awesome-icon class="fa-sm" icon="trash"/>
       </button>
+      <ConfirmationDialog ref="confirmation_dialog" @confirmed="deleteCategory">
+        <template v-slot:header>na pewno chcesz usunąć tą kategorię?</template>
+      </ConfirmationDialog>
     </div>
     <draggable v-model="items" animation="700" class="my_items" group="items" item-key="id" handle=".my_item__handle"
                emptyInsertThreshold="5  0">
@@ -31,10 +34,11 @@ import draggable from "vuedraggable";
 import MyItem from "@/components/inside/my_gear_editor/MyItem";
 import {useStore} from "vuex";
 import {computed, onBeforeUpdate, ref} from "vue";
+import ConfirmationDialog from "@/components/ConfirmationDialog";
 
 export default {
   name: "MyCategory",
-  components: {MyItem, draggable},
+  components: {ConfirmationDialog, MyItem, draggable},
   props: {category: Object},
   setup(props) {
     const store = useStore()
@@ -42,6 +46,7 @@ export default {
     const items_refs = ref([]) //array of template refs created with setItemRef()
     const max_name_length = 30
     const name_input = ref(null) //template ref
+    const confirmation_dialog = ref(null) //template ref
 
     const category_name = computed({
       get: () => props.category.name,
@@ -64,11 +69,10 @@ export default {
       const added_item = items_refs.value[items_refs.value.length - 1].$el
       window.scrollTo(0, added_item.scrollHeight + document.documentElement.scrollTop)
     }
-    const deleteCategory = () => {
-      if (items.value.length !== 0) {
-        const confirmation = confirm("na pewno chcesz usunąć tę kategorię?")
-        if (confirmation) store.dispatch('my_gear/deleteCategory', props.category.id)
-      } else store.dispatch('my_gear/deleteCategory', props.category.id)
+    const deleteCategory = () => store.dispatch('my_gear/deleteCategory', props.category.id)
+    const displayDeleteDialog = () => {
+      if (items.value.length !== 0) confirmation_dialog.value.openModal()
+      else deleteCategory()
     }
     const setItemRef = (el) => {
       if (el) items_refs.value.push(el)
@@ -81,9 +85,9 @@ export default {
     onBeforeUpdate(() => items_refs.value = [])
 
     return {
-      max_name_length, name_input,
+      max_name_length, name_input, confirmation_dialog,
       category_name, is_the_only_category, items,
-      addItem, deleteCategory, setItemRef, resizeAllItems, focusName
+      addItem, deleteCategory, setItemRef, resizeAllItems, focusName, displayDeleteDialog
     }
   }
 }

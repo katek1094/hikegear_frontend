@@ -86,6 +86,8 @@ export default {
             commit('set_item_property', payload)
         },
         updateMyGear({commit, rootGetters}) {
+            commit('copy_and_set_static', rootGetters['my_gear/dynamic_list'])
+            commit('copy_and_set_dynamic', rootGetters['my_gear/dynamic_list'])
             return apiFetch('private_gear', {
                 method: 'PATCH',
                 headers: {'Content-Type': 'application/json'},
@@ -94,9 +96,7 @@ export default {
                 .then(response => {
                     if (response.ok) {
                         return response.json().then(data => {
-                            commit('copy_and_set_static', data['private_gear'])
-                            commit('copy_and_set_dynamic', data['private_gear'])
-                            return 'success'
+                            if (data['private_gear']) return 'success'
                         })
                     } else console.log(response)
                 })
@@ -115,6 +115,7 @@ export default {
         },
         are_any_changes: state => {
             if (state.dynamic.length !== state.static.length) return true
+            if (!state.static) return false
             for (let c = 0; c < state.dynamic.length; c++) {
                 if (state.dynamic[c].items.length !== state.static[c].items.length) return true
                 for (let i = 0; i < state.dynamic[c].items.length; i++) {

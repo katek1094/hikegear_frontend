@@ -7,7 +7,7 @@ export default {
     are_any_changes(state) {
         if (state.static.name !== state.dynamic.name) return true
         if (state.static.description !== state.dynamic.description) return true
-        if (state.dynamic.list === []) return false
+        if (!state.dynamic.list) return false
         if (state.dynamic.list.length !== state.static.list.length) return true
         for (let c = 0; c < state.dynamic.list.length; c++) {
             if (state.dynamic.list[c].name !== state.static.list[c].name) return true

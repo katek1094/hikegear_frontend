@@ -31,7 +31,6 @@
       </div>
       <div class="editor">
         <div class="options">
-          <!--          <router-link class="backpack__link" :to="{ name: 'backpack', params: { id: backpack_id }}">-->
           <router-link class="backpack__link" :to="{ name: 'backpack', params: { hash: backpack_hash }}">
             <font-awesome-icon class="fa-md" icon="share"/>
             link do plecaka
@@ -137,7 +136,7 @@ export default {
       if (are_changes.value) {
         await store.dispatch('editor/updateBackpack', {id: backpack_id.value, update_dynamic: update_dynamic})
             .then(status => {
-              if (status === 'success') save_progress.value.handleSaveSuccess()
+              if (status === 'success' && save_progress.value) save_progress.value.handleSaveSuccess()
             })
       }
     }
@@ -166,13 +165,15 @@ export default {
     const handleCtrlS = (e) => {
       if (e.key === 's' && e.ctrlKey === true) {
         e.preventDefault()
-        save_progress.value.handleCtrlS()
+        if (are_changes.value) save_progress.value.handleCtrlS()
         save()
       }
     }
     const handleDataChange = () => {
-      categories_refs.value = []
-      save_progress.value.handleEdit(are_changes.value)
+      if (save_progress.value) { //in case of creating first backpack, then saveprogress is undefined
+        categories_refs.value = []
+        save_progress.value.handleEdit(are_changes.value)
+      }
     }
     onMounted(() => {
       window.addEventListener('keydown', handleCtrlS);
@@ -182,6 +183,7 @@ export default {
     onBeforeUnmount(() => {
       window.removeEventListener("resize", handleWindowResize);
       window.removeEventListener("keydown", handleCtrlS);
+      save()
     })
 
     return {

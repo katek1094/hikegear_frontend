@@ -119,26 +119,25 @@ export default {
         commit('add_backpack', backpack)
     },
     deleteBackpack({commit, rootGetters}, backpack_id) {
-        return apiFetch('backpacks/' + backpack_id, {
+        let backpacks = rootGetters['editor/backpacks']
+        let index
+        for (let i = 0; i < backpacks.length; i++) {
+            if (backpacks[i].id === backpack_id) index = i
+        }
+        backpacks.splice(index, 1)
+        commit('set_backpacks', backpacks)
+        if (backpacks.length > 0) {
+            commit('copy_and_set_dynamic_backpack', backpacks[0])
+            commit('copy_and_set_static_backpack', backpacks[0])
+        } else {
+            commit('copy_and_set_dynamic_backpack', [])
+            commit('copy_and_set_static_backpack', [])
+        }
+        apiFetch('backpacks/' + backpack_id, {
             method: 'DELETE'
         })
             .then(response => {
-                if (response.ok) {
-                    let backpacks = rootGetters['editor/backpacks']
-                    let index
-                    for (let i = 0; i < backpacks.length; i++) {
-                        if (backpacks[i].id === backpack_id) index = i
-                    }
-                    backpacks.splice(index, 1)
-                    commit('set_backpacks', backpacks)
-                    if (backpacks.length > 0) {
-                        commit('copy_and_set_dynamic_backpack', backpacks[0])
-                        commit('copy_and_set_static_backpack', backpacks[0])
-                    } else {
-                        commit('copy_and_set_dynamic_backpack', [])
-                        commit('copy_and_set_static_backpack', [])
-                    }
-                } else console.log(response)
+                if (!response.ok) console.log(response)
             })
     },
     changeBackpack({commit, getters}, index) {

@@ -25,7 +25,6 @@
               <font-awesome-icon class="fa-md" icon="cloud-download-alt"/>
               importuj
             </button>
-            <LpImport ref="lpImport"/>
           </div>
         </div>
       </div>
@@ -56,13 +55,20 @@
       </div>
       <MyGear/>
     </div>
-    <div v-else>
+    <div v-else class="no_backpacks">
       <p>nie masz żadnych plecaków</p>
-      <button class="add-backpack" type="button" @click="addBackpack">
-        <font-awesome-icon class="fa-md" icon="plus"/>
-        dodaj plecak
-      </button>
+      <div class="backpack_buttons">
+        <button class="add-backpack" type="button" @click="addBackpack">
+          <font-awesome-icon class="fa-md" icon="plus"/>
+          dodaj plecak
+        </button>
+        <button class="import-backpack" type="button" @click="$refs.lpImport.openModal">
+          <font-awesome-icon class="fa-md" icon="cloud-download-alt"/>
+          importuj
+        </button>
+      </div>
     </div>
+    <LpImport ref="lpImport"/>
   </BaseApp>
 </template>
 
@@ -312,6 +318,12 @@ export default {
   display: flex;
   justify-content: space-evenly;
   width: 100%;
+}
+
+.no_backpacks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 @media (hover: hover) and (pointer: fine) {

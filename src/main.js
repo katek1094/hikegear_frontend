@@ -14,9 +14,10 @@ import {
     faCloudDownloadAlt,
     faTimes,
     faShare,
-    faCheckCircle
+    faCheckCircle,
 } from '@fortawesome/free-solid-svg-icons'
-
+// TODO: add better icon for handles
+// TODO: and add tooltips over them
 library.add(faTrash)
 library.add(faChild)
 library.add(faSyncAlt)

@@ -138,7 +138,6 @@ export default {
 
 <style lang="scss" scoped>
 .spinner {
-  align-self: center;
   @include spinner;
 }
 </style>

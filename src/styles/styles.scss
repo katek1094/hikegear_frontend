@@ -155,6 +155,7 @@ $second_threshold: ($my_gear_min_width + $editor_big_width
   -webkit-animation: spin 1.7s linear infinite; /* Safari */
   animation: spin 1.7s linear infinite;
   margin: 4px;
+  align-self: center;
 }
 @-webkit-keyframes spin {
   0% { -webkit-transform: rotate(0deg); }

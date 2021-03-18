@@ -104,7 +104,6 @@ export default {
 }
 
 .spinner {
-  align-self: center;
   @include spinner;
 }
 

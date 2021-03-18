@@ -2,7 +2,7 @@
   <BaseApp>
     <div v-if="editor_data_ready" class="my-gear_editor">
       <div class="options">
-        <button type="button" class="import__gear" @click="$refs.importGear.openModal">dodaj sprzęt z plecaka</button>
+        <button v-if="are_any_backpacks" type="button" class="import__gear" @click="$refs.importGear.openModal">dodaj sprzęt z plecaka</button>
         <ImportToMyGear ref="importGear"/>
         <SaveProgress :data_ready="editor_data_ready" :are_changes="are_changes" ref="save_progress" @save="save"/>
       </div>
@@ -42,6 +42,7 @@ export default {
 
     const editor_data_ready = computed(() => store.getters['my_gear/is_my_gear_data_ready'])
     const are_changes = computed(() => store.getters['my_gear/are_any_changes'])
+    const are_any_backpacks = computed(() => store.getters['editor/backpacks'].length !== 0)
 
     const categories = computed({
       get: () => store.getters['my_gear/dynamic_list'],
@@ -98,7 +99,7 @@ export default {
     })
 
     return {
-      editor_data_ready, categories, save_progress, are_changes,
+      editor_data_ready, categories, save_progress, are_changes, are_any_backpacks,
       setCategoryRef, addCategory, save
     }
   }

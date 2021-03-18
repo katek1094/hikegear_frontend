@@ -20,7 +20,8 @@
            type="password"
            @blur="markAsBlurred" @input="activate">
     <label v-show="new_password2_info_display" for="new_password2">{{ new_password2_info }}</label>
-    <button>zmień hasło</button>
+    <button v-if="!waiting_for_response" type="submit">zmień hasło</button>
+    <div v-else class="spinner"></div>
     <p class="success" v-show="success">hasło zostało zmienione</p>
   </form>
 </template>
@@ -46,7 +47,8 @@ export default {
       old_password_info: '',
       new_password_info: '',
       new_password2_info: 'hasła nie są takie same',
-      success: false
+      success: false,
+      waiting_for_response: false
     }
   },
   computed: {
@@ -116,9 +118,10 @@ export default {
       this.new_password_info = ''
       this.old_password_info = ''
       this.new_password2_blurred = true
+      this.waiting_for_response = true
       if (this.is_form_valid) {
-        apiFetch('users/change_password', {
-          method: 'POST',
+        apiFetch('users/change_password/', {
+          method: 'PATCH',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
             old_password: this.password,
@@ -129,6 +132,7 @@ export default {
               this.password = ''
               this.new_password1 = ''
               this.new_password2 = ''
+              this.waiting_for_response = false
               if (response.ok) {
                 this.$refs.new_password2.blur()
                 this.success = true
@@ -189,4 +193,7 @@ button {
   @include form-submit;
 }
 
+.spinner {
+  @include spinner;
+}
 </style>

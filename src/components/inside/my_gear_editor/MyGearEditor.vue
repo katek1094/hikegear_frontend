@@ -2,7 +2,10 @@
   <BaseApp>
     <div v-if="editor_data_ready" class="my-gear_editor">
       <div class="options">
-        <button v-if="are_any_backpacks" type="button" class="import__gear" @click="$refs.importGear.openModal">dodaj sprzęt z plecaka</button>
+        <button v-if="are_any_backpacks" type="button" class="import__gear" @click="$refs.importGear.openModal">
+          <font-awesome-icon class="fa-lg" icon="arrow-alt-circle-down"/>
+          dodaj sprzęt z plecaka
+        </button>
         <ImportToMyGear ref="importGear"/>
         <SaveProgress :data_ready="editor_data_ready" :are_changes="are_changes" ref="save_progress" @save="save"/>
       </div>
@@ -113,9 +116,8 @@ export default {
 }
 
 .import__gear {
-  @include form-submit;
+  @include editor-add;
   font-size: .9rem;
-  padding: 6px;
 }
 
 .my-gear_editor {

@@ -146,7 +146,7 @@ export default {
     },
     addToMyGear() {
       // checked categories are added as separate categories
-      // checked items in not checked categories are added all together in new category 'imported from $backpack_name'
+      // checked items in not checked categories are added all together in new category 'dodane z  $backpack_name'
       let new_my_categories = []
       let selected_items_ids = this.selected_items
       let category_ids = []
@@ -180,7 +180,7 @@ export default {
       if (selected_items_ids.length !== 0) {
         let new_category = {
           id: this.new_category_id(category_ids),
-          name: 'imported from ' + this.backpacks.find(backpack => backpack.id === this.selected_backpack_id).name,
+          name: 'dodane z ' + this.backpacks.find(backpack => backpack.id === this.selected_backpack_id).name,
           items: []
         }
         category_ids.push(new_category.id)

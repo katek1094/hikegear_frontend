@@ -15,6 +15,7 @@ import {
     faTimes,
     faShare,
     faCheckCircle,
+    faArrowAltCircleDown
 } from '@fortawesome/free-solid-svg-icons'
 // TODO: add better icon for handles
 // TODO: and add tooltips over them
@@ -28,6 +29,7 @@ library.add(faCloudDownloadAlt)
 library.add(faTimes)
 library.add(faShare)
 library.add(faCheckCircle)
+library.add(faArrowAltCircleDown)
 
 import App from './App.vue'
 

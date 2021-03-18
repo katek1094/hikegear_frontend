@@ -30,10 +30,16 @@
       </div>
       <div class="editor">
         <div class="options">
+
+
+          <Tooltip text="tooltip działa?" direction="left">
           <router-link class="backpack__link" :to="{ name: 'backpack', params: { hash: backpack_hash }}">
             <font-awesome-icon class="fa-md" icon="share"/>
             link do plecaka
           </router-link>
+          </Tooltip>
+
+
           <SaveProgress :data_ready="editor_data_ready" :are_changes="are_changes" ref="save_progress" @save="save"/>
         </div>
         <AutoResizable ref="backpack_name_input" v-model.trim="backpack_name" :maxlength="max_backpack_name_length"
@@ -85,10 +91,12 @@ import LpImport from "@/components/inside/editor/LpImport";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import SaveProgress from "@/components/inside/SaveProgress";
 import {hashids} from "@/functions";
+import Tooltip from "@/components/Tooltip";
 
 export default {
   name: "Editor",
   components: {
+    Tooltip,
     SaveProgress,
     ConfirmationDialog,
     LpImport,
@@ -266,6 +274,7 @@ export default {
   min-width: $backpack_list_width;
   box-sizing: border-box;
   align-self: flex-start;
+  margin-bottom: 6px;
 }
 
 .backpack__list__item {

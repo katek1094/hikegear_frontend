@@ -117,6 +117,7 @@ export default {
             if (state.dynamic.length !== state.static.length) return true
             if (!state.static) return false
             for (let c = 0; c < state.dynamic.length; c++) {
+                if (state.dynamic[c].name !== state.static[c].name) return true
                 if (state.dynamic[c].items.length !== state.static[c].items.length) return true
                 for (let i = 0; i < state.dynamic[c].items.length; i++) {
                     for (const [key, value] of Object.entries(state.static[c].items[i])) {

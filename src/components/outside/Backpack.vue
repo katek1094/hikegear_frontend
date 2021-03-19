@@ -1,6 +1,7 @@
 <template>
   <router-link to="/"><img alt="logo" src="@/assets/logo.png" class="logo"></router-link>
   <div class="wrapper">
+<!--    TODO: go back to editor button, if routed from editor-->
     <div v-if="backpack" class="backpack">
       <span class="backpack__name">{{ backpack.name }}</span>
       <Summary :summary_data="summary_data"/>
@@ -17,9 +18,13 @@
               <span class="item__name">{{ item.name }}</span>
               <span class="item__description">{{ item.description }}</span>
               <div class="item__worn item__consumable">
-                <font-awesome-icon v-if="item.worn" class="fa-md" icon="child"/>
-                <font-awesome-icon v-else-if="item.consumable" class="fa-md" icon="sync-alt"/>
-                <font-awesome-icon v-else class="fa-md invisible" icon="sync-alt"/>
+                <Tooltip v-if="item.worn" text="przedmiot noszony na sobie" size="small">
+                  <font-awesome-icon class="fa-md" icon="child"/>
+                </Tooltip>
+                <Tooltip v-if="item.consumable" text="przedmiot konsumpcyjny" size="small">
+                  <font-awesome-icon class="fa-md" icon="sync-alt"/>
+                </Tooltip>
+                <font-awesome-icon v-if="!item.worn && !item.consumable" class="fa-md invisible" icon="sync-alt"/>
               </div>
               <span class="item__weight">{{ item.weight }}</span>
               <span class="item__quantity">{{ item.quantity }}</span>
@@ -28,7 +33,7 @@
           <div class="category__footer">
             <span></span>
             <span class="category__weight__total">{{ totalWeight(category.items) }}</span>
-            <span class="category__quantity__total">{{ totalQuantity(category.items)}}</span>
+            <span class="category__quantity__total">{{ totalQuantity(category.items) }}</span>
           </div>
         </div>
       </div>
@@ -39,10 +44,11 @@
 <script>
 import {apiFetch, summarize_elements_list, hashids} from "@/functions";
 import Summary from "@/components/inside/editor/Summary";
+import Tooltip from "@/components/Tooltip";
 
 export default {
   name: "Backpack",
-  components: {Summary},
+  components: {Tooltip, Summary},
   props: {
     hash: String
   },
@@ -66,7 +72,7 @@ export default {
       let result = 0
       for (const item of items) result += item.quantity
       return result
-    }
+    },
   },
   beforeCreate() {
     const id = hashids.decode(this.hash)
@@ -77,7 +83,7 @@ export default {
           if (response.ok) response.json().then(data => this.backpack = data)
           else console.log(response)
         })
-  }
+  },
 }
 </script>
 
@@ -185,6 +191,7 @@ $quantity_width: 2rem;
   outline: none;
   color: blue;
   padding: 4px;
+  font-size: 1.15em;
   margin: 0 3px;
 }
 

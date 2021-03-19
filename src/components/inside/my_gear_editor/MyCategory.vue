@@ -10,7 +10,7 @@
       <Tooltip text="usuń kategorię" direction="left" size="small">
         <button :class="{deletable: !is_the_only_category, invisible: is_the_only_category}" class="category__delete"
                 type="button"
-                @click="displayDeleteDialog">
+                @click="displayConfirmationDialog">
           <font-awesome-icon class="fa-sm" icon="trash"/>
         </button>
       </Tooltip>
@@ -38,9 +38,10 @@
 import draggable from "vuedraggable";
 import MyItem from "@/components/inside/my_gear_editor/MyItem";
 import {useStore} from "vuex";
-import {computed, onBeforeUpdate, ref} from "vue";
+import {computed} from "vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import Tooltip from "@/components/Tooltip";
+import {useNoDrag, useConfirmationDialog, useCategory} from "@/hooks/hooks";
 
 export default {
   name: "MyCategory",
@@ -48,11 +49,6 @@ export default {
   props: {category: Object},
   setup(props) {
     const store = useStore()
-
-    const items_refs = ref([]) //array of template refs created with setItemRef()
-    const max_name_length = 30
-    const name_input = ref(null) //template ref
-    const confirmation_dialog = ref(null) //template ref
 
     const category_name = computed({
       get: () => props.category.name,
@@ -69,34 +65,25 @@ export default {
         category_id: props.category.id
       })
     })
-    const addItem = async () => {
-      await store.dispatch('my_gear/addNewItem', props.category.id)
-      items_refs.value[items_refs.value.length - 1].focusName()
-      const added_item = items_refs.value[items_refs.value.length - 1].$el
-      window.scrollTo(0, added_item.scrollHeight + document.documentElement.scrollTop)
-    }
     const deleteCategory = () => store.dispatch('my_gear/deleteCategory', props.category.id)
-    const displayDeleteDialog = () => {
-      if (items.value.length !== 0) confirmation_dialog.value.openModal()
-      else deleteCategory()
-    }
-    const setItemRef = (el) => {
-      if (el) items_refs.value.push(el)
-    }
-    const resizeAllItems = () => {
-      for (const item_ref of items_refs.value) item_ref.resizeAll()
-    }
-    const focusName = () => name_input.value.focus()
 
-    onBeforeUpdate(() => items_refs.value = [])
+    const {
+      max_name_length,
+      name_input,
+      addItem,
+      setItemRef,
+      resizeAllItems,
+      focusName
+    } = useCategory('my_gear/addNewItem', props.category.id)
 
-    const no_drag = ref(true)
-    const toggleNoDrag = () => no_drag.value = !no_drag.value
+    const are_any_items = computed(() => items.value.length !== 0)
+    const {confirmation_dialog, displayConfirmationDialog} = useConfirmationDialog(are_any_items, deleteCategory)
+    const {no_drag, toggleNoDrag} = useNoDrag()
 
     return {
       max_name_length, name_input, confirmation_dialog, no_drag,
       category_name, is_the_only_category, items,
-      addItem, deleteCategory, setItemRef, resizeAllItems, focusName, displayDeleteDialog, toggleNoDrag
+      addItem, deleteCategory, setItemRef, resizeAllItems, focusName, displayConfirmationDialog, toggleNoDrag
     }
   }
 }

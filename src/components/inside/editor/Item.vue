@@ -37,6 +37,7 @@ import AutoResizable from "@/components/AutoResizable";
 import {ref, computed} from 'vue';
 import {useStore} from 'vuex';
 import Tooltip from "@/components/Tooltip";
+import {useItem} from "@/hooks/hooks";
 
 export default {
   name: "Item",
@@ -51,12 +52,7 @@ export default {
   setup(props) {
     const store = useStore()
 
-    const weight_limit = 99999
     const quantity_limit = 99
-    const max_name_length = 60
-    const max_description_length = 700
-    const name_input = ref(null)  //template ref
-    const description_input = ref(null)  //template ref
     const weight_input = ref(null)  //template ref
     const quantity_input = ref(null)  //template ref
 
@@ -115,29 +111,20 @@ export default {
     const deleteItem = () => store.dispatch('editor/deleteItem', {
       item_id: props.item.id, category_id: props.category_id
     })
-    const preventNumericChars = (e) => {
-      if ((e.keyCode === 69) || (e.keyCode === 189)) e.preventDefault()
-      if ((e.target.className === 'item__quantity') && (e.keyCode === 190)) e.preventDefault()
-    }
-    const resizeAll = () => {
-      name_input.value.resize()
-      description_input.value.resize()
-    }
-    const removeLeadingZero = (e) => {
-      if ((String(e.target.value)[0] === '0') && (e.target.value.length > 1)) {
-        e.target.value = String(e.target.value).slice(1)
-      }
-    }
-    const fillWithZero = (e) => {
-      if (e.target.value === '') {
-        if (e.target.getAttribute('name') === 'item_quantity') item_quantity.value = 0
-        else if (e.target.getAttribute('name') === 'item_weight') item_weight.value = 0
-      }
-    }
-    const handleEnter = (event) => {
-      if (event.keyCode === 13) description_input.value.$el.focus()
-    }
-    const focusName = () => name_input.value.$el.focus()
+
+    const {
+      weight_limit,
+      max_name_length,
+      max_description_length,
+      name_input,
+      description_input,
+      focusName,
+      handleEnter,
+      fillWithZero,
+      removeLeadingZero,
+      resizeAll,
+      preventNumericChars
+    } = useItem(item_weight, item_quantity)
 
     const worn_tooltip_text = computed(() => {
       if (props.item.worn) return 'oznaczony jako noszony na sobie'

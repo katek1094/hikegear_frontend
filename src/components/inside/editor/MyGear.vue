@@ -12,7 +12,9 @@
           <span class="category_name">{{ element.name }}</span>
         </div>
         <div v-else class="my-item">
-          <span class="item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
+          <Tooltip text="naciśnij i przeciągnij w lewo aby dodać do listy sprzętu" direction="right" size="large">
+            <span class="item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
+          </Tooltip>
           <span class="name">{{ element.name }}</span>
           <span class="description">{{ element.description }}</span>
           <span class="weight">{{ element.weight }}</span>
@@ -24,10 +26,11 @@
 
 <script>
 import draggable from 'vuedraggable'
+import Tooltip from "@/components/Tooltip";
 
 export default {
   name: "MyGear",
-  components: {draggable},
+  components: {Tooltip, draggable},
   data() {
     return {}
   },
@@ -46,6 +49,7 @@ export default {
       return result
     }
   },
+  // TODO: add composition api and no_drag options to hide handle tooltip while dragging
   methods: {
     deepCopy(original) {
       let deep_copy = JSON.parse(JSON.stringify(original))

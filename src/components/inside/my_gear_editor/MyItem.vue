@@ -23,6 +23,7 @@ import AutoResizable from "@/components/AutoResizable";
 import {useStore} from "vuex";
 import {computed, ref} from "vue";
 import Tooltip from "@/components/Tooltip";
+import {useItem} from "@/hooks/hooks";
 
 export default {
   name: "MyItem",
@@ -31,11 +32,6 @@ export default {
   setup(props) {
     const store = useStore()
 
-    const weight_limit = 99999
-    const max_name_length = 60
-    const max_description_length = 700
-    const name_input = ref(null)  //template ref
-    const description_input = ref(null)  //template ref
     const weight_input = ref(null)  //template ref
 
     const item_name = computed({
@@ -72,25 +68,20 @@ export default {
     const deleteItem = () => store.dispatch('my_gear/deleteItem', {
       item_id: props.item.id, category_id: props.category_id
     })
-    const preventNumericChars = (e) => {
-      if ((e.keyCode === 69) || (e.keyCode === 189)) e.preventDefault()
-    }
-    const resizeAll = () => {
-      name_input.value.resize()
-      description_input.value.resize()
-    }
-    const removeLeadingZero = (e) => {
-      if ((String(e.target.value)[0] === '0') && (e.target.value.length > 1)) {
-        e.target.value = String(e.target.value).slice(1)
-      }
-    }
-    const fillWithZero = (e) => {
-      if (e.target.value === '') item_weight.value = 0
-    }
-    const handleEnter = (event) => {
-      if (event.keyCode === 13) description_input.value.$el.focus()
-    }
-    const focusName = () => name_input.value.$el.focus()
+
+    const {
+      weight_limit,
+      max_name_length,
+      max_description_length,
+      name_input,
+      description_input,
+      focusName,
+      handleEnter,
+      fillWithZero,
+      removeLeadingZero,
+      resizeAll,
+      preventNumericChars
+    } = useItem(item_weight)
 
     return {
       weight_limit, max_name_length, max_description_length, //data

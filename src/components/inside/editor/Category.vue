@@ -11,7 +11,7 @@
       <Tooltip text="usuń kategorię" direction="left" size="small">
         <button :class="{deletable: !is_the_only_category, invisible: is_the_only_category}" class="category__delete"
                 type="button"
-                @click="displayDeleteDialog">
+                @click="displayConfirmationDialog">
           <font-awesome-icon class="fa-sm" icon="trash"/>
         </button>
       </Tooltip>
@@ -40,10 +40,11 @@
 <script>
 import draggable from 'vuedraggable'
 import Item from "@/components/inside/editor/Item";
-import {ref, computed, onBeforeUpdate} from 'vue';
+import {computed} from 'vue';
 import {useStore} from 'vuex';
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import Tooltip from "@/components/Tooltip";
+import {useConfirmationDialog, useNoDrag, useCategory} from "@/hooks/hooks";
 
 export default {
   name: "Category",
@@ -53,11 +54,6 @@ export default {
   },
   setup(props) {
     const store = useStore()
-
-    const items_refs = ref([]) //array of template refs created with setItemRef()
-    const max_name_length = 30
-    const name_input = ref(null) //template ref
-    const confirmation_dialog = ref(null) //template ref
 
     const category_name = computed({
       get: () => props.category.name,
@@ -88,38 +84,44 @@ export default {
       }
       return result
     })
-    const addItem = async () => {
-      await store.dispatch('editor/addItem', props.category.id)
-      items_refs.value[items_refs.value.length - 1].focusName()
-      const added_item = items_refs.value[items_refs.value.length - 1].$el
-      window.scrollTo(0, added_item.scrollHeight + document.documentElement.scrollTop)
-    }
-    const deleteCategory = () => store.dispatch('editor/deleteCategory', props.category.id)
-    const displayDeleteDialog = () => {
-      if (items.value.length !== 0) confirmation_dialog.value.openModal()
-      else deleteCategory()
-    }
-    const setItemRef = (el) => {
-      if (el) items_refs.value.push(el)
-    }
-    const resizeAllItems = () => {
-      for (const item_ref of items_refs.value) item_ref.resizeAll()
-    }
     const pullPolicy = (to) => {
       if (to.el.className === 'my-gear_items') return false
       else if (to.el.className === 'items') return true
     }
-    const focusName = () => name_input.value.focus()
 
-    onBeforeUpdate(() => items_refs.value = [])
+    const deleteCategory = () => store.dispatch('editor/deleteCategory', props.category.id)
 
-    const no_drag = ref(true)
-    const toggleNoDrag = () => no_drag.value = !no_drag.value
+    const {
+      max_name_length,
+      name_input,
+      addItem,
+      setItemRef,
+      resizeAllItems,
+      focusName
+    } = useCategory('editor/addItem', props.category.id)
+
+    const are_any_items = computed(() => items.value.length !== 0)
+    const {confirmation_dialog, displayConfirmationDialog} = useConfirmationDialog(are_any_items, deleteCategory)
+    const {no_drag, toggleNoDrag} = useNoDrag()
 
     return {
-      max_name_length, name_input, confirmation_dialog, no_drag,
-      category_name, is_the_only_category, items, total_weight, total_quantity,
-      addItem, displayDeleteDialog, deleteCategory, setItemRef, resizeAllItems, pullPolicy, focusName, toggleNoDrag
+      max_name_length,
+      name_input,
+      confirmation_dialog,
+      no_drag,
+      category_name,
+      is_the_only_category,
+      items,
+      total_weight,
+      total_quantity,
+      addItem,
+      displayConfirmationDialog,
+      deleteCategory,
+      setItemRef,
+      resizeAllItems,
+      pullPolicy,
+      focusName,
+      toggleNoDrag
     }
   }
 }

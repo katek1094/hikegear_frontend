@@ -10,7 +10,7 @@
                   @click="changeBackpack(index)">bez nazwy</span>
             <Tooltip text="usuń plecak" direction="right" class="backpack__delete__tooltip" size="small">
               <button v-if="backpack.id === backpack_id" class="backpack__delete" type="button"
-                      @click="displayDeleteDialog">
+                      @click="displayConfirmationDialog">
                 <font-awesome-icon class="fa-sm" icon="trash"/>
               </button>
             </Tooltip>
@@ -44,7 +44,7 @@
         <AutoResizable ref="backpack_description_input" v-model.trim="backpack_description"
                        :maxlength="max_backpack_description_length" class="backpack__description"
                        placeholder="opis plecaka"/>
-        <draggable v-model="dynamic_list" animation="1000" class="categories" group="categories"
+        <draggable v-model="categories" animation="1000" class="categories" group="categories"
                    handle=".category__handle" item-key="id" @choose="toggleNoDrag" @unchoose="toggleNoDrag"
                    :class="{no_drag_cat: no_drag, drag_cat: !no_drag}">
           <template #item="{element}">
@@ -82,13 +82,14 @@ import Summary from "@/components/inside/editor/Summary";
 import BaseApp from "@/components/inside/BaseApp";
 import AutoResizable from "@/components/AutoResizable";
 import MyGear from "@/components/inside/editor/MyGear";
-import {ref, computed, onMounted, onBeforeUnmount} from 'vue';
+import {ref, computed} from 'vue';
 import {useStore} from 'vuex';
 import LpImport from "@/components/inside/editor/LpImport";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import SaveProgress from "@/components/inside/SaveProgress";
 import {hashids} from "@/functions";
 import Tooltip from "@/components/Tooltip";
+import {useNoDrag, useAutoresizingAll, useCategories, useEditor, useConfirmationDialog} from "@/hooks/hooks";
 
 export default {
   name: "Editor",
@@ -107,22 +108,18 @@ export default {
   setup() {
     const store = useStore()
 
-    const resizes_counter = ref(0) //every time window is resized, it increments, in handleWindowResize()
     const max_backpack_name_length = ref(60)
     const max_backpack_description_length = ref(1000)
 
-    const categories_refs = ref([])  //array of template refs created with setCategoryRef()
     const backpack_name_input = ref(null)  //template ref
     const backpack_description_input = ref(null)  //template ref
-    const confirmation_dialog = ref(null) //template ref
-    const save_progress = ref(null) //template ref
 
     const backpack_id = computed(() => store.getters['editor/backpack_id'])
     const backpacks = computed(() => store.getters['editor/backpacks'])
     const editor_data_ready = computed(() => store.getters['editor/isEditorDataReady'])
     const are_changes = computed(() => store.getters['editor/are_any_changes'])
     const summary_data = computed(() => store.getters['editor/summary_data'])
-    const dynamic_list = computed({
+    const categories = computed({
       get: () => store.getters['editor/dynamic_list'],
       set: (val) => store.dispatch('editor/moveCategory', val)
     })
@@ -135,14 +132,7 @@ export default {
       set: (val) => store.dispatch('editor/changeBackpackDescription', val)
     })
     const backpack_hash = computed(() => hashids.encode(backpack_id.value))
-    const setCategoryRef = (el) => {
-      if (el) categories_refs.value.push(el)
-    }
-    const addCategory = async () => {
-      await store.dispatch('editor/addCategory')
-      categories_refs.value[categories_refs.value.length - 1].focusName()
-      window.scrollTo(0, document.body.scrollHeight)
-    }
+
     const save = async (update_dynamic = true) => {
       if (are_changes.value) {
         await store.dispatch('editor/updateBackpack', {id: backpack_id.value, update_dynamic: update_dynamic})
@@ -158,7 +148,8 @@ export default {
     }
     const addBackpack = () => store.dispatch('editor/addBackpack')
     const deleteBackpack = () => store.dispatch('editor/deleteBackpack', backpack_id.value)
-    const displayDeleteDialog = () => confirmation_dialog.value.openModal()
+    const {confirmation_dialog, displayConfirmationDialog} = useConfirmationDialog()
+
     const resizeAll = () => {
       if (editor_data_ready.value) {
         for (const category_ref of categories_refs.value) category_ref.resizeAllItems()
@@ -166,46 +157,36 @@ export default {
         backpack_description_input.value.resize()
       }
     }
-    const handleWindowResize = () => {
-      resizes_counter.value += 1
-      const x = resizes_counter.value
-      setTimeout(() => {
-        if (x === resizes_counter.value) resizeAll()
-      }, 300)
-    }
-    const handleCtrlS = (e) => {
-      if (e.key === 's' && e.ctrlKey === true) {
-        e.preventDefault()
-        if (are_changes.value) save_progress.value.handleCtrlS()
-        save()
-      }
-    }
-    const handleDataChange = () => {
-      if (save_progress.value) { //in case of creating first backpack, then saveprogress is undefined
-        categories_refs.value = []
-        save_progress.value.handleEdit(are_changes.value)
-      }
-    }
-    onMounted(() => {
-      window.addEventListener('keydown', handleCtrlS);
-      window.addEventListener("resize", handleWindowResize);
-      store.watch((state) => state.editor.dynamic, handleDataChange, {deep: true});
-    })
-    onBeforeUnmount(() => {
-      window.removeEventListener("resize", handleWindowResize);
-      window.removeEventListener("keydown", handleCtrlS);
-      save()
-    })
-
-    const no_drag = ref(true)
-    const toggleNoDrag = () => no_drag.value = !no_drag.value
+    const {categories_refs, addCategory, setCategoryRef} = useCategories('editor/addCategory')
+    const save_progress = useEditor(are_changes, save, categories_refs, (state) => state.editor.dynamic)
+    useAutoresizingAll(resizeAll)
+    const {no_drag, toggleNoDrag} = useNoDrag()
 
     return {
-      max_backpack_name_length, max_backpack_description_length, no_drag,
-      backpack_name_input, backpack_description_input, confirmation_dialog, save_progress,
-      backpack_id, backpacks, editor_data_ready, summary_data, dynamic_list, backpack_name, backpack_description,
-      are_changes, backpack_hash,
-      setCategoryRef, addCategory, changeBackpack, addBackpack, deleteBackpack, displayDeleteDialog, save, toggleNoDrag
+      max_backpack_name_length,
+      max_backpack_description_length,
+      no_drag,
+      backpack_name_input,
+      backpack_description_input,
+      confirmation_dialog,
+      save_progress,
+      backpack_id,
+      backpacks,
+      editor_data_ready,
+      summary_data,
+      categories,
+      backpack_name,
+      backpack_description,
+      are_changes,
+      backpack_hash,
+      setCategoryRef,
+      addCategory,
+      changeBackpack,
+      addBackpack,
+      deleteBackpack,
+      displayConfirmationDialog,
+      save,
+      toggleNoDrag
     }
   },
 }

@@ -75,6 +75,7 @@ export default {
   height: 10px;
   display: inline-block;
   margin-right: 4px;
+  border-radius: 2px;
 }
 
 td {

@@ -8,9 +8,11 @@
     <input ref='weight_input' v-model.number="item_weight" :max="weight_limit" class="item__weight" min="0"
            name="item_weight" type="number" @blur="fillWithZero" @input="removeLeadingZero"
            @keydown="preventNumericChars">
+    <Tooltip text="usuń przedmiot" direction="left">
     <button class="item__delete" type="button" @click="deleteItem">
       <font-awesome-icon class="fa-sm" icon="trash"/>
     </button>
+    </Tooltip>
   </div>
 </template>
 
@@ -18,10 +20,11 @@
 import AutoResizable from "@/components/AutoResizable";
 import {useStore} from "vuex";
 import {computed, ref} from "vue";
+import Tooltip from "@/components/Tooltip";
 
 export default {
   name: "MyItem",
-  components: {AutoResizable},
+  components: {Tooltip, AutoResizable},
   props: {item: Object, category_id: Number},
   setup(props) {
     const store = useStore()

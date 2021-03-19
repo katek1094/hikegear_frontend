@@ -1,22 +1,27 @@
 <template>
   <div class="category">
     <div class="category__header">
-      <span class="category__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
+      <Tooltip text="naciśnij i przeciągnij w inne miejsce" direction="right">
+        <span class="category__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
+      </Tooltip>
       <input ref="name_input" v-model.trim="category_name" :maxlength="max_name_length" :size="max_name_length"
              class="category__name" placeholder="nazwa kategorii" type="text">
       <span class="category__weight__label">waga</span>
       <span class="category__quantity__label">ilość</span>
-      <button :class="{deletable: !is_the_only_category, invisible: is_the_only_category}" class="category__delete"
-              type="button"
-              @click="displayDeleteDialog">
-        <font-awesome-icon class="fa-sm" icon="trash"/>
-      </button>
+      <Tooltip text="usuń kategorię" direction="left" size="small">
+        <button :class="{deletable: !is_the_only_category, invisible: is_the_only_category}" class="category__delete"
+                type="button"
+                @click="displayDeleteDialog">
+          <font-awesome-icon class="fa-sm" icon="trash"/>
+        </button>
+      </Tooltip>
       <ConfirmationDialog ref="confirmation_dialog" @confirmed="deleteCategory">
         <template v-slot:header>na pewno chcesz usunąć tą kategorię?</template>
       </ConfirmationDialog>
     </div>
     <draggable v-model="items" animation="700" class="items" :group="{name: 'items', pull: pullPolicy, put: ['items']}"
-               item-key="id" handle=".item__handle" emptyInsertThreshold="50">
+               item-key="id" handle=".item__handle" emptyInsertThreshold="50" @choose="toggleNoDrag"
+               @unchoose="toggleNoDrag" :class="{no_drag_item: no_drag}">
       <template #item="{element}">
         <Item :item="element" :category_id="category.id" :ref="setItemRef"/>
       </template>
@@ -38,10 +43,11 @@ import Item from "@/components/inside/editor/Item";
 import {ref, computed, onBeforeUpdate} from 'vue';
 import {useStore} from 'vuex';
 import ConfirmationDialog from "@/components/ConfirmationDialog";
+import Tooltip from "@/components/Tooltip";
 
 export default {
   name: "Category",
-  components: {ConfirmationDialog, Item, draggable},
+  components: {Tooltip, ConfirmationDialog, Item, draggable},
   props: {
     category: Object,
   },
@@ -107,10 +113,13 @@ export default {
 
     onBeforeUpdate(() => items_refs.value = [])
 
+    const no_drag = ref(true)
+    const toggleNoDrag= () => no_drag.value = !no_drag.value
+
     return {
-      max_name_length, name_input, confirmation_dialog,
+      max_name_length, name_input, confirmation_dialog, no_drag,
       category_name, is_the_only_category, items, total_weight, total_quantity,
-      addItem, displayDeleteDialog, deleteCategory, setItemRef, resizeAllItems, pullPolicy, focusName
+      addItem, displayDeleteDialog, deleteCategory, setItemRef, resizeAllItems, pullPolicy, focusName, toggleNoDrag
     }
   }
 }
@@ -171,8 +180,8 @@ $delete_width: 30px;
   .category__delete, ::v-deep(.item__delete) {
     visibility: hidden;
   }
-  .category__header:hover .category__delete.deletable, ::v-deep(.item:hover .item__delete),
-  .category__header:hover .category__handle, ::v-deep(.item:hover .item__handle), {
+  .no_drag_cat .category__header:hover .category__delete.deletable, ::v-deep(.no_drag_item .item:hover .item__delete),
+  .no_drag_cat .category__header:hover .category__handle, ::v-deep(.no_drag_item .item:hover .item__handle), {
     visibility: visible;
   }
   .category__delete:hover, ::v-deep(.item__delete:hover) {

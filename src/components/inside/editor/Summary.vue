@@ -23,7 +23,9 @@
         <td>{{ summary_data.worn_weight }} g</td>
       </tr>
       <tr>
-        <td>waga bazowa</td>
+        <Tooltip text="waga bazowa = waga całkowita - konsumpcyjne - na sobie" direction="top" size="large">
+          <td>waga bazowa</td>
+        </Tooltip>
         <td>{{ summary_data.base_weight }} g</td>
       </tr>
     </table>
@@ -32,10 +34,11 @@
 
 <script>
 import Chart from "@/components/inside/editor/Chart";
+import Tooltip from "@/components/Tooltip";
 
 export default {
   name: "Summary",
-  components: {Chart},
+  components: {Tooltip, Chart},
   props: {
     summary_data: Object
   },

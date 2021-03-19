@@ -5,11 +5,13 @@
       <input ref="name_input" v-model.trim="category_name" :maxlength="max_name_length" :size="max_name_length"
              class="category__name" placeholder="nazwa kategorii" type="text">
       <span class="category__weight__label">waga</span>
-      <button :class="{deletable: !is_the_only_category, invisible: is_the_only_category}" class="category__delete"
-              type="button"
-              @click="displayDeleteDialog">
-        <font-awesome-icon class="fa-sm" icon="trash"/>
-      </button>
+      <Tooltip text="usuń kategorię" direction="left">
+        <button :class="{deletable: !is_the_only_category, invisible: is_the_only_category}" class="category__delete"
+                type="button"
+                @click="displayDeleteDialog">
+          <font-awesome-icon class="fa-sm" icon="trash"/>
+        </button>
+      </Tooltip>
       <ConfirmationDialog ref="confirmation_dialog" @confirmed="deleteCategory">
         <template v-slot:header>na pewno chcesz usunąć tą kategorię?</template>
       </ConfirmationDialog>
@@ -35,10 +37,11 @@ import MyItem from "@/components/inside/my_gear_editor/MyItem";
 import {useStore} from "vuex";
 import {computed, onBeforeUpdate, ref} from "vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
+import Tooltip from "@/components/Tooltip";
 
 export default {
   name: "MyCategory",
-  components: {ConfirmationDialog, MyItem, draggable},
+  components: {Tooltip, ConfirmationDialog, MyItem, draggable},
   props: {category: Object},
   setup(props) {
     const store = useStore()

@@ -8,10 +8,12 @@
                   @click="changeBackpack(index)">{{ backpack.name }}</span>
             <span v-if="backpack.name === ''" :class="{active: backpack.id === backpack_id}"
                   @click="changeBackpack(index)">bez nazwy</span>
-            <button v-if="backpack.id === backpack_id" class="backpack__delete" type="button"
-                    @click="displayDeleteDialog">
-              <font-awesome-icon class="fa-sm" icon="trash"/>
-            </button>
+            <Tooltip text="usuń plecak" direction="right" class="backpack__delete__tooltip" size="small">
+              <button v-if="backpack.id === backpack_id" class="backpack__delete" type="button"
+                      @click="displayDeleteDialog">
+                <font-awesome-icon class="fa-sm" icon="trash"/>
+              </button>
+            </Tooltip>
             <ConfirmationDialog ref="confirmation_dialog" @confirmed="deleteBackpack">
               <template v-slot:header>na pewno chcesz usunąć ten plecak?</template>
             </ConfirmationDialog>
@@ -30,16 +32,10 @@
       </div>
       <div class="editor">
         <div class="options">
-
-
-          <Tooltip text="tooltip działa?" direction="left">
           <router-link class="backpack__link" :to="{ name: 'backpack', params: { hash: backpack_hash }}">
             <font-awesome-icon class="fa-md" icon="share"/>
             link do plecaka
           </router-link>
-          </Tooltip>
-
-
           <SaveProgress :data_ready="editor_data_ready" :are_changes="are_changes" ref="save_progress" @save="save"/>
         </div>
         <AutoResizable ref="backpack_name_input" v-model.trim="backpack_name" :maxlength="max_backpack_name_length"
@@ -49,7 +45,8 @@
                        :maxlength="max_backpack_description_length" class="backpack__description"
                        placeholder="opis plecaka"/>
         <draggable v-model="dynamic_list" animation="1000" class="categories" group="categories"
-                   handle=".category__handle" item-key="id">
+                   handle=".category__handle" item-key="id" @choose="toggleNoDrag" @unchoose="toggleNoDrag"
+                   :class="{no_drag_cat: no_drag}">
           <template #item="{element}">
             <Category :category="element" :ref="setCategoryRef"/>
           </template>
@@ -200,12 +197,15 @@ export default {
       save()
     })
 
+    const no_drag = ref(true)
+    const toggleNoDrag = () => no_drag.value = !no_drag.value
+
     return {
-      max_backpack_name_length, max_backpack_description_length,
+      max_backpack_name_length, max_backpack_description_length, no_drag,
       backpack_name_input, backpack_description_input, confirmation_dialog, save_progress,
       backpack_id, backpacks, editor_data_ready, summary_data, dynamic_list, backpack_name, backpack_description,
       are_changes, backpack_hash,
-      setCategoryRef, addCategory, changeBackpack, addBackpack, deleteBackpack, displayDeleteDialog, save
+      setCategoryRef, addCategory, changeBackpack, addBackpack, deleteBackpack, displayDeleteDialog, save, toggleNoDrag
     }
   },
 }
@@ -305,7 +305,10 @@ export default {
   background-color: transparent;
   padding: 6px;
   font-size: 1em;
-  margin-left: 10px;
+
+  &__tooltip {
+    margin-left: 10px;
+  }
 }
 
 .backpack__link {

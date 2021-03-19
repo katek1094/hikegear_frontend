@@ -1,26 +1,34 @@
 <template>
   <div class="item">
-    <span class="item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
+    <Tooltip text="naciśnij i przeciągnij w inne miejsce" direction="right">
+      <span class="item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
+    </Tooltip>
     <AutoResizable ref="name_input" v-model.trim="item_name" :maxlength="max_name_length" :prevent-enter="true"
                    class="item__name" placeholder="nazwa" @keydown="handleEnter"/>
     <AutoResizable ref="description_input" v-model="item_description" :maxlength="max_description_length"
                    class="item__description" placeholder="opis"/>
-    <button :class="{ checked: item.worn }" :disabled="item.consumable" class="item__worn" @click="switchWorn">
-      <font-awesome-icon class="fa-md" icon="child"/>
-    </button>
-    <button :class="{ checked: item.consumable }" :disabled="item.worn" class="item__consumable"
-            @click="switchConsumable">
-      <font-awesome-icon class="fa-md" icon="sync-alt"/>
-    </button>
+    <Tooltip text="oznacz jako noszony na sobie" direction="top" size="small">
+      <button :class="{ checked: item.worn }" :disabled="item.consumable" class="item__worn" @click="switchWorn">
+        <font-awesome-icon class="fa-md" icon="child"/>
+      </button>
+    </Tooltip>
+    <Tooltip text="oznacz jako konsumpcyjny" direction="top" size="small">
+      <button :class="{ checked: item.consumable }" :disabled="item.worn" class="item__consumable"
+              @click="switchConsumable">
+        <font-awesome-icon class="fa-md" icon="sync-alt"/>
+      </button>
+    </Tooltip>
     <input ref='weight_input' v-model.number="item_weight" :max="weight_limit" class="item__weight" min="0"
            name="item_weight" type="number" @blur="fillWithZero" @input="removeLeadingZero"
            @keydown="preventNumericChars">
     <input ref="quantity_input" v-model.number="item_quantity" :max="quantity_limit" class="item__quantity" min="0"
            name="item_quantity" type="number" @blur="fillWithZero" @input="removeLeadingZero"
            @keydown="preventNumericChars">
-    <button class="item__delete" type="button" @click="deleteItem">
-      <font-awesome-icon class="fa-sm" icon="trash"/>
-    </button>
+    <Tooltip text="usuń przedmiot" direction="left" size="small">
+      <button class="item__delete" type="button" @click="deleteItem">
+        <font-awesome-icon class="fa-sm" icon="trash"/>
+      </button>
+    </Tooltip>
   </div>
 </template>
 
@@ -28,10 +36,14 @@
 import AutoResizable from "@/components/AutoResizable";
 import {ref, computed} from 'vue';
 import {useStore} from 'vuex';
+import Tooltip from "@/components/Tooltip";
 
 export default {
   name: "Item",
-  components: {AutoResizable},
+  components: {
+    Tooltip,
+    AutoResizable
+  },
   props: {
     item: Object,
     category_id: Number
@@ -162,7 +174,7 @@ export default {
   .item__worn, .item__consumable {
     visibility: hidden;
   }
-  .item:hover .item__worn, .item:hover .item__consumable {
+  .no_drag .item:hover .item__worn, .no_drag .item:hover .item__consumable {
     visibility: visible;
   }
   .item__worn:hover:enabled, .item__consumable:hover:enabled {

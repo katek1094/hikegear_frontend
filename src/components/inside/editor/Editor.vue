@@ -46,7 +46,7 @@
                        placeholder="opis plecaka"/>
         <draggable v-model="dynamic_list" animation="1000" class="categories" group="categories"
                    handle=".category__handle" item-key="id" @choose="toggleNoDrag" @unchoose="toggleNoDrag"
-                   :class="{no_drag_cat: no_drag}">
+                   :class="{no_drag_cat: no_drag, drag_cat: !no_drag}">
           <template #item="{element}">
             <Category :category="element" :ref="setCategoryRef"/>
           </template>

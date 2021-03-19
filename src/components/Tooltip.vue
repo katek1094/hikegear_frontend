@@ -54,8 +54,8 @@ $medium_width: 220px;
 $large_width: 360px;
 
 @media (hover: hover) and (pointer: fine) {
-  .no_drag_item .content:hover:not(:active) .tooltip,
-  .no_drag_cat .category__header .content:hover:not(:active) .tooltip {
+  .content:hover:not(:active) .tooltip,
+  .content:hover:not(:active) .tooltip {
     height: auto;
     visibility: visible;
     opacity: 1;
@@ -160,5 +160,11 @@ $large_width: 360px;
       border-color: transparent transparent transparent #555;
     }
   }
+  .drag_item .content:hover:not(:active) .tooltip,
+  .drag_cat .category__header .content:hover:not(:active) .tooltip,
+  .drag_cat .my_category__header .content:hover:not(:active) .tooltip {
+    display: none;
+  }
+
 }
 </style>

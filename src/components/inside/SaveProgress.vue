@@ -1,19 +1,24 @@
 <template>
-  <div class="outer">
-    <div v-show="display_bar" class="progress">
-      <div class="bar" :style="{width: progress_bar_width + '%'}"></div>
-    </div>
-    <div v-show="display_spinner" class="spinner"></div>
-    <span v-show="display_info" class="info">
+  <Tooltip :text=tooltip_text size="large">
+    <div class="outer">
+      <div v-show="display_bar" class="progress">
+        <div class="bar" :style="{width: progress_bar_width + '%'}"></div>
+      </div>
+      <div v-show="display_spinner" class="spinner"></div>
+      <span v-show="display_info" class="info">
       <font-awesome-icon class="fa-sm check_icon" icon="check-circle"/>
       zmiany zapisane
     </span>
-  </div>
+    </div>
+  </Tooltip>
 </template>
 
 <script>
+import Tooltip from "@/components/Tooltip";
+
 export default {
   name: "SaveProgress",
+  components: {Tooltip},
   props: {
     data_ready: Boolean,
     are_changes: Boolean
@@ -39,6 +44,10 @@ export default {
     },
     display_info() {
       return this.data_saved && !this.display_spinner && this.saves_counter !== 0
+    },
+    tooltip_text() {
+      return 'zmiany są automatycznie zapisywane po ' + this.timeout / 1000 + ' sekundach od ostatniej edycji lub po ' +
+          'wciśnięciu klawiszy Ctrl + S'
     }
   },
   methods: {

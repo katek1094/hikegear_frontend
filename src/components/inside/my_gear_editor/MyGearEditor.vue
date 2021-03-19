@@ -10,7 +10,8 @@
         <SaveProgress :data_ready="editor_data_ready" :are_changes="are_changes" ref="save_progress" @save="save"/>
       </div>
       <draggable v-model="categories" animation="1000" class="my_categories" group="categories"
-                 handle=".my_category__handle" item-key="id">
+                 handle=".my_category__handle" item-key="id" :class="{no_drag_cat: no_drag, drag_cat: !no_drag}"
+                 @choose="toggleNoDrag" @unchoose="toggleNoDrag">
         <template #item="{element}">
           <MyCategory :category="element" :ref="setCategoryRef"/>
         </template>
@@ -101,9 +102,12 @@ export default {
       save()
     })
 
+    const no_drag = ref(true)
+    const toggleNoDrag = () => no_drag.value = !no_drag.value
+
     return {
-      editor_data_ready, categories, save_progress, are_changes, are_any_backpacks,
-      setCategoryRef, addCategory, save
+      editor_data_ready, categories, save_progress, are_changes, are_any_backpacks, no_drag,
+      setCategoryRef, addCategory, save, toggleNoDrag
     }
   }
 }

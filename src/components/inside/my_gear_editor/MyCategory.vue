@@ -1,11 +1,13 @@
 <template>
   <div class="my_category">
     <div class="my_category__header">
-      <span class="my_category__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
+      <Tooltip text="naciśnij i przeciągnij w inne miejsce" direction="right">
+        <span class="my_category__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
+      </Tooltip>
       <input ref="name_input" v-model.trim="category_name" :maxlength="max_name_length" :size="max_name_length"
              class="category__name" placeholder="nazwa kategorii" type="text">
       <span class="category__weight__label">waga</span>
-      <Tooltip text="usuń kategorię" direction="left">
+      <Tooltip text="usuń kategorię" direction="left" size="small">
         <button :class="{deletable: !is_the_only_category, invisible: is_the_only_category}" class="category__delete"
                 type="button"
                 @click="displayDeleteDialog">
@@ -13,11 +15,12 @@
         </button>
       </Tooltip>
       <ConfirmationDialog ref="confirmation_dialog" @confirmed="deleteCategory">
-        <template v-slot:header>na pewno chcesz usunąć tą kategorię?</template>
+        <template v-slot:header>na pewno chcesz usunąć tę kategorię?</template>
       </ConfirmationDialog>
     </div>
     <draggable v-model="items" animation="700" class="my_items" group="items" item-key="id" handle=".my_item__handle"
-               emptyInsertThreshold="5  0">
+               emptyInsertThreshold="50" :class="{no_drag_item: no_drag, drag_item: !no_drag}" @choose="toggleNoDrag"
+               @unchoose="toggleNoDrag">
       <template #item="{element}">
         <MyItem :item="element" :category_id="category.id" :ref="setItemRef"/>
       </template>
@@ -87,10 +90,13 @@ export default {
 
     onBeforeUpdate(() => items_refs.value = [])
 
+    const no_drag = ref(true)
+    const toggleNoDrag = () => no_drag.value = !no_drag.value
+
     return {
-      max_name_length, name_input, confirmation_dialog,
+      max_name_length, name_input, confirmation_dialog, no_drag,
       category_name, is_the_only_category, items,
-      addItem, deleteCategory, setItemRef, resizeAllItems, focusName, displayDeleteDialog
+      addItem, deleteCategory, setItemRef, resizeAllItems, focusName, displayDeleteDialog, toggleNoDrag
     }
   }
 }
@@ -148,8 +154,9 @@ $delete_width: 30px;
   .category__delete, ::v-deep(.item__delete) {
     visibility: hidden;
   }
-  .my_category__header:hover .category__delete.deletable, ::v-deep(.my_item:hover .item__delete),
-  .my_category__header:hover .my_category__handle, ::v-deep(.my_item:hover .my_item__handle), {
+  .no_drag_cat .my_category__header:hover .category__delete.deletable, ::v-deep(.no_drag_item .my_item:hover .item__delete),
+  .no_drag_cat .my_category__header:hover .my_category__handle, ::v-deep(.no_drag_item .my_item:hover .my_item__handle),
+  .sortable-chosen .my_category__header .my_category__handle, ::v-deep(.sortable-chosen.my_item .my_item__handle) {
     visibility: visible;
   }
   .category__delete:hover, ::v-deep(.item__delete:hover) {

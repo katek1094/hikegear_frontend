@@ -7,12 +7,12 @@
                    class="item__name" placeholder="nazwa" @keydown="handleEnter"/>
     <AutoResizable ref="description_input" v-model="item_description" :maxlength="max_description_length"
                    class="item__description" placeholder="opis"/>
-    <Tooltip text="oznacz jako noszony na sobie" direction="top" size="small">
+    <Tooltip :text=worn_tooltip_text direction="top" size="small">
       <button :class="{ checked: item.worn }" :disabled="item.consumable" class="item__worn" @click="switchWorn">
         <font-awesome-icon class="fa-md" icon="child"/>
       </button>
     </Tooltip>
-    <Tooltip text="oznacz jako konsumpcyjny" direction="top" size="small">
+    <Tooltip :text=consumable_tooltip_text direction="top" size="small">
       <button :class="{ checked: item.consumable }" :disabled="item.worn" class="item__consumable"
               @click="switchConsumable">
         <font-awesome-icon class="fa-md" icon="sync-alt"/>
@@ -139,10 +139,21 @@ export default {
     }
     const focusName = () => name_input.value.$el.focus()
 
+    const worn_tooltip_text = computed(() => {
+      if (props.item.worn) return 'oznaczony jako noszony na sobie'
+      else if (!props.item.consumable) return 'oznacz jako noszony na sobie'
+      else return 'przedmiot nie może być oznaczony jako konsumpcyjny i noszony na sobie na raz!'
+    })
+    const consumable_tooltip_text = computed(() => {
+      if (props.item.consumable) return 'oznaczony jako konsumpcyjny'
+      else if (!props.item.worn) return 'oznacz jako konsumpcyjny'
+      else return 'przedmiot nie może być oznaczony jako noszony na sobie i konsumpcyjny na raz!'
+    })
+
     return {
       weight_limit, quantity_limit, max_name_length, max_description_length, //data
       name_input, description_input, weight_input, quantity_input,  //refs
-      item_name, item_description, item_weight, item_quantity, //computed
+      item_name, item_description, item_weight, item_quantity, worn_tooltip_text, consumable_tooltip_text, //computed
       switchWorn, switchConsumable, deleteItem, preventNumericChars, resizeAll, removeLeadingZero, fillWithZero,
       handleEnter, focusName  //methods
     }
@@ -174,7 +185,7 @@ export default {
   .item__worn, .item__consumable {
     visibility: hidden;
   }
-  .no_drag .item:hover .item__worn, .no_drag .item:hover .item__consumable {
+  .no_drag_item .item:hover .item__worn, .no_drag_item .item:hover .item__consumable {
     visibility: visible;
   }
   .item__worn:hover:enabled, .item__consumable:hover:enabled {

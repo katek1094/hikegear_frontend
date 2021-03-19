@@ -1,6 +1,8 @@
 <template>
   <div class="my_item">
+    <Tooltip text="naciśnij i przeciągnij w inne miejsce" direction="right">
     <span class="my_item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
+    </Tooltip>
     <AutoResizable ref="name_input" v-model.trim="item_name" :maxlength="max_name_length" :prevent-enter="true"
                    class="item__name" placeholder="nazwa" @keydown="handleEnter"/>
     <AutoResizable ref="description_input" v-model="item_description" :maxlength="max_description_length"
@@ -8,7 +10,7 @@
     <input ref='weight_input' v-model.number="item_weight" :max="weight_limit" class="item__weight" min="0"
            name="item_weight" type="number" @blur="fillWithZero" @input="removeLeadingZero"
            @keydown="preventNumericChars">
-    <Tooltip text="usuń przedmiot" direction="left">
+    <Tooltip text="usuń przedmiot" direction="left" size="small">
     <button class="item__delete" type="button" @click="deleteItem">
       <font-awesome-icon class="fa-sm" icon="trash"/>
     </button>

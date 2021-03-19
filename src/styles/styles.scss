@@ -96,7 +96,7 @@ $second_threshold: ($my_gear_min_width + $editor_big_width
   font-size: 1.15rem;
 
   @media (hover: hover) and (pointer: fine) {
-    .no_drag_item &:hover, .no_drag_cat &:hover {
+    .no_drag_item &:hover, .no_drag_cat &:hover{
       background-color: white;
     }
     visibility: hidden;

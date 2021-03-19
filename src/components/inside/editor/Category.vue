@@ -16,12 +16,12 @@
         </button>
       </Tooltip>
       <ConfirmationDialog ref="confirmation_dialog" @confirmed="deleteCategory">
-        <template v-slot:header>na pewno chcesz usunąć tą kategorię?</template>
+        <template v-slot:header>na pewno chcesz usunąć tę kategorię?</template>
       </ConfirmationDialog>
     </div>
     <draggable v-model="items" animation="700" class="items" :group="{name: 'items', pull: pullPolicy, put: ['items']}"
                item-key="id" handle=".item__handle" emptyInsertThreshold="50" @choose="toggleNoDrag"
-               @unchoose="toggleNoDrag" :class="{no_drag_item: no_drag}">
+               @unchoose="toggleNoDrag" :class="{no_drag_item: no_drag, drag_item: !no_drag}">
       <template #item="{element}">
         <Item :item="element" :category_id="category.id" :ref="setItemRef"/>
       </template>
@@ -114,7 +114,7 @@ export default {
     onBeforeUpdate(() => items_refs.value = [])
 
     const no_drag = ref(true)
-    const toggleNoDrag= () => no_drag.value = !no_drag.value
+    const toggleNoDrag = () => no_drag.value = !no_drag.value
 
     return {
       max_name_length, name_input, confirmation_dialog, no_drag,
@@ -181,7 +181,8 @@ $delete_width: 30px;
     visibility: hidden;
   }
   .no_drag_cat .category__header:hover .category__delete.deletable, ::v-deep(.no_drag_item .item:hover .item__delete),
-  .no_drag_cat .category__header:hover .category__handle, ::v-deep(.no_drag_item .item:hover .item__handle), {
+  .no_drag_cat .category__header:hover .category__handle, ::v-deep(.no_drag_item .item:hover .item__handle),
+  .sortable-chosen .category__header .category__handle, ::v-deep(.sortable-chosen.item .item__handle) {
     visibility: visible;
   }
   .category__delete:hover, ::v-deep(.item__delete:hover) {

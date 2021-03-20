@@ -1,15 +1,15 @@
 <template>
-  <LandingPage>
+  <OutsideBaseApp>
     <h1>podany adres nie istnieje</h1>
     <p>{{data}}</p>
-  </LandingPage>
+  </OutsideBaseApp>
 </template>
 
 <script>
-import LandingPage from "@/components/outside/LandingPage";
+import OutsideBaseApp from "@/components/outside/OutsideBaseApp";
 export default {
 name: "NotFound",
-  components: {LandingPage},
+  components: {OutsideBaseApp},
   computed: {
     data() {
       return this.$route.path

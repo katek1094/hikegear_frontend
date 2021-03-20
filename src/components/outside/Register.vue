@@ -1,5 +1,5 @@
 <template>
-  <LandingPage>
+  <OutsideBaseApp>
     <form class="auth__form" @submit.prevent="submitForm">
       <h2>Rejestracja</h2>
       <input id="registration-email" ref="email" v-model.trim="email"
@@ -24,17 +24,17 @@
       <button v-show="!waiting_for_response" id="register-submit" class="auth__submit" type="submit">zarejestruj</button>
       <div v-if="waiting_for_response" class="spinner"></div>
     </form>
-  </LandingPage>
+  </OutsideBaseApp>
 </template>
 
 <script>
-import LandingPage from "@/components/outside/LandingPage";
+import OutsideBaseApp from "@/components/outside/OutsideBaseApp";
 import {apiFetch} from "@/functions";
 import Constants from "@/constants";
 
 export default {
   name: "Register",
-  components: {LandingPage},
+  components: {OutsideBaseApp},
   data() {
     return {
       email: '',

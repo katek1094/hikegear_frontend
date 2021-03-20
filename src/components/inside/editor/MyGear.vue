@@ -1,7 +1,7 @@
 <template>
   <div class="my-gear_frame" :class="{no_drag_my_item: no_drag, drag_my_item: !no_drag, minimized: minimized}">
     <div class="header">
-      <h2>mój sprzęt</h2>
+      <h3>mój sprzęt</h3>
       <div class="minimize" @click="toggleMinimized">
         <font-awesome-icon v-if="minimized" class="fa-sm minimize_icon" icon="window-maximize"/>
         <font-awesome-icon v-else class="fa-sm minimize_icon" icon="window-minimize"/>
@@ -38,11 +38,14 @@ import {useStore} from 'vuex'
 export default {
   name: "MyGear",
   components: {Tooltip, draggable},
-  setup() {
+  setup(props, {emit}) {
     const store = useStore()
 
     const minimized = ref(false)
-    const toggleMinimized = () => minimized.value = !minimized.value
+    const toggleMinimized = () => {
+      emit('toggle_minimize')
+      minimized.value = !minimized.value
+    }
 
     const elements = computed(() => {
       const categories = store.getters['my_gear/dynamic_list']
@@ -82,27 +85,27 @@ export default {
   background: $windows_color;
   max-width: $my_gear_max_width;
   min-width: $my_gear_min_width;
-  max-height: 90vh;
+  max-height: 92vh;
   border-radius: 4px;
   position: -webkit-sticky;
   position: sticky;
-  top: 5vh;
+  top: 4vh;
   padding: 8px;
   box-sizing: border-box;
   @include flex-column-center;
   overflow: hidden;
+  justify-self: end;
 
   &.minimized {
     min-width: 0;
-    //width: 18rem;
     padding-bottom: 0;
+    width: 12rem;
   }
 }
 
 .header {
   display: flex;
   justify-content: center;
-  width: 100%;
 }
 
 .minimize {
@@ -163,7 +166,7 @@ export default {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .sortable-chosen.my-item:hover .item__handle, .no_drag_my_item .my-item:hover .item__handle,  {
+  .sortable-chosen.my-item:hover .item__handle, .no_drag_my_item .my-item:hover .item__handle, {
     visibility: visible;
   }
 }

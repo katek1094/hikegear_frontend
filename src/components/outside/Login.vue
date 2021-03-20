@@ -1,5 +1,5 @@
 <template>
-  <LandingPage>
+  <OutsideBaseApp>
     <div>
       <form class="auth__form" @submit.prevent="submitForm">
         <h2 class="auth__title">Logowanie</h2>
@@ -37,16 +37,16 @@
         <a :href="password_reset_url" class="login__option login__forgot_password" type="button">nie pamiętam hasła</a>
       </form>
     </div>
-  </LandingPage>
+  </OutsideBaseApp>
 </template>
 
 <script>
-import LandingPage from "@/components/outside/LandingPage";
+import OutsideBaseApp from "@/components/outside/OutsideBaseApp";
 import Constants from '@/constants'
 
 export default {
   name: "Login",
-  components: {LandingPage},
+  components: {OutsideBaseApp},
   data() {
     return {
       email: '',

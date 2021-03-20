@@ -1,5 +1,5 @@
 <template>
-  <LandingPage>
+  <OutsideBaseApp>
     <div class="wrapper">
       <div>
         <h1>Twoje konto zostało utworzone!</h1>
@@ -11,15 +11,15 @@
           konto i umożliwi rozpoczęcie procesu rejestracji od nowa. </p>
       </div>
     </div>
-  </LandingPage>
+  </OutsideBaseApp>
 </template>
 
 <script>
-import LandingPage from "@/components/outside/LandingPage";
+import OutsideBaseApp from "@/components/outside/OutsideBaseApp";
 
 export default {
   name: "VerifyYourEmail",
-  components: {LandingPage}
+  components: {OutsideBaseApp}
 }
 </script>
 

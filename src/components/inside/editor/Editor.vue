@@ -1,33 +1,31 @@
 <template>
   <InsideBaseApp>
-    <div v-if="editor_data_ready" class="wrapper">
-      <div class="b_list_and_options">
-        <div class="backpack__list">
-          <div class="backpack__list__item" v-for="(backpack, index) in backpacks" :key="backpack.id">
+    <div v-if="editor_data_ready" class="wrapper" :class="{my_gear_minimized: my_gear_minimized}">
+      <div class="backpack__list">
+        <div class="backpack__list__item" v-for="(backpack, index) in backpacks" :key="backpack.id">
             <span v-if="backpack.name !== ''" :class="{active: backpack.id === backpack_id}"
                   @click="changeBackpack(index)">{{ backpack.name }}</span>
-            <span v-if="backpack.name === ''" :class="{active: backpack.id === backpack_id}"
-                  @click="changeBackpack(index)">bez nazwy</span>
-            <Tooltip text="usuń plecak" direction="right" class="backpack__delete__tooltip" size="small">
-              <button v-if="backpack.id === backpack_id" class="backpack__delete" type="button"
-                      @click="displayConfirmationDialog">
-                <font-awesome-icon class="fa-sm" icon="trash"/>
-              </button>
-            </Tooltip>
-            <ConfirmationDialog ref="confirmation_dialog" @confirmed="deleteBackpack">
-              <template v-slot:header>na pewno chcesz usunąć ten plecak?</template>
-            </ConfirmationDialog>
-          </div>
-          <div class="backpack_buttons">
-            <button class="add-backpack" type="button" @click="addBackpack">
-              <font-awesome-icon class="fa-md" icon="plus"/>
-              dodaj plecak
+          <span v-if="backpack.name === ''" :class="{active: backpack.id === backpack_id}"
+                @click="changeBackpack(index)">bez nazwy</span>
+          <Tooltip text="usuń plecak" direction="right" class="backpack__delete__tooltip" size="small">
+            <button v-if="backpack.id === backpack_id" class="backpack__delete" type="button"
+                    @click="displayConfirmationDialog">
+              <font-awesome-icon class="fa-sm" icon="trash"/>
             </button>
-            <button class="import-backpack" type="button" @click="$refs.lpImport.openModal">
-              <font-awesome-icon class="fa-md" icon="cloud-download-alt"/>
-              importuj
-            </button>
-          </div>
+          </Tooltip>
+          <ConfirmationDialog ref="confirmation_dialog" @confirmed="deleteBackpack">
+            <template v-slot:header>na pewno chcesz usunąć ten plecak?</template>
+          </ConfirmationDialog>
+        </div>
+        <div class="backpack_buttons">
+          <button class="add-backpack" type="button" @click="addBackpack">
+            <font-awesome-icon class="fa-md" icon="plus"/>
+            dodaj plecak
+          </button>
+          <button class="import-backpack" type="button" @click="$refs.lpImport.openModal">
+            <font-awesome-icon class="fa-md" icon="cloud-download-alt"/>
+            importuj
+          </button>
         </div>
       </div>
       <div class="editor">
@@ -61,7 +59,7 @@
           dodaj kategorię
         </button>
       </div>
-      <MyGear/>
+      <MyGear @toggle_minimize="toggleMinimize"/>
     </div>
     <div v-else class="no_backpacks">
       <p>nie masz żadnych plecaków</p>
@@ -171,7 +169,11 @@ export default {
     useAutoresizeAll(resizeAll)
     const {no_drag, toggleNoDrag} = useNoDrag()
 
+    const my_gear_minimized = ref(false)
+    const toggleMinimize = () => my_gear_minimized.value = !my_gear_minimized.value
+
     return {
+      my_gear_minimized,
       max_backpack_name_length,
       max_backpack_description_length,
       no_drag,
@@ -195,7 +197,8 @@ export default {
       deleteBackpack,
       displayConfirmationDialog,
       save,
-      toggleNoDrag
+      toggleNoDrag,
+      toggleMinimize
     }
   },
 }
@@ -214,8 +217,9 @@ export default {
     padding: 0 $grid_wrapper_padding;
     column-gap: $grid_gap;
     align-items: start;
+
   }
-  .b_list_and_options {
+  .backpack__list {
     grid-column: 1;
     position: -webkit-sticky;
     position: sticky;
@@ -230,8 +234,12 @@ export default {
     padding: 0 $grid_wrapper_padding;
     column-gap: $grid_gap;
     align-items: start;
+
+    &.my_gear_minimized {
+      grid-template-columns: 1fr auto;
+    }
   }
-  .b_list_and_options {
+  .backpack__list {
     grid-column: 1;
   }
   .editor {
@@ -250,6 +258,7 @@ export default {
   .my-gear_frame {
     display: none;
   }
+
 }
 
 .progress {
@@ -264,7 +273,6 @@ export default {
   width: $backpack_list_width;
   min-width: $backpack_list_width;
   box-sizing: border-box;
-  align-self: flex-start;
   margin-bottom: 6px;
 }
 
@@ -324,7 +332,7 @@ export default {
   &:hover {
     color: blue;
     cursor: pointer;
-    transform: scale(1.1);
+    //transform: scale(1.15);
   }
 }
 

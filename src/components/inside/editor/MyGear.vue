@@ -1,11 +1,15 @@
 <template>
-  <div class="my-gear_frame">
+  <div class="my-gear_frame" :class="{no_drag_my_item: no_drag, drag_my_item: !no_drag, minimized: minimized}">
     <div class="header">
       <h2>mój sprzęt</h2>
+      <div class="minimize" @click="toggleMinimized">
+        <font-awesome-icon v-if="minimized" class="fa-sm minimize_icon" icon="window-maximize"/>
+        <font-awesome-icon v-else class="fa-sm minimize_icon" icon="window-minimize"/>
+      </div>
     </div>
     <draggable v-model="elements" :clone="deepCopy" :group="{name: 'items', pull: 'clone', put: ['items']}"
                :sort="false" animation="700" class="my-gear_items" emptyInsertThreshold="30" handle=".item__handle"
-               item-key="id">
+               item-key="id" @choose="toggleNoDrag" @unchoose="toggleNoDrag">
       <template #item="{element}">
         <div v-if="!element.is_item" class="my-category">
           <span class="item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
@@ -27,16 +31,21 @@
 <script>
 import draggable from 'vuedraggable'
 import Tooltip from "@/components/Tooltip";
+import {useNoDrag} from "@/hooks";
+import {ref, computed} from 'vue'
+import {useStore} from 'vuex'
 
 export default {
   name: "MyGear",
   components: {Tooltip, draggable},
-  data() {
-    return {}
-  },
-  computed: {
-    elements() {
-      const categories = this.$store.getters['my_gear/dynamic_list']
+  setup() {
+    const store = useStore()
+
+    const minimized = ref(false)
+    const toggleMinimized = () => minimized.value = !minimized.value
+
+    const elements = computed(() => {
+      const categories = store.getters['my_gear/dynamic_list']
       const result = []
       for (const cat of categories) {
         result.push(cat)
@@ -47,19 +56,23 @@ export default {
         }
       }
       return result
-    }
-  },
-  // TODO: add composition api and no_drag options to hide handle tooltip while dragging
-  methods: {
-    deepCopy(original) {
+    })
+    const deepCopy = (original) => {
       let deep_copy = JSON.parse(JSON.stringify(original))
       return {
         type: 'item', name: deep_copy.name, description: deep_copy.description,
-        weight: deep_copy.weight, id: this.$store.getters['editor/new_item_id'],
+        weight: deep_copy.weight, id: store.getters['editor/new_item_id'],
         worn: false, consumable: false, quantity: 1
       }
-    },
-  }
+    }
+
+    const {no_drag, toggleNoDrag} = useNoDrag()
+    return {
+      minimized, elements, deepCopy, toggleMinimized,
+      no_drag, toggleNoDrag
+    }
+  },
+
 }
 </script>
 
@@ -78,12 +91,37 @@ export default {
   box-sizing: border-box;
   @include flex-column-center;
   overflow: hidden;
+
+  &.minimized {
+    min-width: 0;
+    //width: 18rem;
+    padding-bottom: 0;
+  }
 }
 
 .header {
   display: flex;
   justify-content: center;
-  height: 8vh;
+  width: 100%;
+}
+
+.minimize {
+  width: 24px;
+  height: 24px;
+  border-radius: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 5px;
+  box-sizing: border-box;
+  position: absolute;
+  top: 6px;
+  right: 6px;
+
+  &:hover {
+    background-color: $background;
+    cursor: pointer;
+  }
 }
 
 .my-category {
@@ -114,6 +152,10 @@ export default {
   height: 100%;
   padding: 0 3px;
   box-sizing: border-box;
+
+  .minimized & {
+    display: none;
+  }
 }
 
 .item__handle {
@@ -121,7 +163,7 @@ export default {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .my-item:hover .item__handle {
+  .sortable-chosen.my-item:hover .item__handle, .no_drag_my_item .my-item:hover .item__handle,  {
     visibility: visible;
   }
 }

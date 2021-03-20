@@ -1,19 +1,19 @@
 <template>
-  <BaseApp>
+  <InsideBaseApp>
     <div class="settings">
       <button class="logout" @click="logout">wyloguj</button>
       <ChangePassword/>
     </div>
-  </BaseApp>
+  </InsideBaseApp>
 </template>
 
 <script>
-import BaseApp from "@/components/inside/BaseApp";
+import InsideBaseApp from "@/components/inside/InsideBaseApp";
 import ChangePassword from "@/components/inside/ChangePassword";
 
 export default {
   name: "Settings",
-  components: {ChangePassword, BaseApp},
+  components: {ChangePassword, InsideBaseApp},
   methods: {
     logout() {
       this.$store.dispatch('auth/logout')

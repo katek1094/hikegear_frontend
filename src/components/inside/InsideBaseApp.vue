@@ -11,7 +11,7 @@
 import NavBar from "@/components/inside/NavBar";
 
 export default {
-  name: "BaseApp",
+  name: "InsideBaseApp",
   components: {NavBar},
 }
 </script>

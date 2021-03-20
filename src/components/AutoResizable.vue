@@ -38,9 +38,7 @@ export default {
       textarea.style.height = textarea.scrollHeight - padding * 2 + 'px'  // scrollHeight = font size + 2 + padding * 2
     },
     prevent(e) {
-      if (this.preventEnter && e.keyCode === 13) {
-        e.preventDefault()
-      }
+      if (this.preventEnter && e.keyCode === 13) e.preventDefault()
     }
   },
   mounted() {

@@ -1,14 +1,17 @@
 import {ref, onMounted, onBeforeUnmount, onBeforeUpdate} from 'vue'
 import {useStore} from 'vuex'
+import Constants from '@/constants'
 
 export function useNoDrag() {
     const no_drag = ref(true)
-    const toggleNoDrag = () => no_drag.value = !no_drag.value
+    const toggleNoDrag = () => {
+        no_drag.value = !no_drag.value
+    }
 
     return {no_drag, toggleNoDrag}
 }
 
-export function useAutoresizingAll(resizeAll) {
+export function useAutoresizeAll(resizeAll) {
     if (typeof resizeAll !== 'function') throw 'resizeAll must be a function (argument in useAutoresizingAll)'
     const resizes_counter = ref(0) //every time window is resized, it increments, in handleWindowResize()
     const handleWindowResize = () => {
@@ -77,7 +80,7 @@ export function useConfirmationDialog(confirm_condition_computed = {value: true}
 
 export function useCategory(add_action, add_argument) {
     const store = useStore()
-    const max_name_length = 30
+    const max_name_length = Constants.CATEGORY_MAX_NAME_LENGTH
     const name_input = ref(null) //template ref
     const items_refs = ref([]) //array of template refs created with setItemRef()
     const setItemRef = (el) => {
@@ -101,9 +104,9 @@ export function useCategory(add_action, add_argument) {
 }
 
 export function useItem(item_weight, item_quantity) {
-    const max_name_length = 60
-    const max_description_length = 700
-    const weight_limit = 99999
+    const max_name_length = Constants.ITEM_MAX_NAME_LENGTH
+    const max_description_length = Constants.ITEM_MAX_DESCRIPTION_LENGTH
+    const weight_limit = Constants.ITEM_MAX_WEIGHT
     const name_input = ref(null)  //template ref
     const description_input = ref(null)  //template ref
 

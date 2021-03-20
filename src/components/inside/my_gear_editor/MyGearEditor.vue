@@ -1,5 +1,5 @@
 <template>
-  <BaseApp>
+  <InsideBaseApp>
     <div v-if="editor_data_ready" class="my-gear_editor">
       <div class="options">
         <button v-if="are_any_backpacks" type="button" class="import__gear" @click="$refs.importGear.openModal">
@@ -21,22 +21,22 @@
         dodaj kategorię
       </button>
     </div>
-  </BaseApp>
+  </InsideBaseApp>
 </template>
 
 <script>
-import BaseApp from "@/components/inside/BaseApp";
+import InsideBaseApp from "@/components/inside/InsideBaseApp";
 import draggable from 'vuedraggable'
 import MyCategory from "@/components/inside/my_gear_editor/MyCategory";
 import {useStore} from 'vuex'
 import {computed} from "vue";
 import ImportToMyGear from "@/components/inside/my_gear_editor/ImportToMyGear";
 import SaveProgress from "@/components/inside/SaveProgress";
-import {useAutoresizingAll, useNoDrag, useCategories, useEditor} from "@/hooks/hooks";
+import {useAutoresizeAll, useNoDrag, useCategories, useEditor} from "@/hooks";
 
 export default {
   name: "MyGearEditor",
-  components: {SaveProgress, ImportToMyGear, MyCategory, BaseApp, draggable},
+  components: {SaveProgress, ImportToMyGear, MyCategory, InsideBaseApp, draggable},
   setup() {
     const store = useStore()
 
@@ -63,7 +63,7 @@ export default {
     }
     const {categories_refs, addCategory, setCategoryRef} = useCategories('my_gear/addNewCategory')
     const save_progress = useEditor(are_changes, save, categories_refs, (state) => state.my_gear.dynamic)
-    useAutoresizingAll(resizeAll)
+    useAutoresizeAll(resizeAll)
     const {no_drag, toggleNoDrag} = useNoDrag()
 
     return {

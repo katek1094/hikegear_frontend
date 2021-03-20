@@ -1,5 +1,5 @@
 <template>
-  <BaseApp>
+  <InsideBaseApp>
     <div v-if="editor_data_ready" class="wrapper">
       <div class="b_list_and_options">
         <div class="backpack__list">
@@ -37,6 +37,11 @@
             link do plecaka
           </router-link>
           <SaveProgress :data_ready="editor_data_ready" :are_changes="are_changes" ref="save_progress" @save="save"/>
+          <Tooltip text="jak korzystać z aplikacji?" size="small">
+            <button class="info" type="button" @click="$refs.instruction.openModal">
+              <font-awesome-icon class="fa-md" icon="question"/>
+            </button>
+          </Tooltip>
         </div>
         <AutoResizable ref="backpack_name_input" v-model.trim="backpack_name" :maxlength="max_backpack_name_length"
                        :prevent-enter="true" class="backpack__name" placeholder="nazwa plecaka"/>
@@ -72,14 +77,15 @@
       </div>
     </div>
     <LpImport ref="lpImport"/>
-  </BaseApp>
+    <Instruction ref="instruction"/>
+  </InsideBaseApp>
 </template>
 
 <script>
 import draggable from 'vuedraggable'
 import Category from "@/components/inside/editor/Category";
 import Summary from "@/components/inside/editor/Summary";
-import BaseApp from "@/components/inside/BaseApp";
+import InsideBaseApp from "@/components/inside/InsideBaseApp";
 import AutoResizable from "@/components/AutoResizable";
 import MyGear from "@/components/inside/editor/MyGear";
 import {ref, computed} from 'vue';
@@ -89,18 +95,21 @@ import ConfirmationDialog from "@/components/ConfirmationDialog";
 import SaveProgress from "@/components/inside/SaveProgress";
 import {hashids} from "@/functions";
 import Tooltip from "@/components/Tooltip";
-import {useNoDrag, useAutoresizingAll, useCategories, useEditor, useConfirmationDialog} from "@/hooks/hooks";
+import {useNoDrag, useAutoresizeAll, useCategories, useEditor, useConfirmationDialog} from "@/hooks";
+import Instruction from "@/components/inside/editor/Instruction";
+import Constants from '@/constants'
 
 export default {
   name: "Editor",
   components: {
+    Instruction,
     Tooltip,
     SaveProgress,
     ConfirmationDialog,
     LpImport,
     MyGear,
     AutoResizable,
-    BaseApp,
+    InsideBaseApp,
     Summary,
     Category,
     draggable
@@ -108,8 +117,8 @@ export default {
   setup() {
     const store = useStore()
 
-    const max_backpack_name_length = ref(60)
-    const max_backpack_description_length = ref(1000)
+    const max_backpack_name_length = Constants.BACKPACK_MAX_NAME_LENGTH
+    const max_backpack_description_length = Constants.BACKPACK_MAX_DESCRIPTION_LENGTH
 
     const backpack_name_input = ref(null)  //template ref
     const backpack_description_input = ref(null)  //template ref
@@ -159,7 +168,7 @@ export default {
     }
     const {categories_refs, addCategory, setCategoryRef} = useCategories('editor/addCategory')
     const save_progress = useEditor(are_changes, save, categories_refs, (state) => state.editor.dynamic)
-    useAutoresizingAll(resizeAll)
+    useAutoresizeAll(resizeAll)
     const {no_drag, toggleNoDrag} = useNoDrag()
 
     return {
@@ -220,6 +229,7 @@ export default {
     justify-items: center;
     padding: 0 $grid_wrapper_padding;
     column-gap: $grid_gap;
+    align-items: start;
   }
   .b_list_and_options {
     grid-column: 1;
@@ -299,6 +309,22 @@ export default {
 
   &:hover {
     text-decoration: underline;
+  }
+}
+
+.info {
+  color: black;
+  border-radius: 50%;
+  outline: none;
+  border: none;
+  width: 36px;
+  height: 36px;
+  font-size: 1rem;
+
+  &:hover {
+    color: blue;
+    cursor: pointer;
+    transform: scale(1.1);
   }
 }
 

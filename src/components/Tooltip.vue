@@ -32,6 +32,13 @@ export default {
   display: flex;
   position: relative;
 }
+.my-gear_items .content {
+  position: static;
+
+  &:hover {
+    position: relative;
+  }
+}
 
 $arrow_width: 5px;
 .tooltip {
@@ -54,7 +61,6 @@ $medium_width: 220px;
 $large_width: 360px;
 
 @media (hover: hover) and (pointer: fine) {
-  .content:hover:not(:active) .tooltip,
   .content:hover:not(:active) .tooltip {
     height: auto;
     visibility: visible;
@@ -162,9 +168,9 @@ $large_width: 360px;
   }
   .drag_item .content:hover:not(:active) .tooltip,
   .drag_cat .category__header .content:hover:not(:active) .tooltip,
-  .drag_cat .my_category__header .content:hover:not(:active) .tooltip {
+  .drag_cat .my_category__header .content:hover:not(:active) .tooltip,
+  .drag_my_item .tooltip {
     display: none;
   }
-
 }
 </style>

@@ -30,6 +30,7 @@
 <script>
 import LandingPage from "@/components/outside/LandingPage";
 import {apiFetch} from "@/functions";
+import Constants from "@/constants";
 
 export default {
   name: "Register",
@@ -42,8 +43,8 @@ export default {
       email_blurred: false,
       password1_blurred: false,
       password2_blurred: false,
-      min_password_length: 8,
-      max_password_length: 30,
+      min_password_length: Constants.PASSWORD_MIN_LENGTH,
+      max_password_length: Constants.PASSWORD_MAX_LENGTH,
       email_info: '',
       password_info: '',
       email_activated: false,

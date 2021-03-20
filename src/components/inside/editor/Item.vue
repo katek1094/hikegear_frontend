@@ -37,7 +37,8 @@ import AutoResizable from "@/components/AutoResizable";
 import {ref, computed} from 'vue';
 import {useStore} from 'vuex';
 import Tooltip from "@/components/Tooltip";
-import {useItem} from "@/hooks/hooks";
+import {useItem} from "@/hooks";
+import Constants from '@/constants'
 
 export default {
   name: "Item",
@@ -52,7 +53,7 @@ export default {
   setup(props) {
     const store = useStore()
 
-    const quantity_limit = 99
+    const quantity_limit = Constants.ITEM_MAX_QUANTITY
     const weight_input = ref(null)  //template ref
     const quantity_input = ref(null)  //template ref
 
@@ -113,17 +114,8 @@ export default {
     })
 
     const {
-      weight_limit,
-      max_name_length,
-      max_description_length,
-      name_input,
-      description_input,
-      focusName,
-      handleEnter,
-      fillWithZero,
-      removeLeadingZero,
-      resizeAll,
-      preventNumericChars
+      weight_limit, max_name_length, max_description_length, name_input, description_input,
+      focusName, handleEnter, fillWithZero, removeLeadingZero, resizeAll, preventNumericChars
     } = useItem(item_weight, item_quantity)
 
     const worn_tooltip_text = computed(() => {

@@ -41,7 +41,7 @@ import {useStore} from "vuex";
 import {computed} from "vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import Tooltip from "@/components/Tooltip";
-import {useNoDrag, useConfirmationDialog, useCategory} from "@/hooks/hooks";
+import {useNoDrag, useConfirmationDialog, useCategory} from "@/hooks";
 
 export default {
   name: "MyCategory",

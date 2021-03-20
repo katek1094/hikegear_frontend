@@ -42,6 +42,7 @@
 
 <script>
 import LandingPage from "@/components/outside/LandingPage";
+import Constants from '@/constants'
 
 export default {
   name: "Login",
@@ -50,8 +51,8 @@ export default {
     return {
       email: '',
       password: '',
-      min_password_length: 8,
-      max_password_length: 128,
+      min_password_length: Constants.PASSWORD_MIN_LENGTH,
+      max_password_length: Constants.PASSWORD_MAX_LENGTH,
       email_blurred: false,
       password_blurred: false,
       email_activated: false,

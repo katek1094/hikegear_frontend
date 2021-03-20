@@ -28,6 +28,7 @@
 
 <script>
 import {apiFetch} from "@/functions";
+import Constants from '@/constants'
 
 export default {
   name: "ChangePassword",
@@ -36,8 +37,8 @@ export default {
       password: '',
       new_password1: '',
       new_password2: '',
-      min_password_length: 8,
-      max_password_length: 30,
+      min_password_length: Constants.PASSWORD_MIN_LENGTH,
+      max_password_length: Constants.PASSWORD_MAX_LENGTH,
       password_blurred: false,
       new_password1_blurred: false,
       new_password2_blurred: false,

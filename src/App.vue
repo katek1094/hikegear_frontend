@@ -20,7 +20,7 @@ export default {
 html {
   //min-width: 320px;
   //max-width: 100vw;
-  //overflow-x: hidden;
+  overflow-x: hidden;
 }
 
 body {
@@ -47,6 +47,8 @@ body {
   /* smartphones, Android phones, landscape iPhone */
   html {
     font-size: 15px;
+  }
+  html, textarea {
     color: deepskyblue;
   }
 }
@@ -55,6 +57,8 @@ body {
   /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
   html {
     font-size: 16px;
+  }
+  html, textarea {
     color: green;
   }
 }
@@ -63,6 +67,8 @@ body {
   /* tablet, landscape iPad, lo-res laptops ands desktops */
   html {
     font-size: 17px;
+  }
+  html, textarea {
     color: red;
   }
 }
@@ -71,6 +77,8 @@ body {
   /* big landscape tablets, laptops, and desktops */
   html {
     font-size: 17px;
+  }
+  html, textarea {
     color: blue;
   }
 }
@@ -79,6 +87,8 @@ body {
   /* hi-res laptops and desktops */
   html {
     font-size: 17px;
+  }
+  html, textarea {
     color: black;
   }
 }

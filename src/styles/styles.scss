@@ -14,7 +14,7 @@ $grey5: #cbcbc7;
 //some random colors
 $color_a: $white1; // my_gear categories in window in editor, dirty white
 
-//colors used in components
+//colors used in components TODO: write all colors in hexcodes, take better from browser
 $background: $grey1;
 $windows_color: $grey3;
 
@@ -22,28 +22,38 @@ $nav_height: 50px;
 $nav_color: $grey4;
 //variables used in components
 
-$my_gear_min_width: 270px;
-$my_gear_max_width: 550px;
+$editor_enough_width: 620px;
+$editor_big_width: 760px;
 
-$backpack_list_width: 300px;
 
-$editor_big_width: 660px;
+$my_gear_min_width: 320px;
+$my_gear_max_width: 560px;
+$my_gear_minimized_width: 180px;
+
+
+$backpack_list_min_width: 300px;
+$backpack_list_max_width: 440px;
+
 
 $grid_gap: 8px;
 $grid_wrapper_padding: 4px;
 
-$first_threshold: ($my_gear_max_width + $backpack_list_width + $editor_big_width
+$third_threshold: ($my_gear_max_width + $backpack_list_min_width + $editor_big_width
 + 2 * $grid_wrapper_padding + 2 * $grid_gap);
 
-$second_threshold: ($my_gear_min_width + $editor_big_width
+$second_threshold: ($my_gear_max_width + $editor_big_width
 + $grid_wrapper_padding + $grid_gap);
+
+$first_threshold: ($my_gear_min_width + $editor_enough_width
++ $grid_wrapper_padding + $grid_gap);
+
 
 $category-item_grid_handle_width: auto;
 $category-item_grid_weight_width: 3rem;
 $category-item_grid_delete_width: 30px;
 
+$category-item_font_size: .8rem;
 
-//reset
 
 //general mixins
 @mixin flex-column-center {
@@ -54,6 +64,22 @@ $category-item_grid_delete_width: 30px;
 
 
 //EDITORS AND SORTABLE MIXINS
+@mixin editor {
+  padding-bottom: 30px;
+  @include flex-column-center;
+
+  &__options {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  &__wrapper {
+    @include flex-column-center;
+  }
+}
+
 @mixin editor-add {
   margin: 4px;
   border: none;
@@ -63,9 +89,11 @@ $category-item_grid_delete_width: 30px;
   font-size: .85rem;
   justify-self: flex-start;
 
-  &:hover {
-    text-decoration: underline;
-    cursor: pointer;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
   }
 }
 
@@ -137,22 +165,49 @@ $category-item_grid_delete_width: 30px;
     width: 100%;
     box-sizing: border-box;
   }
-
   &__header {
     @include category-item_grid;
     font-size: 1rem;
   }
-
   &__footer {
     @include category-item_grid;
   }
-
   &__handle {
     @include sort-handle;
   }
-
   &__add-item {
     @include editor-add;
+  }
+  &__delete {
+    @include editor-delete;
+  }
+  &__weight_label {
+    font-size: $category-item_font_size;
+    @include editor-input_and_label;
+    align-self: flex-end;
+  }
+}
+
+@mixin editor-item {
+  &:not(:last-child) {
+    border-bottom: 1px dotted grey;
+  }
+  // code below removes arrows from weight inputs
+  &__weight::-webkit-outer-spin-button,
+  &__weight::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+  &__weight[type=number] {
+    -moz-appearance: textfield;
+  }
+  &__handle {
+    @include sort-handle;
+  }
+  &__delete {
+    @include editor-delete;
+  }
+  &__name, &__description, &__weight {
+    @include editor-input__field;
   }
 }
 
@@ -185,6 +240,7 @@ $category-item_grid_delete_width: 30px;
   outline: none;
   padding: 7px;
   border: 1px solid white;
+  box-shadow: none;  // for mozilla firefox required field red shadow
 
   &:focus {
     border: 1px solid black;

@@ -100,7 +100,7 @@ export default {
 .backpack {
   padding-bottom: 30px;
   @include flex-column-center;
-  max-width: 100%;
+  width: 96%;
 }
 
 .backpack__name, .category__name, .item__name, .item__description,
@@ -196,31 +196,39 @@ $quantity_width: 2rem;
   margin: 0 3px;
 }
 
-@media (max-width: 479px) {
-  /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
-  .backpack {
-    width: 100%;
-  }
-}
-
 @media (min-width: 480px) {
   /* smartphones, Android phones, landscape iPhone */
   .backpack {
-    width: 480px;
+    width: 96%;
   }
 }
 
 @media (min-width: 600px) {
   /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
+
+}
+
+@media (min-width: $editor_enough_width + 60px) {
   .backpack {
-    width: 560px;
+    width: 92%;
+  }
+}
+
+@media (min-width: 801px) {
+  /* tablet, landscape iPad, lo-res laptops ands desktops */
+  .backpack {
+    width: 86%;
+    max-width: 800px;
   }
 }
 
 @media (min-width: 1025px) {
   /* big landscape tablets, laptops, and desktops */
-  .backpack {
-    width: 640px;
-  }
+
+}
+
+@media (min-width: 1281px) {
+  /* hi-res laptops and desktops */
+
 }
 </style>

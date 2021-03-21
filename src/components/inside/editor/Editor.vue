@@ -2,33 +2,33 @@
   <InsideBaseApp>
     <div v-if="editor_data_ready" class="editor__wrapper" :class="{my_gear_minimized: my_gear_minimized}">
       <!--      BACKPACKS LIST-->
-      <div class="backpacks_list">
-        <div class="backpacks_list__item" v-for="(backpack, index) in backpacks" :key="backpack.id">
-          <span v-if="backpack.name !== ''" :class="{active: backpack.id === backpack_id}"
-                class="backpacks_list__item__name" @click="changeBackpack(index)">{{ backpack.name }}</span>
-          <span v-else :class="{active: backpack.id === backpack_id}" class="backpacks_list__item__name"
-                @click="changeBackpack(index)">bez nazwy</span>
-          <Tooltip text="usuń plecak" direction="right" size="small">
-            <button v-if="backpack.id === backpack_id" class="backpacks_list__delete" type="button"
-                    @click="displayConfirmationDialog">
-              <font-awesome-icon class="fa-sm" icon="trash"/>
-            </button>
-          </Tooltip>
-          <ConfirmationDialog ref="confirmation_dialog" @confirmed="deleteBackpack">
-            <template v-slot:header>na pewno chcesz usunąć ten plecak?</template>
-          </ConfirmationDialog>
-        </div>
-        <div class="backpacks_list__buttons">
-          <button class="add_backpack" type="button" @click="addBackpack">
-            <font-awesome-icon class="fa-md" icon="plus"/>
-            dodaj plecak
-          </button>
-          <button class="import_backpack" type="button" @click="$refs.lpImport.openModal">
-            <font-awesome-icon class="fa-md" icon="cloud-download-alt"/>
-            importuj
-          </button>
-        </div>
-      </div>
+<!--      <div class="backpacks_list">-->
+<!--        <div class="backpacks_list__item" v-for="(backpack, index) in backpacks" :key="backpack.id">-->
+<!--          <span v-if="backpack.name !== ''" :class="{active: backpack.id === backpack_id}"-->
+<!--                class="backpacks_list__item__name" @click="changeBackpack(index)">{{ backpack.name }}</span>-->
+<!--          <span v-else :class="{active: backpack.id === backpack_id}" class="backpacks_list__item__name"-->
+<!--                @click="changeBackpack(index)">bez nazwy</span>-->
+<!--          <Tooltip text="usuń plecak" direction="right" size="small">-->
+<!--            <button v-if="backpack.id === backpack_id" class="backpacks_list__delete" type="button"-->
+<!--                    @click="displayConfirmationDialog">-->
+<!--              <font-awesome-icon class="fa-sm" icon="trash"/>-->
+<!--            </button>-->
+<!--          </Tooltip>-->
+<!--          <ConfirmationDialog ref="confirmation_dialog" @confirmed="deleteBackpack">-->
+<!--            <template v-slot:header>na pewno chcesz usunąć ten plecak?</template>-->
+<!--          </ConfirmationDialog>-->
+<!--        </div>-->
+<!--        <div class="backpacks_list__buttons">-->
+<!--          <button class="add_backpack" type="button" @click="addBackpack">-->
+<!--            <font-awesome-icon class="fa-md" icon="plus"/>-->
+<!--            dodaj plecak-->
+<!--          </button>-->
+<!--          <button class="import_backpack" type="button" @click="$refs.lpImport.openModal">-->
+<!--            <font-awesome-icon class="fa-md" icon="cloud-download-alt"/>-->
+<!--            importuj-->
+<!--          </button>-->
+<!--        </div>-->
+<!--      </div>-->
       <!--      EDITOR-->
       <div class="editor">
         <div class="editor__options">
@@ -45,7 +45,7 @@
         </div>
         <AutoResizable ref="backpack_name_input" v-model.trim="backpack_name" :maxlength="max_backpack_name_length"
                        :prevent-enter="true" class="backpack__name" placeholder="nazwa plecaka"/>
-        <Summary :summary_data="summary_data"/>
+<!--        <Summary :summary_data="summary_data"/>-->
         <AutoResizable ref="backpack_description_input" v-model.trim="backpack_description"
                        :maxlength="max_backpack_description_length" class="backpack__description"
                        placeholder="opis plecaka"/>
@@ -62,7 +62,7 @@
         </button>
       </div>
       <!--      MY GEAR-->
-      <MyGear @toggle_minimize="toggleMinimize"/>
+<!--      <MyGear @toggle_minimize="toggleMinimize"/>-->
     </div>
     <!--    NO BACKPACKS-->
     <div v-else class="no_backpacks">
@@ -87,14 +87,14 @@
 <script>
 import draggable from 'vuedraggable'
 import Category from "@/components/inside/editor/Category";
-import Summary from "@/components/inside/editor/Summary";
+// import Summary from "@/components/inside/editor/Summary";
 import InsideBaseApp from "@/components/inside/InsideBaseApp";
 import AutoResizable from "@/components/AutoResizable";
-import MyGear from "@/components/inside/editor/MyGear";
+// import MyGear from "@/components/inside/editor/MyGear";
 import {ref, computed} from 'vue';
 import {useStore} from 'vuex';
 import LpImport from "@/components/inside/editor/LpImport";
-import ConfirmationDialog from "@/components/ConfirmationDialog";
+// import ConfirmationDialog from "@/components/ConfirmationDialog";
 import SaveProgress from "@/components/inside/SaveProgress";
 import {hashids} from "@/functions";
 import Tooltip from "@/components/Tooltip";
@@ -108,12 +108,12 @@ export default {
     Instruction,
     Tooltip,
     SaveProgress,
-    ConfirmationDialog,
+    // ConfirmationDialog,
     LpImport,
-    MyGear,
+    // MyGear,
     AutoResizable,
     InsideBaseApp,
-    Summary,
+    // Summary,
     Category,
     draggable
   },
@@ -210,72 +210,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-.editor__wrapper {
-  @include flex-column-center;
-}
-
-//@media (min-width: $first_threshold) {
-//  .editor__wrapper {
-//    display: grid;
-//    grid-template-columns: auto auto auto;
-//    justify-items: center;
-//    padding: 0 $grid_wrapper_padding;
-//    column-gap: $grid_gap;
-//    align-items: start;
-//
-//  }
-//  .backpacks_list {
-//    grid-column: 1;
-//    position: -webkit-sticky;
-//    position: sticky;
-//    top: 5vh;
-//  }
-//}
-//
-//@media (min-width: $second_threshold) and (max-width: $first_threshold - 1px) {
-//  .editor__wrapper {
-//    display: grid;
-//    justify-items: center;
-//    padding: 0 $grid_wrapper_padding;
-//    column-gap: $grid_gap;
-//    align-items: start;
-//
-//    &.my_gear_minimized {
-//      grid-template-columns: 1fr auto;
-//    }
-//  }
-//  .backpacks_list {
-//    grid-column: 1;
-//  }
-//  .editor {
-//    grid-column: 1;
-//  }
-//  .my-gear_frame {
-//    grid-column: 2;
-//    grid-row: 1 / span 2;
-//  }
-//}
-//
-//@media (max-width: $second_threshold - 1px) {
-//  .editor__wrapper {
-//    @include flex-column-center;
-//  }
-//  .my-gear_frame {
-//    display: none;
-//  }
-//
-//}
-//
-
-
 .backpacks_list {
   box-sizing: border-box;
   background-color: $windows_color;
   border-radius: 4px;
   padding: 4px;
   width: 94%;
-  max-width: 440px; // <---------------------------------------------------- check later
+  max-width: $backpack_list_max_width; // <---------------------------------------------------- check later
   margin: 5px 0;
 
   &__item {
@@ -319,11 +260,6 @@ export default {
 }
 
 .editor__options {
-  display: flex;
-  justify-content: space-evenly;
-  width: 100%;
-  margin: 5px 0;
-
   &__link {
     color: black;
     text-decoration: none;
@@ -371,13 +307,11 @@ export default {
 }
 
 .add_backpack, .import_backpack {
-  font-size: 1rem; //  <------------------------------ check later when layout will be ready
+  font-size: 1rem;
 }
 
 .editor {
-  padding-bottom: 30px;
-  @include flex-column-center;
-  //max-width: 100vw;
+  @include editor;
 }
 
 .backpack__name {
@@ -396,26 +330,65 @@ export default {
   padding: 5px;
 }
 
+.categories {
+  width: 100%;
+}
+
 @media (min-width: 480px) {
   /* smartphones, Android phones, landscape iPhone */
-
+  .editor {
+    width: 100%;
+  }
 }
 
 @media (min-width: 600px) {
   /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
-
+  .editor {
+    width: 96%;
+  }
 }
 
-@media (min-width: $editor_big_width + 20px) {
-  /* tablet, landscape iPad, lo-res laptops ands desktops */
-  //.editor, .categories {
-  //  width: $editor_big_width;
-  //}
+@media (min-width: $editor_enough_width + 60px) {
+  .editor {
+    width: 92%;
+  }
 }
 
 @media (min-width: 801px) {
   /* tablet, landscape iPad, lo-res laptops ands desktops */
+  .editor {
+    width: 86%;
+    max-width: 800px;
+  }
+}
 
+@media (min-width: $first_threshold) and (max-width: $third_threshold - 1px) {
+  .editor__wrapper {
+    display: grid;
+    justify-items: center;
+    padding: 0 $grid_wrapper_padding;
+    column-gap: $grid_gap;
+    align-items: start;
+
+    &.my_gear_minimized {
+      grid-template-columns: 1fr $my_gear_minimized_width;
+
+      & .editor {
+        width: 86%;
+      }
+    }
+  }
+  .backpacks_list {
+    grid-column: 1;
+  }
+  .editor {
+    width: 100%;
+    grid-column: 1;
+  }
+  .my-gear_window {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
 }
 
 @media (min-width: 1025px) {
@@ -427,4 +400,33 @@ export default {
   /* hi-res laptops and desktops */
 
 }
+
+@media (min-width: $second_threshold) and (max-width: $third_threshold - 1px) {
+  .editor {
+    max-width: $editor_big_width;
+    width: 100%;
+  }
+}
+@media (min-width: $third_threshold) {
+  .editor {
+    width: 100%;
+    max-width: 900px; // <------------ update also other fields
+  }
+  .editor__wrapper {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-items: center;
+    padding: 0 $grid_wrapper_padding;
+    column-gap: $grid_gap;
+    align-items: start;
+
+  }
+  .backpacks_list {
+    grid-column: 1;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 5vh;
+  }
+}
+
 </style>

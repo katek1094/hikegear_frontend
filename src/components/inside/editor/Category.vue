@@ -6,7 +6,7 @@
       </Tooltip>
       <input ref="name_input" v-model.trim="category_name" :maxlength="max_name_length" :size="max_name_length"
              class="category__name" placeholder="nazwa kategorii" type="text">
-      <span class="category__weight__label">waga</span>
+      <span class="category__weight_label">waga</span>
       <span class="category__quantity__label">ilość</span>
       <Tooltip text="usuń kategorię" direction="left" size="small">
         <button :class="{deletable: !is_the_only_category, invisible: is_the_only_category}" class="category__delete"
@@ -134,7 +134,7 @@ export default {
 
 $worn_consumable_width: auto;
 $weight_width: $category-item_grid_weight_width;
-$quantity_width: auto;  // <----------------------------------------------------------------------- check later
+$quantity_width: auto;
 $delete_width: $category-item_grid_delete_width;
 
 .category__header {
@@ -147,7 +147,7 @@ $delete_width: $category-item_grid_delete_width;
 
 ::v-deep(.item) {
   @include category-item_grid;
-  grid-template-columns: $category-item_grid_handle_width 3fr 4fr repeat(2, $worn_consumable_width) // <-------- check later
+  grid-template-columns: $category-item_grid_handle_width 3fr 4fr repeat(2, $worn_consumable_width)
   $weight_width $quantity_width $delete_width;
 }
 
@@ -159,16 +159,24 @@ $delete_width: $category-item_grid_delete_width;
   @include sort-chosen;
 }
 
-.category__delete, ::v-deep(.item__delete) {
-  @include editor-delete;
-}
-
 @media (hover: hover) and (pointer: fine) {
   .no_drag_cat .category__header:hover .category__delete.deletable, ::v-deep(.no_drag_item .item:hover .item__delete),
   .no_drag_cat .category__header:hover .category__handle, ::v-deep(.no_drag_item .item:hover .item__handle),
   .sortable-chosen .category__header .category__handle, ::v-deep(.sortable-chosen.item .item__handle) {
     visibility: visible;
   }
+}
+
+.category__quantity__label, .category__quantity__total, .category__weight__total, .item {
+  font-size: $category-item_font_size;
+}
+
+.category__quantity__label, .category__quantity__total, .category__weight__total {
+  @include editor-input_and_label;
+}
+
+.category__quantity__label {
+  align-self: flex-end;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -178,35 +186,19 @@ $delete_width: $category-item_grid_delete_width;
   }
 }
 
-//
-//.category__weight__label, .category__quantity__label,
-//.category__quantity__total, .category__weight__total, .item {
-//  font-size: .8rem;
-//}
-//
-//.category__weight__label, .category__quantity__label,
-//.category__quantity__total, .category__weight__total {
-//  @include editor-input_and_label;
-//}
-//
-//.category__weight__label, .category__quantity__label {
-//  align-self: flex-end;
-//}
-//
-//@media (hover: none) and (pointer: coarse) {
-//  .category__quantity__label, .category__quantity__total, ::v-deep(.item__quantity) {
-//    width: 1.8rem;
-//    box-sizing: border-box;
-//  }
-//  /*code below removes arrows from quantity input*/
-//  ::v-deep(.item__quantity::-webkit-outer-spin-button),
-//  ::v-deep(.item__quantity::-webkit-inner-spin-button) {
-//    -webkit-appearance: none;
-//  }
-//  ::v-deep(.item__quantity[type=number]) {
-//    -moz-appearance: textfield;
-//  }
-//}
-
+@media (hover: none) and (pointer: coarse) {
+  .category__quantity__label, .category__quantity__total, ::v-deep(.item__quantity) {
+    width: 1.8rem;
+    box-sizing: border-box;
+  }
+  /*code below removes arrows from quantity input*/
+  ::v-deep(.item__quantity::-webkit-outer-spin-button),
+  ::v-deep(.item__quantity::-webkit-inner-spin-button) {
+    -webkit-appearance: none;
+  }
+  ::v-deep(.item__quantity[type=number]) {
+    -moz-appearance: textfield;
+  }
+}
 
 </style>

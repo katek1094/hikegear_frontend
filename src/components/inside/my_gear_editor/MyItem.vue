@@ -4,14 +4,14 @@
       <span class="my_item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
     </Tooltip>
     <AutoResizable ref="name_input" v-model.trim="item_name" :maxlength="max_name_length" :prevent-enter="true"
-                   class="item__name" placeholder="nazwa" @keydown="handleEnter"/>
+                   class="my_item__name" placeholder="nazwa" @keydown="handleEnter"/>
     <AutoResizable ref="description_input" v-model="item_description" :maxlength="max_description_length"
-                   class="item__description" placeholder="opis"/>
-    <input ref='weight_input' v-model.number="item_weight" :max="weight_limit" class="item__weight" min="0"
+                   class="my_item__description" placeholder="opis"/>
+    <input ref='weight_input' v-model.number="item_weight" :max="weight_limit" class="my_item__weight" min="0"
            name="item_weight" type="number" @blur="fillWithZero" @input="removeLeadingZero"
            @keydown="preventNumericChars">
     <Tooltip text="usuń przedmiot" direction="left" size="small">
-      <button class="item__delete" type="button" @click="deleteItem">
+      <button class="my_item__delete" type="button" @click="deleteItem">
         <font-awesome-icon class="fa-sm" icon="trash"/>
       </button>
     </Tooltip>
@@ -87,21 +87,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.my_item:not(:last-child) {
-  border-bottom: 1px dotted grey;
-}
-
-/*code below removes arrows from weight input*/
-.item__weight::-webkit-outer-spin-button,
-.item__weight::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-}
-
-.item__weight[type=number] {
-  -moz-appearance: textfield;
-}
-.my_item__handle {
-  @include sort-handle;
+.my_item {
+  @include editor-item;
+  font-size: $category-item_font_size;
 }
 
 </style>

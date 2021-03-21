@@ -1,25 +1,27 @@
 <template>
   <InsideBaseApp>
-    <div v-if="editor_data_ready" class="my-gear_editor">
-      <div class="options">
-        <button v-if="are_any_backpacks" type="button" class="import__gear" @click="$refs.importGear.openModal">
-          <font-awesome-icon class="fa-lg" icon="arrow-alt-circle-down"/>
-          dodaj sprzęt z plecaka
+    <div class="my-gear_editor__wrapper">
+      <div v-if="editor_data_ready" class="my-gear_editor">
+        <div class="my-gear_editor__options">
+          <button v-if="are_any_backpacks" type="button" class="import__gear" @click="$refs.importGear.openModal">
+            <font-awesome-icon class="fa-lg" icon="arrow-alt-circle-down"/>
+            dodaj sprzęt z plecaka
+          </button>
+          <ImportToMyGear ref="importGear"/>
+          <SaveProgress :data_ready="editor_data_ready" :are_changes="are_changes" ref="save_progress" @save="save"/>
+        </div>
+        <draggable v-model="categories" animation="1000" class="my_categories" group="categories"
+                   handle=".my_category__handle" item-key="id" :class="{no_drag_cat: no_drag, drag_cat: !no_drag}"
+                   @choose="toggleNoDrag" @unchoose="toggleNoDrag">
+          <template #item="{element}">
+            <MyCategory :category="element" :ref="setCategoryRef"/>
+          </template>
+        </draggable>
+        <button class="add-category" type="button" @click="addCategory">
+          <font-awesome-icon class="fa-md" icon="plus"/>
+          dodaj kategorię
         </button>
-        <ImportToMyGear ref="importGear"/>
-        <SaveProgress :data_ready="editor_data_ready" :are_changes="are_changes" ref="save_progress" @save="save"/>
       </div>
-      <draggable v-model="categories" animation="1000" class="my_categories" group="categories"
-                 handle=".my_category__handle" item-key="id" :class="{no_drag_cat: no_drag, drag_cat: !no_drag}"
-                 @choose="toggleNoDrag" @unchoose="toggleNoDrag">
-        <template #item="{element}">
-          <MyCategory :category="element" :ref="setCategoryRef"/>
-        </template>
-      </draggable>
-      <button class="add-category" type="button" @click="addCategory">
-        <font-awesome-icon class="fa-md" icon="plus"/>
-        dodaj kategorię
-      </button>
     </div>
   </InsideBaseApp>
 </template>
@@ -75,10 +77,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.progress {
-  height: 1px;
-  background-color: grey;
-}
 
 .import__gear {
   @include editor-add;
@@ -86,30 +84,52 @@ export default {
 }
 
 .my-gear_editor {
-  padding-bottom: 30px;
-  @include flex-column-center;
-  max-width: 100vw;
-}
-
-.options {
-  display: flex;
-  justify-content: space-evenly;
-  width: 100%;
+  @include editor;
 }
 
 .add-category {
   @include editor-add;
 }
 
-::v-deep(.item__name), ::v-deep(.item__description), ::v-deep(.item__weight) {
-  @include editor-input__field;
+.my_categories {
+  width: 100%;
 }
 
-
-@media (min-width: $editor_big_width + 20px) {
-  .my-gear_editor, .my_categories {
-    width: $editor_big_width;
+@media (min-width: 480px) {
+  /* smartphones, Android phones, landscape iPhone */
+  .my-gear_editor {
+    width: 100%;
   }
 }
 
+@media (min-width: 600px) {
+  /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
+  .my-gear_editor {
+    width: 96%;
+  }
+}
+
+@media (min-width: $editor_enough_width + 60px) {
+  .my-gear_editor {
+    width: 92%;
+  }
+}
+
+@media (min-width: 801px) {
+  /* tablet, landscape iPad, lo-res laptops ands desktops */
+  .my-gear_editor {
+    width: 86%;
+    max-width: 800px;
+  }
+}
+
+@media (min-width: 1025px) {
+  /* big landscape tablets, laptops, and desktops */
+
+}
+
+@media (min-width: 1281px) {
+  /* hi-res laptops and desktops */
+
+}
 </style>

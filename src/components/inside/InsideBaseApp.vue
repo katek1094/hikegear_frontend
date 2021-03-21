@@ -23,6 +23,7 @@ export default {
   //justify-content: center;
   padding-top: 10px;
   padding-bottom: 15px;
+  overflow: hidden;
 }
 
 </style>

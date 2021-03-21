@@ -1,5 +1,5 @@
 <template>
-  <div class="my-gear_frame" :class="{no_drag_my_item: no_drag, drag_my_item: !no_drag, minimized: minimized}">
+  <div class="my-gear_window" :class="{no_drag_my_item: no_drag, drag_my_item: !no_drag, minimized: minimized}">
     <div class="header">
       <h3>mój sprzęt</h3>
       <div class="minimize" @click="toggleMinimized">
@@ -8,19 +8,19 @@
       </div>
     </div>
     <draggable v-model="elements" :clone="deepCopy" :group="{name: 'items', pull: 'clone', put: ['items']}"
-               :sort="false" animation="700" class="my-gear_items" emptyInsertThreshold="30" handle=".item__handle"
+               :sort="false" animation="700" class="my-gear_items" emptyInsertThreshold="30" handle=".my-item__handle"
                item-key="id" @choose="toggleNoDrag" @unchoose="toggleNoDrag">
       <template #item="{element}">
         <div v-if="!element.is_item" class="my-category">
-          <span class="item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
+          <span class="my-item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
           <span class="category_name">{{ element.name }}</span>
         </div>
         <div v-else class="my-item">
           <Tooltip text="naciśnij i przeciągnij w lewo aby dodać do listy sprzętu" direction="right" size="large">
-            <span class="item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
+            <span class="my-item__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
           </Tooltip>
-          <span class="name">{{ element.name }}</span>
-          <span class="description">{{ element.description }}</span>
+          <span class="my-item__name">{{ element.name }}</span>
+          <span class="my-item__description">{{ element.description }}</span>
           <span class="weight">{{ element.weight }}</span>
         </div>
       </template>
@@ -46,6 +46,7 @@ export default {
       emit('toggle_minimize')
       minimized.value = !minimized.value
     }
+    //TODO: resize all in editor
 
     const elements = computed(() => {
       const categories = store.getters['my_gear/dynamic_list']
@@ -80,112 +81,112 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-//.my-gear_frame {
-//  width: 100%;
-//  background: $windows_color;
-//  max-width: $my_gear_max_width;
-//  min-width: $my_gear_min_width;
-//  max-height: 92vh;
-//  border-radius: 4px;
-//  position: -webkit-sticky;
-//  position: sticky;
-//  top: 4vh;
-//  padding: 8px;
-//  box-sizing: border-box;
-//  @include flex-column-center;
-//  overflow: hidden;
-//  justify-self: end;
-//
-//  &.minimized {
-//    min-width: 0;
-//    padding-bottom: 0;
-//    width: 12rem;
-//  }
-//}
-//
-//.header {
-//  display: flex;
-//  justify-content: center;
-//}
-//
-//.minimize {
-//  width: 24px;
-//  height: 24px;
-//  border-radius: 4px;
-//  display: flex;
-//  justify-content: center;
-//  align-items: flex-end;
-//  padding-bottom: 5px;
-//  box-sizing: border-box;
-//  position: absolute;
-//  top: 6px;
-//  right: 6px;
-//
-//  &:hover {
-//    background-color: $color_a;
-//    cursor: pointer;
-//  }
-//}
-//
-//.my-category {
-//  display: flex;
-//  justify-items: center;
-//  align-items: center;
-//  padding: 2px 0;
-//  border-bottom: 1px dotted grey;
-//  font-size: .85rem;
-//  font-weight: bold;
-//  background-color: $color_a;
-//}
-//
-//.my-item {
-//  @include editor-category_grid;
-//  grid-template-columns: auto 3fr 4fr 2.8rem;
-//  column-gap: 2px;
-//  padding: 2px 0;
-//  border-bottom: 1px dotted grey;
-//}
-//
-//.my-gear_items {
-//  font-size: .7rem;
-//  background-color: $background;
-//  overflow-y: auto;
-//  overflow-x: hidden;
-//  width: 100%;
-//  height: 100%;
-//  padding: 0 3px;
-//  box-sizing: border-box;
-//
-//  .minimized & {
-//    display: none;
-//  }
-//}
-//
-//.item__handle {
-//  @include sort-handle;
-//}
-//
-//@media (hover: hover) and (pointer: fine) {
-//  .sortable-chosen.my-item:hover .item__handle, .no_drag_my_item .my-item:hover .item__handle, {
-//    visibility: visible;
-//  }
-//}
-//
-//.sortable-chosen {
-//  @include sort-chosen;
-//}
-//
-//.categories .sortable-chosen {
-//  font-size: .8rem;
-//}
-//
-//.my-item .name, .my-item .description {
-//  word-wrap: anywhere;
-//}
-//
-//.description {
-//  margin-right: 3px;
-//}
-//
+.my-gear_window {
+  width: 100%;
+  background: $windows_color;
+  max-width: $my_gear_max_width;
+  min-width: $my_gear_min_width;
+  max-height: 92vh;
+  border-radius: 4px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 4vh;
+  padding: 8px;
+  box-sizing: border-box;
+  @include flex-column-center;
+  overflow: hidden;
+  justify-self: end;
+
+  &.minimized {
+    min-width: 0;
+    padding-bottom: 0;
+    width: $my_gear_minimized_width;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+}
+
+.minimize {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 5px;
+  box-sizing: border-box;
+  position: absolute;
+  top: 6px;
+  right: 14px;
+
+  &:hover {
+    background-color: $color_a;
+    cursor: pointer;
+  }
+}
+
+.my-category {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  padding: 2px 0;
+  border-bottom: 1px dotted grey;
+  font-size: .85rem;
+  font-weight: bold;
+  background-color: $color_a;
+}
+
+.my-item {
+  @include category-item_grid;
+  grid-template-columns: auto 3fr 4fr $category-item_grid_weight_width - .2rem;
+  column-gap: 2px;
+  padding: 2px 0;
+  border-bottom: 1px dotted grey;
+
+  &__name, &__description {
+    word-wrap: anywhere;
+  }
+
+  &__description {
+    margin-right: 3px;
+  }
+
+}
+
+.my-gear_items {
+  font-size: .7rem;
+  background-color: $background;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+  padding: 0 3px;
+  box-sizing: border-box;
+
+  .minimized & {
+    display: none;
+  }
+}
+
+.my-item__handle {
+  @include sort-handle;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .sortable-chosen.my-item:hover .my-item__handle, .no_drag_my_item .my-item:hover .my-item__handle, {
+    visibility: visible;
+  }
+}
+
+.sortable-chosen {
+  @include sort-chosen;
+}
+
+.categories .sortable-chosen {
+  font-size: $category-item_font_size;
+}
 
 </style>

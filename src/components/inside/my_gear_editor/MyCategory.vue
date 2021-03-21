@@ -6,9 +6,9 @@
       </Tooltip>
       <input ref="name_input" v-model.trim="category_name" :maxlength="max_name_length" :size="max_name_length"
              class="my_category__name" placeholder="nazwa kategorii" type="text">
-      <span class="category__weight__label">waga</span>
+      <span class="my_category__weight_label">waga</span>
       <Tooltip text="usuń kategorię" direction="left" size="small">
-        <button :class="{deletable: !is_the_only_category, invisible: is_the_only_category}" class="category__delete"
+        <button :class="{deletable: !is_the_only_category, invisible: is_the_only_category}" class="my_category__delete"
                 type="button"
                 @click="displayConfirmationDialog">
           <font-awesome-icon class="fa-sm" icon="trash"/>
@@ -107,7 +107,7 @@ $delete_width: $category-item_grid_delete_width;
 
 ::v-deep(.my_item) {
   @include category-item_grid;
-  grid-template-columns: $category-item_grid_handle_width 3fr 4fr $weight_width $delete_width; // <----------check later
+  grid-template-columns: $category-item_grid_handle_width 3fr 4fr $weight_width $delete_width;
 }
 
 .my_items {
@@ -118,24 +118,12 @@ $delete_width: $category-item_grid_delete_width;
   @include sort-chosen;
 }
 
-.category__delete, ::v-deep(.item__delete) {
-  @include editor-delete;
-}
-
 @media (hover: hover) and (pointer: fine) {
-  .no_drag_cat .my_category__header:hover .category__delete.deletable, ::v-deep(.no_drag_item .my_item:hover .item__delete),
+  .no_drag_cat .my_category__header:hover .my_category__delete.deletable, ::v-deep(.no_drag_item .my_item:hover .my_item__delete),
   .no_drag_cat .my_category__header:hover .my_category__handle, ::v-deep(.no_drag_item .my_item:hover .my_item__handle),
   .sortable-chosen .my_category__header .my_category__handle, ::v-deep(.sortable-chosen.my_item .my_item__handle) {
     visibility: visible;
   }
 }
 
-.category__weight__label, ::v-deep(.my_item) {
-  font-size: .8rem;
-}
-
-.category__weight__label {
-  @include editor-input_and_label;
-  align-self: flex-end;
-}
 </style>

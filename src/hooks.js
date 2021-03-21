@@ -92,9 +92,9 @@ export function useCategory(add_action, add_argument) {
 
     const addItem = async () => {
         await store.dispatch(add_action, add_argument)
-        items_refs.value[items_refs.value.length - 1].focusName()
         const added_item = items_refs.value[items_refs.value.length - 1].$el
         window.scrollTo(0, added_item.scrollHeight / 2 + document.documentElement.scrollTop)
+        items_refs.value[items_refs.value.length - 1].focusName()
     }
 
     const focusName = () => name_input.value.focus()

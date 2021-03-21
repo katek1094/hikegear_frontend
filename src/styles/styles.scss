@@ -70,10 +70,13 @@ $second_threshold: ($my_gear_min_width + $editor_big_width
     border: 1px solid grey;
   }
 
-  &:hover {
-    background-color: white;
-    cursor: text;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: white;
+      cursor: text;
+    }
   }
+
 }
 
 @mixin editor-category_grid {
@@ -96,7 +99,7 @@ $second_threshold: ($my_gear_min_width + $editor_big_width
   font-size: 1.15rem;
 
   @media (hover: hover) and (pointer: fine) {
-    .no_drag_item &:hover, .no_drag_cat &:hover, .no_drag_my_item &:hover{
+    .no_drag_item &:hover, .no_drag_cat &:hover, .no_drag_my_item &:hover {
       background-color: white;
     }
     visibility: hidden;
@@ -157,12 +160,21 @@ $second_threshold: ($my_gear_min_width + $editor_big_width
   margin: 4px;
   align-self: center;
 }
+
 @-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

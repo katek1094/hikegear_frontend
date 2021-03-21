@@ -2,6 +2,7 @@
   <OutsideBaseApp>
     <form class="auth__form" @submit.prevent="submitForm">
       <h2>Rejestracja</h2>
+<!--      TODO: do not allow browser tips-->
       <input id="registration-email" ref="email" v-model.trim="email"
              :class="{ invalid: !emailValidity, blurred: email_blurred, activated: email_activated}"
              class="auth__input"

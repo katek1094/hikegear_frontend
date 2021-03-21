@@ -19,8 +19,7 @@
        bielizna, buty, kije trekkingowe, nakrycie głowy, spodnie, koszulka itp.
       tylko jedna sztuka jest liczona na jako noszona na sobie</span>
       <span><font-awesome-icon class="fa-md" icon="sync-alt"/>przedmiot konsumpcyjny - rzeczy, których waga jest
-        zmienna w trakcie wyprawy, uzupełniane lub nie, takie jak gaz do kuchenki, jedzenie, papier toaletowy,
-        mydło itp.</span>
+        zmienna w trakcie wyprawy, uzupełniane lub nie, takie jak gaz do kuchenki, jedzenie, mydło itp.</span>
       <span>waga - podawana w gramach</span>
       <h3>edytor</h3>
       <span>zmiany zapisywane są automatycznie po {{timeout}} sekundach od wprowadzenia ostaniej zmiany lub po

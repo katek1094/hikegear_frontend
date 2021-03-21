@@ -20,6 +20,7 @@ export default {
 html {
   min-width: 320px;
   max-width: 100vw;
+  overflow-x: hidden;
 }
 
 body {
@@ -29,7 +30,7 @@ body {
 }
 
 .overflow-hidden {
-  overflow: hidden;
+  overflow-y: hidden;
 }
 
 @media (max-width: 479px) {

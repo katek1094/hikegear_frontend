@@ -124,6 +124,7 @@ export default {
 }
 
 .backpack__description {
+  width: 85%;
   max-width: 85%;
   overflow-wrap: break-word;
   font-size: .85rem;

@@ -111,7 +111,7 @@ export default {
 .minimize {
   width: 24px;
   height: 24px;
-  border-radius: 2px;
+  border-radius: 4px;
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -122,7 +122,7 @@ export default {
   right: 6px;
 
   &:hover {
-    background-color: $background;
+    background-color: $color_a;
     cursor: pointer;
   }
 }

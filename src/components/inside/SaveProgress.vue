@@ -38,6 +38,7 @@ export default {
     }
   },
   computed: {
+    // TODO: it works bad, finishes to early, in mozilla in half
     progress_bar_width() {
       return this.time_passed * 100 / timeout
     },
@@ -98,11 +99,11 @@ export default {
 }
 
 .progress, .bar {
-  width: 80%;
   border-radius: 2px;
 }
 
 .progress {
+  width: 100%;
   height: 10px;
   background-color: white;
   margin-left: 10px;

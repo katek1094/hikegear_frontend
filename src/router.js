@@ -9,7 +9,7 @@ import Login from "@/components/outside/Login";
 import VerifyYourEmail from "@/components/outside/VerifyYourEmail";
 import Backpack from "@/components/outside/Backpack";
 import MyGearEditor from "@/components/inside/my_gear_editor/MyGearEditor";
-import NotFound from "@/components/outside/NotFound";
+// import NotFound from "@/components/outside/NotFound";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -22,7 +22,7 @@ const router = createRouter({
         {path: '/weryfikacja_email', component: VerifyYourEmail, name: 'verify_email'},
         {path: '/plecak/:hash', component: Backpack, name: 'backpack', props: true},
         {path: '/moj_sprzet', component: MyGearEditor, name: 'my_gear', meta: {require_auth: true}},
-        {path: '/:pathMatch(.*)*', component: NotFound, name: 'not_found'},
+        // {path: '/:pathMatch(.*)*', component: NotFound, name: 'not_found'},
     ],
 })
 

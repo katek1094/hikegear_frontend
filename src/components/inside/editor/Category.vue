@@ -27,7 +27,7 @@
       </template>
     </draggable>
     <div class="category__footer">
-      <button class="add-item" type="button" @click="addItem">
+      <button class="category__add-item" type="button" @click="addItem">
         <font-awesome-icon class="fa-md" icon="plus"/>
         dodaj przedmiot
       </button>
@@ -129,34 +129,25 @@ export default {
 
 <style lang="scss" scoped>
 .category {
-  margin-top: 10px;
+  @include editor-category;
 }
 
-.category__name {
-  width: 100%;
-  box-sizing: border-box;
-}
-
-$handle_width: auto;
 $worn_consumable_width: auto;
-$weight_width: 3rem;
-$quantity_width: auto;
-$delete_width: 30px;
+$weight_width: $category-item_grid_weight_width;
+$quantity_width: auto;  // <----------------------------------------------------------------------- check later
+$delete_width: $category-item_grid_delete_width;
 
 .category__header {
-  @include editor-category_grid;
-  font-size: 1rem;
-  grid-template-columns: $handle_width 1fr $weight_width $quantity_width $delete_width;
+  grid-template-columns: $category-item_grid_handle_width 1fr $weight_width $quantity_width $delete_width;
 }
 
 .category__footer {
-  @include editor-category_grid;
   grid-template-columns: 1fr $weight_width $quantity_width $delete_width;
 }
 
 ::v-deep(.item) {
-  @include editor-category_grid;
-  grid-template-columns: $handle_width 3fr 4fr repeat(2, $worn_consumable_width)
+  @include category-item_grid;
+  grid-template-columns: $category-item_grid_handle_width 3fr 4fr repeat(2, $worn_consumable_width) // <-------- check later
   $weight_width $quantity_width $delete_width;
 }
 
@@ -169,65 +160,53 @@ $delete_width: 30px;
 }
 
 .category__delete, ::v-deep(.item__delete) {
-  outline: none;
-  border: none;
-  font-size: 0.8rem;
-  background-color: transparent;
-  padding: 6px;
-  width: $delete_width;
-  box-sizing: border-box;
+  @include editor-delete;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .category__delete, ::v-deep(.item__delete) {
-    visibility: hidden;
-  }
   .no_drag_cat .category__header:hover .category__delete.deletable, ::v-deep(.no_drag_item .item:hover .item__delete),
   .no_drag_cat .category__header:hover .category__handle, ::v-deep(.no_drag_item .item:hover .item__handle),
   .sortable-chosen .category__header .category__handle, ::v-deep(.sortable-chosen.item .item__handle) {
     visibility: visible;
   }
-  .category__delete:hover, ::v-deep(.item__delete:hover) {
-    color: red;
-    cursor: pointer;
-  }
+}
+
+@media (hover: hover) and (pointer: fine) {
   .category__quantity__label, .category__quantity__total, ::v-deep(.item__quantity) {
     width: 2.8rem;
     box-sizing: border-box;
   }
 }
 
-.category__handle, ::v-deep(.item__handle) {
-  @include sort-handle;
-}
+//
+//.category__weight__label, .category__quantity__label,
+//.category__quantity__total, .category__weight__total, .item {
+//  font-size: .8rem;
+//}
+//
+//.category__weight__label, .category__quantity__label,
+//.category__quantity__total, .category__weight__total {
+//  @include editor-input_and_label;
+//}
+//
+//.category__weight__label, .category__quantity__label {
+//  align-self: flex-end;
+//}
+//
+//@media (hover: none) and (pointer: coarse) {
+//  .category__quantity__label, .category__quantity__total, ::v-deep(.item__quantity) {
+//    width: 1.8rem;
+//    box-sizing: border-box;
+//  }
+//  /*code below removes arrows from quantity input*/
+//  ::v-deep(.item__quantity::-webkit-outer-spin-button),
+//  ::v-deep(.item__quantity::-webkit-inner-spin-button) {
+//    -webkit-appearance: none;
+//  }
+//  ::v-deep(.item__quantity[type=number]) {
+//    -moz-appearance: textfield;
+//  }
+//}
 
-.category__weight__label, .category__quantity__label,
-.category__quantity__total, .category__weight__total, .item {
-  font-size: .8rem;
-}
-
-.category__weight__label, .category__quantity__label,
-.category__quantity__total, .category__weight__total {
-  @include editor-input_and_label;
-}
-
-.category__weight__label, .category__quantity__label {
-  align-self: flex-end;
-}
-
-@media (hover: none) and (pointer: coarse) {
-  .category__quantity__label, .category__quantity__total, ::v-deep(.item__quantity) {
-    width: 1.8rem;
-    box-sizing: border-box;
-  }
-  /*code below removes arrows from quantity input*/
-  ::v-deep(.item__quantity::-webkit-outer-spin-button),
-  ::v-deep(.item__quantity::-webkit-inner-spin-button) {
-    -webkit-appearance: none;
-  }
-  ::v-deep(.item__quantity[type=number]) {
-    -moz-appearance: textfield;
-  }
-}
 
 </style>

@@ -141,52 +141,61 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.item:not(:last-child) {
-  border-bottom: 1px dotted grey;
+//.item:not(:last-child) {
+//  border-bottom: 1px dotted grey;
+//}
+//
+//.item__worn, .item__consumable {
+//  border-radius: 50%;
+//  border: none;
+//  background-color: transparent;
+//  outline: none;
+//  color: grey;
+//  padding: 4px;
+//  font-size: 1.15em;
+//  margin: 0 3px;
+//}
+//
+//.checked {
+//  color: blue;
+//}
+//
+//@media (hover: hover) and (pointer: fine) {
+//  .item__worn, .item__consumable {
+//    visibility: hidden;
+//  }
+//  .no_drag_item .item:hover .item__worn, .no_drag_item .item:hover .item__consumable {
+//    visibility: visible;
+//  }
+//  .item__worn:hover:enabled, .item__consumable:hover:enabled {
+//    color: black;
+//  }
+//  .checked {
+//    visibility: visible;
+//  }
+//}
+//
+//.item__worn:enabled, .item__consumable:enabled {
+//  cursor: pointer;
+//}
+//
+///*code below removes arrows from weight input*/
+//.item__weight::-webkit-outer-spin-button,
+//.item__weight::-webkit-inner-spin-button {
+//  -webkit-appearance: none;
+//}
+//
+//.item__weight[type=number] {
+//  -moz-appearance: textfield;
+//}
+
+.item__name, .item__description, .item__weight, .item__quantity {
+  @include editor-input__field;
 }
 
-.item__worn, .item__consumable {
-  border-radius: 50%;
-  border: none;
-  background-color: transparent;
-  outline: none;
-  color: grey;
-  padding: 4px;
-  font-size: 1.15em;
-  margin: 0 3px;
+.item__handle {
+  @include sort-handle;
 }
 
-.checked {
-  color: blue;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .item__worn, .item__consumable {
-    visibility: hidden;
-  }
-  .no_drag_item .item:hover .item__worn, .no_drag_item .item:hover .item__consumable {
-    visibility: visible;
-  }
-  .item__worn:hover:enabled, .item__consumable:hover:enabled {
-    color: black;
-  }
-  .checked {
-    visibility: visible;
-  }
-}
-
-.item__worn:enabled, .item__consumable:enabled {
-  cursor: pointer;
-}
-
-/*code below removes arrows from weight input*/
-.item__weight::-webkit-outer-spin-button,
-.item__weight::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-}
-
-.item__weight[type=number] {
-  -moz-appearance: textfield;
-}
 </style>
 

@@ -10,28 +10,30 @@ export default {
 </script>
 
 <style lang="scss">
-#app {
-  min-height: 100vh;
-}
+//#app {
+//  min-height: 100vh;
+//}
 * {
   font-family: Arial, sans-serif;
 }
 
 html {
-  min-width: 320px;
-  max-width: 100vw;
-  overflow-x: hidden;
+  //min-width: 320px;
+  //max-width: 100vw;
+  //overflow-x: hidden;
 }
 
 body {
-  margin: 0;
-  min-height: 100vh;
+  //margin: 0;
+  //min-height: 100vh;
   background-color: $background;
+
+  &.modal_active {
+    overflow-y: hidden;
+  }
 }
 
-.overflow-hidden {
-  overflow-y: hidden;
-}
+
 
 @media (max-width: 479px) {
   /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
@@ -45,6 +47,7 @@ body {
   /* smartphones, Android phones, landscape iPhone */
   html {
     font-size: 15px;
+    color: deepskyblue;
   }
 }
 
@@ -52,6 +55,7 @@ body {
   /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
   html {
     font-size: 16px;
+    color: green;
   }
 }
 
@@ -59,6 +63,7 @@ body {
   /* tablet, landscape iPad, lo-res laptops ands desktops */
   html {
     font-size: 17px;
+    color: red;
   }
 }
 
@@ -66,6 +71,7 @@ body {
   /* big landscape tablets, laptops, and desktops */
   html {
     font-size: 17px;
+    color: blue;
   }
 }
 
@@ -73,6 +79,7 @@ body {
   /* hi-res laptops and desktops */
   html {
     font-size: 17px;
+    color: black;
   }
 }
 </style>

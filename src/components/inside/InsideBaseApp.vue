@@ -1,7 +1,7 @@
 <template>
-  <div class="base_app">
+  <div class="inside_base_app">
     <NavBar/>
-    <div class="slot">
+    <div class="inside_base_app--slot">
       <slot></slot>
     </div>
   </div>
@@ -17,13 +17,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.base_app {
-  min-height: 100vh;
-}
-.slot {
-  display: flex;
-  justify-content: center;
+
+.inside_base_app--slot {
+  //display: flex;
+  //justify-content: center;
   padding-top: 10px;
   padding-bottom: 15px;
 }
+
 </style>

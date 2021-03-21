@@ -1,8 +1,6 @@
 <template>
   <modal ref="modal" @close-modal="reset">
-    <template v-slot:header>
-      <h2 class="header">importuj plecak z lighterpack.com</h2>
-    </template>
+    <template v-slot:header>importuj plecak z lighterpack.com</template>
     <template v-slot:body>
       <div class="outer_div">
         <div class="inner_div">

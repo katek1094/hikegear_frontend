@@ -80,112 +80,112 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.my-gear_frame {
-  width: 100%;
-  background: $windows_color;
-  max-width: $my_gear_max_width;
-  min-width: $my_gear_min_width;
-  max-height: 92vh;
-  border-radius: 4px;
-  position: -webkit-sticky;
-  position: sticky;
-  top: 4vh;
-  padding: 8px;
-  box-sizing: border-box;
-  @include flex-column-center;
-  overflow: hidden;
-  justify-self: end;
-
-  &.minimized {
-    min-width: 0;
-    padding-bottom: 0;
-    width: 12rem;
-  }
-}
-
-.header {
-  display: flex;
-  justify-content: center;
-}
-
-.minimize {
-  width: 24px;
-  height: 24px;
-  border-radius: 4px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  padding-bottom: 5px;
-  box-sizing: border-box;
-  position: absolute;
-  top: 6px;
-  right: 6px;
-
-  &:hover {
-    background-color: $color_a;
-    cursor: pointer;
-  }
-}
-
-.my-category {
-  display: flex;
-  justify-items: center;
-  align-items: center;
-  padding: 2px 0;
-  border-bottom: 1px dotted grey;
-  font-size: .85rem;
-  font-weight: bold;
-  background-color: $color_a;
-}
-
-.my-item {
-  @include editor-category_grid;
-  grid-template-columns: auto 3fr 4fr 2.8rem;
-  column-gap: 2px;
-  padding: 2px 0;
-  border-bottom: 1px dotted grey;
-}
-
-.my-gear_items {
-  font-size: .7rem;
-  background-color: $background;
-  overflow-y: auto;
-  overflow-x: hidden;
-  width: 100%;
-  height: 100%;
-  padding: 0 3px;
-  box-sizing: border-box;
-
-  .minimized & {
-    display: none;
-  }
-}
-
-.item__handle {
-  @include sort-handle;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .sortable-chosen.my-item:hover .item__handle, .no_drag_my_item .my-item:hover .item__handle, {
-    visibility: visible;
-  }
-}
-
-.sortable-chosen {
-  @include sort-chosen;
-}
-
-.categories .sortable-chosen {
-  font-size: .8rem;
-}
-
-.my-item .name, .my-item .description {
-  word-wrap: anywhere;
-}
-
-.description {
-  margin-right: 3px;
-}
-
+//.my-gear_frame {
+//  width: 100%;
+//  background: $windows_color;
+//  max-width: $my_gear_max_width;
+//  min-width: $my_gear_min_width;
+//  max-height: 92vh;
+//  border-radius: 4px;
+//  position: -webkit-sticky;
+//  position: sticky;
+//  top: 4vh;
+//  padding: 8px;
+//  box-sizing: border-box;
+//  @include flex-column-center;
+//  overflow: hidden;
+//  justify-self: end;
+//
+//  &.minimized {
+//    min-width: 0;
+//    padding-bottom: 0;
+//    width: 12rem;
+//  }
+//}
+//
+//.header {
+//  display: flex;
+//  justify-content: center;
+//}
+//
+//.minimize {
+//  width: 24px;
+//  height: 24px;
+//  border-radius: 4px;
+//  display: flex;
+//  justify-content: center;
+//  align-items: flex-end;
+//  padding-bottom: 5px;
+//  box-sizing: border-box;
+//  position: absolute;
+//  top: 6px;
+//  right: 6px;
+//
+//  &:hover {
+//    background-color: $color_a;
+//    cursor: pointer;
+//  }
+//}
+//
+//.my-category {
+//  display: flex;
+//  justify-items: center;
+//  align-items: center;
+//  padding: 2px 0;
+//  border-bottom: 1px dotted grey;
+//  font-size: .85rem;
+//  font-weight: bold;
+//  background-color: $color_a;
+//}
+//
+//.my-item {
+//  @include editor-category_grid;
+//  grid-template-columns: auto 3fr 4fr 2.8rem;
+//  column-gap: 2px;
+//  padding: 2px 0;
+//  border-bottom: 1px dotted grey;
+//}
+//
+//.my-gear_items {
+//  font-size: .7rem;
+//  background-color: $background;
+//  overflow-y: auto;
+//  overflow-x: hidden;
+//  width: 100%;
+//  height: 100%;
+//  padding: 0 3px;
+//  box-sizing: border-box;
+//
+//  .minimized & {
+//    display: none;
+//  }
+//}
+//
+//.item__handle {
+//  @include sort-handle;
+//}
+//
+//@media (hover: hover) and (pointer: fine) {
+//  .sortable-chosen.my-item:hover .item__handle, .no_drag_my_item .my-item:hover .item__handle, {
+//    visibility: visible;
+//  }
+//}
+//
+//.sortable-chosen {
+//  @include sort-chosen;
+//}
+//
+//.categories .sortable-chosen {
+//  font-size: .8rem;
+//}
+//
+//.my-item .name, .my-item .description {
+//  word-wrap: anywhere;
+//}
+//
+//.description {
+//  margin-right: 3px;
+//}
+//
 
 </style>

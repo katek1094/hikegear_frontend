@@ -97,17 +97,14 @@ export default {
   width: 100%;
 }
 
-.add-category, ::v-deep(.add-item) {
+.add-category {
   @include editor-add;
 }
 
-::v-deep(.category__name), ::v-deep(.item__name), ::v-deep(.item__description), ::v-deep(.item__weight) {
+::v-deep(.item__name), ::v-deep(.item__description), ::v-deep(.item__weight) {
   @include editor-input__field;
 }
 
-::v-deep(.category__name) {
-  font-weight: bold;
-}
 
 @media (min-width: $editor_big_width + 20px) {
   .my-gear_editor, .my_categories {

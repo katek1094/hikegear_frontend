@@ -100,5 +100,8 @@ export default {
 .item__weight[type=number] {
   -moz-appearance: textfield;
 }
+.my_item__handle {
+  @include sort-handle;
+}
 
 </style>

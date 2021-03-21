@@ -1,17 +1,17 @@
 <template>
   <nav class="navbar" :class="{'navbar--active': active}">
-    <router-link :to="{name: 'editor'}"><img class="brand" alt="logo" src="@/assets/logo.png"></router-link>
+    <router-link :to="{name: 'editor'}"><img class="navbar--brand" alt="logo" src="@/assets/logo.png"></router-link>
     <button class="hamburger" :class="{'hamburger--active': active}" @click="handleClick">
-                <span class="hamburger__box">
-                    <span class="hamburger__inner"></span>
-                </span>
+      <span class="hamburger__box">
+        <span class="hamburger__inner"></span>
+      </span>
     </button>
     <div class="menu">
-      <router-link v-for="(item, index) in items" :key="index" :to="item.to" class="link">{{ item.name }}
+      <router-link v-for="(item, index) in items" :key="index" :to="item.to" class="navbar--link">{{ item.name }}
       </router-link>
     </div>
     <div class="dropdown-menu">
-      <router-link v-for="(item, index) in items" :key="index" :to="item.to" class="link">{{ item.name }}
+      <router-link v-for="(item, index) in items" :key="index" :to="item.to" class="navbar--link">{{ item.name }}
       </router-link>
     </div>
   </nav>
@@ -24,7 +24,7 @@ export default {
     return {
       active: false,
       items: [
-        {name: 'edytor', to: {name: 'editor'}},
+        {name: 'edytor', to: {name: 'editor'}},  //if editing this, remember to change navbar height
         {name: 'mój sprzęt', to: {name: 'my_gear'}},
         {name: 'konto', to: {name: 'settings'}},
       ]
@@ -54,44 +54,45 @@ $hamburger_height: 33px;
 $hamburger_width: 36px;
 $hamburger-padding: 7px 16px;
 
-nav {
+.navbar {
+  //box-sizing: border-box;
   background-color: $nav_color;
   height: $nav_height;
-  line-height: $nav_height;
-  padding: 0;
+  //line-height: $nav_height - 2px;
+  //padding: 0;
   text-align: right;
-  overflow: hidden;
+  //overflow: hidden;
   transition: height .3s;
+
+  &--brand {
+    float: left;
+    cursor: pointer;
+  }
+
+  &--link {
+    font-size: 1.3rem;
+    line-height: $nav_height;
+    padding: 0 20px;
+    display: inline-block;
+    //white-space: nowrap;
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+    margin: 0 1px;
+  }
+
+  &--link:hover, &--brand:hover {
+    background-color: white;
+    border-radius: 2px;
+  }
 }
 
-.brand {
-  float: left;
-  cursor: pointer;
-}
-
-.link {
-  font-size: 1.3rem;
-  line-height: $nav_height;
-  padding: 0 20px;
-  display: inline-block;
-  white-space: nowrap;
-  cursor: pointer;
-  text-decoration: none;
-  color: black;
-  margin: 0 1px;
-}
-
-.menu .link:hover, .dropdown-menu .link:hover, .brand:hover {
-  background-color: $nav_hover_color;
-  border-radius: 2px;
-}
-
-.router-link-active {
+.router-link-active {  //class assigned by vue router
   background-color: $background;
 }
 
 .menu {
-
+  //height: $nav_height;
 }
 
 .dropdown-menu {
@@ -101,7 +102,7 @@ nav {
   text-align: center;
 }
 
-.dropdown-menu .link {
+.dropdown-menu .navbar--link {
   display: block;
 }
 
@@ -112,8 +113,8 @@ nav {
 }
 
 .navbar--active {
-  height: $nav_height * 4 + 4px;
-  line-height: initial;
+  height: $nav_height * 4 + 4px;  // <--------------------------------------- edit here amount of links
+  //line-height: initial;
 }
 
 

@@ -5,7 +5,7 @@
         <span class="my_category__handle"><font-awesome-icon class="fa-md" icon="grip-lines"/></span>
       </Tooltip>
       <input ref="name_input" v-model.trim="category_name" :maxlength="max_name_length" :size="max_name_length"
-             class="category__name" placeholder="nazwa kategorii" type="text">
+             class="my_category__name" placeholder="nazwa kategorii" type="text">
       <span class="category__weight__label">waga</span>
       <Tooltip text="usuń kategorię" direction="left" size="small">
         <button :class="{deletable: !is_the_only_category, invisible: is_the_only_category}" class="category__delete"
@@ -26,7 +26,7 @@
       </template>
     </draggable>
     <div class="my_category__footer">
-      <button class="add-item" type="button" @click="addItem">
+      <button class="my_category__add-item" type="button" @click="addItem">
         <font-awesome-icon class="fa-md" icon="plus"/>
         dodaj przedmiot
       </button>
@@ -91,32 +91,23 @@ export default {
 
 <style scoped lang="scss">
 .my_category {
-  margin-top: 10px;
+  @include editor-category;
 }
 
-.category__name {
-  width: 100%;
-  box-sizing: border-box;
-}
-
-$handle_width: auto;
-$weight_width: 3rem;
-$delete_width: 30px;
+$weight_width: $category-item_grid_weight_width;
+$delete_width: $category-item_grid_delete_width;
 
 .my_category__header {
-  @include editor-category_grid;
-  font-size: 1rem;
-  grid-template-columns: $handle_width 1fr $weight_width $delete_width;
+  grid-template-columns: $category-item_grid_handle_width 1fr $weight_width $delete_width;
 }
 
 .my_category__footer {
-  @include editor-category_grid;
   grid-template-columns: 1fr;
 }
 
 ::v-deep(.my_item) {
-  @include editor-category_grid;
-  grid-template-columns: $handle_width 3fr 4fr $weight_width $delete_width;
+  @include category-item_grid;
+  grid-template-columns: $category-item_grid_handle_width 3fr 4fr $weight_width $delete_width; // <----------check later
 }
 
 .my_items {
@@ -128,32 +119,15 @@ $delete_width: 30px;
 }
 
 .category__delete, ::v-deep(.item__delete) {
-  outline: none;
-  border: none;
-  font-size: 0.8rem;
-  background-color: transparent;
-  padding: 6px;
-  width: $delete_width;
-  box-sizing: border-box;
+  @include editor-delete;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .category__delete, ::v-deep(.item__delete) {
-    visibility: hidden;
-  }
   .no_drag_cat .my_category__header:hover .category__delete.deletable, ::v-deep(.no_drag_item .my_item:hover .item__delete),
   .no_drag_cat .my_category__header:hover .my_category__handle, ::v-deep(.no_drag_item .my_item:hover .my_item__handle),
   .sortable-chosen .my_category__header .my_category__handle, ::v-deep(.sortable-chosen.my_item .my_item__handle) {
     visibility: visible;
   }
-  .category__delete:hover, ::v-deep(.item__delete:hover) {
-    color: red;
-    cursor: pointer;
-  }
-}
-
-.my_category__handle, ::v-deep(.my_item__handle) {
-  @include sort-handle;
 }
 
 .category__weight__label, ::v-deep(.my_item) {

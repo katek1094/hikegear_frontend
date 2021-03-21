@@ -1,14 +1,15 @@
 <template>
   <InsideBaseApp>
-    <div v-if="editor_data_ready" class="wrapper" :class="{my_gear_minimized: my_gear_minimized}">
-      <div class="backpack__list">
-        <div class="backpack__list__item" v-for="(backpack, index) in backpacks" :key="backpack.id">
-            <span v-if="backpack.name !== ''" :class="{active: backpack.id === backpack_id}"
-                  @click="changeBackpack(index)">{{ backpack.name }}</span>
-          <span v-if="backpack.name === ''" :class="{active: backpack.id === backpack_id}"
+    <div v-if="editor_data_ready" class="editor__wrapper" :class="{my_gear_minimized: my_gear_minimized}">
+      <!--      BACKPACKS LIST-->
+      <div class="backpacks_list">
+        <div class="backpacks_list__item" v-for="(backpack, index) in backpacks" :key="backpack.id">
+          <span v-if="backpack.name !== ''" :class="{active: backpack.id === backpack_id}"
+                class="backpacks_list__item__name" @click="changeBackpack(index)">{{ backpack.name }}</span>
+          <span v-else :class="{active: backpack.id === backpack_id}" class="backpacks_list__item__name"
                 @click="changeBackpack(index)">bez nazwy</span>
-          <Tooltip text="usuń plecak" direction="right" class="backpack__delete__tooltip" size="small">
-            <button v-if="backpack.id === backpack_id" class="backpack__delete" type="button"
+          <Tooltip text="usuń plecak" direction="right" size="small">
+            <button v-if="backpack.id === backpack_id" class="backpacks_list__delete" type="button"
                     @click="displayConfirmationDialog">
               <font-awesome-icon class="fa-sm" icon="trash"/>
             </button>
@@ -17,26 +18,27 @@
             <template v-slot:header>na pewno chcesz usunąć ten plecak?</template>
           </ConfirmationDialog>
         </div>
-        <div class="backpack_buttons">
-          <button class="add-backpack" type="button" @click="addBackpack">
+        <div class="backpacks_list__buttons">
+          <button class="add_backpack" type="button" @click="addBackpack">
             <font-awesome-icon class="fa-md" icon="plus"/>
             dodaj plecak
           </button>
-          <button class="import-backpack" type="button" @click="$refs.lpImport.openModal">
+          <button class="import_backpack" type="button" @click="$refs.lpImport.openModal">
             <font-awesome-icon class="fa-md" icon="cloud-download-alt"/>
             importuj
           </button>
         </div>
       </div>
+      <!--      EDITOR-->
       <div class="editor">
-        <div class="options">
-          <router-link class="backpack__link" :to="{ name: 'backpack', params: { hash: backpack_hash }}">
+        <div class="editor__options">
+          <router-link class="editor__options__link" :to="{ name: 'backpack', params: { hash: backpack_hash }}">
             <font-awesome-icon class="fa-md" icon="share"/>
             link do plecaka
           </router-link>
           <SaveProgress :data_ready="editor_data_ready" :are_changes="are_changes" ref="save_progress" @save="save"/>
           <Tooltip text="jak korzystać z aplikacji?" size="small">
-            <button class="info" type="button" @click="$refs.instruction.openModal">
+            <button class="editor__options__info" type="button" @click="$refs.instruction.openModal">
               <font-awesome-icon class="fa-md" icon="question"/>
             </button>
           </Tooltip>
@@ -59,21 +61,24 @@
           dodaj kategorię
         </button>
       </div>
+      <!--      MY GEAR-->
       <MyGear @toggle_minimize="toggleMinimize"/>
     </div>
+    <!--    NO BACKPACKS-->
     <div v-else class="no_backpacks">
       <p>nie masz żadnych plecaków</p>
-      <div class="backpack_buttons">
-        <button class="add-backpack" type="button" @click="addBackpack">
+      <div class="no_backpacks__buttons">
+        <button class="add_backpack" type="button" @click="addBackpack">
           <font-awesome-icon class="fa-md" icon="plus"/>
           dodaj plecak
         </button>
-        <button class="import-backpack" type="button" @click="$refs.lpImport.openModal">
+        <button class="import_backpack" type="button" @click="$refs.lpImport.openModal">
           <font-awesome-icon class="fa-md" icon="cloud-download-alt"/>
           importuj
         </button>
       </div>
     </div>
+    <!--    MODALS-->
     <LpImport ref="lpImport"/>
     <Instruction ref="instruction"/>
   </InsideBaseApp>
@@ -205,191 +210,186 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.wrapper {
-  width: 100%;
+
+.editor__wrapper {
+  @include flex-column-center;
 }
 
-@media (min-width: $first_threshold) {
-  .wrapper {
-    display: grid;
-    grid-template-columns: auto auto auto;
-    justify-items: center;
-    padding: 0 $grid_wrapper_padding;
-    column-gap: $grid_gap;
-    align-items: start;
+//@media (min-width: $first_threshold) {
+//  .editor__wrapper {
+//    display: grid;
+//    grid-template-columns: auto auto auto;
+//    justify-items: center;
+//    padding: 0 $grid_wrapper_padding;
+//    column-gap: $grid_gap;
+//    align-items: start;
+//
+//  }
+//  .backpacks_list {
+//    grid-column: 1;
+//    position: -webkit-sticky;
+//    position: sticky;
+//    top: 5vh;
+//  }
+//}
+//
+//@media (min-width: $second_threshold) and (max-width: $first_threshold - 1px) {
+//  .editor__wrapper {
+//    display: grid;
+//    justify-items: center;
+//    padding: 0 $grid_wrapper_padding;
+//    column-gap: $grid_gap;
+//    align-items: start;
+//
+//    &.my_gear_minimized {
+//      grid-template-columns: 1fr auto;
+//    }
+//  }
+//  .backpacks_list {
+//    grid-column: 1;
+//  }
+//  .editor {
+//    grid-column: 1;
+//  }
+//  .my-gear_frame {
+//    grid-column: 2;
+//    grid-row: 1 / span 2;
+//  }
+//}
+//
+//@media (max-width: $second_threshold - 1px) {
+//  .editor__wrapper {
+//    @include flex-column-center;
+//  }
+//  .my-gear_frame {
+//    display: none;
+//  }
+//
+//}
+//
 
-  }
-  .backpack__list {
-    grid-column: 1;
-    position: -webkit-sticky;
-    position: sticky;
-    top: 5vh;
-  }
-}
 
-@media (min-width: $second_threshold) and (max-width: $first_threshold - 1px) {
-  .wrapper {
-    display: grid;
-    justify-items: center;
-    padding: 0 $grid_wrapper_padding;
-    column-gap: $grid_gap;
-    align-items: start;
-
-    &.my_gear_minimized {
-      grid-template-columns: 1fr auto;
-    }
-  }
-  .backpack__list {
-    grid-column: 1;
-  }
-  .editor {
-    grid-column: 1;
-  }
-  .my-gear_frame {
-    grid-column: 2;
-    grid-row: 1 / span 2;
-  }
-}
-
-@media (max-width: $second_threshold - 1px) {
-  .wrapper {
-    @include flex-column-center;
-  }
-  .my-gear_frame {
-    display: none;
-  }
-
-}
-
-.progress {
-  height: 1px;
-  background-color: grey;
-}
-
-.backpack__list {
+.backpacks_list {
+  box-sizing: border-box;
   background-color: $windows_color;
   border-radius: 4px;
   padding: 4px;
-  width: $backpack_list_width;
-  min-width: $backpack_list_width;
-  box-sizing: border-box;
-  margin-bottom: 6px;
-}
+  width: 94%;
+  max-width: 440px; // <---------------------------------------------------- check later
+  margin: 5px 0;
 
-.backpack__list__item {
-  margin: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+  &__item {
+    margin: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-.backpack__list__item span {
-  padding: 4px 8px;
-  border-radius: 4px;
-  word-wrap: anywhere;
-}
+    &__name {
+      padding: 4px 8px;
+      border-radius: 4px;
+      word-wrap: anywhere;
 
-.backpack__list__item span.active {
-  background-color: white;
-}
+      &.active {
+        background-color: white;
+      }
 
-.backpack__list__item span:hover {
-  cursor: pointer;
-  text-decoration: underline;
-}
+      @media (hover: hover) and (pointer: fine) {
+        &:hover {
+          cursor: pointer;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
 
-.backpack__delete {
-  outline: none;
-  border: none;
-  background-color: transparent;
-  padding: 6px;
-  font-size: 1em;
+  &__delete {
+    outline: none;
+    border: none;
+    background-color: transparent;
+    padding: 6px;
+    font-size: 1em;
 
-  &__tooltip {
-    margin-left: 10px;
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        color: red;
+        cursor: pointer;
+      }
+    }
   }
 }
 
-.backpack__link {
-  color: black;
-  text-decoration: none;
-  margin: 10px 0;
-
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
-.info {
-  color: black;
-  border-radius: 50%;
-  outline: none;
-  border: none;
-  width: 36px;
-  height: 36px;
-  font-size: 1rem;
-
-  &:hover {
-    color: blue;
-    cursor: pointer;
-    //transform: scale(1.15);
-  }
-}
-
-.backpack_buttons {
-  display: flex;
-  justify-content: space-between;
-}
-
-.options {
+.editor__options {
   display: flex;
   justify-content: space-evenly;
   width: 100%;
+  margin: 5px 0;
+
+  &__link {
+    color: black;
+    text-decoration: none;
+    margin: 10px 0;
+
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &__info {
+    color: black;
+    border-radius: 50%;
+    outline: none;
+    border: none;
+    $info_size: 36px;
+    width: $info_size;
+    height: $info_size;
+    font-size: 1rem;
+    background-color: transparent;
+
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        color: blue;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.backpacks_list__buttons, .no_backpacks__buttons {
+  padding: 4px 0;
+  display: flex;
+  justify-content: space-around;
 }
 
 .no_backpacks {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @include flex-column-center;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .backpack__delete:hover {
-    color: red;
-    cursor: pointer;
-  }
+.add_backpack, .import_backpack, .add-category {
+  @include editor-add;
+}
+
+.add_backpack, .import_backpack {
+  font-size: 1rem; //  <------------------------------ check later when layout will be ready
 }
 
 .editor {
   padding-bottom: 30px;
   @include flex-column-center;
-  max-width: 100vw;
-}
-
-.add-category, ::v-deep(.add-item), .add-backpack, .import-backpack {
-  @include editor-add;
-}
-
-.add-backpack, .import-backpack {
-  font-size: 1rem;
-}
-
-.backpack__name, .backpack__description, ::v-deep(.category__name), ::v-deep(.item__name), ::v-deep(.item__description),
-::v-deep(.item__weight), ::v-deep(.item__quantity) {
-  @include editor-input__field;
-}
-
-.backpack__name, ::v-deep(.category__name) {
-  font-weight: bold;
+  //max-width: 100vw;
 }
 
 .backpack__name {
+  @include editor-input__field;
+  font-weight: bold;
   text-align: center;
-  margin: .4rem 0;
+  margin: 5px 0;
   font-size: 1.4rem;
 }
 
 .backpack__description {
+  @include editor-input__field;
   width: 85%;
   font-size: .85rem;
   margin: 6px 0;
@@ -408,9 +408,9 @@ export default {
 
 @media (min-width: $editor_big_width + 20px) {
   /* tablet, landscape iPad, lo-res laptops ands desktops */
-  .editor, .categories {
-    width: $editor_big_width;
-  }
+  //.editor, .categories {
+  //  width: $editor_big_width;
+  //}
 }
 
 @media (min-width: 801px) {

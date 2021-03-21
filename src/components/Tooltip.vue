@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="tooltip__wrapper">
     <slot/>
     <span class="tooltip" :class="classes">{{ text }}</span>
   </div>
@@ -28,11 +28,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.content {
+.tooltip__wrapper {
   display: flex;
   position: relative;
 }
-.my-gear_items .content {
+
+.my-gear_items .tooltip__wrapper {
   position: static;
 
   &:hover {
@@ -52,7 +53,7 @@ $arrow_width: 5px;
   }
 }
 
-.content:active .top {
+.tooltip__wrapper:active .top {
   bottom: 0;
 }
 
@@ -61,7 +62,7 @@ $medium_width: 220px;
 $large_width: 360px;
 
 @media (hover: hover) and (pointer: fine) {
-  .content:hover:not(:active) .tooltip {
+  .tooltip__wrapper:hover:not(:active) .tooltip {
     height: auto;
     visibility: visible;
     opacity: 1;
@@ -166,9 +167,9 @@ $large_width: 360px;
       border-color: transparent transparent transparent #555;
     }
   }
-  .drag_item .content:hover:not(:active) .tooltip,
-  .drag_cat .category__header .content:hover:not(:active) .tooltip,
-  .drag_cat .my_category__header .content:hover:not(:active) .tooltip,
+  .drag_item .tooltip__wrapper:hover:not(:active) .tooltip,
+  .drag_cat .category__header .tooltip__wrapper:hover:not(:active) .tooltip,
+  .drag_cat .my_category__header .tooltip__wrapper:hover:not(:active) .tooltip,
   .drag_my_item .tooltip {
     display: none;
   }

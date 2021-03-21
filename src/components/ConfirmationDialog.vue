@@ -1,9 +1,7 @@
 <template>
-  <modal ref="modal">
+  <modal ref="modal" :is_confirmation="true">
     <template v-slot:header>
-      <h2>
-        <slot name="header"></slot>
-      </h2>
+      <slot name="header"></slot>
     </template>
     <template v-slot:body>
       <div class="wrapper">

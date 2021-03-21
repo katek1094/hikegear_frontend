@@ -1,8 +1,6 @@
 <template>
   <Modal ref="modal">
-    <template v-slot:header>
-      <h2 class="header">jak korzystać z aplikacji?</h2>
-    </template>
+    <template v-slot:header>jak korzystać z aplikacji?</template>
     <template v-slot:body>
       <h3>Kategorie</h3>
       <span>nie ma zalecanego użycia podziału na kategorię, możesz dzielić sprzęt ze względuna funkcje (do spania,
@@ -22,7 +20,7 @@
         zmienna w trakcie wyprawy, uzupełniane lub nie, takie jak gaz do kuchenki, jedzenie, mydło itp.</span>
       <span>waga - podawana w gramach</span>
       <h3>edytor</h3>
-      <span>zmiany zapisywane są automatycznie po {{timeout}} sekundach od wprowadzenia ostaniej zmiany lub po
+      <span>zmiany zapisywane są automatycznie po {{ timeout }} sekundach od wprowadzenia ostaniej zmiany lub po
         wciśnięciu klawiszy Ctrl + S</span>
       <span>udostępnianie plecaka - aby udostępnić plecak innym skopiuj link ze strony swojego plecaka, w który możesz
         wejść klikając "link do plecaka"</span>
@@ -35,7 +33,6 @@
       do głównego edytora plecaków</span>
       <span>jeżeli chcesz dodać do swojego sprzętu rzeczy, które są już na którejś liście, użyj opcji "dodaj sprzęt z
       plecaka" gdzie możesz wszystkie lub wybrane przedmioty z każdego twojego plecaka</span>
-
 
 
     </template>

@@ -149,18 +149,18 @@ $weight_width: 2.8rem;
 $quantity_width: 2rem;
 
 .category__header {
-  @include editor-category_grid;
+  @include category-item_grid;
   font-size: 1rem;
   grid-template-columns: 1fr $weight_width $quantity_width;
 }
 
 .category__footer {
-  @include editor-category_grid;
+  @include category-item_grid;
   grid-template-columns: 1fr $weight_width $quantity_width;
 }
 
 .item {
-  @include editor-category_grid;
+  @include category-item_grid;
   grid-template-columns: 1fr 1fr auto $weight_width $quantity_width;
 }
 

@@ -39,6 +39,9 @@ export default {
     },
     prevent(e) {
       if (this.preventEnter && e.keyCode === 13) e.preventDefault()
+    },
+    focusTextarea() {
+      this.$refs.textarea.focus()
     }
   },
   mounted() {

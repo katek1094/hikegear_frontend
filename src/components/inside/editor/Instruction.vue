@@ -2,39 +2,39 @@
   <Modal ref="modal">
     <template v-slot:header>jak korzystać z aplikacji?</template>
     <template v-slot:body>
-      <h3>Kategorie</h3>
-      <span>nie ma zalecanego użycia podziału na kategorię, możesz dzielić sprzęt ze względuna funkcje (do spania,
-        ubrania, do gotowania), miejsce w plecaku lub podział na worki/drybagi</span>
-      <h3>Przedmioty</h3>
-      <span>założenia odnośnie poszczegołnych pól są następujące:</span>
-      <span>nazwa - nazwa/rodzaj przedmiotu (śpiwór, skarpety, czapka) + ewentualnie cecha/podrodzaj przedmiotów
-        (śpiwór puchowy, skarpety wysokie merino, czapka z daszkiem)</span>
-      <span>opis - producent i model przedmiotu (Cumulus Lite Line 200, Forclaz 60),jakiekolwiek inne opisanie
-        przedmiotu (kolor, materiał, pojemność) lub lista przedmiotów wewnątrz jeśli przedmiotem jest na przykład
-        apteczka i chcemy wypisać jej zawartość (w polu opisu można używać klawisza Enter do tworzenia nowej linii)</span>
-      <span><font-awesome-icon class="fa-md" icon="child"/>przedmiot noszony na sobie -
+      <h3 class="header">Kategorie</h3>
+      <span>Nie ma zalecanego użycia podziału na kategorię, możesz dzielić sprzęt ze względu na funkcje (do spania,
+        biwakowania, gotowania, ubrania), miejsce w plecaku, podział na worki/drybagi...</span>
+      <h3 class="header">Przedmioty</h3>
+      <span>Założenia odnośnie poszczegołnych pól są następujące:</span><br><br>
+      <span><strong>nazwa</strong> - nazwa/rodzaj przedmiotu (np. śpiwór, skarpety, czapka) + ewentualnie cecha/podrodzaj przedmiotów
+        (np. śpiwór puchowy, skarpety wysokie merino, czapka z daszkiem)</span><br><br>
+      <span><strong>opis</strong> - producent i model przedmiotu (np. Cumulus Lite Line 200, Forclaz 60) lub jakiekolwiek inne opisanie
+        przedmiotu (np. kolor, materiał, pojemność) lub lista przedmiotów wewnątrz jeśli przedmiotem jest na przykład
+        apteczka i chcemy wypisać jej zawartość (w polu opisu można używać klawisza Enter do tworzenia nowej linii).
+        W przypadku zważenia przedmiotu warto dodać czy jest to waga z pokrowcem czy bez itp.
+      </span><br><br>
+      <span><font-awesome-icon class="fa-md" icon="child"/> - <strong>przedmiot noszony na sobie</strong> -
       rzeczy noszone cały czas na sobie w trakcie wędrówki przy nakorzystniejszej pogodzie, czyli
        bielizna, buty, kije trekkingowe, nakrycie głowy, spodnie, koszulka itp.
-      tylko jedna sztuka jest liczona na jako noszona na sobie</span>
-      <span><font-awesome-icon class="fa-md" icon="sync-alt"/>przedmiot konsumpcyjny - rzeczy, których waga jest
+      tylko jedna sztuka jest liczona na jako noszona na sobie</span><br><br>
+      <span><font-awesome-icon class="fa-md" icon="sync-alt"/> - <strong>przedmiot konsumpcyjny</strong> - rzeczy, których waga jest
         zmienna w trakcie wyprawy, uzupełniane lub nie, takie jak gaz do kuchenki, jedzenie, mydło itp.</span>
       <span>waga - podawana w gramach</span>
-      <h3>edytor</h3>
-      <span>zmiany zapisywane są automatycznie po {{ timeout }} sekundach od wprowadzenia ostaniej zmiany lub po
-        wciśnięciu klawiszy Ctrl + S</span>
-      <span>udostępnianie plecaka - aby udostępnić plecak innym skopiuj link ze strony swojego plecaka, w który możesz
-        wejść klikając "link do plecaka"</span>
-      <span>importowanie plecaka z lighterpack.com - możesz zrobić to klikając "importuj" i wpisując tam link do
+      <h3 class="header">Edytor</h3>
+      <span>Zmiany zapisywane są automatycznie po {{ timeout }} sekundach od wprowadzenia ostaniej zmiany lub po
+        wciśnięciu klawiszy Ctrl + S</span><br><br>
+      <span>Aby udostępnić plecak innym skopiuj link ze strony swojego plecaka, w który możesz
+        wejść klikając "link do plecaka"</span><br><br>
+      <span>Importowanie plecaka z lighterpack.com - możesz zrobić to klikając "importuj" i wpisując tam link do
         swojego plecaka na lighterpack.com</span>
-      <h3>mój sprzęt</h3>
-      <span>osobna lista twojego sprzętu, którego chcesz używać przy planowaniu wypraw</span>
-      <span>aby dodać przedmioty do edytowanego plecaka przeciągaj je z okna "mój sprzęt" po prawej stronie</span>
-      <span>aby edytować listę swojego sprzętu wejdź w zakładkę "mój sprzęt" gdzie możesz edytować listę analogicznie
-      do głównego edytora plecaków</span>
-      <span>jeżeli chcesz dodać do swojego sprzętu rzeczy, które są już na którejś liście, użyj opcji "dodaj sprzęt z
-      plecaka" gdzie możesz wszystkie lub wybrane przedmioty z każdego twojego plecaka</span>
-
-
+      <h3 class="header">Mój sprzęt</h3>
+      <span>Osobna lista twojego sprzętu, którego możesz używać przy planowaniu wypraw. </span><br><br>
+      <span>Aby dodać przedmioty do edytowanego plecaka przeciągaj je z okna "mój sprzęt" po prawej stronie. </span><br><br>
+      <span>Aby edytować listę swojego sprzętu wejdź w zakładkę "mój sprzęt" w głównym menu gdzie możesz edytować listę analogicznie
+      do głównego edytora plecaków. </span><br><br>
+      <span>Jeżeli chcesz dodać do swojego sprzętu rzeczy, które są już na którejś z list, użyj opcji "dodaj sprzęt z
+      plecaka" gdzie możesz dodać wszystkie lub wybrane przedmioty z każdego twojego plecaka. </span>
     </template>
   </Modal>
 </template>

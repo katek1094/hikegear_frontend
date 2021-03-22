@@ -92,8 +92,8 @@ export function useCategory(add_action, add_argument) {
 
     const addItem = async () => {
         await store.dispatch(add_action, add_argument)
-        const added_item = items_refs.value[items_refs.value.length - 1].$el
-        window.scrollTo(0, added_item.scrollHeight / 2 + document.documentElement.scrollTop)
+        // const added_item = items_refs.value[items_refs.value.length - 1].$el
+        // window.scrollTo(0, added_item.scrollHeight / 2 + window.scrollY)
         items_refs.value[items_refs.value.length - 1].focusName()
     }
 
@@ -110,7 +110,7 @@ export function useItem(item_weight, item_quantity) {
     const name_input = ref(null)  //template ref
     const description_input = ref(null)  //template ref
 
-    const focusName = () => name_input.value.$el.focus()
+    const focusName = () => name_input.value.focusTextarea()
     const handleEnter = (event) => {
         if (event.keyCode === 13) description_input.value.$el.focus()
     }

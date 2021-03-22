@@ -73,7 +73,10 @@ export default {
                         commit('update_backpack', {data: data, id: payload.id})
                         return 'success'
                     })
-                } else console.log(response)
+                } else {
+                    console.log(response)
+                    alert(response.status)
+                }
             })
     },
     addBackpack({commit}) {

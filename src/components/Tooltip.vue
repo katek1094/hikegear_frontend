@@ -47,6 +47,7 @@ $arrow_width: 5px;
   visibility: hidden;
   opacity: 0;
   position: absolute;
+  display: none;
 
   &.left {
     right: 105%; //to do not stick out while dragging
@@ -62,6 +63,9 @@ $medium_width: 220px;
 $large_width: 360px;
 
 @media (hover: hover) and (pointer: fine) {
+  .tooltip {
+    display: block;
+  }
   .tooltip__wrapper:hover:not(:active) .tooltip {
     height: auto;
     visibility: visible;
@@ -73,7 +77,7 @@ $large_width: 360px;
     text-align: center;
     border-radius: 6px;
     padding: 5px;
-    z-index: 1;
+    z-index: 10;
     font-size: .8rem;
 
     &.small {

@@ -80,7 +80,7 @@ export default {
 
 .import__gear {
   @include editor-add;
-  font-size: .9rem;
+  font-size: 1rem;
 }
 
 .my-gear_editor {

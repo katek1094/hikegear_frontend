@@ -20,7 +20,7 @@ export default {
 html {
   //min-width: 320px;
   //max-width: 100vw;
-  overflow-x: hidden;
+  //overflow-x: hidden;
 }
 
 body {
@@ -31,8 +31,15 @@ body {
   &.modal_active {
     overflow-y: hidden;
   }
-}
 
+  @media (hover: none) and (pointer: coarse) {
+    &.modal_active {
+      position: fixed; // < ------------ for mobiles, it works?
+    }
+  }
+
+
+}
 
 
 @media (max-width: 479px) {

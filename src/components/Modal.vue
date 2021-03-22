@@ -41,12 +41,14 @@ export default {
       this.show = false;
       this.$emit('close-modal')
       document.querySelector("body").classList.remove("modal_active");
+      // document.querySelector(".editor").classList.remove("modal_active");
     },
     openModal() {
       this.scrollbarWidth = (window.innerWidth - document.body.clientWidth) + 'px'
       this.show = true;
       this.$emit('open-modal')
       document.querySelector("body").classList.add("modal_active");
+      // document.querySelector(".editor").classList.add("modal_active");
     },
   }
 }
@@ -106,9 +108,11 @@ export default {
     box-sizing: border-box;
   }
 
-  &__close:hover {
-    cursor: pointer;
-    color: red;
+  @media (hover: hover) and (pointer: fine) {
+    &__close:hover {
+      cursor: pointer;
+      color: red;
+    }
   }
 
   $left_padding: 1.2rem;

@@ -1,12 +1,12 @@
 <template>
   <div class="my-gear_window" :class="{no_drag_my_item: no_drag, drag_my_item: !no_drag, minimized: minimized}">
-    <div class="header">
+<!--    <div class="header">-->
       <h3>mój sprzęt</h3>
-      <div class="minimize" @click="toggleMinimized">
+      <button class="minimize" @click="toggleMinimized">
         <font-awesome-icon v-if="minimized" class="fa-sm minimize_icon" icon="window-maximize"/>
         <font-awesome-icon v-else class="fa-sm minimize_icon" icon="window-minimize"/>
-      </div>
-    </div>
+      </button>
+<!--    </div>-->
     <draggable v-model="elements" :clone="deepCopy" :group="{name: 'items', pull: 'clone', put: ['items']}"
                :sort="false" animation="700" class="my-gear_items" emptyInsertThreshold="30" handle=".my-item__handle"
                item-key="id" @choose="toggleNoDrag" @unchoose="toggleNoDrag">
@@ -46,7 +46,6 @@ export default {
       emit('toggle_minimize')
       minimized.value = !minimized.value
     }
-    //TODO: resize all in editor
 
     const elements = computed(() => {
       const categories = store.getters['my_gear/dynamic_list']
@@ -82,10 +81,10 @@ export default {
 
 <style lang="scss" scoped>
 .my-gear_window {
+  //width: 92%;
   width: 100%;
   background: $windows_color;
   max-width: $my_gear_max_width;
-  min-width: $my_gear_min_width;
   max-height: 92vh;
   border-radius: 4px;
   position: -webkit-sticky;
@@ -93,8 +92,10 @@ export default {
   top: 4vh;
   padding: 8px;
   box-sizing: border-box;
-  @include flex-column-center;
+  //@include flex-column-center;
+  display: none;
   overflow: hidden;
+  //overflow-x: hidden;
   justify-self: end;
 
   &.minimized {
@@ -105,11 +106,16 @@ export default {
 }
 
 .header {
-  display: flex;
-  justify-content: center;
+  //display: flex;
+  //justify-content: center;
 }
 
+// TODO: its in upper right when window on the bottom
 .minimize {
+  outline: none;
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
   width: 24px;
   height: 24px;
   border-radius: 4px;
@@ -162,7 +168,7 @@ export default {
   overflow-y: auto;
   overflow-x: hidden;
   width: 100%;
-  height: 100%;
+  //height: 100%;
   padding: 0 3px;
   box-sizing: border-box;
 

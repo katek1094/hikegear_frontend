@@ -23,11 +23,14 @@ export default {
             return apiFetch('logout', {
                 method: 'POST',
             })
-                .then(response => {
+                .then(async response => {
                     if (response.ok) {
-                        commit('set_logged_in', false)
+                        await commit('set_logged_in', false)
                         return 'you are logged out'
-                    } else console.log(response)
+                    } else {
+                        console.log(response)
+                        alert(response.status)
+                    }
                 })
         },
         login({commit}, payload) {

@@ -2,33 +2,33 @@
   <InsideBaseApp>
     <div v-if="editor_data_ready" class="editor__wrapper" :class="{my_gear_minimized: my_gear_minimized}">
       <!--      BACKPACKS LIST-->
-<!--      <div class="backpacks_list">-->
-<!--        <div class="backpacks_list__item" v-for="(backpack, index) in backpacks" :key="backpack.id">-->
-<!--          <span v-if="backpack.name !== ''" :class="{active: backpack.id === backpack_id}"-->
-<!--                class="backpacks_list__item__name" @click="changeBackpack(index)">{{ backpack.name }}</span>-->
-<!--          <span v-else :class="{active: backpack.id === backpack_id}" class="backpacks_list__item__name"-->
-<!--                @click="changeBackpack(index)">bez nazwy</span>-->
-<!--          <Tooltip text="usuń plecak" direction="right" size="small">-->
-<!--            <button v-if="backpack.id === backpack_id" class="backpacks_list__delete" type="button"-->
-<!--                    @click="displayConfirmationDialog">-->
-<!--              <font-awesome-icon class="fa-sm" icon="trash"/>-->
-<!--            </button>-->
-<!--          </Tooltip>-->
-<!--          <ConfirmationDialog ref="confirmation_dialog" @confirmed="deleteBackpack">-->
-<!--            <template v-slot:header>na pewno chcesz usunąć ten plecak?</template>-->
-<!--          </ConfirmationDialog>-->
-<!--        </div>-->
-<!--        <div class="backpacks_list__buttons">-->
-<!--          <button class="add_backpack" type="button" @click="addBackpack">-->
-<!--            <font-awesome-icon class="fa-md" icon="plus"/>-->
-<!--            dodaj plecak-->
-<!--          </button>-->
-<!--          <button class="import_backpack" type="button" @click="$refs.lpImport.openModal">-->
-<!--            <font-awesome-icon class="fa-md" icon="cloud-download-alt"/>-->
-<!--            importuj-->
-<!--          </button>-->
-<!--        </div>-->
-<!--      </div>-->
+      <div class="backpacks_list">
+        <div class="backpacks_list__item" v-for="(backpack, index) in backpacks" :key="backpack.id">
+          <span v-if="backpack.name !== ''" :class="{active: backpack.id === backpack_id}"
+                class="backpacks_list__item__name" @click="changeBackpack(index)">{{ backpack.name }}</span>
+          <span v-else :class="{active: backpack.id === backpack_id}" class="backpacks_list__item__name"
+                @click="changeBackpack(index)">bez nazwy</span>
+          <Tooltip text="usuń plecak" direction="right" size="small">
+            <button v-if="backpack.id === backpack_id" class="backpacks_list__delete" type="button"
+                    @click="displayConfirmationDialog">
+              <font-awesome-icon class="fa-sm" icon="trash"/>
+            </button>
+          </Tooltip>
+          <ConfirmationDialog ref="confirmation_dialog" @confirmed="deleteBackpack">
+            <template v-slot:header>na pewno chcesz usunąć ten plecak?</template>
+          </ConfirmationDialog>
+        </div>
+        <div class="backpacks_list__buttons">
+          <button class="add_backpack" type="button" @click="addBackpack">
+            <font-awesome-icon class="fa-md" icon="plus"/>
+            dodaj plecak
+          </button>
+          <button class="import_backpack" type="button" @click="$refs.lpImport.openModal">
+            <font-awesome-icon class="fa-md" icon="cloud-download-alt"/>
+            importuj
+          </button>
+        </div>
+      </div>
       <!--      EDITOR-->
       <div class="editor">
         <div class="editor__options">
@@ -45,7 +45,7 @@
         </div>
         <AutoResizable ref="backpack_name_input" v-model.trim="backpack_name" :maxlength="max_backpack_name_length"
                        :prevent-enter="true" class="backpack__name" placeholder="nazwa plecaka"/>
-<!--        <Summary :summary_data="summary_data"/>-->
+        <Summary :summary_data="summary_data"/>
         <AutoResizable ref="backpack_description_input" v-model.trim="backpack_description"
                        :maxlength="max_backpack_description_length" class="backpack__description"
                        placeholder="opis plecaka"/>
@@ -62,7 +62,7 @@
         </button>
       </div>
       <!--      MY GEAR-->
-<!--      <MyGear @toggle_minimize="toggleMinimize"/>-->
+      <MyGear @toggle_minimize="toggleMinimize"/>
     </div>
     <!--    NO BACKPACKS-->
     <div v-else class="no_backpacks">
@@ -87,14 +87,14 @@
 <script>
 import draggable from 'vuedraggable'
 import Category from "@/components/inside/editor/Category";
-// import Summary from "@/components/inside/editor/Summary";
+import Summary from "@/components/inside/editor/Summary";
 import InsideBaseApp from "@/components/inside/InsideBaseApp";
 import AutoResizable from "@/components/AutoResizable";
-// import MyGear from "@/components/inside/editor/MyGear";
+import MyGear from "@/components/inside/editor/MyGear";
 import {ref, computed} from 'vue';
 import {useStore} from 'vuex';
 import LpImport from "@/components/inside/editor/LpImport";
-// import ConfirmationDialog from "@/components/ConfirmationDialog";
+import ConfirmationDialog from "@/components/ConfirmationDialog";
 import SaveProgress from "@/components/inside/SaveProgress";
 import {hashids} from "@/functions";
 import Tooltip from "@/components/Tooltip";
@@ -108,12 +108,12 @@ export default {
     Instruction,
     Tooltip,
     SaveProgress,
-    // ConfirmationDialog,
+    ConfirmationDialog,
     LpImport,
-    // MyGear,
+    MyGear,
     AutoResizable,
     InsideBaseApp,
-    // Summary,
+    Summary,
     Category,
     draggable
   },
@@ -175,7 +175,10 @@ export default {
     const {no_drag, toggleNoDrag} = useNoDrag()
 
     const my_gear_minimized = ref(false)
-    const toggleMinimize = () => my_gear_minimized.value = !my_gear_minimized.value
+    const toggleMinimize = () => {
+      my_gear_minimized.value = !my_gear_minimized.value
+      resizeAll()
+    }
 
     return {
       my_gear_minimized,
@@ -339,6 +342,9 @@ export default {
   .editor {
     width: 100%;
   }
+  .my-gear_window {
+    min-width: $my_gear_min_width;
+  }
 }
 
 @media (min-width: 600px) {
@@ -359,6 +365,12 @@ export default {
   .editor {
     width: 86%;
     max-width: 800px;
+  }
+}
+
+@media (min-width: $first_threshold) {
+  .my-gear_window {
+    @include flex-column-center;
   }
 }
 

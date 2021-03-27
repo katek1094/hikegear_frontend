@@ -9,7 +9,7 @@
                    class="my_item__description" placeholder="opis"/>
     <input ref='weight_input' v-model.number="item_weight" :max="weight_limit" class="my_item__weight" min="0"
            name="item_weight" type="number" @blur="fillWithZero" @input="removeLeadingZero"
-           @keydown="preventNumericChars">
+           @keydown="charControl">
     <Tooltip text="usuń przedmiot" direction="left" size="small">
       <button class="my_item__delete" type="button" @click="deleteItem">
         <font-awesome-icon class="fa-sm" icon="trash"/>
@@ -71,14 +71,14 @@ export default {
 
     const {
       weight_limit, max_name_length, max_description_length, name_input, description_input,
-      focusName, handleEnter, fillWithZero, removeLeadingZero, resizeAll, preventNumericChars
+      focusName, handleEnter, fillWithZero, removeLeadingZero, resizeAll, charControl
     } = useItem(item_weight)
 
     return {
       weight_limit, max_name_length, max_description_length, //data
       name_input, description_input, weight_input,  //refs
       item_name, item_description, item_weight, //computed
-      deleteItem, preventNumericChars, resizeAll, removeLeadingZero, fillWithZero,
+      deleteItem, charControl, resizeAll, removeLeadingZero, fillWithZero,
       handleEnter, focusName  //methods
     }
 

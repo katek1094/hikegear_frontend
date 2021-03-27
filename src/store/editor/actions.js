@@ -74,8 +74,8 @@ export default {
                         return 'success'
                     })
                 } else {
-                    console.log(response)
                     alert(response.status)
+                    console.log(response)
                 }
             })
     },
@@ -84,7 +84,7 @@ export default {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                name: 'nowy plecak',
+                name: 'nowa lista sprzętu',
                 description: '',
                 list: [
                     {
@@ -113,7 +113,10 @@ export default {
                         commit('copy_and_set_static_backpack', data)
                         commit('add_backpack', data)
                     })
-                } else console.log(response)
+                } else {
+                    alert(response.status)
+                    console.log(response)
+                }
             })
     },
     addImportedBackpack({commit}, backpack) {
@@ -164,7 +167,7 @@ export default {
                             commit('set_backpacks', [])
                         }
                         if (data['private_gear'].length === 0) {
-                            data['private_gear'] = [{name: "mój sprzęt", description: '', id: 0, items: []}]
+                            data['private_gear'] = [{name: "", description: '', id: 0, items: []}]
                         }
                         commit('my_gear/copy_and_set_static', data['private_gear'], {root: true})
                         commit('my_gear/copy_and_set_dynamic', data['private_gear'], {root: true})
@@ -172,7 +175,10 @@ export default {
                     })
                 } else {
                     if (response.status === 403) return 'not logged in'
-                    else console.log(response)
+                    else {
+                        alert(response.status)
+                        console.log(response)
+                    }
                 }
             })
     }

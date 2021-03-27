@@ -2,21 +2,20 @@
   <OutsideBaseApp>
     <form class="auth__form" @submit.prevent="submitForm">
       <h2>Rejestracja</h2>
-<!--      TODO: do not allow browser tips-->
       <input id="registration-email" ref="email" v-model.trim="email"
              :class="{ invalid: !emailValidity, blurred: email_blurred, activated: email_activated}"
              class="auth__input"
              inputmode="email" name="email" placeholder="e-mail" required type="email" @blur="markAsBlurred"
              @input="activate">
       <label v-if="email_info !== ''" for="registration-email">{{ email_info }}</label>
-      <input id="registration-password1" ref="password1" v-model.trim="password1"
+      <input id="registration-password1" ref="password1" v-model.trim="password1" autocomplete="new-password"
              :class="{ invalid: !password1Validity, blurred: password1_blurred, activated: password1_activated}"
              :maxlength="max_password_length" :minlength="min_password_length"
              :placeholder="'hasło (min. ' + min_password_length + ' znaków)'" class="auth__input"
              name="password1" required type="password" @blur="markAsBlurred" @input="activate">
       <label v-show="password1_info_display" for="registration-password1">{{ password1_info }}</label>
       <label v-show="password_info !== ''">{{ password_info }}</label>
-      <input id="registration-password2" ref="password2" v-model.trim="password2"
+      <input id="registration-password2" ref="password2" v-model.trim="password2" autocomplete="new-password"
              :class="{ invalid: !password2Validity, blurred: password2_blurred, activated: password2_activated}"
              :maxlength="max_password_length" :minlength="min_password_length" class="auth__input" name="password2"
              placeholder="powtórz hasło" required type="password"
@@ -109,6 +108,7 @@ export default {
               if (response.ok) {
                 this.$router.push({name: 'verify_email'})
               } else {
+                alert(response.status)  // TODO: delete this later
                 this.handleFailure(response.json())
               }
               this.waiting_for_response = false

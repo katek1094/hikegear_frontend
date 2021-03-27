@@ -20,10 +20,10 @@
     </Tooltip>
     <input ref='weight_input' v-model.number="item_weight" :max="weight_limit" class="item__weight" min="0"
            name="item_weight" type="number" @blur="fillWithZero" @input="removeLeadingZero"
-           @keydown="preventNumericChars">
+           @keydown="charControl" inputmode="decimal">
     <input ref="quantity_input" v-model.number="item_quantity" :max="quantity_limit" class="item__quantity" min="0"
            name="item_quantity" type="number" @blur="fillWithZero" @input="removeLeadingZero"
-           @keydown="preventNumericChars">
+           @keydown="charControl" inputmode="decimal">
     <Tooltip text="usuń przedmiot" direction="left" size="small">
       <button class="item__delete" type="button" @click="deleteItem">
         <font-awesome-icon class="fa-sm" icon="trash"/>
@@ -115,7 +115,7 @@ export default {
 
     const {
       weight_limit, max_name_length, max_description_length, name_input, description_input,
-      focusName, handleEnter, fillWithZero, removeLeadingZero, resizeAll, preventNumericChars
+      focusName, handleEnter, fillWithZero, removeLeadingZero, resizeAll, charControl
     } = useItem(item_weight, item_quantity)
 
     const worn_tooltip_text = computed(() => {
@@ -133,7 +133,7 @@ export default {
       weight_limit, quantity_limit, max_name_length, max_description_length, //data
       name_input, description_input, weight_input, quantity_input,  //refs
       item_name, item_description, item_weight, item_quantity, worn_tooltip_text, consumable_tooltip_text, //computed
-      switchWorn, switchConsumable, deleteItem, preventNumericChars, resizeAll, removeLeadingZero, fillWithZero,
+      switchWorn, switchConsumable, deleteItem, charControl, resizeAll, removeLeadingZero, fillWithZero,
       handleEnter, focusName  //methods
     }
   },

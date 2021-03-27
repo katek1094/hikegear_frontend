@@ -27,10 +27,11 @@
       </template>
     </draggable>
     <div class="category__footer">
-      <button class="category__add-item" type="button" @click="addItem">
+      <button v-if="can_add_item" class="category__add-item" type="button" @click="addItem">
         <font-awesome-icon class="fa-md" icon="plus"/>
         dodaj przedmiot
       </button>
+      <div v-else></div>
       <span class="category__weight__total">{{ total_weight }}</span>
       <span class="category__quantity__total">{{ total_quantity }}</span>
     </div>
@@ -94,11 +95,12 @@ export default {
     const {
       max_name_length,
       name_input,
+      can_add_item,
       addItem,
       setItemRef,
       resizeAllItems,
       focusName
-    } = useCategory('editor/addItem', props.category.id)
+    } = useCategory('editor/addItem', props.category.id, items)
 
     const are_any_items = computed(() => items.value.length !== 0)
     const {confirmation_dialog, displayConfirmationDialog} = useConfirmationDialog(are_any_items, deleteCategory)
@@ -110,6 +112,7 @@ export default {
       confirmation_dialog,
       no_drag,
       category_name,
+      can_add_item,
       is_the_only_category,
       items,
       total_weight,

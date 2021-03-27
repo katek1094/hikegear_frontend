@@ -1,13 +1,10 @@
-import {ref, onMounted, onBeforeUnmount, onBeforeUpdate} from 'vue'
+import {ref, computed, onMounted, onBeforeUnmount, onBeforeUpdate} from 'vue'
 import {useStore} from 'vuex'
 import Constants from '@/constants'
 
 export function useNoDrag() {
     const no_drag = ref(true)
-    const toggleNoDrag = () => {
-        no_drag.value = !no_drag.value
-    }
-
+    const toggleNoDrag = () => no_drag.value = !no_drag.value
     return {no_drag, toggleNoDrag}
 }
 
@@ -25,7 +22,7 @@ export function useAutoresizeAll(resizeAll) {
     onBeforeUnmount(() => window.removeEventListener("resize", handleWindowResize));
 }
 
-export function useCategories(action) {
+export function useCategories(action, categories) {
     if (typeof action !== 'string') throw 'action must be a string (argument in useCategories)'
     const store = useStore()
     const categories_refs = ref([])  //array of template refs created with setCategoryRef()
@@ -35,10 +32,12 @@ export function useCategories(action) {
     }
     const addCategory = async () => {
         await store.dispatch(action)
-        categories_refs.value[categories_refs.value.length - 1].focusName()
         window.scrollTo(0, document.body.scrollHeight)
+        categories_refs.value[categories_refs.value.length - 1].focusName()
     }
-    return {categories_refs, addCategory, setCategoryRef}
+    const can_add_category = computed(() => categories.value.length < Constants.CATEGORIES_MAX_AMOUNT)
+
+    return {categories_refs, can_add_category, addCategory, setCategoryRef}
 }
 
 export function useEditor(are_changes, save, categories_refs, state_watch_func) {
@@ -58,13 +57,14 @@ export function useEditor(are_changes, save, categories_refs, state_watch_func) 
             save_progress.value.handleEdit(are_changes.value)
         }
     }
+    store.watch(state_watch_func, handleDataChange, {deep: true});
+
     onMounted(() => {
         window.addEventListener('keydown', handleCtrlS);
-        store.watch(state_watch_func, handleDataChange, {deep: true});
     })
     onBeforeUnmount(() => {
         window.removeEventListener("keydown", handleCtrlS);
-        save()
+        save(false)
     })
     return save_progress
 }
@@ -78,7 +78,7 @@ export function useConfirmationDialog(confirm_condition_computed = {value: true}
     return {confirmation_dialog, displayConfirmationDialog}
 }
 
-export function useCategory(add_action, add_argument) {
+export function useCategory(add_action, add_argument, items) {
     const store = useStore()
     const max_name_length = Constants.CATEGORY_MAX_NAME_LENGTH
     const name_input = ref(null) //template ref
@@ -90,6 +90,8 @@ export function useCategory(add_action, add_argument) {
         for (const item_ref of items_refs.value) item_ref.resizeAll()
     }
 
+    const can_add_item = computed(() => items.value.length < Constants.ITEMS_IN_CATEGORY_MAX_AMOUNT)
+
     const addItem = async () => {
         await store.dispatch(add_action, add_argument)
         // const added_item = items_refs.value[items_refs.value.length - 1].$el
@@ -98,9 +100,9 @@ export function useCategory(add_action, add_argument) {
     }
 
     const focusName = () => name_input.value.focus()
-
     onBeforeUpdate(() => items_refs.value = [])
-    return {max_name_length, name_input, addItem, setItemRef, resizeAllItems, focusName}
+
+    return {max_name_length, name_input, can_add_item, addItem, setItemRef, resizeAllItems, focusName}
 }
 
 export function useItem(item_weight, item_quantity) {
@@ -129,8 +131,10 @@ export function useItem(item_weight, item_quantity) {
         name_input.value.resize()
         description_input.value.resize()
     }
-    const preventNumericChars = (e) => {
-        if ((e.keyCode === 69) || (e.keyCode === 189)) e.preventDefault()
+    const charControl = (e) => {
+        const allowed_codes = [8, 9, 13, 46, 37, 38, 39, 40, // backspace, tab, enter, delete, arrows
+            48, 49, 50, 51, 52, 53, 54, 55, 56, 57] // 0-9 numbers and
+        if (!allowed_codes.includes(e.keyCode)) e.preventDefault()
         if ((e.target.getAttribute('name') === 'item_quantity') && (e.keyCode === 190)) e.preventDefault()
     }
 
@@ -145,6 +149,6 @@ export function useItem(item_weight, item_quantity) {
         fillWithZero,
         removeLeadingZero,
         resizeAll,
-        preventNumericChars
+        charControl
     }
 }

@@ -5,6 +5,7 @@
       <h3 class="header">Kategorie</h3>
       <span>Nie ma zalecanego użycia podziału na kategorię, możesz dzielić sprzęt ze względu na funkcje (do spania,
         biwakowania, gotowania, ubrania), miejsce w plecaku, podział na worki/drybagi...</span>
+
       <h3 class="header">Przedmioty</h3>
       <span>Założenia odnośnie poszczegołnych pól są następujące:</span><br><br>
       <span><strong>nazwa</strong> - nazwa/rodzaj przedmiotu (np. śpiwór, skarpety, czapka) + ewentualnie cecha/podrodzaj przedmiotów
@@ -19,22 +20,24 @@
        bielizna, buty, kije trekkingowe, nakrycie głowy, spodnie, koszulka itp.
       tylko jedna sztuka jest liczona na jako noszona na sobie</span><br><br>
       <span><font-awesome-icon class="fa-md" icon="sync-alt"/> - <strong>przedmiot konsumpcyjny</strong> - rzeczy, których waga jest
-        zmienna w trakcie wyprawy, uzupełniane lub nie, takie jak gaz do kuchenki, jedzenie, mydło itp.</span>
-      <span>waga - podawana w gramach</span>
+        zmienna w trakcie wyprawy, uzupełniane lub nie, takie jak gaz do kuchenki, jedzenie, mydło itp.</span><br><br>
+      <span><strong>waga</strong> - podawana w gramach</span>
+
       <h3 class="header">Edytor</h3>
       <span>Zmiany zapisywane są automatycznie po {{ timeout }} sekundach od wprowadzenia ostaniej zmiany lub po
         wciśnięciu klawiszy Ctrl + S</span><br><br>
-      <span>Aby udostępnić plecak innym skopiuj link ze strony swojego plecaka, w który możesz
-        wejść klikając "link do plecaka"</span><br><br>
-      <span>Importowanie plecaka z lighterpack.com - możesz zrobić to klikając "importuj" i wpisując tam link do
-        swojego plecaka na lighterpack.com</span>
+      <span>Aby udostępnić listę sprzętu innym skopiuj link, w który możesz wejść klikając
+        "link do listy"</span><br><br>
+      <span>Importowanie listy sprzętu z lighterpack.com - możesz zrobić to klikając "importuj" i wpisując tam link do
+        swojej listy z lighterpack.com</span>
+
       <h3 class="header">Mój sprzęt</h3>
       <span>Osobna lista twojego sprzętu, którego możesz używać przy planowaniu wypraw. </span><br><br>
-      <span>Aby dodać przedmioty do edytowanego plecaka przeciągaj je z okna "mój sprzęt" po prawej stronie. </span><br><br>
-      <span>Aby edytować listę swojego sprzętu wejdź w zakładkę "mój sprzęt" w głównym menu gdzie możesz edytować listę analogicznie
-      do głównego edytora plecaków. </span><br><br>
+      <span>Aby dodać przedmioty do edytowanej listy sprzętu przeciągaj je z okna "mój sprzęt" po prawej stronie. </span><br><br>
+      <span>Aby edytować listę swojego sprzętu wejdź w zakładkę "mój sprzęt" w głównym menu gdzie możesz edytować
+        listę w sposób analogiczny do głównego edytora. </span><br><br>
       <span>Jeżeli chcesz dodać do swojego sprzętu rzeczy, które są już na którejś z list, użyj opcji "dodaj sprzęt z
-      plecaka" gdzie możesz dodać wszystkie lub wybrane przedmioty z każdego twojego plecaka. </span>
+      listy" gdzie możesz dodać wszystkie lub wybrane przedmioty z każdej twojej listy sprzętu. </span>
     </template>
   </Modal>
 </template>

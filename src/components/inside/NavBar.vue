@@ -35,7 +35,7 @@ export default {
       this.active = !this.active
     },
     onWindowResize() {
-      if (window.innerWidth > 800) {
+      if (window.innerWidth > 560) {
         this.active = false
       }
     }
@@ -55,13 +55,9 @@ $hamburger_width: 36px;
 $hamburger-padding: 7px 16px;
 
 .navbar {
-  //box-sizing: border-box;
   background-color: $nav_color;
   height: $nav_height;
-  //line-height: $nav_height - 2px;
-  //padding: 0;
   text-align: right;
-  //overflow: hidden;
   transition: height .3s;
 
   &--brand {
@@ -74,7 +70,6 @@ $hamburger-padding: 7px 16px;
     line-height: $nav_height;
     padding: 0 20px;
     display: inline-block;
-    //white-space: nowrap;
     cursor: pointer;
     text-decoration: none;
     color: black;
@@ -188,7 +183,7 @@ $hamburger-padding: 7px 16px;
 }
 
 
-@media (max-width: 800px) {
+@media (max-width: 560px) {
   .hamburger {
     display: inline-block;
   }

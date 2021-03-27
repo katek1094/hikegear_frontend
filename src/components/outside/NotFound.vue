@@ -1,7 +1,8 @@
 <template>
   <OutsideBaseApp>
-    <h1>podany adres nie istnieje</h1>
-    <p>{{data}}</p>
+    <div class="not_found">
+      <h1>podany adres nie istnieje</h1>
+    </div>
   </OutsideBaseApp>
 </template>
 
@@ -18,6 +19,8 @@ name: "NotFound",
 }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+.not_found {
+  @include flex-column-center;
+}
 </style>

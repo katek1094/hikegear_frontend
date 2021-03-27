@@ -27,10 +27,7 @@ export default {
                     if (response.ok) {
                         await commit('set_logged_in', false)
                         return 'you are logged out'
-                    } else {
-                        console.log(response)
-                        alert(response.status)
-                    }
+                    } else console.log(response)
                 })
         },
         login({commit}, payload) {

@@ -4,8 +4,8 @@
     <template v-slot:body>
       <div class="outer_div">
         <div class="inner_div">
-          <label for="plecak">wybierz plecak, z którego chcesz dodać sprzęt: </label>
-          <select id="plecak" v-model="selected_backpack_id" class="select_backpack">
+          <label for="select_backpack">wybierz listę, z której chcesz dodać sprzęt: </label>
+          <select id="select_backpack" v-model="selected_backpack_id" class="select_backpack">
             <option disabled hidden selected value=""></option>
             <option v-for="backpack in backpacks" :key="backpack.id" :value="backpack.id">{{ backpack.name }}</option>
           </select>
@@ -18,18 +18,20 @@
             <div v-for="category in filtered_categories" :key="category.id" class="category">
               <div class="category_header">
                 <input :id="'category' + category.id" v-model="selected_categories" :value="category.id"
-                       class="category_checkbox" type="checkbox" @click="handleCategoryClick(category.id)">
-                <span :for="'category' + category.id">{{ category.name }}</span>
+                       class="category_header__checkbox" type="checkbox" @click="handleCategoryClick(category.id)">
+                <span :for="'category' + category.id" class="category_header__name">{{ category.name }}</span>
               </div>
+
               <div class="items">
-                <div v-for="item in category.items" :key="item.id" class="item_div">
-                  <input :id="'item' + item.id" v-model="selected_items" :value="item.id" class="item_checkbox"
+                <div v-for="item in category.items" :key="item.id" class="item">
+                  <input :id="'item' + item.id" v-model="selected_items" :value="item.id" class="item__checkbox"
                          type="checkbox" @click="handleItemClick(category.id, item.id)">
-                  <span :for="'item' + item.id" class="item_data">
-                  <span>{{ item.name }}</span><span>{{ item.description }}</span><span>{{ item.weight }}</span>
-                </span>
+                  <div class="item__data">
+                    <span class="item__property">{{ item.name }}</span><span class="item__property">{{ item.description }}</span><span class="item__property">{{ item.weight }}</span>
+                  </div>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
@@ -225,12 +227,13 @@ export default {
   display: flex;
   justify-content: space-evenly;
   padding: 4px 8px;
+  margin-bottom: 6px;
 }
 
 .select_button {
   @include form-submit;
   font-size: .9rem;
-  padding: 5px;
+  padding: 8px;
 }
 
 .items_picker {
@@ -245,32 +248,44 @@ export default {
   display: flex;
   align-items: center;
   font-size: 1rem;
+
+  &__name {
+    margin-left: 4px;
+  }
 }
 
 .items {
 
 }
 
-.category_checkbox, .item_checkbox {
-  height: 18px;
-  width: 18px;
+.category_header__checkbox, .item__checkbox {
+  min-height: 18px;
+  min-width: 18px;
 }
 
-.item_div {
-  //margin-left: 20px;
+.item {
+  margin-left: 20px;
   display: flex;
   align-items: center;
-  margin: 5px 0 5px 20px;
+  //margin: 5px 0 5px 20px;
+  padding: 5px 0;
+  //box-sizing: border-box;
+  width: 100%;
+
+  &__property {
+    overflow-wrap: anywhere;
+  }
 
   &:not(:last-child) {
     border-bottom: 1px dotted grey;
   }
 }
 
-.item_data {
+.item__data {
+  margin-left: 4px;
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr 4rem;
+  grid-template-columns: 2fr 3fr 4rem;
   column-gap: 8px;
   align-items: center;
 }
@@ -284,7 +299,7 @@ export default {
 .submit {
   @include form-submit;
   font-size: 1rem;
-  padding: 7px;
+  padding: 8px 10px;
 }
 
 </style>

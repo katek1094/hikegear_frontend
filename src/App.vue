@@ -21,12 +21,15 @@ html {
   //min-width: 320px;
   //max-width: 100vw;
   //overflow-x: hidden;
+  //overflow: auto;
 }
 
 body {
   //margin: 0;
   //min-height: 100vh;
   background-color: $background;
+  //overflow: auto;
+  //overflow: hidden;
 
   &.modal_active {
     overflow-y: hidden;
@@ -56,7 +59,7 @@ body {
     font-size: 15px;
   }
   html, textarea {
-    color: deepskyblue;
+    //color: deepskyblue;
   }
 }
 
@@ -66,7 +69,7 @@ body {
     font-size: 16px;
   }
   html, textarea {
-    color: green;
+    //color: green;
   }
 }
 
@@ -76,7 +79,7 @@ body {
     font-size: 17px;
   }
   html, textarea {
-    color: red;
+    //color: red;
   }
 }
 
@@ -86,7 +89,7 @@ body {
     font-size: 17px;
   }
   html, textarea {
-    color: blue;
+    //color: blue;
   }
 }
 
@@ -96,7 +99,7 @@ body {
     font-size: 17px;
   }
   html, textarea {
-    color: black;
+    //color: black;
   }
 }
 </style>

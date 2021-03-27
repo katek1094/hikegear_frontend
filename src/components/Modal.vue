@@ -1,7 +1,7 @@
 <template>
   <teleport to="body">
-    <div class="modal" v-if="show">
-      <div class="modal__backdrop" @click="closeModal" :style="{right: scrollbarWidth}"/>
+    <div class="modal" v-show="show">
+      <div class="modal__backdrop" @click="closeModal" :style="{rigth: scrollbarWidth}"/>
       <div class="modal__dialog" :class="{is_confirmation: is_confirmation}">
         <button type="button" class="modal__close" @click="closeModal">
           <font-awesome-icon class="fa-lg" icon="times"/>
@@ -41,14 +41,14 @@ export default {
       this.show = false;
       this.$emit('close-modal')
       document.querySelector("body").classList.remove("modal_active");
-      // document.querySelector(".editor").classList.remove("modal_active");
+      document.querySelector("body").style.marginRight = '0'
     },
     openModal() {
       this.scrollbarWidth = (window.innerWidth - document.body.clientWidth) + 'px'
       this.show = true;
       this.$emit('open-modal')
       document.querySelector("body").classList.add("modal_active");
-      // document.querySelector(".editor").classList.add("modal_active");
+      document.querySelector("body").style.marginRight = this.scrollbarWidth;
     },
   }
 }
@@ -74,6 +74,12 @@ export default {
     bottom: 0;
     left: 0;
     z-index: 9;
+  }
+
+  @media (hover: none) and (pointer: coarse) {
+    &__backdrop {
+      right: 0;
+    }
   }
 
   &__dialog {
@@ -125,7 +131,7 @@ export default {
   }
 
   &__body {
-    padding: 2px $left_padding 10px $left_padding;
+    padding: 10px $left_padding;
   }
 
   &__footer {
@@ -183,7 +189,7 @@ export default {
 @media (min-width: 1281px) {
   /* hi-res laptops and desktops */
   .modal__dialog {
-    width: 46%;
+    width: 48%;
     max-width: 740px;
   }
 }

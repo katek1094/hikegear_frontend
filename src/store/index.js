@@ -9,6 +9,27 @@ const store = createStore({
         auth: auth,
         my_gear: my_gear
     },
+    state() {
+        return {
+            my_gear_minimized: false
+        }
+    },
+    mutations: {
+        set_my_gear_minimized(state, new_value) {
+            if (typeof new_value !== 'boolean') throw 'minimzed must be a boolean!'
+            state.my_gear_minimized = new_value
+        }
+    },
+    actions: {
+        toggleMyGearMinimized({commit, getters}) {
+            commit('set_my_gear_minimized', !getters['is_my_gear_minimized'])
+        }
+    },
+    getters: {
+        is_my_gear_minimized(state) {
+            return state.my_gear_minimized
+        }
+    }
 })
 
 export default store;

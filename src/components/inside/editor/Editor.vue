@@ -8,20 +8,20 @@
                 class="backpacks_list__item__name" @click="changeBackpack(index)">{{ backpack.name }}</span>
           <span v-else :class="{active: backpack.id === backpack_id}" class="backpacks_list__item__name"
                 @click="changeBackpack(index)">bez nazwy</span>
-          <Tooltip text="usuń plecak" direction="right" size="small">
+          <Tooltip text="usuń listę" direction="right" size="small">
             <button v-if="backpack.id === backpack_id" class="backpacks_list__delete" type="button"
                     @click="displayConfirmationDialog">
               <font-awesome-icon class="fa-sm" icon="trash"/>
             </button>
           </Tooltip>
           <ConfirmationDialog ref="confirmation_dialog" @confirmed="deleteBackpack">
-            <template v-slot:header>na pewno chcesz usunąć ten plecak?</template>
+            <template v-slot:header>na pewno chcesz usunąć tę listę?</template>
           </ConfirmationDialog>
         </div>
         <div class="backpacks_list__buttons">
           <button class="add_backpack" type="button" @click="addBackpack">
             <font-awesome-icon class="fa-md" icon="plus"/>
-            dodaj plecak
+            dodaj nową listę
           </button>
           <button class="import_backpack" type="button" @click="$refs.lpImport.openModal">
             <font-awesome-icon class="fa-md" icon="cloud-download-alt"/>
@@ -34,7 +34,7 @@
         <div class="editor__options">
           <router-link class="editor__options__link" :to="{ name: 'backpack', params: { hash: backpack_hash }}">
             <font-awesome-icon class="fa-md" icon="share"/>
-            link do plecaka
+            link do listy
           </router-link>
           <SaveProgress :data_ready="editor_data_ready" :are_changes="are_changes" ref="save_progress" @save="save"/>
           <Tooltip text="jak korzystać z aplikacji?" size="small">
@@ -44,11 +44,11 @@
           </Tooltip>
         </div>
         <AutoResizable ref="backpack_name_input" v-model.trim="backpack_name" :maxlength="max_backpack_name_length"
-                       :prevent-enter="true" class="backpack__name" placeholder="nazwa plecaka"/>
+                       :prevent-enter="true" class="backpack__name" placeholder="nazwa listy"/>
         <Summary :summary_data="summary_data"/>
         <AutoResizable ref="backpack_description_input" v-model.trim="backpack_description"
                        :maxlength="max_backpack_description_length" class="backpack__description"
-                       placeholder="opis plecaka"/>
+                       placeholder="opis listy / wyprawy"/>
         <draggable v-model="categories" animation="1000" class="categories" group="categories"
                    handle=".category__handle" item-key="id" @choose="toggleNoDrag" @unchoose="toggleNoDrag"
                    :class="{no_drag_cat: no_drag, drag_cat: !no_drag}">
@@ -56,21 +56,21 @@
             <Category :category="element" :ref="setCategoryRef"/>
           </template>
         </draggable>
-        <button class="add-category" type="button" @click="addCategory">
+        <button v-if="can_add_category" class="add-category" type="button" @click="addCategory">
           <font-awesome-icon class="fa-md" icon="plus"/>
           dodaj kategorię
         </button>
       </div>
       <!--      MY GEAR-->
-      <MyGear @toggle_minimize="toggleMinimize"/>
+      <MyGear/>
     </div>
     <!--    NO BACKPACKS-->
     <div v-else class="no_backpacks">
-      <p>nie masz żadnych plecaków</p>
+      <p>nie masz żadnych list sprzętu</p>
       <div class="no_backpacks__buttons">
         <button class="add_backpack" type="button" @click="addBackpack">
           <font-awesome-icon class="fa-md" icon="plus"/>
-          dodaj plecak
+          dodaj nową listę
         </button>
         <button class="import_backpack" type="button" @click="$refs.lpImport.openModal">
           <font-awesome-icon class="fa-md" icon="cloud-download-alt"/>
@@ -169,16 +169,14 @@ export default {
         backpack_description_input.value.resize()
       }
     }
-    const {categories_refs, addCategory, setCategoryRef} = useCategories('editor/addCategory')
+    const {categories_refs, can_add_category, addCategory, setCategoryRef} = useCategories('editor/addCategory', categories)
     const save_progress = useEditor(are_changes, save, categories_refs, (state) => state.editor.dynamic)
     useAutoresizeAll(resizeAll)
     const {no_drag, toggleNoDrag} = useNoDrag()
 
-    const my_gear_minimized = ref(false)
-    const toggleMinimize = () => {
-      my_gear_minimized.value = !my_gear_minimized.value
-      resizeAll()
-    }
+    store.watch((state => state.my_gear_minimized), () => setTimeout(resizeAll, 50)
+    )
+    const my_gear_minimized = computed(() => store.getters['is_my_gear_minimized'])
 
     return {
       my_gear_minimized,
@@ -196,6 +194,7 @@ export default {
       categories,
       backpack_name,
       backpack_description,
+      can_add_category,
       are_changes,
       backpack_hash,
       setCategoryRef,
@@ -206,7 +205,6 @@ export default {
       displayConfirmationDialog,
       save,
       toggleNoDrag,
-      toggleMinimize
     }
   },
 }
@@ -414,11 +412,15 @@ export default {
 }
 
 @media (min-width: $second_threshold) and (max-width: $third_threshold - 1px) {
+  .editor__wrapper {
+    grid-template-columns: 1fr auto;
+  }
   .editor {
     max-width: $editor_big_width;
     width: 100%;
   }
 }
+
 @media (min-width: $third_threshold) {
   .editor {
     width: 100%;
@@ -426,12 +428,13 @@ export default {
   }
   .editor__wrapper {
     display: grid;
-    grid-template-columns: auto auto auto;
+    //grid-template-columns: auto auto auto;
+    //grid-template-columns: auto auto fit-content(100%);
+    grid-template-columns: auto auto $my_gear_max_width;
     justify-items: center;
     padding: 0 $grid_wrapper_padding;
     column-gap: $grid_gap;
     align-items: start;
-
   }
   .backpacks_list {
     grid-column: 1;

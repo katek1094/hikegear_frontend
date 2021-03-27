@@ -1,13 +1,11 @@
 <template>
   <div class="my-gear_window" :class="{no_drag_my_item: no_drag, drag_my_item: !no_drag, minimized: minimized}">
-<!--    <div class="header">-->
-      <h3>mój sprzęt</h3>
-      <button class="minimize" @click="toggleMinimized">
-        <font-awesome-icon v-if="minimized" class="fa-sm minimize_icon" icon="window-maximize"/>
-        <font-awesome-icon v-else class="fa-sm minimize_icon" icon="window-minimize"/>
-      </button>
-<!--    </div>-->
-    <draggable v-model="elements" :clone="deepCopy" :group="{name: 'items', pull: 'clone', put: ['items']}"
+    <h3>mój sprzęt</h3>
+    <button class="minimize" @click="toggleMinimized">
+      <font-awesome-icon v-if="minimized" class="fa-sm minimize_icon" icon="window-maximize"/>
+      <font-awesome-icon v-else class="fa-sm minimize_icon" icon="window-minimize"/>
+    </button>
+    <draggable v-if="!is_empty" v-model="elements" :clone="deepCopy" :group="{name: 'items', pull: 'clone', put: ['items']}"
                :sort="false" animation="700" class="my-gear_items" emptyInsertThreshold="30" handle=".my-item__handle"
                item-key="id" @choose="toggleNoDrag" @unchoose="toggleNoDrag">
       <template #item="{element}">
@@ -32,20 +30,17 @@
 import draggable from 'vuedraggable'
 import Tooltip from "@/components/Tooltip";
 import {useNoDrag} from "@/hooks";
-import {ref, computed} from 'vue'
+import {computed} from 'vue'
 import {useStore} from 'vuex'
 
 export default {
   name: "MyGear",
   components: {Tooltip, draggable},
-  setup(props, {emit}) {
+  setup() {
     const store = useStore()
 
-    const minimized = ref(false)
-    const toggleMinimized = () => {
-      emit('toggle_minimize')
-      minimized.value = !minimized.value
-    }
+    const minimized = computed(() => store.getters['is_my_gear_minimized'])
+    const toggleMinimized = () => store.dispatch('toggleMyGearMinimized')
 
     const elements = computed(() => {
       const categories = store.getters['my_gear/dynamic_list']
@@ -63,16 +58,18 @@ export default {
     const deepCopy = (original) => {
       let deep_copy = JSON.parse(JSON.stringify(original))
       return {
-        type: 'item', name: deep_copy.name, description: deep_copy.description,
+        name: deep_copy.name, description: deep_copy.description,
         weight: deep_copy.weight, id: store.getters['editor/new_item_id'],
         worn: false, consumable: false, quantity: 1
       }
     }
 
+    const is_empty = computed(() => (elements.value.length === 1) && (elements.value[0].name === ''))
+
     const {no_drag, toggleNoDrag} = useNoDrag()
     return {
       minimized, elements, deepCopy, toggleMinimized,
-      no_drag, toggleNoDrag
+      no_drag, toggleNoDrag, is_empty
     }
   },
 
@@ -85,7 +82,7 @@ export default {
   width: 100%;
   background: $windows_color;
   max-width: $my_gear_max_width;
-  max-height: 92vh;
+  max-height: 90vh;
   border-radius: 4px;
   position: -webkit-sticky;
   position: sticky;
@@ -105,12 +102,6 @@ export default {
   }
 }
 
-.header {
-  //display: flex;
-  //justify-content: center;
-}
-
-// TODO: its in upper right when window on the bottom
 .minimize {
   outline: none;
   background-color: transparent;

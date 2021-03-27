@@ -1,8 +1,11 @@
 <template>
   <router-link to="/"><img alt="logo" src="@/assets/logo.png" class="logo"></router-link>
   <div class="wrapper">
-<!--    TODO: go back to editor button, if routed from editor-->
     <div v-if="backpack" class="backpack">
+      <router-link v-if="backpack.is_owner" :to="{name: 'editor'}" class="back_to_editor">
+        <font-awesome-icon class="fa-md back_to_editor__icon" icon="share"/>
+        wróć do edytora
+      </router-link>
       <span class="backpack__name">{{ backpack.name }}</span>
       <Summary :summary_data="summary_data"/>
       <span class="backpack__description">{{ backpack.description }}</span>
@@ -88,6 +91,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.back_to_editor {
+  color: black;
+  text-decoration: none;
+  margin: 10px 0;
+  align-self: start;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__icon {
+    -moz-transform: scale(-1, 1);
+    -webkit-transform: scale(-1, 1);
+    -o-transform: scale(-1, 1);
+    -ms-transform: scale(-1, 1);
+    transform: scale(-1, 1);
+  }
+}
+
 .logo:hover {
   background-color: white;
   border-radius: 8px;

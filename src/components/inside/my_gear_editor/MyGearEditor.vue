@@ -5,7 +5,7 @@
         <div class="my-gear_editor__options">
           <button v-if="are_any_backpacks" type="button" class="import__gear" @click="$refs.importGear.openModal">
             <font-awesome-icon class="fa-lg" icon="arrow-alt-circle-down"/>
-            dodaj sprzęt z plecaka
+            dodaj sprzęt z listy
           </button>
           <ImportToMyGear ref="importGear"/>
           <SaveProgress :data_ready="editor_data_ready" :are_changes="are_changes" ref="save_progress" @save="save"/>
@@ -17,7 +17,7 @@
             <MyCategory :category="element" :ref="setCategoryRef"/>
           </template>
         </draggable>
-        <button class="add-category" type="button" @click="addCategory">
+        <button v-if="can_add_category" class="add-category" type="button" @click="addCategory">
           <font-awesome-icon class="fa-md" icon="plus"/>
           dodaj kategorię
         </button>
@@ -63,13 +63,18 @@ export default {
         for (const category_ref of categories_refs.value) category_ref.resizeAllItems()
       }
     }
-    const {categories_refs, addCategory, setCategoryRef} = useCategories('my_gear/addNewCategory')
+    const {
+      categories_refs,
+      can_add_category,
+      addCategory,
+      setCategoryRef
+    } = useCategories('my_gear/addNewCategory', categories)
     const save_progress = useEditor(are_changes, save, categories_refs, (state) => state.my_gear.dynamic)
     useAutoresizeAll(resizeAll)
     const {no_drag, toggleNoDrag} = useNoDrag()
 
     return {
-      editor_data_ready, categories, save_progress, are_changes, are_any_backpacks, no_drag,
+      editor_data_ready, categories, save_progress, are_changes, are_any_backpacks, no_drag, can_add_category,
       setCategoryRef, addCategory, save, toggleNoDrag
     }
   }

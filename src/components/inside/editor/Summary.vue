@@ -1,9 +1,9 @@
 <template>
   <div class="summary__wrapper">
-    <Chart v-if="showChart" :colors_array="colors" :data_array="summary_data.data"
+    <Chart v-show="showChart" :colors_array="colors" :data_array="summary_data.data"
            :data_labels="summary_data.labels"/>
     <table class="summary__table">
-      <tr v-for="(data, index) in summary_data.data" :key="index">
+      <tr v-show="showChart" v-for="(data, index) in summary_data.data" :key="index">
         <td>
           <div class="color" :style="{backgroundColor: colors[index]}"></div>
           {{ summary_data.labels[index] }}

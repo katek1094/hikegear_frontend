@@ -1,15 +1,16 @@
 const cat_max_name_len = 30
 const item_max_name_len = 60
-const item_max_description_len = 700
+const item_max_description_len = 400
 const item_max_weight = 99999
 const item_max_quantity = 99
 const backpack_max_name_length = 60
-const backpack_max_description_length = 1000
+const backpack_max_description_length = 3000
 const password_min_length = 8
 const password_max_length = 128
 const editor_save_timeout = 3000
 const categories_max_amount = 16  // its should be the same number as amount of chart colors in Summary
 const items_in_category_max_amount = 30
+const max_backpacks_amount = 40
 
 export default {
     CATEGORY_MAX_NAME_LENGTH: cat_max_name_len,
@@ -23,5 +24,6 @@ export default {
     PASSWORD_MAX_LENGTH: password_max_length,
     EDITOR_SAVE_TIMEOUT: editor_save_timeout,
     CATEGORIES_MAX_AMOUNT: categories_max_amount,
-    ITEMS_IN_CATEGORY_MAX_AMOUNT: items_in_category_max_amount
+    ITEMS_IN_CATEGORY_MAX_AMOUNT: items_in_category_max_amount,
+    MAX_BACKPACKS_AMOUNT: max_backpacks_amount
 }

@@ -21,6 +21,7 @@ name: "NotFound",
 
 <style lang="scss" scoped>
 .not_found {
+  padding: 30px;
   @include flex-column-center;
 }
 </style>

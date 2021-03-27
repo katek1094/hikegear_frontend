@@ -140,7 +140,7 @@ export default {
   @include category-item_grid;
   grid-template-columns: auto 3fr 4fr $category-item_grid_weight_width - .2rem;
   column-gap: 2px;
-  padding: 2px 0;
+  padding: 1px 0;
   border-bottom: 1px dotted grey;
 
   &__name, &__description {

@@ -31,10 +31,10 @@
         <label v-if="password_info_display" class="auth__label" for="login-password">{{ password_info }}</label>
         <button v-if="!waiting_for_response" class="auth__submit" type="submit" id="login-submit">zaloguj</button>
         <div v-else class="spinner"></div>
-        <router-link :to="{name: 'register'}" class="login__option login__register" type="button">nie mam konta
+        <router-link :to="{name: 'register'}" class="login__option login__register">nie mam konta
           (rejestracja)
         </router-link>
-        <a :href="password_reset_url" class="login__option login__forgot_password" type="button">nie pamiętam hasła</a>
+        <a :href="password_reset_url" class="login__option login__forgot_password">nie pamiętam hasła</a>
       </form>
     </div>
   </OutsideBaseApp>

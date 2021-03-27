@@ -41,7 +41,6 @@ export default {
   margin-top: 20px;
   color: black;
   text-decoration: none;
-  background-color: transparent;
 }
 
 ::v-deep(.login__option:hover) {

@@ -12,7 +12,7 @@ export default {
   props: {
     data_array: Array,
     data_labels: Array,
-    colors_array: Array
+    colors_array: Array,
   },
   data() {
     return {
@@ -25,7 +25,7 @@ export default {
         labels: this.data_labels
       },
       chart_options: {
-        responsive: true,
+        // responsive: true,
         maintainAspectRatio: false,
         elements: {
           arc: {
@@ -34,6 +34,9 @@ export default {
         },
         legend: {
           display: false
+        },
+        layout: {
+          padding: 4
         }
       }
     }
@@ -50,6 +53,7 @@ export default {
       this.chart.data.datasets[0].data = this.data_array
       this.chart.data.labels = this.data_labels
       this.chart.update()
+      this.chart.resize()
     },
   },
   mounted() {
@@ -62,7 +66,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .canvas__wrapper {
   margin: 10px;
+  position: relative;
+  width: 160px;
+  height: 160px;
 }
+
+@media (min-width: 600px) {
+  .canvas__wrapper {
+    width: 200px;
+    height: 200px
+  }
+}
+
 </style>

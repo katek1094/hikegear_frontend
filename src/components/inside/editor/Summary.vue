@@ -1,6 +1,6 @@
 <template>
   <div class="summary__wrapper">
-    <Chart v-show="showChart" :colors_array="colors" :data_array="summary_data.data"
+    <Chart :colors_array="colors" :data_array="summary_data.data"
            :data_labels="summary_data.labels"/>
     <table class="summary__table">
       <tr v-show="showChart" v-for="(data, index) in summary_data.data" :key="index">
@@ -40,7 +40,7 @@ export default {
   name: "Summary",
   components: {Tooltip, Chart},
   props: {
-    summary_data: Object
+    summary_data: Object,
   },
   data() {
     return {
@@ -89,11 +89,5 @@ td {
   }
 }
 
-@media (min-width: 600px) {
-  ::v-deep(#summary-chart) {
-    width: 200px;
-    height: 200px
-  }
-}
 
 </style>

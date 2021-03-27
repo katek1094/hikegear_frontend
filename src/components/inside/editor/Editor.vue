@@ -3,22 +3,26 @@
     <div v-if="editor_data_ready" class="editor__wrapper" :class="{my_gear_minimized: my_gear_minimized}">
       <!--      BACKPACKS LIST-->
       <div class="backpacks_list">
-        <div class="backpacks_list__item" v-for="(backpack, index) in backpacks" :key="backpack.id">
+        <div class="backpacks_list__items">
+
+          <div class="backpacks_list__item" v-for="(backpack, index) in backpacks" :key="backpack.id">
           <span v-if="backpack.name !== ''" :class="{active: backpack.id === backpack_id}"
                 class="backpacks_list__item__name" @click="changeBackpack(index)">{{ backpack.name }}</span>
-          <span v-else :class="{active: backpack.id === backpack_id}" class="backpacks_list__item__name"
-                @click="changeBackpack(index)">bez nazwy</span>
-          <Tooltip text="usuń listę" direction="right" size="small">
-            <button v-if="backpack.id === backpack_id" class="backpacks_list__delete" type="button"
-                    @click="displayConfirmationDialog">
-              <font-awesome-icon class="fa-sm" icon="trash"/>
-            </button>
-          </Tooltip>
-          <ConfirmationDialog ref="confirmation_dialog" @confirmed="deleteBackpack">
-            <template v-slot:header>na pewno chcesz usunąć tę listę?</template>
-          </ConfirmationDialog>
+            <span v-else :class="{active: backpack.id === backpack_id}" class="backpacks_list__item__name"
+                  @click="changeBackpack(index)">bez nazwy</span>
+            <Tooltip text="usuń listę" direction="left" size="small">
+              <button v-if="backpack.id === backpack_id" class="backpacks_list__delete" type="button"
+                      @click="displayConfirmationDialog">
+                <font-awesome-icon class="fa-sm" icon="trash"/>
+              </button>
+            </Tooltip>
+            <ConfirmationDialog ref="confirmation_dialog" @confirmed="deleteBackpack">
+              <template v-slot:header>na pewno chcesz usunąć tę listę?</template>
+            </ConfirmationDialog>
+          </div>
+
         </div>
-        <div class="backpacks_list__buttons">
+        <div v-if="can_add_backpack" class="backpacks_list__buttons">
           <button class="add_backpack" type="button" @click="addBackpack">
             <font-awesome-icon class="fa-md" icon="plus"/>
             dodaj nową listę
@@ -131,6 +135,7 @@ export default {
     const editor_data_ready = computed(() => store.getters['editor/isEditorDataReady'])
     const are_changes = computed(() => store.getters['editor/are_any_changes'])
     const summary_data = computed(() => store.getters['editor/summary_data'])
+    const can_add_backpack = computed(() => backpacks.value.length < Constants.MAX_BACKPACKS_AMOUNT)
     const categories = computed({
       get: () => store.getters['editor/dynamic_list'],
       set: (val) => store.dispatch('editor/moveCategory', val)
@@ -158,7 +163,11 @@ export default {
       await store.dispatch('editor/changeBackpack', index)
       resizeAll()
     }
-    const addBackpack = () => store.dispatch('editor/addBackpack')
+    const addBackpack = async () => {
+      await save(false)
+      await store.dispatch('editor/addBackpack')
+      resizeAll()
+    }
     const deleteBackpack = () => store.dispatch('editor/deleteBackpack', backpack_id.value)
     const {confirmation_dialog, displayConfirmationDialog} = useConfirmationDialog()
 
@@ -169,7 +178,12 @@ export default {
         backpack_description_input.value.resize()
       }
     }
-    const {categories_refs, can_add_category, addCategory, setCategoryRef} = useCategories('editor/addCategory', categories)
+    const {
+      categories_refs,
+      can_add_category,
+      addCategory,
+      setCategoryRef
+    } = useCategories('editor/addCategory', categories)
     const save_progress = useEditor(are_changes, save, categories_refs, (state) => state.editor.dynamic)
     useAutoresizeAll(resizeAll)
     const {no_drag, toggleNoDrag} = useNoDrag()
@@ -195,6 +209,7 @@ export default {
       backpack_name,
       backpack_description,
       can_add_category,
+      can_add_backpack,
       are_changes,
       backpack_hash,
       setCategoryRef,
@@ -220,8 +235,14 @@ export default {
   max-width: $backpack_list_max_width; // <---------------------------------------------------- check later
   margin: 5px 0;
 
+  &__items {
+    box-sizing: border-box;
+    max-height: 260px;
+    overflow-y: auto;
+  }
+
   &__item {
-    margin: 8px;
+    padding: 4px 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -413,7 +434,7 @@ export default {
 
 @media (min-width: $second_threshold) and (max-width: $third_threshold - 1px) {
   .editor__wrapper {
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr $my_gear_max_width;
   }
   .editor {
     max-width: $editor_big_width;
@@ -441,6 +462,10 @@ export default {
     position: -webkit-sticky;
     position: sticky;
     top: 5vh;
+
+    &__items {
+      max-height: 60vh;
+    }
   }
 }
 

@@ -33,7 +33,7 @@ export default {
   position: relative;
 }
 
-.my-gear_items .tooltip__wrapper {
+.my-gear_items .tooltip__wrapper, .backpacks_list__items .tooltip__wrapper{
   position: static;
 
   &:hover {

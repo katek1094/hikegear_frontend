@@ -7,7 +7,7 @@
           <input v-model="url" class="url_input" :class="{activated: activated, invalid: !url_validity}" maxlength="32"
                  placeholder="link do plecaka" type="url" @input="activate"/>
           <button v-show="!waiting_for_response" class="url_submit" type="submit" @click="submit">importuj</button>
-          <div v-if="waiting_for_response" class="spinner"></div>
+          <div v-if="waiting_for_response" class="hg-spinner"></div>
           <p v-show="show_info">{{ info }}</p>
         </div>
       </div>
@@ -115,7 +115,4 @@ export default {
   font-size: 1rem;
 }
 
-.spinner {
-  @include spinner;
-}
 </style>

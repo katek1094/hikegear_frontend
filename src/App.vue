@@ -10,26 +10,12 @@ export default {
 </script>
 
 <style lang="scss">
-//#app {
-//  min-height: 100vh;
-//}
 * {
   font-family: Arial, sans-serif;
 }
 
-html {
-  //min-width: 320px;
-  //max-width: 100vw;
-  //overflow-x: hidden;
-  //overflow: auto;
-}
-
 body {
-  //margin: 0;
-  //min-height: 100vh;
   background-color: $background;
-  //overflow: auto;
-  //overflow: hidden;
 
   &.modal_active {
     overflow-y: hidden;
@@ -40,10 +26,7 @@ body {
       position: fixed; // < ------------ for mobiles, it works?
     }
   }
-
-
 }
-
 
 @media (max-width: 479px) {
   /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */

@@ -1,13 +1,13 @@
 <template>
   <OutsideBaseApp>
     <div>
-      <form class="auth__form" @submit.prevent="submitForm">
+      <form class="hg-flx_col_ctr" @submit.prevent="submitForm">
         <h2 class="auth__title">Logowanie</h2>
         <input id="login-email"
                v-model.trim="email"
                :class="{ invalid: !emailValidity, blurred: email_blurred, activated: email_activated}"
                autofocus
-               class="auth__input"
+               class="hg-input"
                inputmode="email"
                maxlength="320"
                name="email"
@@ -16,21 +16,21 @@
                type="email"
                @blur="markAsBlurred"
                @input="activate">
-        <label v-if="info_display" for="login-email" class="auth__label">{{ info }}</label>
+        <label v-if="info_display" for="login-email" class="hg-form_label">{{ info }}</label>
         <input id="login-password"
                v-model.trim="password"
                :class="{ invalid: !passwordValidity, blurred: password_blurred, activated: password_activated}"
                :maxlength="max_password_length"
-               class="auth__input"
+               class="hg-input"
                name="password"
                placeholder="hasło"
                required
                type="password"
                @blur="markAsBlurred"
                @input="activate">
-        <label v-if="password_info_display" class="auth__label" for="login-password">{{ password_info }}</label>
-        <button v-if="!waiting_for_response" class="auth__submit" type="submit" id="login-submit">zaloguj</button>
-        <div v-else class="spinner"></div>
+        <label v-if="password_info_display" class="hg-form_label" for="login-password">{{ password_info }}</label>
+        <button v-if="!waiting_for_response" class="hg-button" type="submit" id="login-submit">zaloguj</button>
+        <div v-else class="hg-spinner"></div>
         <router-link :to="{name: 'register'}" class="login__option login__register">nie mam konta
           (rejestracja)
         </router-link>
@@ -135,7 +135,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.spinner {
-  @include spinner;
+.login__option {
+  margin-top: 20px;
+  color: black;
+  text-decoration: none;
 }
+
+.login__option:hover {
+  text-decoration: underline;
+}
+
 </style>

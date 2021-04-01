@@ -1,6 +1,6 @@
 <template>
   <router-link to="/"><img alt="logo" src="@/assets/logo.png" class="logo"></router-link>
-  <div class="wrapper">
+  <div class="hg-flx_col_ctr">
     <div v-if="backpack" class="backpack">
       <router-link v-if="backpack.is_owner" :to="{name: 'editor'}" class="back_to_editor">
         <font-awesome-icon class="fa-md back_to_editor__icon" icon="share"/>
@@ -115,10 +115,6 @@ export default {
 .logo:hover {
   background-color: white;
   border-radius: 8px;
-}
-
-.wrapper {
-  @include flex-column-center;
 }
 
 .backpack {

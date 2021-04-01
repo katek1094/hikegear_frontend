@@ -17,34 +17,4 @@ export default {
   border-radius: 8px;
 }
 
-::v-deep(.auth__form) {
-  @include flex-column-center;
-}
-
-::v-deep(.auth__input) {
-@include form-input;
-}
-
-::v-deep(.auth__input.invalid.blurred.activated) {
-  border-color: red;
-}
-
-::v-deep(.auth__label) {
-  margin: 10px 4px;
-}
-
-::v-deep(.auth__submit) {
-@include form-submit;
-}
-
-::v-deep(.login__option) {
-  margin-top: 20px;
-  color: black;
-  text-decoration: none;
-}
-
-::v-deep(.login__option:hover) {
-  text-decoration: underline;
-}
-
 </style>

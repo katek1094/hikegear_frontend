@@ -11,6 +11,9 @@ import Backpack from "@/components/outside/Backpack";
 import MyGearEditor from "@/components/inside/my_gear_editor/MyGearEditor";
 import NotFound from "@/components/outside/NotFound";
 import LandingPage from "@/components/outside/LandingPage";
+import ActivationLinkExpired from "@/components/outside/ActivationLinkExpired";
+import ForgottenPassword from "@/components/outside/ForgottenPassword";
+import ResetPasswordForm from "@/components/outside/ResetPasswordForm";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -21,6 +24,9 @@ const router = createRouter({
         {path: '/logowanie', component: Login, name: 'login'},
         {path: '/rejestracja', component: Register, name: 'register'},
         {path: '/weryfikacja_email', component: VerifyYourEmail, name: 'verify_email'},
+        {path: '/link_wygasl', component: ActivationLinkExpired, name: 'activation_link_expired'},
+        {path: '/zapomnialem_hasla', component: ForgottenPassword, name: 'forgotten_password'},
+        {path: '/reset_hasla/:uidb64/:token', component: ResetPasswordForm, name: 'password_reset', props: true},
         {path: '/lista/:hash', component: Backpack, name: 'backpack', props: true},
         {path: '/moj_sprzet', component: MyGearEditor, name: 'my_gear', meta: {require_auth: true}},
         {path: '/:pathMatch(.*)*', component: NotFound, name: 'not_found'},

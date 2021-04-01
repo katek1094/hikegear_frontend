@@ -4,7 +4,7 @@
       <div v-show="display_bar" class="progress">
         <div class="bar" :style="{width: progress_bar_width + '%'}"></div>
       </div>
-      <div v-show="display_spinner" class="spinner"></div>
+      <div v-show="display_spinner" class="hg-spinner"></div>
       <span v-show="display_info" class="info">
       <font-awesome-icon class="fa-sm check_icon" icon="check-circle"/>
       zmiany zapisane
@@ -116,10 +116,6 @@ export default {
 
 .bar {
   background-color: $nav_color;
-}
-
-.spinner {
-  @include spinner;
 }
 
 .check_icon {

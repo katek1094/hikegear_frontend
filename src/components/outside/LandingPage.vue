@@ -1,6 +1,6 @@
 <template>
   <OutsideBaseApp>
-    <div class="landing_page_wrapper">
+    <div class="hg-flx_col_ctr">
       <div class="description">
         <h1>{{ text }}</h1>
       </div>
@@ -87,8 +87,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.landing_page_wrapper {
-  @include flex-column-center;
+.hg-flx_col_ctr {
   padding: 10px;
 }
 

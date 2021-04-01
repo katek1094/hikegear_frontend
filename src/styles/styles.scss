@@ -1,62 +1,3 @@
-@import "~normalize.css";
-
-// colors
-
-//whites
-$white1: #f6f6f6;
-
-$grey1: #efeded;
-$grey2: #e7e6e6;
-$grey3: #e5e1e1;
-$grey4: #dbd8d8;
-$grey5: #cbcbc7;
-
-//some random colors
-$color_a: $white1; // my_gear categories in window in editor, dirty white
-
-//colors used in components TODO: write all colors in hexcodes, take better from browser
-$background: $grey1;
-$windows_color: $grey3;
-
-//$nav_height: 50px;
-$nav_height: 50px;
-$nav_color: $grey4;
-//variables used in components
-
-$editor_enough_width: 620px;
-$editor_big_width: 760px;
-
-
-$my_gear_min_width: 320px;
-$my_gear_max_width: 560px;
-$my_gear_minimized_width: 180px;
-
-
-$backpack_list_min_width: 300px;
-$backpack_list_max_width: 440px;
-
-
-$grid_gap: 10px;
-$grid_wrapper_padding: 5px;
-
-$third_threshold: ($my_gear_max_width + $backpack_list_min_width + $editor_big_width
-+ 2 * $grid_wrapper_padding + 2 * $grid_gap);
-
-$second_threshold: ($my_gear_max_width + $editor_big_width
-+ $grid_wrapper_padding + $grid_gap);
-
-$first_threshold: ($my_gear_min_width + $editor_enough_width
-+ $grid_wrapper_padding + $grid_gap);
-
-
-$category-item_grid_handle_width: auto;
-$category-item_grid_weight_width: 3rem;
-$category-item_grid_delete_width: 30px;
-
-$category-item_font_size: .8rem;
-//$category-item_font_size: .9rem;
-
-
 //general mixins
 @mixin flex-column-center {
   display: flex;
@@ -276,8 +217,8 @@ $category-item_font_size: .8rem;
   }
 }
 
-
-@mixin spinner {
+// GLOBAL STYLES (CLASSES) with 'hg-' prefix
+.hg-spinner {
   border: 4px solid white;
   border-radius: 50%;
   border-top: 4px solid black;
@@ -289,6 +230,31 @@ $category-item_font_size: .8rem;
   align-self: center;
 }
 
+.hg-flx_col_ctr {
+  @include flex-column-center;
+}
+
+.hg-input {
+  @include form-input;
+
+  &.invalid.blurred.activated {
+    border-color: red;
+  }
+}
+
+.hg-form_label {
+  margin: 10px 4px;
+}
+
+.hg-button {
+  @include form-submit;
+}
+
+
+
+
+
+// for spinner
 @-webkit-keyframes spin {
   0% {
     -webkit-transform: rotate(0deg);

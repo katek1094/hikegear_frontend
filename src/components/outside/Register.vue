@@ -1,28 +1,31 @@
 <template>
   <OutsideBaseApp>
-    <form class="auth__form" @submit.prevent="submitForm">
+    <form class="hg-flx_col_ctr" @submit.prevent="submitForm">
       <h2>Rejestracja</h2>
       <input id="registration-email" ref="email" v-model.trim="email"
              :class="{ invalid: !emailValidity, blurred: email_blurred, activated: email_activated}"
-             class="auth__input"
+             class="hg-input"
              inputmode="email" name="email" placeholder="e-mail" required type="email" @blur="markAsBlurred"
              @input="activate">
-      <label v-if="email_info !== ''" for="registration-email">{{ email_info }}</label>
+      <label v-if="email_info !== ''" for="registration-email" class="hg-form_label">{{ email_info }}</label>
       <input id="registration-password1" ref="password1" v-model.trim="password1" autocomplete="new-password"
              :class="{ invalid: !password1Validity, blurred: password1_blurred, activated: password1_activated}"
              :maxlength="max_password_length" :minlength="min_password_length"
-             :placeholder="'hasło (min. ' + min_password_length + ' znaków)'" class="auth__input"
+             :placeholder="'hasło (min. ' + min_password_length + ' znaków)'" class="hg-input"
              name="password1" required type="password" @blur="markAsBlurred" @input="activate">
-      <label v-show="password1_info_display" for="registration-password1">{{ password1_info }}</label>
-      <label v-show="password_info !== ''">{{ password_info }}</label>
+      <label v-show="password1_info_display" for="registration-password1" class="hg-form_label">{{
+          password1_info
+        }}</label>
+      <label v-show="password_info !== ''" class="hg-form_label">{{ password_info }}</label>
       <input id="registration-password2" ref="password2" v-model.trim="password2" autocomplete="new-password"
              :class="{ invalid: !password2Validity, blurred: password2_blurred, activated: password2_activated}"
-             :maxlength="max_password_length" :minlength="min_password_length" class="auth__input" name="password2"
+             :maxlength="max_password_length" :minlength="min_password_length" class="hg-input" name="password2"
              placeholder="powtórz hasło" required type="password"
              @blur="markAsBlurred" @input="activate">
-      <label v-show="password2_info_display" for="registration-password2">hasła nie są takie same</label>
-      <button v-show="!waiting_for_response" id="register-submit" class="auth__submit" type="submit">zarejestruj</button>
-      <div v-if="waiting_for_response" class="spinner"></div>
+      <label v-show="password2_info_display" for="registration-password2" class="hg-form_label">hasła nie są takie
+        same</label>
+      <button v-show="!waiting_for_response" id="register-submit" class="hg-button" type="submit">zarejestruj</button>
+      <div v-if="waiting_for_response" class="hg-spinner"></div>
     </form>
   </OutsideBaseApp>
 </template>
@@ -139,7 +142,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.spinner {
-  @include spinner;
-}
+
 </style>

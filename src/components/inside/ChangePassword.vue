@@ -1,27 +1,27 @@
 <template>
-  <form @submit.prevent="submit">
+  <form @submit.prevent="submit" class="hg-flx_col_ctr">
     <h3>zmiana hasła</h3>
-    <input id="password" ref="password" v-model.trim="password"
+    <input id="password" ref="password" v-model.trim="password" class="hg-input"
            :class="{ invalid: !password_validity, blurred: password_blurred, activated: password_activated}"
            :maxlength="max_password_length" :minlength="min_password_length" name="password"
            placeholder="obecne hasło" required type="password"
            @blur="markAsBlurred" @input="activate">
-    <label v-show="password_info_display" for="password">{{ password_info }}</label>
-    <input id="new_password1" ref="new_password1" v-model.trim="new_password1"
+    <label v-show="password_info_display" for="password" class="hg-form_label">{{ password_info }}</label>
+    <input id="new_password1" ref="new_password1" v-model.trim="new_password1" class="hg-input"
            :class="{ invalid: !new_password1_validity, blurred: new_password1_blurred, activated: new_password1_activated}"
            :maxlength="max_password_length" :minlength="min_password_length" name="new_password1"
            placeholder="nowe hasło" required type="password"
            @blur="markAsBlurred" @input="activate">
-    <label v-show="new_password1_info_display" for="new_password1">{{ new_password1_info }}</label>
-    <input id="new_password2" ref="new_password2" v-model.trim="new_password2"
+    <label v-show="new_password1_info_display" for="new_password1" class="hg-form_label">{{ new_password1_info }}</label>
+    <input id="new_password2" ref="new_password2" v-model.trim="new_password2" class="hg-input"
            :class="{ invalid: !new_password2_validity, blurred: new_password2_blurred, activated: new_password2_activated}"
            :maxlength="max_password_length" :minlength="min_password_length" name="new_password2"
            placeholder="powtórz nowe hasło" required
            type="password"
            @blur="markAsBlurred" @input="activate">
-    <label v-show="new_password2_info_display" for="new_password2">{{ new_password2_info }}</label>
-    <button v-if="!waiting_for_response" type="submit">zmień hasło</button>
-    <div v-else class="spinner"></div>
+    <label v-show="new_password2_info_display" for="new_password2" class="hg-form_label">{{ new_password2_info }}</label>
+    <button v-if="!waiting_for_response" type="submit" class="hg-button">zmień hasło</button>
+    <div v-else class="hg-spinner"></div>
     <p class="success" v-show="success">hasło zostało zmienione</p>
   </form>
 </template>
@@ -174,27 +174,4 @@ export default {
   color: yellowgreen;
 }
 
-form {
-  @include flex-column-center;
-}
-
-input {
-  @include form-input;
-}
-
-input.invalid.blurred.activated {
-  border-color: red;
-}
-
-label {
-  margin: 10px 4px;
-}
-
-button {
-  @include form-submit;
-}
-
-.spinner {
-  @include spinner;
-}
 </style>

@@ -139,16 +139,56 @@ export function useItem(item_weight, item_quantity) {
     }
 
     return {
-        weight_limit,
-        max_name_length,
-        max_description_length,
-        name_input,
-        description_input,
-        focusName,
-        handleEnter,
-        fillWithZero,
-        removeLeadingZero,
-        resizeAll,
-        charControl
+        weight_limit, max_name_length, max_description_length, name_input, description_input,
+        focusName, handleEnter, fillWithZero, removeLeadingZero, resizeAll, charControl
     }
+}
+
+export function useForm(inputs) {
+    const markAsBlurred = (e) => {
+        let name = e.target.getAttribute('name')
+        if (inputs[name].activated) inputs[name].blurred = true
+    }
+    const markAsActivated = (e) => {
+        let name = e.target.getAttribute('name')
+        inputs[name].activated = true
+    }
+
+    return {markAsBlurred, markAsActivated}
+}
+
+export function useEmail(email) {
+    const email_regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    const email_validity = computed(() => {
+        return email_regex.test(String(email.value).toLowerCase());
+    })
+
+    return {email_validity}
+}
+
+export function usePasswords(inputs, passwords) {
+    const min_password_length = Constants.PASSWORD_MIN_LENGTH
+    const max_password_length = Constants.PASSWORD_MAX_LENGTH
+    const numeric_regex = /^\d+$/
+
+    const not_long_enough = (password_value) => password_value.length < min_password_length
+    const too_long = (password_value) => password_value.length > max_password_length
+    const entirely_numeric = (password_value) => numeric_regex.test(password_value)
+    const validate = (password_value) => {
+        if (not_long_enough(password_value)) return {is_valid: false, info: 'hasło jest zbyt krótkie'}
+        else if (too_long(password_value)) return {is_valid: false, info: 'hasło jest za długie'}
+        else if (entirely_numeric(password_value)) return {
+            is_valid: false,
+            info: 'hasło nie może się składać tylko z cyfr'
+        }
+        else return {is_valid: true, info: ''}
+    }
+    const passwords_validation = computed(() => {
+        let results = {}
+        for (const password of passwords) results[password.name] = validate(password.value)
+        return results
+    })
+
+    return {min_password_length, max_password_length, passwords_validation}
 }

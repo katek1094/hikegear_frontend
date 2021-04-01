@@ -2,26 +2,30 @@
   <OutsideBaseApp>
     <form class="hg-flx_col_ctr" @submit.prevent="submitForm">
       <h2>Rejestracja</h2>
-      <input id="registration-email" ref="email" v-model.trim="email"
-             :class="{ invalid: !emailValidity, blurred: email_blurred, activated: email_activated}"
+      <!--      {{ inputs }}-->
+
+      <!--      {{ passwords_validation }}-->
+      <input id="registration-email" v-model.trim="inputs.email.value"
+             :class="{ invalid: !email_validity, blurred: inputs.email.blurred, activated: inputs.email.activated}"
              class="hg-input"
-             inputmode="email" name="email" placeholder="e-mail" required type="email" @blur="markAsBlurred"
-             @input="activate">
+             inputmode="email" :name="inputs.email.name" placeholder="e-mail" required type="email"
+             @blur="markAsBlurred"
+             @input="markAsActivated ">
       <label v-if="email_info !== ''" for="registration-email" class="hg-form_label">{{ email_info }}</label>
-      <input id="registration-password1" ref="password1" v-model.trim="password1" autocomplete="new-password"
-             :class="{ invalid: !password1Validity, blurred: password1_blurred, activated: password1_activated}"
+      <input id="registration-password1" v-model.trim="inputs.password1.value" autocomplete="new-password"
+             :class="{ invalid: !passwords_validation.password1.is_valid, blurred: inputs.password1.blurred, activated: inputs.password1.activated}"
              :maxlength="max_password_length" :minlength="min_password_length"
              :placeholder="'hasło (min. ' + min_password_length + ' znaków)'" class="hg-input"
-             name="password1" required type="password" @blur="markAsBlurred" @input="activate">
-      <label v-show="password1_info_display" for="registration-password1" class="hg-form_label">{{
-          password1_info
-        }}</label>
+             :name="inputs.password1.name" required type="password" @blur="markAsBlurred" @input="markAsActivated ">
+      <label v-show="password1_info_display" for="registration-password1" class="hg-form_label">
+        {{ passwords_validation.password1.info }}</label>
       <label v-show="password_info !== ''" class="hg-form_label">{{ password_info }}</label>
-      <input id="registration-password2" ref="password2" v-model.trim="password2" autocomplete="new-password"
-             :class="{ invalid: !password2Validity, blurred: password2_blurred, activated: password2_activated}"
-             :maxlength="max_password_length" :minlength="min_password_length" class="hg-input" name="password2"
+      <input id="registration-password2" v-model.trim="inputs.password2.value" autocomplete="new-password"
+             :class="{ invalid: !passwords_validation.password2.is_valid, blurred: inputs.password2.blurred, activated: inputs.password2.activated}"
+             :maxlength="max_password_length" :minlength="min_password_length" class="hg-input"
+             :name="inputs.password2.name"
              placeholder="powtórz hasło" required type="password"
-             @blur="markAsBlurred" @input="activate">
+             @blur="markAsBlurred" @input="markAsActivated ">
       <label v-show="password2_info_display" for="registration-password2" class="hg-form_label">hasła nie są takie
         same</label>
       <button v-show="!waiting_for_response" id="register-submit" class="hg-button" type="submit">zarejestruj</button>
@@ -33,111 +37,101 @@
 <script>
 import OutsideBaseApp from "@/components/outside/OutsideBaseApp";
 import {apiFetch} from "@/functions";
-import Constants from "@/constants";
+import {computed, ref, reactive} from "vue";
+import {useRouter} from 'vue-router'
+import {useForm, useEmail, usePasswords} from "@/hooks";
 
 export default {
   name: "Register",
   components: {OutsideBaseApp},
-  data() {
-    return {
-      email: '',
-      password1: '',
-      password2: '',
-      email_blurred: false,
-      password1_blurred: false,
-      password2_blurred: false,
-      min_password_length: Constants.PASSWORD_MIN_LENGTH,
-      max_password_length: Constants.PASSWORD_MAX_LENGTH,
-      email_info: '',
-      password_info: '',
-      email_activated: false,
-      password1_activated: false,
-      password2_activated: false,
-      waiting_for_response: false
-    }
-  },
-  computed: {
-    emailValidity() {
-      const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return re.test(String(this.email).toLowerCase());
-    },
-    password1Validity() {
-      return this.password1_long_enough && this.password1_not_too_long && this.password1_not_enitirely_numeric
-    },
-    password2Validity() {
-      return this.password2 === this.password1
-    },
-    password1_long_enough() {
-      return this.password1.length >= this.min_password_length
-    },
-    password1_not_too_long() {
-      return this.password1.length <= this.max_password_length
-    },
-    password1_not_enitirely_numeric() {
-      return !(/^\d+$/.test(this.password1))
-    },
-    password1_info() {
-      if (!this.password1_long_enough) return 'hasło jest zbyt krótkie'
-      if (!this.password1_not_too_long) return 'hasło jest zbyt długie'
-      if (!this.password1_not_enitirely_numeric) return 'hasło nie może składać się tylko z cyfr'
-      return ''
-    },
-    password1_info_display() {
-      return this.password1_info !== '' && this.password1_blurred && this.password1_activated
-    },
-    password2_info_display() {
-      return !this.password2Validity && this.password2_blurred && this.password2_activated
-    },
-    isFormValid() {
-      return this.password1Validity && this.password2Validity && this.emailValidity
-    },
-  },
-  methods: {
-    submitForm() {
-      this.email_info = ''
-      this.password_info = ''
-      this.password2_blurred = true
-      this.waiting_for_response = true
-      if (this.isFormValid) {
+  setup() {
+    const router = useRouter()
+
+    const inputs = reactive({
+      email: {
+        name: 'email',
+        value: '',
+        blurred: false,
+        activated: false,
+      },
+      password1: {
+        name: 'password1',
+        value: '',
+        blurred: false,
+        activated: false,
+      },
+      password2: {
+        name: 'password2',
+        value: '',
+        blurred: false,
+        activated: false,
+      },
+    })
+    const {markAsBlurred, markAsActivated} = useForm(inputs)
+    const {email_validity} = useEmail(inputs.email)
+    const {
+      min_password_length,
+      max_password_length,
+      passwords_validation
+    } = usePasswords(inputs, [inputs.password1, inputs.password2])
+
+    const email_info = ref('')
+    const password_info = ref('')
+    const waiting_for_response = ref(false)
+
+    const password1_info_display = computed(() => {
+      return passwords_validation.value.password1.info !== '' && inputs.password1.blurred && inputs.password1.activated
+    })
+    const password2_info_display = computed(() => {
+      return !passwords_validation.value.password2.is_valid && inputs.password2.blurred && inputs.password2.activated
+    })
+    const is_form_valid = computed(() => {
+      return passwords_validation.value.password1.is_valid.value && passwords_validation.value.password2.is_valid.value && email_validity.value
+    })
+    const submitForm = () => {
+      email_info.value = ''
+      password_info.value = ''
+      inputs.password2.blurred = true
+      waiting_for_response.value = true
+      if (is_form_valid.value) {
         apiFetch('users/', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
-            email: this.email,
-            password: this.password1
+            email: inputs.email.value,
+            password: inputs.password1.value
           })
         })
             .then(response => {
               if (response.ok) {
-                this.$router.push({name: 'verify_email'})
+                router.push({name: 'verify_email'})
               } else {
                 alert(response.status)  // TODO: delete this later
-                this.handleFailure(response.json())
+                handleFailure(response.json())
               }
-              this.waiting_for_response = false
+              waiting_for_response.value = false
             })
       }
-    },
-    handleFailure(json) {
+    }
+    const handleFailure = (json) => {
       json.then(dt => {
         if (dt.email) {
-          this.email_info = 'konto powiązane z tym adresem email już istnieje'
+          email_info.value = 'konto powiązane z tym adresem email już istnieje'
         } else {
           if (dt[0] === "['This password is too common.']") {
-            this.password_info = 'to hasło jest zbyt popularne'
-          } else this.password_info = dt[0]
+            password_info.value = 'to hasło jest zbyt popularne'
+          } else password_info.value = dt[0]
         }
       })
-    },
-    markAsBlurred(e) {
-      let name = e.target.getAttribute('name')
-      if (this[name + '_activated'] === true) this[name + '_blurred'] = true
-    },
-    activate(e) {
-      let name = e.target.getAttribute('name')
-      this[name + '_activated'] = true
     }
-  }
+
+    return {
+      inputs, min_password_length, max_password_length, email_info, password_info, waiting_for_response,
+      email_validity, password1_info_display,
+      password2_info_display, passwords_validation,
+      submitForm, markAsBlurred, markAsActivated
+    }
+  },
 }
 </script>
 

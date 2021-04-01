@@ -33,15 +33,13 @@ router.beforeEach((to, from, next) => {
             if (to.name === 'landing_page') next({name: 'editor'})
             else next()
         }
-        else if (!to.meta.require_auth) next()
-        else next({name: 'login'})
+        else if (to.meta.require_auth) next({name: 'login'})
+        else next()
     }
-
-    // TODO: it could be done better, or different, maybe its wrong, look at it deeply later
-    if (store.getters['auth/is_logged_in'] === undefined && to.meta.require_auth || to.name === 'landing_page') {
+    if (store.getters['auth/is_logged_in'] === undefined && (to.meta.require_auth || to.path === '/')) {
         store.dispatch('editor/getInitialData').then(status => {
-            if (status === 'not logged in') store.dispatch('auth/changeLoggedIn', false)
-            else store.dispatch('auth/changeLoggedIn', true)
+            if (status === 403) store.dispatch('auth/changeLoggedIn', false)
+            else if (status === 200) store.dispatch('auth/changeLoggedIn', true)
         })
             .then(guard)
     } else guard()

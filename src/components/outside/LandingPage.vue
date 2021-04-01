@@ -29,10 +29,11 @@ export default {
       images_refs: [],
       active_number: 0,
       interval_id: undefined,
+      timeout_id: undefined,
       texts: [
-        'twórz listy sprzętu w łatwy sposób',
-        'dziel się nimi z innymi',
-        'zorganizuj swój sprzęt',
+        'Twórz listy sprzętu w łatwy sposób',
+        'Dziel się nimi z innymi',
+        'Zorganizuj swój sprzęt',
       ],
       chosen_text: 0
     }
@@ -65,7 +66,7 @@ export default {
       this.images_refs[previous_number].classList.remove('previous')
       if (this.active_number < last_number) this.active_number++
       else this.active_number = 0
-      setTimeout(() => {
+      this.timeout_id = setTimeout(() => {
         if (this.active_number !== last_number) this.images_refs[this.active_number + 1].classList.add('next')
         else this.images_refs[0].classList.add('next')
       }, 2000)
@@ -80,6 +81,7 @@ export default {
   },
   beforeUnmount() {
     clearInterval(this.interval_id)
+    clearTimeout(this.timeout_id)
   }
 }
 </script>
@@ -107,24 +109,28 @@ export default {
   text-align: center;
   font-size: 8px;
 }
+
 .hidden_image {
   visibility: hidden;
   width: 100%;
   object-fit: scale-down;
 }
+
 .slider {
   border-radius: 4px;
   overflow: hidden;
   display: flex;
   position: relative;
-  max-height: 50vw;
+  height: 39vw; // its for bugs on mobile browsers
   width: 85vw;
   max-width: 1200px;
+  max-height: calc(100vh - 240px);
   //max-height: 2280px;
   //background-color: red;
 }
 
 .image {
+  height: 100%;
   width: 100%;
   object-fit: scale-down;
   display: none;
@@ -176,6 +182,9 @@ export default {
   /* big landscape tablets, laptops, and desktops */
   .description {
     font-size: 16px;
+  }
+  .button {
+    font-size: 1.4rem;
   }
 }
 

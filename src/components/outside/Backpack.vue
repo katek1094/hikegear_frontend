@@ -7,7 +7,7 @@
         wróć do edytora
       </router-link>
       <span class="backpack__name">{{ backpack.name }}</span>
-      <Summary :summary_data="summary_data"/>
+      <Summary v-show="summary_data.total_weight !== 0" :summary_data="summary_data"/>
       <span class="backpack__description">{{ backpack.description }}</span>
       <div class="categories">
         <div class="category" v-for="category in backpack.list" :key="category.id">

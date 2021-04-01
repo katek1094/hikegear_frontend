@@ -15,7 +15,7 @@ export function getCookie(name) {
 
 export function apiFetch(endpoint, options) {
     if (options.headers === undefined) options.headers = {}
-    options.headers['X-CSRFToken'] = getCookie('csrftoken')
+    if (getCookie('csrftoken')) options.headers['X-CSRFToken'] = getCookie('csrftoken')
     options.credentials = 'include'
     return fetch(process.env.VUE_APP_API_URL + '/api/' + endpoint, options)
 }

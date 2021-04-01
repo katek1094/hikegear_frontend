@@ -49,7 +49,7 @@
         </div>
         <AutoResizable ref="backpack_name_input" v-model.trim="backpack_name" :maxlength="max_backpack_name_length"
                        :prevent-enter="true" class="backpack__name" placeholder="nazwa listy"/>
-        <Summary :summary_data="summary_data"/>
+        <Summary v-show="summary_data.total_weight !== 0" :summary_data="summary_data"/>
         <AutoResizable ref="backpack_description_input" v-model.trim="backpack_description"
                        :maxlength="max_backpack_description_length" class="backpack__description"
                        placeholder="opis listy / wyprawy"/>

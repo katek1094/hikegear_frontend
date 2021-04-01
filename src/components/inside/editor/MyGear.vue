@@ -5,7 +5,8 @@
       <font-awesome-icon v-if="minimized" class="fa-sm minimize_icon" icon="window-maximize"/>
       <font-awesome-icon v-else class="fa-sm minimize_icon" icon="window-minimize"/>
     </button>
-    <draggable v-if="!is_empty" v-model="elements" :clone="deepCopy" :group="{name: 'items', pull: 'clone', put: ['items']}"
+    <draggable v-if="!is_empty" v-model="elements" :clone="deepCopy"
+               :group="{name: 'items', pull: 'clone', put: ['items']}"
                :sort="false" animation="700" class="my-gear_items" emptyInsertThreshold="30" handle=".my-item__handle"
                item-key="id" @choose="toggleNoDrag" @unchoose="toggleNoDrag">
       <template #item="{element}">
@@ -30,7 +31,7 @@
 import draggable from 'vuedraggable'
 import Tooltip from "@/components/Tooltip";
 import {useNoDrag} from "@/hooks";
-import {computed} from 'vue'
+import {computed, onMounted} from 'vue'
 import {useStore} from 'vuex'
 
 export default {
@@ -39,11 +40,16 @@ export default {
   setup() {
     const store = useStore()
 
+    const is_empty = computed(() => (elements.value.length === 1) && (elements.value[0].name === ''))
     const minimized = computed(() => store.getters['is_my_gear_minimized'])
     const toggleMinimized = () => store.dispatch('toggleMyGearMinimized')
 
+    onMounted(() => {
+      if (is_empty.value) toggleMinimized()
+    })
+
     const elements = computed(() => {
-      const categories = store.getters['my_gear/dynamic_list']
+      const categories = JSON.parse(JSON.stringify(store.getters['my_gear/dynamic_list']))
       const result = []
       for (const cat of categories) {
         result.push(cat)
@@ -55,6 +61,7 @@ export default {
       }
       return result
     })
+
     const deepCopy = (original) => {
       let deep_copy = JSON.parse(JSON.stringify(original))
       return {
@@ -64,9 +71,9 @@ export default {
       }
     }
 
-    const is_empty = computed(() => (elements.value.length === 1) && (elements.value[0].name === ''))
 
     const {no_drag, toggleNoDrag} = useNoDrag()
+
     return {
       minimized, elements, deepCopy, toggleMinimized,
       no_drag, toggleNoDrag, is_empty

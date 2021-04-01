@@ -220,6 +220,7 @@ export default {
   font-size: 1rem;
   padding: 1px;
   margin: 4px 0;
+  min-width: 140px;
 }
 
 .select_buttons {

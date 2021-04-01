@@ -108,7 +108,7 @@ export default {
           password: this.password
         })
             .then(async status => {
-              if (status === 'logged in') {
+              if (status === 200) {
                 await this.$store.dispatch('editor/getInitialData')
                     .then(() => this.$router.push({name: 'editor'}))
               } else if (status === 'bad credentials') {

@@ -80,7 +80,7 @@ export default {
             })
     },
     addBackpack({commit}) {
-        apiFetch('backpacks/', {
+        return apiFetch('backpacks/', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -113,10 +113,7 @@ export default {
                         commit('copy_and_set_static_backpack', data)
                         commit('add_backpack', data)
                     })
-                } else {
-                    alert(response.status)
-                    console.log(response)
-                }
+                } else console.log(response)
             })
     },
     addImportedBackpack({commit}, backpack) {
@@ -171,10 +168,10 @@ export default {
                         }
                         commit('my_gear/copy_and_set_static', data['private_gear'], {root: true})
                         commit('my_gear/copy_and_set_dynamic', data['private_gear'], {root: true})
-                        return 'data_downloaded'
+                        return response.status // 200
                     })
                 } else {
-                    if (response.status === 403) return 'not logged in'
+                    if (response.status === 403) return response.status // 403
                     else {
                         alert(response.status)
                         console.log(response)

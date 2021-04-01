@@ -26,7 +26,7 @@ export default {
                 .then(async response => {
                     if (response.ok) {
                         await commit('set_logged_in', false)
-                        return 'you are logged out'
+                        return response.status // 200
                     } else console.log(response)
                 })
         },
@@ -42,7 +42,7 @@ export default {
                 .then(response => {
                     if (response.ok) {
                         commit('set_logged_in', true)
-                        return 'logged in'
+                        return response.status // 200
                     } else {
                         commit('set_logged_in', false)
                         if (response.status === 401) {

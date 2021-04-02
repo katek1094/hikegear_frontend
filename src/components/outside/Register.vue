@@ -29,7 +29,7 @@
           class="hg-input"
           @blur="markAsBlurred" @input="markAsActivated">
       <label v-show="inputs.password2.info" for="password2" class="hg-form_label">{{ inputs.password2.info }}</label>
-      <button v-if="!waiting_for_response" id="register-submit" class="hg-button" type="submit">zarejestruj</button>
+      <button v-if="!waiting_for_response" class="hg-button" type="submit">zarejestruj</button>
       <div v-else class="hg-spinner"></div>
     </form>
   </OutsideBaseApp>

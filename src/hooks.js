@@ -220,6 +220,7 @@ export function usePasswords() {
     const not_long_enough = (password_value) => password_value.length < min_password_length
     const too_long = (password_value) => password_value.length > max_password_length
     const entirely_numeric = (password_value) => numeric_regex.test(password_value)
+
     const isPasswordValid = (password_value) => {
         if (not_long_enough(password_value)) return new ValidityInfo(false, 'hasło jest zbyt krótkie')
         else if (too_long(password_value)) return new ValidityInfo(false, 'hasło jest za długie')
@@ -235,35 +236,3 @@ export function usePasswords() {
 
     return {min_password_length, max_password_length, isPasswordValid, arePasswordsEqual}
 }
-
-
-// export function usePasswords(inputs, passwords) {
-//     const min_password_length = Constants.PASSWORD_MIN_LENGTH
-//     const max_password_length = Constants.PASSWORD_MAX_LENGTH
-//     const numeric_regex = /^\d+$/
-//
-//     const not_long_enough = (password_value) => password_value.length < min_password_length
-//     const too_long = (password_value) => password_value.length > max_password_length
-//     const entirely_numeric = (password_value) => numeric_regex.test(password_value)
-//     const validate = (password_value) => {
-//         if (not_long_enough(password_value)) return {is_valid: false, info: 'hasło jest zbyt krótkie'}
-//         else if (too_long(password_value)) return {is_valid: false, info: 'hasło jest za długie'}
-//         else if (entirely_numeric(password_value)) return {
-//             is_valid: false,
-//             info: 'hasło nie może się składać tylko z cyfr'
-//         }
-//         else return {is_valid: true, info: ''}
-//     }
-//     const passwords_validation = computed(() => {
-//         let results = {}
-//         let all_valid_counter = 0
-//         for (const password of passwords) {
-//             results[password.name] = validate(password.value)
-//             if (!results[password.name].is_valid) all_valid_counter++
-//         }
-//         results.all_valid = (all_valid_counter === 0)
-//         return results
-//     })
-//
-//     return {min_password_length, max_password_length, passwords_validation}
-// }

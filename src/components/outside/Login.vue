@@ -1,41 +1,39 @@
 <template>
   <OutsideBaseApp>
-    <div>
-      <form class="hg-flx_col_ctr" @submit.prevent="submitForm">
-        <h2 class="auth__title">Logowanie</h2>
-        <input id="email"
-               v-model.trim="inputs.email.value"
-               :class="{ marked: inputs.email.marked}"
-               autofocus
-               class="hg-input"
-               inputmode="email"
-               maxlength="320"
-               :name="inputs.email.name"
-               placeholder="e-mail"
-               required
-               type="email"
-               @blur="markAsBlurred"
-               @input="markAsActivated">
-        <label v-show="response_info !== ''" class="hg-form_label">{{ response_info }}</label>
-        <label v-show="inputs.email.info" for="email" class="hg-form_label">{{ inputs.email.info }}</label>
-        <input id="password"
-               v-model.trim="inputs.password.value"
-               :class="{ marked: inputs.password.marked}"
-               :maxlength="max_password_length"
-               class="hg-input"
-               :name="inputs.password.name"
-               placeholder="hasło"
-               required
-               type="password"
-               @blur="markAsBlurred"
-               @input="markAsActivated ">
-        <label v-show="inputs.password.info" class="hg-form_label" for="password">{{ inputs.password.info }}</label>
-        <button v-if="!waiting_for_response" class="hg-button" type="submit" id="login-submit">zaloguj</button>
-        <div v-else class="hg-spinner"></div>
-        <router-link :to="{name: 'register'}" class="login__option">nie mam konta (rejestracja)</router-link>
-        <router-link :to="{name: 'forgotten_password'}" class="login__option">nie pamiętam hasła</router-link>
-      </form>
-    </div>
+    <form class="hg-flx_col_ctr" @submit.prevent="submitForm">
+      <h2 class="auth__title">Logowanie</h2>
+      <input id="email"
+             v-model.trim="inputs.email.value"
+             :class="{ marked: inputs.email.marked}"
+             autofocus
+             class="hg-input"
+             inputmode="email"
+             maxlength="320"
+             :name="inputs.email.name"
+             placeholder="e-mail"
+             required
+             type="email"
+             @blur="markAsBlurred"
+             @input="markAsActivated">
+      <label v-show="response_info !== ''" class="hg-form_label">{{ response_info }}</label>
+      <label v-show="inputs.email.info" for="email" class="hg-form_label">{{ inputs.email.info }}</label>
+      <input id="password"
+             v-model.trim="inputs.password.value"
+             :class="{ marked: inputs.password.marked}"
+             :maxlength="max_password_length"
+             class="hg-input"
+             :name="inputs.password.name"
+             placeholder="hasło"
+             required
+             type="password"
+             @blur="markAsBlurred"
+             @input="markAsActivated ">
+      <label v-show="inputs.password.info" class="hg-form_label" for="password">{{ inputs.password.info }}</label>
+      <button v-if="!waiting_for_response" class="hg-button" type="submit">zaloguj</button>
+      <div v-else class="hg-spinner"></div>
+      <router-link :to="{name: 'register'}" class="login__option">nie mam konta (rejestracja)</router-link>
+      <router-link :to="{name: 'forgotten_password'}" class="login__option">nie pamiętam hasła</router-link>
+    </form>
   </OutsideBaseApp>
 </template>
 

@@ -144,6 +144,42 @@ export function useItem(item_weight, item_quantity) {
     }
 }
 
+export function useInputs() {
+    class Input {
+        constructor(name, isValid) {
+            this.name = name
+            this.value = ''
+            this.blurred = false
+            this.activated = false
+            this.response_info = false
+            this.isValid = isValid
+        }
+
+        get is_valid() {
+            return this.isValid(this.value).is_valid
+        }
+
+        get info() {
+            if (!this.is_valid && this.marked) return this.isValid(this.value).info
+            else if (this.response_info) return this.response_info
+            else return false
+        }
+
+        get marked() {
+            return !this.is_valid && this.blurred && this.activated
+        }
+    }
+
+    class ValidityInfo {
+        constructor(is_valid, info) {
+            this.is_valid = is_valid
+            this.info = info
+        }
+    }
+
+    return {Input, ValidityInfo}
+}
+
 export function useForm(inputs) {
     const markAsBlurred = (e) => {
         let name = e.target.getAttribute('name')
@@ -152,43 +188,76 @@ export function useForm(inputs) {
     const markAsActivated = (e) => {
         let name = e.target.getAttribute('name')
         inputs[name].activated = true
+        inputs[name].response_info = false
     }
+    const waiting_for_response = ref(false)
 
-    return {markAsBlurred, markAsActivated}
+    return {waiting_for_response, markAsBlurred, markAsActivated}
 }
 
-export function useEmail(email) {
+export function useEmail() {
     const email_regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-    const email_validity = computed(() => {
-        return email_regex.test(String(email.value).toLowerCase());
-    })
-
-    return {email_validity}
+    const {ValidityInfo} = useInputs()
+    const isEmailValid = (email_value) => {
+        if (email_regex.test(String(email_value).toLowerCase())) return new ValidityInfo(true, '')
+        else return new ValidityInfo(false, 'email jest niepoprawny')
+    }
+    return {isEmailValid}
 }
 
-export function usePasswords(inputs, passwords) {
+export function usePasswords() {
     const min_password_length = Constants.PASSWORD_MIN_LENGTH
     const max_password_length = Constants.PASSWORD_MAX_LENGTH
     const numeric_regex = /^\d+$/
+    const {ValidityInfo} = useInputs()
 
     const not_long_enough = (password_value) => password_value.length < min_password_length
     const too_long = (password_value) => password_value.length > max_password_length
     const entirely_numeric = (password_value) => numeric_regex.test(password_value)
-    const validate = (password_value) => {
-        if (not_long_enough(password_value)) return {is_valid: false, info: 'hasło jest zbyt krótkie'}
-        else if (too_long(password_value)) return {is_valid: false, info: 'hasło jest za długie'}
-        else if (entirely_numeric(password_value)) return {
-            is_valid: false,
-            info: 'hasło nie może się składać tylko z cyfr'
-        }
-        else return {is_valid: true, info: ''}
+    const isPasswordValid = (password_value) => {
+        if (not_long_enough(password_value)) return new ValidityInfo(false, 'hasło jest zbyt krótkie')
+        else if (too_long(password_value)) return new ValidityInfo(false, 'hasło jest za długie')
+        else if (entirely_numeric(password_value)) return new ValidityInfo(false, 'hasło nie może się składać tylko z cyfr')
+        else return new ValidityInfo(true, '')
     }
-    const passwords_validation = computed(() => {
-        let results = {}
-        for (const password of passwords) results[password.name] = validate(password.value)
-        return results
-    })
+    const arePasswordsEqual = (password_to_compare, password_value) => {
+        if (password_to_compare.is_valid) {
+            if (password_to_compare.value === password_value) return new ValidityInfo(true, '')
+            else return new ValidityInfo(false, 'hasła nie są takie same')
+        } else return new ValidityInfo(false, '')
+    }
 
-    return {min_password_length, max_password_length, passwords_validation}
+    return {min_password_length, max_password_length, isPasswordValid, arePasswordsEqual}
 }
+
+
+// export function usePasswords(inputs, passwords) {
+//     const min_password_length = Constants.PASSWORD_MIN_LENGTH
+//     const max_password_length = Constants.PASSWORD_MAX_LENGTH
+//     const numeric_regex = /^\d+$/
+//
+//     const not_long_enough = (password_value) => password_value.length < min_password_length
+//     const too_long = (password_value) => password_value.length > max_password_length
+//     const entirely_numeric = (password_value) => numeric_regex.test(password_value)
+//     const validate = (password_value) => {
+//         if (not_long_enough(password_value)) return {is_valid: false, info: 'hasło jest zbyt krótkie'}
+//         else if (too_long(password_value)) return {is_valid: false, info: 'hasło jest za długie'}
+//         else if (entirely_numeric(password_value)) return {
+//             is_valid: false,
+//             info: 'hasło nie może się składać tylko z cyfr'
+//         }
+//         else return {is_valid: true, info: ''}
+//     }
+//     const passwords_validation = computed(() => {
+//         let results = {}
+//         let all_valid_counter = 0
+//         for (const password of passwords) {
+//             results[password.name] = validate(password.value)
+//             if (!results[password.name].is_valid) all_valid_counter++
+//         }
+//         results.all_valid = (all_valid_counter === 0)
+//         return results
+//     })
+//
+//     return {min_password_length, max_password_length, passwords_validation}
+// }

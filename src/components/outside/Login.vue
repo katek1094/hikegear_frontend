@@ -3,7 +3,6 @@
     <div>
       <form class="hg-flx_col_ctr" @submit.prevent="submitForm">
         <h2 class="auth__title">Logowanie</h2>
-        {{ inputs }}
         <input id="login-email"
                v-model.trim="inputs.email.value"
                :class="{ invalid: !email_validity, blurred: inputs.email.blurred, activated: inputs.email.activated}"
@@ -16,7 +15,7 @@
                required
                type="email"
                @blur="markAsBlurred"
-               @input="markAsActivated ">
+               @input="markAsActivated">
         <label v-if="info_display" for="login-email" class="hg-form_label">{{ info }}</label>
         <input id="login-password"
                v-model.trim="inputs.password.value"
@@ -29,7 +28,8 @@
                type="password"
                @blur="markAsBlurred"
                @input="markAsActivated ">
-        <label v-if="password_info_display" class="hg-form_label" for="login-password">{{ passwords_validation.password.info }}</label>
+        <label v-if="password_info_display" class="hg-form_label"
+               for="login-password">{{ passwords_validation.password.info }}</label>
         <button v-if="!waiting_for_response" class="hg-button" type="submit" id="login-submit">zaloguj</button>
         <div v-else class="hg-spinner"></div>
         <router-link :to="{name: 'register'}" class="login__option login__register">nie mam konta (rejestracja)
@@ -66,41 +66,15 @@ export default {
         value: '',
         blurred: false,
         activated: false,
-        b: {
-          get: function () {
-            return this
-          }
-        }
       }
     })
     const {markAsBlurred, markAsActivated} = useForm(inputs)
     const {email_validity} = useEmail(inputs.email)
-    const {min_password_length, max_password_length,
-      passwords_validation
-    }
-        = usePasswords(inputs, [inputs.password])
+    const {min_password_length, max_password_length, passwords_validation} = usePasswords(inputs, [inputs.password])
 
     const info = ref('')
     const waiting_for_response = ref(false)
 
-    // const password_validity = computed(() => {
-    //   return password_long_enough.value && password_not_too_long && password_not_entirely_numeric.value
-    // })
-    // const password_long_enough = computed(() => {
-    //   return inputs.password.value.length >= min_password_length
-    // })
-    // const password_not_too_long = computed(() => {
-    //   return inputs.password.value.length <= max_password_length
-    // })
-    // const password_not_entirely_numeric = computed(() => {
-    //   return !(numeric_regex.test(inputs.password.value))
-    // })
-    // const password_info = computed(() => {
-    //   if (!password_long_enough.value) return 'hasło jest zbyt krótkie'
-    //   if (!password_not_too_long.value) return 'hasło jest zbyt długie'
-    //   if (!password_not_entirely_numeric.value) return 'hasło nie może składać się tylko z cyfr'
-    //   return ''
-    // })
     const password_info_display = computed(() => {
       return passwords_validation.value.password.is_valid !== '' && inputs.password.blurred && inputs.password.activated
     })
@@ -108,7 +82,7 @@ export default {
       return info.value !== '' && inputs.email.blurred && inputs.email.activated
     })
     const is_form_valid = computed(() => {
-      return email_validity.value && passwords_validation.value.password.is_valid
+      return email_validity.value && passwords_validation.value.all_valid
     })
     const password_reset_url = computed(() => {
       return process.env.VUE_APP_API_URL + '/accounts/password_reset/'

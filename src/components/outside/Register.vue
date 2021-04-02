@@ -2,32 +2,20 @@
   <OutsideBaseApp>
     <form class="hg-flx_col_ctr" @submit.prevent="submitForm">
       <h2>Rejestracja</h2>
-      <!--      {{ inputs }}-->
-
-      <!--      {{ passwords_validation }}-->
-      <input id="registration-email" v-model.trim="inputs.email.value"
-             :class="{ invalid: !email_validity, blurred: inputs.email.blurred, activated: inputs.email.activated}"
-             class="hg-input"
-             inputmode="email" :name="inputs.email.name" placeholder="e-mail" required type="email"
-             @blur="markAsBlurred"
-             @input="markAsActivated ">
-      <label v-if="email_info !== ''" for="registration-email" class="hg-form_label">{{ email_info }}</label>
-      <input id="registration-password1" v-model.trim="inputs.password1.value" autocomplete="new-password"
-             :class="{ invalid: !passwords_validation.password1.is_valid, blurred: inputs.password1.blurred, activated: inputs.password1.activated}"
-             :maxlength="max_password_length" :minlength="min_password_length"
-             :placeholder="'hasło (min. ' + min_password_length + ' znaków)'" class="hg-input"
-             :name="inputs.password1.name" required type="password" @blur="markAsBlurred" @input="markAsActivated ">
-      <label v-show="password1_info_display" for="registration-password1" class="hg-form_label">
-        {{ passwords_validation.password1.info }}</label>
-      <label v-show="password_info !== ''" class="hg-form_label">{{ password_info }}</label>
-      <input id="registration-password2" v-model.trim="inputs.password2.value" autocomplete="new-password"
-             :class="{ invalid: !passwords_validation.password2.is_valid, blurred: inputs.password2.blurred, activated: inputs.password2.activated}"
-             :maxlength="max_password_length" :minlength="min_password_length" class="hg-input"
-             :name="inputs.password2.name"
-             placeholder="powtórz hasło" required type="password"
+      <input id="email" v-model.trim="inputs.email.value" :class="{ marked: inputs.email.marked }"
+             :name="inputs.email.name" class="hg-input" inputmode="email" placeholder="e-mail" required type="email"
+             @blur="markAsBlurred" @input="markAsActivated">
+      <label v-show="inputs.email.info" for="email" class="hg-form_label">{{ inputs.email.info }}</label>
+      <input id="password1" v-model.trim="inputs.password1.value" :class="{ marked: inputs.password1.marked}"
+             :maxlength="max_password_length" :minlength="min_password_length" :name="inputs.password1.name"
+             :placeholder="'hasło (min. ' + min_password_length + ' znaków)'" autocomplete="new-password"
+             class="hg-input" required type="password" @blur="markAsBlurred" @input="markAsActivated">
+      <label v-show="inputs.password1.info" for="password1" class="hg-form_label">{{ inputs.password1.info }}</label>
+      <input id="password2" v-model.trim="inputs.password2.value" :class="{ marked: inputs.password2.marked}"
+             :maxlength="max_password_length" :minlength="min_password_length" :name="inputs.password2.name"
+             autocomplete="new-password" class="hg-input" placeholder="powtórz hasło" required type="password"
              @blur="markAsBlurred" @input="markAsActivated ">
-      <label v-show="password2_info_display" for="registration-password2" class="hg-form_label">hasła nie są takie
-        same</label>
+      <label v-show="inputs.password2.info" for="password2" class="hg-form_label">{{ inputs.password2.info }}</label>
       <button v-show="!waiting_for_response" id="register-submit" class="hg-button" type="submit">zarejestruj</button>
       <div v-if="waiting_for_response" class="hg-spinner"></div>
     </form>
@@ -37,63 +25,33 @@
 <script>
 import OutsideBaseApp from "@/components/outside/OutsideBaseApp";
 import {apiFetch} from "@/functions";
-import {computed, ref, reactive} from "vue";
+import {computed, reactive} from "vue";
 import {useRouter} from 'vue-router'
-import {useForm, useEmail, usePasswords} from "@/hooks";
+import {useForm, useEmail, usePasswords, useInputs} from "@/hooks";
 
 export default {
   name: "Register",
   components: {OutsideBaseApp},
   setup() {
     const router = useRouter()
+    const {Input} = useInputs()
+    const {isEmailValid} = useEmail()
+    const {min_password_length, max_password_length, isPasswordValid, arePasswordsEqual} = usePasswords()
 
     const inputs = reactive({
-      email: {
-        name: 'email',
-        value: '',
-        blurred: false,
-        activated: false,
-      },
-      password1: {
-        name: 'password1',
-        value: '',
-        blurred: false,
-        activated: false,
-      },
-      password2: {
-        name: 'password2',
-        value: '',
-        blurred: false,
-        activated: false,
-      },
+      email: new Input('email', isEmailValid),
+      password1: new Input('password1', isPasswordValid),
     })
-    const {markAsBlurred, markAsActivated} = useForm(inputs)
-    const {email_validity} = useEmail(inputs.email)
-    const {
-      min_password_length,
-      max_password_length,
-      passwords_validation
-    } = usePasswords(inputs, [inputs.password1, inputs.password2])
+    inputs.password2 = new Input('password2', (value) => arePasswordsEqual(inputs.password1, value))
 
-    const email_info = ref('')
-    const password_info = ref('')
-    const waiting_for_response = ref(false)
+    const {waiting_for_response, markAsBlurred, markAsActivated} = useForm(inputs)
 
-    const password1_info_display = computed(() => {
-      return passwords_validation.value.password1.info !== '' && inputs.password1.blurred && inputs.password1.activated
-    })
-    const password2_info_display = computed(() => {
-      return !passwords_validation.value.password2.is_valid && inputs.password2.blurred && inputs.password2.activated
-    })
-    const is_form_valid = computed(() => {
-      return passwords_validation.value.password1.is_valid.value && passwords_validation.value.password2.is_valid.value && email_validity.value
-    })
+    const is_form_valid = computed(() => inputs.email.is_valid && inputs.password1.is_valid && inputs.password2.is_valid)
+
     const submitForm = () => {
-      email_info.value = ''
-      password_info.value = ''
       inputs.password2.blurred = true
-      waiting_for_response.value = true
       if (is_form_valid.value) {
+        waiting_for_response.value = true
         apiFetch('users/', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
@@ -103,32 +61,31 @@ export default {
           })
         })
             .then(response => {
+              waiting_for_response.value = false
               if (response.ok) {
                 router.push({name: 'verify_email'})
               } else {
-                alert(response.status)  // TODO: delete this later
-                handleFailure(response.json())
+                handleFailure(response)
               }
-              waiting_for_response.value = false
             })
       }
     }
-    const handleFailure = (json) => {
-      json.then(dt => {
-        if (dt.email) {
-          email_info.value = 'konto powiązane z tym adresem email już istnieje'
-        } else {
-          if (dt[0] === "['This password is too common.']") {
-            password_info.value = 'to hasło jest zbyt popularne'
-          } else password_info.value = dt[0]
-        }
-      })
+    const handleFailure = (response) => {
+      if (response.status === 400) {
+        response.json().then(dt => {
+          if (dt.email) {
+            inputs.email.response_info = 'konto powiązane z tym adresem email już istnieje'
+          } else {
+            if (dt[0] === "['This password is too common.']") {
+              inputs.password1.response_info = 'to hasło jest zbyt popularne'
+            } else inputs.password1.response_info = dt[0]
+          }
+        })
+      } else alert(response.status)
     }
 
     return {
-      inputs, min_password_length, max_password_length, email_info, password_info, waiting_for_response,
-      email_validity, password1_info_display,
-      password2_info_display, passwords_validation,
+      inputs, min_password_length, max_password_length, waiting_for_response,
       submitForm, markAsBlurred, markAsActivated
     }
   },

@@ -237,7 +237,7 @@
 .hg-input {
   @include form-input;
 
-  &.invalid.blurred.activated {
+  &.marked {
     border-color: red;
   }
 }

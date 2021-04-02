@@ -168,6 +168,12 @@ export function useInputs() {
         get marked() {
             return !this.is_valid && this.blurred && this.activated
         }
+
+        reset() {
+            this.value = ''
+            this.blurred = false
+            this.activated = false
+        }
     }
 
     class ValidityInfo {

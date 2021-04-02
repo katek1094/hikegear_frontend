@@ -2,22 +2,35 @@
   <OutsideBaseApp>
     <form class="hg-flx_col_ctr" @submit.prevent="submitForm">
       <h2>Rejestracja</h2>
-      <input id="email" v-model.trim="inputs.email.value" :class="{ marked: inputs.email.marked }"
-             :name="inputs.email.name" class="hg-input" inputmode="email" placeholder="e-mail" required type="email"
-             @blur="markAsBlurred" @input="markAsActivated">
+      <input
+          id="email" inputmode="email" placeholder="e-mail" required type="email"
+          v-model.trim="inputs.email.value"
+          :class="{ marked: inputs.email.marked }"
+          :name="inputs.email.name"
+          class="hg-input"
+          @blur="markAsBlurred" @input="markAsActivated">
       <label v-show="inputs.email.info" for="email" class="hg-form_label">{{ inputs.email.info }}</label>
-      <input id="password1" v-model.trim="inputs.password1.value" :class="{ marked: inputs.password1.marked}"
-             :maxlength="max_password_length" :minlength="min_password_length" :name="inputs.password1.name"
-             :placeholder="'hasło (min. ' + min_password_length + ' znaków)'" autocomplete="new-password"
-             class="hg-input" required type="password" @blur="markAsBlurred" @input="markAsActivated">
+      <input
+          id="password1" autocomplete="new-password" required type="password"
+          v-model.trim="inputs.password1.value"
+          :class="{ marked: inputs.password1.marked}"
+          :minlength="min_password_length" :maxlength="max_password_length"
+          :name="inputs.password1.name"
+          :placeholder="'hasło (min. ' + min_password_length + ' znaków)'"
+          class="hg-input"
+          @blur="markAsBlurred" @input="markAsActivated">
       <label v-show="inputs.password1.info" for="password1" class="hg-form_label">{{ inputs.password1.info }}</label>
-      <input id="password2" v-model.trim="inputs.password2.value" :class="{ marked: inputs.password2.marked}"
-             :maxlength="max_password_length" :minlength="min_password_length" :name="inputs.password2.name"
-             autocomplete="new-password" class="hg-input" placeholder="powtórz hasło" required type="password"
-             @blur="markAsBlurred" @input="markAsActivated ">
+      <input
+          id="password2" autocomplete="new-password" placeholder="powtórz hasło" required type="password"
+          v-model.trim="inputs.password2.value"
+          :class="{ marked: inputs.password2.marked}"
+          :minlength="min_password_length" :maxlength="max_password_length"
+          :name="inputs.password2.name"
+          class="hg-input"
+          @blur="markAsBlurred" @input="markAsActivated">
       <label v-show="inputs.password2.info" for="password2" class="hg-form_label">{{ inputs.password2.info }}</label>
-      <button v-show="!waiting_for_response" id="register-submit" class="hg-button" type="submit">zarejestruj</button>
-      <div v-if="waiting_for_response" class="hg-spinner"></div>
+      <button v-if="!waiting_for_response" id="register-submit" class="hg-button" type="submit">zarejestruj</button>
+      <div v-else class="hg-spinner"></div>
     </form>
   </OutsideBaseApp>
 </template>

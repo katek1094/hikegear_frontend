@@ -1,6 +1,6 @@
 <template>
   <form @submit.prevent="submit" class="hg-flx_col_ctr">
-    <h3>zmiana hasła</h3>
+    <h3>Zmiana hasła</h3>
     <input id="old_password" v-model.trim="inputs.old_password.value" class="hg-input"
            :class="{ marked: inputs.old_password.marked }"
            :maxlength="max_password_length" :minlength="min_password_length" :name="inputs.old_password.name"
@@ -96,6 +96,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.hg-flx_col_ctr {
+  margin-top: 8vh;
+}
 .success {
   color: yellowgreen;
 }

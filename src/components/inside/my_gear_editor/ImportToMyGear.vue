@@ -268,9 +268,7 @@ export default {
   margin-left: 20px;
   display: flex;
   align-items: center;
-  //margin: 5px 0 5px 20px;
   padding: 5px 0;
-  //box-sizing: border-box;
   width: 100%;
 
   &__property {

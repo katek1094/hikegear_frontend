@@ -17,10 +17,9 @@ import {
     faArrowAltCircleDown,
     faQuestion,
     faWindowMinimize,
-    faWindowMaximize
+    faWindowMaximize,
 } from '@fortawesome/free-solid-svg-icons'
 // TODO: add better icon for handles
-// TODO: and add tooltips over them
 library.add(faTrash)
 library.add(faChild)
 library.add(faSyncAlt)

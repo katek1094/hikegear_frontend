@@ -62,7 +62,7 @@ export default {
             commit('copy_and_set_dynamic_backpack', rootGetters['editor/dynamic_backpack_data'])
             commit('copy_and_set_static_backpack', rootGetters['editor/dynamic_backpack_data'])
         }
-        return apiFetch('backpacks/' + rootGetters['editor/backpack_id'] + '/', {
+        return apiFetch('backpacks/' + rootGetters['editor/backpack_id'], {
             method: 'PATCH',
             headers: {'Content-Type': 'application/json'},
             body: rootGetters['editor/bodyBackpackData']
@@ -80,7 +80,7 @@ export default {
             })
     },
     addBackpack({commit}) {
-        return apiFetch('backpacks/', {
+        return apiFetch('backpacks', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({

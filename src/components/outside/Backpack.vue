@@ -79,7 +79,7 @@ export default {
   },
   beforeCreate() {
     const id = hashids.decode(this.hash)
-    apiFetch('backpacks/' + id + '/', {
+    apiFetch('backpacks/' + id, {
       method: 'GET',
     })
         .then(response => {

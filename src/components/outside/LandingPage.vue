@@ -1,9 +1,7 @@
 <template>
   <OutsideBaseApp>
     <div class="hg-flx_col_ctr">
-      <div class="description">
-        <h1>{{ text }}</h1>
-      </div>
+      <h1 class="header">{{ text }}</h1>
       <div class="slider">
         <img class="hidden_image" src="@/assets/hg1.png" alt="coś się popsuło">
         <img class="image active" src="@/assets/hg1.png" alt="coś się popsuło">
@@ -31,9 +29,11 @@ export default {
       interval_id: undefined,
       timeout_id: undefined,
       texts: [
-        'Twórz listy sprzętu w łatwy sposób',
-        'Dziel się nimi z innymi',
+        'Twórz listy sprzętu',
+        'Dziel się nimi',
         'Zorganizuj swój sprzęt',
+        // 'Zorganizuj swój sprzęt',
+        // 'Zorganizuj swój sprzęt',
       ],
       chosen_text: 0
     }
@@ -88,7 +88,7 @@ export default {
 
 <style lang="scss" scoped>
 .hg-flx_col_ctr {
-  padding: 10px;
+  padding: 0 10px 10px;
 }
 
 .buttons_wrapper {
@@ -104,9 +104,13 @@ export default {
   font-weight: bold;
 }
 
-.description {
+@import url('https://fonts.googleapis.com/css?family=Bungee');
+
+.header {
+  font-family: "Bungee", Arial, sans-serif;
+  font-weight: 400;
   text-align: center;
-  font-size: 8px;
+  font-size: 1.4rem;
 }
 
 .hidden_image {
@@ -124,8 +128,6 @@ export default {
   width: 85vw;
   max-width: 1200px;
   max-height: calc(100vh - 240px);
-  //max-height: 2280px;
-  //background-color: red;
 }
 
 .image {
@@ -160,27 +162,29 @@ export default {
 
 @media (min-width: 480px) {
   /* smartphones, Android phones, landscape iPhone */
-  .description {
-    font-size: 12px;
+  .header {
+    font-size: 1.6rem;
   }
 }
 
 @media (min-width: 600px) {
   /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
-
+  .header {
+    font-size: 1.7rem;
+  }
 }
 
 @media (min-width: 801px) {
   /* tablet, landscape iPad, lo-res laptops ands desktops */
-  .description {
-    font-size: 14px;
+  .header {
+    font-size: 1.8rem;
   }
 }
 
 @media (min-width: 1025px) {
   /* big landscape tablets, laptops, and desktops */
-  .description {
-    font-size: 16px;
+  .header {
+    font-size: 1.9rem;
   }
   .button {
     font-size: 1.4rem;
@@ -189,8 +193,9 @@ export default {
 
 @media (min-width: 1281px) {
   /* hi-res laptops and desktops */
-  .description {
-    font-size: 1rem;
+  .header {
+    font-size: 2rem;
+    margin-top: 2px;
   }
 }
 </style>

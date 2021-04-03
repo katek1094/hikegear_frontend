@@ -2,7 +2,7 @@
   <Modal ref="modal">
     <template v-slot:header>jak korzystać z aplikacji?</template>
     <template v-slot:body>
-      <h3 class="header">Kategorie</h3>
+      <h3 class="header__first">Kategorie</h3>
       <span>Nie ma zalecanego użycia podziału na kategorię, możesz dzielić sprzęt ze względu na funkcje (do spania,
         biwakowania, gotowania, ubrania), miejsce w plecaku, podział na worki/drybagi...</span>
 
@@ -60,6 +60,8 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+.header__first {
+  margin-top: 0;
+}
 </style>

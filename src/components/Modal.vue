@@ -1,7 +1,7 @@
 <template>
   <teleport to="body">
-    <div class="modal" v-show="show">
-      <div class="modal__backdrop" @click="closeModal" :style="{rigth: scrollbarWidth}"/>
+    <div class="modal" v-if="show">
+      <div class="modal__backdrop" @click="closeModal"/>
       <div class="modal__dialog" :class="{is_confirmation: is_confirmation}">
         <button type="button" class="modal__close" @click="closeModal">
           <font-awesome-icon class="fa-lg" icon="times"/>
@@ -32,23 +32,22 @@ export default {
   data() {
     return {
       show: false,
-      scrollbarWidth: '15px'
     }
   },
   methods: {
     closeModal(e) {
-      if (!this.hide_on_outside_click && e && (e.target.className === "modal__backdrop")) return false
-      this.show = false;
-      this.$emit('close-modal')
-      document.querySelector("body").classList.remove("modal_active");
-      document.querySelector("body").style.marginRight = '0'
+      if (!(!this.hide_on_outside_click && e && (e.target.className === "modal__backdrop"))) {
+        this.show = false;
+        this.$emit('close-modal')
+        document.querySelector("body").classList.remove("modal_active");
+        document.querySelector("body").style.marginRight = '0'
+      }
     },
     openModal() {
-      this.scrollbarWidth = (window.innerWidth - document.body.clientWidth) + 'px'
       this.show = true;
       this.$emit('open-modal')
       document.querySelector("body").classList.add("modal_active");
-      document.querySelector("body").style.marginRight = this.scrollbarWidth;
+      document.querySelector("body").style.marginRight = '15px';
     },
   }
 }
@@ -70,7 +69,7 @@ export default {
     background-color: rgba(0, 0, 0, 0.4);
     position: fixed;
     top: 0;
-    right: 12px;
+    right: 15px;
     bottom: 0;
     left: 0;
     z-index: 9;
@@ -130,12 +129,14 @@ export default {
     margin: 0;
   }
 
+  $footer_padding: 4px;
+
   &__body {
-    padding: 10px $left_padding;
+    padding: 10px + 2* $footer_padding $left_padding 10px;
   }
 
   &__footer {
-    padding: 4px $left_padding;
+    padding: $footer_padding $left_padding;
   }
 }
 

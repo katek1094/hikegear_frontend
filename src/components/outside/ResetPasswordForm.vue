@@ -1,6 +1,12 @@
 <template>
   <OutsideBaseApp>
-    <form class="hg-flx_col_ctr" @submit.prevent="submitForm">
+    <div v-if="token_expired" class="hg-flx_col_ctr hg-text-wrapper">
+      <h2>Czas na zresetowanie hasła minął</h2>
+      <p>Aby zresetować hasło musisz ponownie wypełnić
+        <router-link class="hg-link" :to="{name: 'forgotten_password'}">ten formularz</router-link>
+      </p>
+    </div>
+    <form v-else class="hg-flx_col_ctr" @submit.prevent="submitForm">
       <h2>Ustaw nowe hasło</h2>
       <input
           id="password1" autocomplete="new-password" required type="password"
@@ -30,7 +36,7 @@
 <script>
 import OutsideBaseApp from "@/components/outside/OutsideBaseApp";
 import {useForm, useInputs, usePasswords} from "@/hooks";
-import {computed, reactive} from "vue";
+import {computed, reactive, ref} from "vue";
 import {apiFetch} from "@/functions";
 import {useRouter} from "vue-router";
 
@@ -49,6 +55,8 @@ export default {
     inputs.password2 = new Input('password2', (value) => arePasswordsEqual(inputs.password1, value))
 
     const {waiting_for_response, markAsBlurred, markAsActivated} = useForm(inputs)
+
+    const token_expired = ref(false)
 
     const is_form_valid = computed(() => inputs.password1.is_valid && inputs.password2.is_valid)
 
@@ -76,14 +84,15 @@ export default {
                       inputs.password1.response_info = 'to hasło jest zbyt popularne'
                     } else inputs.password1.response_info = dt[0]
                   })
-                } else alert(response.status) // TODO: handle this later
+                } else if (response.status === 410) token_expired.value = true
+                else alert(response.status) // TODO: handle this later
               }
             })
       }
     }
 
     return {
-      inputs, min_password_length, max_password_length, waiting_for_response,
+      inputs, min_password_length, max_password_length, waiting_for_response, token_expired,
       submitForm, markAsBlurred, markAsActivated
     }
   }
@@ -91,5 +100,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.hg-link {
+  font-weight: bold;
+}
 </style>

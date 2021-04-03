@@ -36,7 +36,7 @@
       <!--      EDITOR-->
       <div class="editor">
         <div class="editor__options">
-          <router-link class="editor__options__link" :to="{ name: 'backpack', params: { hash: backpack_hash }}">
+          <router-link class="editor__options__link hg-link" :to="{ name: 'backpack', params: { hash: backpack_hash }}">
             <font-awesome-icon class="fa-md" icon="share"/>
             link do listy
           </router-link>
@@ -283,15 +283,7 @@ export default {
 
 .editor__options {
   &__link {
-    color: black;
-    text-decoration: none;
     margin: 10px 0;
-
-    @media (hover: hover) and (pointer: fine) {
-      &:hover {
-        text-decoration: underline;
-      }
-    }
   }
 
   &__info {

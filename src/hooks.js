@@ -59,9 +59,7 @@ export function useEditor(are_changes, save, categories_refs, state_watch_func) 
     }
     store.watch(state_watch_func, handleDataChange, {deep: true});
 
-    onMounted(() => {
-        window.addEventListener('keydown', handleCtrlS);
-    })
+    onMounted(() => window.addEventListener('keydown', handleCtrlS))
     onBeforeUnmount(() => {
         window.removeEventListener("keydown", handleCtrlS);
         save(false)
@@ -113,19 +111,19 @@ export function useItem(item_weight, item_quantity) {
     const description_input = ref(null)  //template ref
 
     const focusName = () => name_input.value.focusTextarea()
-    const handleEnter = (event) => {
+    const handleEnter = (event) => { // after Enter on Item name input moves focus to the Item description input
         if (event.keyCode === 13) description_input.value.$el.focus()
     }
     const fillWithZero = (e) => {
+        const name = e.target.getAttribute('name')
         if (e.target.value === '') {
-            if (e.target.getAttribute('name') === 'item_quantity') item_quantity.value = 0
-            else if (e.target.getAttribute('name') === 'item_weight') item_weight.value = 0
+            if (name === 'item_quantity') item_quantity.value = 0
+            else if (name === 'item_weight') item_weight.value = 0
         }
     }
     const removeLeadingZero = (e) => {
-        if ((String(e.target.value)[0] === '0') && (e.target.value.length > 1)) {
-            e.target.value = String(e.target.value).slice(1)
-        }
+        const value = String(e.target.value)
+        if ((value[0] === '0') && (value.length > 1)) e.target.value = value.slice(1)
     }
     const resizeAll = () => {
         name_input.value.resize()
@@ -133,9 +131,9 @@ export function useItem(item_weight, item_quantity) {
     }
     const charControl = (e) => {
         const allowed_codes = [8, 9, 13, 46, 37, 38, 39, 40, // backspace, tab, enter, delete, arrows
-            48, 49, 50, 51, 52, 53, 54, 55, 56, 57] // 0-9 numbers and
+            48, 49, 50, 51, 52, 53, 54, 55, 56, 57] // 0-9 numbers
         if (!allowed_codes.includes(e.keyCode)) e.preventDefault()
-        if ((e.target.getAttribute('name') === 'item_quantity') && (e.keyCode === 190)) e.preventDefault()
+        if ((e.target.getAttribute('name') === 'item_quantity') && (e.keyCode === 190)) e.preventDefault() // 190 is a dot
     }
 
     return {
@@ -145,38 +143,38 @@ export function useItem(item_weight, item_quantity) {
 }
 
 export function useInputs() {
-    class Input {
+    class Input {  // class for creating inputs to the form hooks
         constructor(name, isValid) {
-            this.name = name
+            this.name = name // used for referencing in inputs object and as html element names
             this.value = ''
-            this.blurred = false
-            this.activated = false
+            this.blurred = false // is true after blur event
+            this.activated = false // is true after input event
             this.response_info = false
-            this.isValid = isValid
+            this.isValid = isValid  // should be a function that takes value, and returns ValidityInfo object
         }
 
-        get is_valid() {
+        get is_valid() { // returns if input field value is valid using isValid function
             return this.isValid(this.value).is_valid
         }
 
-        get info() {
+        get info() { // return info from ValidityInfo object form isValid function checks or response info assigned after fetch
             if (!this.is_valid && this.marked) return this.isValid(this.value).info
             else if (this.response_info) return this.response_info
             else return false
         }
 
-        get marked() {
+        get marked() { // used for 'marked' class binding which gives input red border
             return !this.is_valid && this.blurred && this.activated
         }
 
-        reset() {
+        reset() { // resets input, used after successful request
             this.value = ''
             this.blurred = false
             this.activated = false
         }
     }
 
-    class ValidityInfo {
+    class ValidityInfo { // used in isValid functions, for returning inputs validity and info (if not valid)
         constructor(is_valid, info) {
             this.is_valid = is_valid
             this.info = info
@@ -221,13 +219,13 @@ export function usePasswords() {
     const too_long = (password_value) => password_value.length > max_password_length
     const entirely_numeric = (password_value) => numeric_regex.test(password_value)
 
-    const isPasswordValid = (password_value) => {
+    const isPasswordValid = (password_value) => { // it is used as isValid function for Input class instances in inputs
         if (not_long_enough(password_value)) return new ValidityInfo(false, 'hasło jest zbyt krótkie')
         else if (too_long(password_value)) return new ValidityInfo(false, 'hasło jest za długie')
         else if (entirely_numeric(password_value)) return new ValidityInfo(false, 'hasło nie może się składać tylko z cyfr')
         else return new ValidityInfo(true, '')
     }
-    const arePasswordsEqual = (password_to_compare, password_value) => {
+    const arePasswordsEqual = (password_to_compare, password_value) => { // used as isValid function, for second password in form
         if (password_to_compare.is_valid) {
             if (password_to_compare.value === password_value) return new ValidityInfo(true, '')
             else return new ValidityInfo(false, 'hasła nie są takie same')

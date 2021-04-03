@@ -250,8 +250,20 @@
   @include form-submit;
 }
 
+.hg-text-wrapper {
+  padding: 0 14px;
+}
 
+.hg-link {
+  color: black;
+  text-decoration: none;
 
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
 
 
 // for spinner

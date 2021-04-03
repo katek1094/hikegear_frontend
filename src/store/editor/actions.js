@@ -174,7 +174,6 @@ export default {
                     if (response.status === 403) return response.status // 403
                     else {
                         alert(response.status)
-                        console.log(response)
                     }
                 }
             })

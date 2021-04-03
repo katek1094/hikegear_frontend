@@ -31,8 +31,8 @@
       <label v-show="inputs.password.info" class="hg-form_label" for="password">{{ inputs.password.info }}</label>
       <button v-if="!waiting_for_response" class="hg-button" type="submit">zaloguj</button>
       <div v-else class="hg-spinner"></div>
-      <router-link :to="{name: 'register'}" class="login__option">nie mam konta (rejestracja)</router-link>
-      <router-link :to="{name: 'forgotten_password'}" class="login__option">nie pamiętam hasła</router-link>
+      <router-link :to="{name: 'register'}" class="login__option hg-link">nie mam konta (rejestracja)</router-link>
+      <router-link :to="{name: 'forgotten_password'}" class="login__option hg-link">nie pamiętam hasła</router-link>
     </form>
   </OutsideBaseApp>
 </template>
@@ -100,12 +100,5 @@ export default {
 <style lang="scss" scoped>
 .login__option {
   margin-top: 20px;
-  color: black;
-  text-decoration: none;
 }
-
-.login__option:hover {
-  text-decoration: underline; // TODO: some global class hg-link?
-}
-
 </style>

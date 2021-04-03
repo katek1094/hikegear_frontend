@@ -1,10 +1,10 @@
 <template>
   <OutsideBaseApp>
-    <div v-if="request_sent" class="hg-flx_col_ctr wrapper">
+    <div v-if="request_sent" class="hg-flx_col_ctr hg-text-wrapper">
       <h2>Na podany adres został wysłany email</h2>
       <p>znajdziesz w nim link pozwalający zresetować twoje hasło</p>
     </div>
-    <form v-else class="hg-flx_col_ctr" @submit.prevent="submit">
+    <form v-else class="hg-flx_col_ctr hg-text-wrapper" @submit.prevent="submit">
       <h2>podaj swój email, aby zresetować hasło</h2>
       <input
           id="email"
@@ -76,7 +76,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.wrapper {
-  padding: 0 14px;
-}
+
 </style>

@@ -9,15 +9,6 @@ export default {
             static: {},
             dynamic: {},
             backpacks: [],
-            // id: 1,
-            // name: '',
-            // profile: {
-            //     user_id: 1
-            // },
-            // description: '',
-            // created: '',
-            // updated
-            // list: []
         }
     },
     mutations,

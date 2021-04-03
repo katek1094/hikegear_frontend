@@ -1,8 +1,8 @@
 <template>
   <router-link to="/"><img alt="logo" src="@/assets/logo.png" class="logo"></router-link>
   <div class="hg-flx_col_ctr">
-    <div v-if="backpack" class="backpack">
-      <router-link v-if="backpack.is_owner" :to="{name: 'editor'}" class="back_to_editor">
+    <div v-if="backpack" class="backpack hg-flx_col_ctr">
+      <router-link v-if="backpack.is_owner" :to="{name: 'editor'}" class="back_to_editor hg-link">
         <font-awesome-icon class="fa-md back_to_editor__icon" icon="share"/>
         wróć do edytora
       </router-link>
@@ -92,16 +92,8 @@ export default {
 
 <style lang="scss" scoped>
 .back_to_editor {
-  color: black;
-  text-decoration: none;
   margin: 10px 0;
   align-self: start;
-
-  @media (hover: hover) and (pointer: fine) {
-    &:hover {
-      text-decoration: underline;
-    }
-  }
 
   &__icon {
     -moz-transform: scale(-1, 1);
@@ -119,7 +111,6 @@ export default {
 
 .backpack {
   padding-bottom: 30px;
-  @include flex-column-center;
   width: 96%;
 }
 

@@ -1,4 +1,5 @@
 import {apiFetch} from '@/functions'
+import router from "@/router";
 
 export default {
     namespaced: true,
@@ -23,11 +24,10 @@ export default {
             return apiFetch('logout', {
                 method: 'POST',
             })
-                .then(async response => {
-                    if (response.ok) {
-                        await commit('set_logged_in', false)
-                        return response.status // 200
-                    } else console.log(response)
+                .then(response => {
+                    commit('set_logged_in', false)
+                    router.push('/')
+                    if (!response.ok) console.log(response)
                 })
         },
         login({commit}, payload) {

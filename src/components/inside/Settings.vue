@@ -1,7 +1,7 @@
 <template>
   <InsideBaseApp>
-    <div class="settings">
-      <button class="logout" @click="logout">wyloguj</button>
+    <div class="hg-flx_col_ctr">
+      <button class="hg-button" @click="logout">wyloguj</button>
       <ChangePassword/>
     </div>
   </InsideBaseApp>
@@ -17,19 +17,11 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch('auth/logout')
-          .then(() => this.$router.push('/'))
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.settings {
-@include flex-column-center;
-}
-
-button {
-  @include form-submit
-}
 
 </style>

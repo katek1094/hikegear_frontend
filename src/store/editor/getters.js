@@ -1,4 +1,5 @@
 import {summarize_elements_list} from "@/functions";
+import Constants from '@/constants'
 
 export default {
     backpacks(state) {
@@ -40,18 +41,19 @@ export default {
         for (const category of state.dynamic.list) {
             for (const item of category.items) ids.push(item.id)
         }
-        for (const integer of [...Array(3000).keys()]) {
+        const max_items_amount = Constants.CATEGORIES_MAX_AMOUNT * Constants.ITEMS_IN_CATEGORY_MAX_AMOUNT
+        for (const integer of [...Array(max_items_amount).keys()]) {
             if (!ids.includes(integer)) return integer
         }
-        throw 'loop iterated 3000 times in searching for new, free id, something is wrong!'
+        throw 'new_item_id bug, cant find free id'
     },
     new_category_id(state) {
         let ids = []
         for (const category of state.dynamic.list) ids.push(category.id)
-        for (const integer of [...Array(1000).keys()]) {
+        for (const integer of [...Array(Constants.CATEGORIES_MAX_AMOUNT).keys()]) {
             if (!ids.includes(integer)) return integer
         }
-        throw 'loop iterated 1000 times in searching for new, free id, something is wrong!'
+        throw 'new_category_id bug, cant find free id'
     },
     bodyBackpackData(state) {
         let data = {}

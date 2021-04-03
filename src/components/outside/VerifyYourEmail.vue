@@ -1,6 +1,6 @@
 <template>
   <OutsideBaseApp>
-    <div class="wrapper">
+    <div class="hg-flx_col_ctr hg-text-wrapper">
       <div>
         <h1>Twoje konto zostało utworzone!</h1>
         <p>Aby móc z niego korzystać musisz kliknąć w link aktywacyjny wysłany na adres mailowy podany przy rejestracji. </p>
@@ -23,9 +23,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.wrapper {
-  display: flex;
-  justify-content: center;
-  padding: 0 14px;
-}
+
 </style>

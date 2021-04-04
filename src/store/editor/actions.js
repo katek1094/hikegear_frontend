@@ -73,9 +73,6 @@ export default {
                         commit('update_backpack', {data: data, id: payload.id})
                         return 'success'
                     })
-                } else {
-                    alert(response.status)
-                    console.log(response)
                 }
             })
     },
@@ -113,7 +110,7 @@ export default {
                         commit('copy_and_set_static_backpack', data)
                         commit('add_backpack', data)
                     })
-                } else console.log(response)
+                }
             })
     },
     addImportedBackpack({commit}, backpack) {
@@ -139,9 +136,6 @@ export default {
         apiFetch('backpacks/' + backpack_id, {
             method: 'DELETE'
         })
-            .then(response => {
-                if (!response.ok) console.log(response)
-            })
     },
     changeBackpack({commit, getters}, index) {
         commit('copy_and_set_dynamic_backpack', getters['backpacks'][index])
@@ -150,7 +144,7 @@ export default {
     getInitialData({commit}) {
         return apiFetch('initial', {
             method: 'GET'
-        })
+        }, [403])
             .then(response => {
                 if (response.ok) {
                     return response.json().then(data => {
@@ -168,14 +162,9 @@ export default {
                         }
                         commit('my_gear/copy_and_set_static', data['private_gear'], {root: true})
                         commit('my_gear/copy_and_set_dynamic', data['private_gear'], {root: true})
-                        return response.status // 200
+                        return response
                     })
-                } else {
-                    if (response.status === 403) return response.status // 403
-                    else {
-                        alert(response.status)
-                    }
-                }
+                } else if (response.status === 403) return response // 403
             })
     }
 }

@@ -1,3 +1,7 @@
+import store from "./store/index.js";
+import router from "@/router";
+import Constants from "./constants"
+
 export function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -13,16 +17,23 @@ export function getCookie(name) {
     return cookieValue;
 }
 
-export function apiFetch(endpoint, options) {
+export function apiFetch(endpoint, options, handled_4xx_codes = []) {
     if (options.headers === undefined) options.headers = {}
     if (getCookie('csrftoken')) options.headers['X-CSRFToken'] = getCookie('csrftoken')
     if (process.env.VUE_APP_INCLUDE_CREDENTIALS === 'true') options.credentials = 'include'
-    return fetch(process.env.VUE_APP_API_URL + '/api/' + endpoint, options).then(response => {
-        if (response.ok || response.status === 404 || response.status === 410) { // 400 also?
-            return response
-        } else return response
-
-    })
+    return fetch(process.env.VUE_APP_API_URL + '/api/' + endpoint, options)
+        .then(response => {
+            if (response.ok || handled_4xx_codes.includes(response.status)) {
+                return response
+            } else {
+                if (response.status === 403) {
+                    store.dispatch('auth/changeLoggedIn', false).then(() => {
+                        router.push({name: 'login'})
+                    })
+                } else alert(`wystąpił błąd w komunikacji z serwerem - ${response.status}`)
+                return response
+            }
+        })
 }
 
 export function summarize_elements_list(categories) {
@@ -42,7 +53,6 @@ export function summarize_elements_list(categories) {
     return results
 }
 
-import Constants from "@/./constants"
 
 const Hashids = require("hashids")
 export const hashids = new Hashids.default(Constants.HASHIDS_SALT, Constants.HASHIDS_HASH_LEN)

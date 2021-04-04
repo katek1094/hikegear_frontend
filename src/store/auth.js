@@ -24,10 +24,9 @@ export default {
             return apiFetch('logout', {
                 method: 'POST',
             })
-                .then(response => {
+                .then(() => {
                     commit('set_logged_in', false)
                     router.push('/')
-                    if (!response.ok) console.log(response)
                 })
         },
         login({commit}, payload) {
@@ -38,18 +37,18 @@ export default {
                     email: payload.email,
                     password: payload.password
                 })
-            })
+            }, [401, 403])
                 .then(response => {
                     if (response.ok) {
                         commit('set_logged_in', true)
-                        return response.status // 200
+                        return response
                     } else {
                         commit('set_logged_in', false)
                         if (response.status === 401) {
-                            return 'bad credentials'
+                            return response
                         } else if (response.status === 403) {
-                            return 'activate your account'
-                        } else console.log(response)
+                            return response
+                        }
                     }
                 })
         },

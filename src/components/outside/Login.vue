@@ -72,16 +72,14 @@ export default {
           email: inputs.email.value,
           password: inputs.password.value
         })
-            .then(async status => {
-              if (status === 200) {
+            .then(async response => {
+              if (response.status === 200) {
                 await store.dispatch('editor/getInitialData')
                     .then(() => router.push({name: 'editor'}))
-              } else if (status === 'bad credentials') {
+              } else if (response.status === 401) {
                 response_info.value = 'błędny email lub hasło'
-              } else if (status === 'activate your account') {
+              } else if (response.status === 403) {
                 await router.push({name: 'verify_email'})
-              } else {
-                throw 'something wrong with response' // TODO: update response handling
               }
               waiting_for_response.value = false
             })

@@ -72,7 +72,7 @@ export default {
             email: inputs.email.value,
             password: inputs.password1.value
           })
-        })
+        }, [400])
             .then(response => {
               waiting_for_response.value = false
               if (response.ok) {
@@ -94,7 +94,7 @@ export default {
             } else inputs.password1.response_info = dt[0]
           }
         })
-      } else alert(response.status)
+      }
     }
 
     return {

@@ -58,9 +58,7 @@ export default {
         })
             .then(response => {
               waiting_for_response.value = false
-              if (response.ok) {
-                request_sent.value = true
-              } else alert(response.status)
+              if (response.ok) request_sent.value = true
             })
       }
     }

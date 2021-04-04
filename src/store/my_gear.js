@@ -98,7 +98,7 @@ export default {
                         return response.json().then(data => {
                             if (data['private_gear']) return 'success'
                         })
-                    } else console.log(response)
+                    }
                 })
         },
         addCategory({commit}, category) {

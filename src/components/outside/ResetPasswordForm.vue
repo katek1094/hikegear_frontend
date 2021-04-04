@@ -72,7 +72,7 @@ export default {
             uidb64: props.uidb64,
             token: props.token
           })
-        })
+        }, [400, 410])
             .then(response => {
               waiting_for_response.value = false
               if (response.ok) {
@@ -85,7 +85,6 @@ export default {
                     } else inputs.password1.response_info = dt[0]
                   })
                 } else if (response.status === 410) token_expired.value = true
-                else alert(response.status) // TODO: handle this later
               }
             })
       }

@@ -78,7 +78,7 @@ export default {
     },
   },
   beforeCreate() {
-    const id = hashids.decode(this.hash)
+    const id = hashids.decode(this.hash)[0]
     apiFetch('backpacks/' + id, {
       method: 'GET',
     })

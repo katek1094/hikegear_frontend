@@ -11,6 +11,8 @@ const editor_save_timeout = 3000
 const categories_max_amount = 16  // its should be the same number as amount of chart colors in Summary
 const items_in_category_max_amount = 30
 const max_backpacks_amount = 40
+const hashids_salt = 'hikegear salt'
+const hashids_hash_len = 8
 
 export default {
     CATEGORY_MAX_NAME_LENGTH: cat_max_name_len,
@@ -25,5 +27,7 @@ export default {
     EDITOR_SAVE_TIMEOUT: editor_save_timeout,
     CATEGORIES_MAX_AMOUNT: categories_max_amount,
     ITEMS_IN_CATEGORY_MAX_AMOUNT: items_in_category_max_amount,
-    MAX_BACKPACKS_AMOUNT: max_backpacks_amount
+    MAX_BACKPACKS_AMOUNT: max_backpacks_amount,
+    HASHIDS_SALT: hashids_salt,
+    HASHIDS_HASH_LEN: hashids_hash_len
 }

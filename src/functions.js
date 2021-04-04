@@ -17,7 +17,12 @@ export function apiFetch(endpoint, options) {
     if (options.headers === undefined) options.headers = {}
     if (getCookie('csrftoken')) options.headers['X-CSRFToken'] = getCookie('csrftoken')
     if (process.env.VUE_APP_INCLUDE_CREDENTIALS === 'true') options.credentials = 'include'
-    return fetch(process.env.VUE_APP_API_URL + '/api/' + endpoint, options)
+    return fetch(process.env.VUE_APP_API_URL + '/api/' + endpoint, options).then(response => {
+        if (response.ok || response.status === 404 || response.status === 410) { // 400 also?
+            return response
+        } else return response
+
+    })
 }
 
 export function summarize_elements_list(categories) {
@@ -37,5 +42,7 @@ export function summarize_elements_list(categories) {
     return results
 }
 
+import Constants from "@/./constants"
+
 const Hashids = require("hashids")
-export const hashids = new Hashids.default('hikegear salt', 6)
+export const hashids = new Hashids.default(Constants.HASHIDS_SALT, Constants.HASHIDS_HASH_LEN)

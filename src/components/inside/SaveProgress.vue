@@ -115,7 +115,7 @@ export default {
 }
 
 .bar {
-  background-color: $nav_color;
+  background-color: $grey5;
 }
 
 .check_icon {

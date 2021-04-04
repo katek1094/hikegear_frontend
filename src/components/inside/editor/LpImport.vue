@@ -48,6 +48,8 @@ export default {
       this.url = ''
       this.activated = false
       this.waiting_for_response = false
+      this.info = ""
+      this.show_info = false
     },
     submit() {
       if (this.url_validity) {

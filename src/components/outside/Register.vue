@@ -65,7 +65,7 @@ export default {
       inputs.password2.blurred = true
       if (is_form_valid.value) {
         waiting_for_response.value = true
-        apiFetch('users/', {
+        apiFetch('users', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({

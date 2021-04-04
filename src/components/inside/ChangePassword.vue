@@ -56,7 +56,7 @@ export default {
       inputs.new_password2.blurred = true
       if (is_form_valid.value) {
         waiting_for_response.value = true
-        apiFetch('users/change_password/', {
+        apiFetch('users/change_password', {
           method: 'PATCH',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({

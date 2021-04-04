@@ -93,13 +93,7 @@ export default {
     const deleteCategory = () => store.dispatch('editor/deleteCategory', props.category.id)
 
     const {
-      max_name_length,
-      name_input,
-      can_add_item,
-      addItem,
-      setItemRef,
-      resizeAllItems,
-      focusName
+      max_name_length, name_input, can_add_item, addItem, setItemRef, resizeAllItems, focusName
     } = useCategory('editor/addItem', props.category.id, items)
 
     const are_any_items = computed(() => items.value.length !== 0)
@@ -107,24 +101,10 @@ export default {
     const {no_drag, toggleNoDrag} = useNoDrag()
 
     return {
-      max_name_length,
-      name_input,
-      confirmation_dialog,
-      no_drag,
-      category_name,
-      can_add_item,
-      is_the_only_category,
-      items,
-      total_weight,
-      total_quantity,
-      addItem,
-      displayConfirmationDialog,
-      deleteCategory,
-      setItemRef,
-      resizeAllItems,
-      pullPolicy,
-      focusName,
-      toggleNoDrag
+      max_name_length, name_input, confirmation_dialog, no_drag, category_name, can_add_item, is_the_only_category,
+      items, total_weight, total_quantity,
+      addItem, displayConfirmationDialog, deleteCategory, setItemRef, resizeAllItems, pullPolicy,
+      focusName, toggleNoDrag
     }
   }
 }

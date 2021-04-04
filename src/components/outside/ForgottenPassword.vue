@@ -48,30 +48,25 @@ export default {
 
     const submit = () => {
       if (inputs.email.is_valid) {
-          waiting_for_response.value = true
-          apiFetch('users/reset_password_start', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-              email: inputs.email.value,
-            })
+        waiting_for_response.value = true
+        apiFetch('users/reset_password_start', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            email: inputs.email.value,
           })
-        .then(response => {
-          waiting_for_response.value = false
-          if (response.ok) {
-            request_sent.value = true
-          } else alert(response.status)
         })
+            .then(response => {
+              waiting_for_response.value = false
+              if (response.ok) {
+                request_sent.value = true
+              } else alert(response.status)
+            })
       }
     }
 
-    return {
-      inputs, waiting_for_response, request_sent,
-      markAsBlurred, markAsActivated, submit
-    }
+    return {inputs, waiting_for_response, request_sent, markAsBlurred, markAsActivated, submit}
   }
-
-
 }
 </script>
 

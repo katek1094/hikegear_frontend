@@ -168,11 +168,19 @@ $quantity_width: 2rem;
 .category__footer {
   @include category-item_grid;
   grid-template-columns: 1fr $weight_width $quantity_width;
+
 }
 
 .item {
   @include category-item_grid;
   grid-template-columns: 1fr 1fr auto $weight_width $quantity_width;
+
+  &:not(:last-child) {
+    border-bottom: 1px dotted grey;
+  }
+  &:last-child {
+    border-bottom: 1px solid grey;
+  }
 }
 
 .items {
@@ -192,9 +200,9 @@ $quantity_width: 2rem;
   align-self: flex-end;
 }
 
-.item:not(:last-child) {
-  border-bottom: 1px dotted grey;
-}
+//.item:not(:last-child) {
+//  border-bottom: 1px dotted grey;
+//}
 
 .item__worn, .item__consumable {
   border-radius: 50%;

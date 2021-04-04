@@ -38,10 +38,10 @@ router.beforeEach((to, from, next) => {
         if (store.getters['auth/is_logged_in']) {
             if (to.name === 'landing_page') next({name: 'editor'})
             else next()
-        }
-        else if (to.meta.require_auth) next({name: 'login'})
+        } else if (to.meta.require_auth) next({name: 'login'})
         else next()
     }
+
     if (store.getters['auth/is_logged_in'] === undefined && (to.meta.require_auth || to.path === '/')) {
         store.dispatch('editor/getInitialData').then(status => {
             if (status === 403) store.dispatch('auth/changeLoggedIn', false)

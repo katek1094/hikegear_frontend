@@ -4,7 +4,6 @@
       <!--      BACKPACKS LIST-->
       <div class="backpacks_list">
         <div class="backpacks_list__items">
-
           <div class="backpacks_list__item" v-for="(backpack, index) in backpacks" :key="backpack.id">
           <span v-if="backpack.name !== ''" :class="{active: backpack.id === backpack_id}"
                 class="backpacks_list__item__name" @click="changeBackpack(index)">{{ backpack.name }}</span>
@@ -20,14 +19,13 @@
               <template v-slot:header>na pewno chcesz usunąć tę listę?</template>
             </ConfirmationDialog>
           </div>
-
         </div>
         <div v-if="can_add_backpack" class="backpacks_list__buttons">
           <button class="add_backpack" type="button" @click="addBackpack">
             <font-awesome-icon class="fa-md" icon="plus"/>
             dodaj nową listę
           </button>
-          <button class="import_backpack" type="button" @click="$refs.lpImport.openModal">
+          <button class="import_backpack" type="button" @click="$refs.import_backpack.openModal">
             <font-awesome-icon class="fa-md" icon="cloud-download-alt"/>
             importuj
           </button>
@@ -76,14 +74,14 @@
           <font-awesome-icon class="fa-md" icon="plus"/>
           dodaj nową listę
         </button>
-        <button class="import_backpack" type="button" @click="$refs.lpImport.openModal">
+        <button class="import_backpack" type="button" @click="$refs.import_backpack.openModal">
           <font-awesome-icon class="fa-md" icon="cloud-download-alt"/>
           importuj
         </button>
       </div>
     </div>
     <!--    MODALS-->
-    <LpImport ref="lpImport"/>
+    <ImportBackpack ref="import_backpack"/>
     <Instruction ref="instruction"/>
   </InsideBaseApp>
 </template>
@@ -97,7 +95,7 @@ import AutoResizable from "@/components/AutoResizable";
 import MyGear from "@/components/inside/editor/MyGear";
 import {ref, computed} from 'vue';
 import {useStore} from 'vuex';
-import LpImport from "@/components/inside/editor/LpImport";
+import ImportBackpack from "@/components/inside/editor/ImportBackpack";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import SaveProgress from "@/components/inside/SaveProgress";
 import {hashids} from "@/functions";
@@ -113,7 +111,7 @@ export default {
     Tooltip,
     SaveProgress,
     ConfirmationDialog,
-    LpImport,
+    ImportBackpack,
     MyGear,
     AutoResizable,
     InsideBaseApp,

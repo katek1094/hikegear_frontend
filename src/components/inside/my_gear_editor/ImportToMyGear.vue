@@ -273,6 +273,7 @@ export default {
 
   &__property {
     overflow-wrap: anywhere;
+    word-break: break-all;
   }
 
   &:not(:last-child) {

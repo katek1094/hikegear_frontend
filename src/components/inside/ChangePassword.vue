@@ -63,7 +63,7 @@ export default {
             old_password: inputs.old_password.value,
             new_password: inputs.new_password1.value
           })
-        })
+        }, [400])
             .then(response => {
               waiting_for_response.value = false
               if (response.ok) {

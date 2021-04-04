@@ -49,7 +49,7 @@ export default {
     const submit = () => {
       if (inputs.email.is_valid) {
           waiting_for_response.value = true
-          apiFetch('users/reset_password_start/', {
+          apiFetch('users/reset_password_start', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({

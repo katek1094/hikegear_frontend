@@ -74,7 +74,6 @@ export default {
           })
         }, [400, 410])
             .then(response => {
-              waiting_for_response.value = false
               if (response.ok) {
                 router.push({name: 'editor'})
               } else {
@@ -86,6 +85,7 @@ export default {
                   })
                 } else if (response.status === 410) token_expired.value = true
               }
+              waiting_for_response.value = false
             })
       }
     }

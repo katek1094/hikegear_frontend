@@ -387,16 +387,13 @@ export default {
   .editor__wrapper {
     display: grid;
     justify-items: center;
+    align-items: start;
     padding: 0 $grid_wrapper_padding;
     column-gap: $grid_gap;
-    align-items: start;
+    grid-template-rows: auto 1fr;
 
     &.my_gear_minimized {
       grid-template-columns: 1fr $my_gear_minimized_width;
-
-      & .editor {
-        width: 86%;
-      }
     }
   }
   .backpacks_list {
@@ -405,6 +402,7 @@ export default {
   .editor {
     width: 100%;
     grid-column: 1;
+    //background-color: red;
   }
   .my-gear_window {
     grid-column: 2;

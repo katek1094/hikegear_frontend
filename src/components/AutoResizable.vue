@@ -34,8 +34,8 @@ export default {
       const textarea = this.$refs.textarea
       let padding = parseInt(getComputedStyle(textarea).paddingTop.replace('px', ''))
       let font_size = parseInt(getComputedStyle(textarea).fontSize.replace('px', ''))
-      textarea.style.height = font_size + 2 + 'px'  // default style.height = font size + 2
-      textarea.style.height = textarea.scrollHeight - padding * 2 + 'px'  // scrollHeight = font size + 2 + padding * 2
+      textarea.style.height = font_size + 'px'
+      textarea.style.height = textarea.scrollHeight - padding * 2 + 2 + 'px'
     },
     prevent(e) {
       if (this.preventEnter && e.keyCode === 13) e.preventDefault()

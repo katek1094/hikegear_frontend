@@ -16,9 +16,8 @@
         W przypadku zważenia przedmiotu warto dodać czy jest to waga z pokrowcem czy bez itp.
       </span><br><br>
       <span><font-awesome-icon class="fa-md" icon="child"/> - <strong>przedmiot noszony na sobie</strong> -
-      rzeczy noszone cały czas na sobie w trakcie wędrówki przy nakorzystniejszej pogodzie, czyli
-       bielizna, buty, kije trekkingowe, nakrycie głowy, spodnie, koszulka itp.
-      tylko jedna sztuka jest liczona na jako noszona na sobie</span><br><br>
+      rzeczy noszone cały czas na sobie w trakcie wędrówki przy najkorzystniejszej pogodzie, czyli
+       bielizna, buty, kije trekkingowe, nakrycie głowy, spodnie, koszulka itp. Tylko jedna sztuka jest liczona jako noszona na sobie</span><br><br>
       <span><font-awesome-icon class="fa-md" icon="sync-alt"/> - <strong>przedmiot konsumpcyjny</strong> - rzeczy, których waga jest
         zmienna w trakcie wyprawy, uzupełniane lub nie, takie jak gaz do kuchenki, jedzenie, mydło itp.</span><br><br>
       <span><strong>waga</strong> - podawana w gramach</span>

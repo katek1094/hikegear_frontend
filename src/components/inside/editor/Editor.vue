@@ -11,11 +11,11 @@
                   @click="changeBackpack(index)">bez nazwy</span>
             <Tooltip text="usuń listę" direction="left" size="small">
               <button v-if="backpack.id === backpack_id" class="backpacks_list__delete" type="button"
-                      @click="displayConfirmationDialog">
+                      @click="displayConfirmationDialogBackpackDelete">
                 <font-awesome-icon class="fa-sm" icon="trash"/>
               </button>
             </Tooltip>
-            <ConfirmationDialog ref="confirmation_dialog" @confirmed="deleteBackpack">
+            <ConfirmationDialog ref="backpack_delete_confirmation_dialog" @confirmed="deleteBackpack">
               <template v-slot:header>na pewno chcesz usunąć tę listę?</template>
             </ConfirmationDialog>
           </div>
@@ -34,16 +34,27 @@
       <!--      EDITOR-->
       <div class="editor">
         <div class="editor__options">
-          <div class="editor__options__private">
-            <div class="editor__options__private_input_and_info">
-              <label class="hg-switch editor__options__private_input">
-                <input class="hg-switch__input" type="checkbox" v-model="is_private">
+          <div class="editor__options__shared">
+            <div class="editor__options__shared_input_and_info">
+              <label class="hg-switch editor__options__shared_input"
+                     @click.prevent="displayConfirmationDialogToggleShared">
+                <input class="hg-switch__input" type="checkbox" :checked="is_shared">
                 <span class="hg-switch__slider"></span>
               </label>
-              <span class="editor__options__private_info" v-if="is_private">prywatny</span>
-              <span class="editor__options__private_info" v-else>publiczny</span>
+              <ConfirmationDialog v-if="is_shared" ref="toggle_shared_confirmation_dialog" @confirmed="toggleShared">
+                <template v-slot:header>Na pewno chcesz przestać udostępniać tę listę?</template>
+                <template v-slot:body>Link do twojej listy przestanie działać i nikt oprócz ciebie nie będzie miał do
+                  niej dostępu.
+                </template>
+              </ConfirmationDialog>
+              <ConfirmationDialog v-else ref="toggle_shared_confirmation_dialog" @confirmed="toggleShared">
+                <template v-slot:header>Na pewno chcesz udostępnić tę listę?</template>
+                <template v-slot:body>Każdy będzie mógł ją zobaczyć i importować</template>
+              </ConfirmationDialog>
+              <span v-if="is_shared" class="editor__options__shared_info shared">udostępnij</span>
+              <span v-else class="editor__options__shared_info">udostępnij</span>
             </div>
-            <router-link v-if="!is_private" class="editor__options__link hg-link"
+            <router-link v-if="is_shared" class="editor__options__link hg-link"
                          :to="{ name: 'backpack', params: { hash: backpack_hash }}">
               <font-awesome-icon class="fa-md" icon="share"/>
               link do listy
@@ -151,10 +162,8 @@ export default {
       get: () => store.getters['editor/dynamic_list'],
       set: (val) => store.dispatch('editor/moveCategory', val)
     })
-    const is_private = computed({
-      get: () => store.getters['editor/is_private'],
-      set: () => store.dispatch('editor/switchPrivate')
-    })
+    const is_shared = computed(() => store.getters['editor/is_shared'])
+    const toggleShared = () => store.dispatch('editor/switchShared')
     const backpack_name = computed({
       get: () => store.getters['editor/backpack_name'],
       set: (val) => store.dispatch('editor/renameBackpack', val)
@@ -184,7 +193,14 @@ export default {
       resizeAll()
     }
     const deleteBackpack = () => store.dispatch('editor/deleteBackpack', backpack_id.value)
-    const {confirmation_dialog, displayConfirmationDialog} = useConfirmationDialog()
+    const {
+      confirmation_dialog: backpack_delete_confirmation_dialog,
+      displayConfirmationDialog: displayConfirmationDialogBackpackDelete
+    } = useConfirmationDialog()
+    const {
+      confirmation_dialog: toggle_shared_confirmation_dialog,
+      displayConfirmationDialog: displayConfirmationDialogToggleShared
+    } = useConfirmationDialog()
 
     const resizeAll = () => {
       if (editor_data_ready.value) {
@@ -214,9 +230,10 @@ export default {
       no_drag,
       backpack_name_input,
       backpack_description_input,
-      confirmation_dialog,
+      backpack_delete_confirmation_dialog,
+      toggle_shared_confirmation_dialog,
       save_progress,
-      is_private,
+      is_shared,
       backpack_id,
       backpacks,
       editor_data_ready,
@@ -233,7 +250,9 @@ export default {
       changeBackpack,
       addBackpack,
       deleteBackpack,
-      displayConfirmationDialog,
+      toggleShared,
+      displayConfirmationDialogBackpackDelete,
+      displayConfirmationDialogToggleShared,
       save,
       toggleNoDrag,
     }
@@ -298,24 +317,29 @@ export default {
 }
 
 .editor__options {
-  &__private {
+  &__shared {
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-grow: 1;
   }
 
-  &__private_input_and_info {
+  &__shared_input_and_info {
     display: flex;
     align-items: center;
   }
 
-  &__private__input {
+  &__shared__input {
 
   }
 
-  &__private_info {
+  &__shared_info {
+    color: grey;
     margin: 0 6px;
+
+    &.shared {
+      color: initial;
+    }
   }
 
   &__link {

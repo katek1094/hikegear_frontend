@@ -114,7 +114,7 @@ export default {
                   modal_ref.value.closeModal()
                 })
                 else if (response.status === 404) inputs.hg_url.response_info = 'podana lista sprzętu nie istnieje'
-                else if (response.status === 403) inputs.hg_url.response_info = 'podana lista jest prywatna'
+                else if (response.status === 403) inputs.hg_url.response_info = 'podana lista nie udostępniona'
               })
         } else return inputs.hg_url.response_info = 'podana lista sprzętu nie istnieje'
       }

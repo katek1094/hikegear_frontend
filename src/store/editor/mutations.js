@@ -51,7 +51,7 @@ export default {
     add_backpack(state, backpack) {
         state.backpacks.unshift(backpack)
     },
-    toggle_private(state) {
-        state.dynamic.private = !state.dynamic.private
+    toggle_shared(state) {
+        state.dynamic.shared = !state.dynamic.shared
     }
 }

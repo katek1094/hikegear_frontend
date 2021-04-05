@@ -57,8 +57,8 @@ export default {
         payload.property = 'worn'
         commit('toggle_property', payload)
     },
-    switchPrivate({commit}) {
-        commit('toggle_private')
+    switchShared({commit}) {
+        commit('toggle_shared')
     },
     updateBackpack({commit, rootGetters}, payload) {
         if (payload.update_dynamic) {

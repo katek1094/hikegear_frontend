@@ -42,8 +42,8 @@
       </div>
     </div>
 
-    <div v-if="backpack_is_private" class="alternative">
-      <h1>Ta lista sprzętu jest prywatna</h1>
+    <div v-if="backpack_is_not_shared" class="alternative">
+      <h1>Ta lista sprzętu nie udostępniona</h1>
     </div>
     <div v-if="backpack_not_found" class="alternative">
       <h1>Podana lista sprzętu nie istnieje, lub link jest nieprawidłowy</h1>
@@ -66,7 +66,7 @@ export default {
     return {
       backpack: false,
       backpack_not_found: false,
-      backpack_is_private: false
+      backpack_is_not_shared: false
     }
   },
   computed: {
@@ -94,7 +94,7 @@ export default {
       }, [403, 404])
           .then(response => {
             if (response.ok) response.json().then(data => this.backpack = data)
-            else if (response.status === 403) this.backpack_is_private = true
+            else if (response.status === 403) this.backpack_is_not_shared = true
             else if (response.status === 404) this.backpack_not_found = true
           })
     } else this.backpack_not_found = true

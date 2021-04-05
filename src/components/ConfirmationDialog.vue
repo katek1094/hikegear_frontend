@@ -1,10 +1,13 @@
 <template>
   <modal ref="modal" :is_confirmation="true">
     <template v-slot:header>
-      <slot name="header"></slot>
+      <slot name="header"/>
     </template>
     <template v-slot:body>
-      <div class="wrapper">
+      <div class="body_wrapper">
+        <span><slot name="body"/></span>
+      </div>
+      <div class="buttons_wrapper">
         <button class="confirm" @click="confirm">tak</button>
         <button class="cancel" @click="closeModal">nie</button>
       </div>
@@ -36,7 +39,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.wrapper {
+.body_wrapper {
+  width: 100%;
+  font-size: 1.1rem;
+  text-align: center;
+  margin-bottom: 25px;
+}
+.buttons_wrapper {
   display: flex;
   justify-content: space-evenly;
 }

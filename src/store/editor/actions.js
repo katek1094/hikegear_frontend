@@ -57,6 +57,9 @@ export default {
         payload.property = 'worn'
         commit('toggle_property', payload)
     },
+    switchPrivate({commit}) {
+        commit('toggle_private')
+    },
     updateBackpack({commit, rootGetters}, payload) {
         if (payload.update_dynamic) {
             commit('copy_and_set_dynamic_backpack', rootGetters['editor/dynamic_backpack_data'])
@@ -67,14 +70,7 @@ export default {
             headers: {'Content-Type': 'application/json'},
             body: rootGetters['editor/bodyBackpackData']
         })
-            .then(response => {
-                if (response.ok) {
-                    return response.json().then(data => {
-                        commit('update_backpack', {data: data, id: payload.id})
-                        return 'success'
-                    })
-                }
-            })
+            .then(response => (response.ok) ? 'success' : 'failure')
     },
     addBackpack({commit}) {
         return apiFetch('backpacks', {

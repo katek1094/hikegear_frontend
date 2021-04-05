@@ -6,9 +6,9 @@
       </div>
       <div v-show="display_spinner" class="hg-spinner"></div>
       <span v-show="display_info" class="info">
-      <font-awesome-icon class="fa-sm check_icon" icon="check-circle"/>
-      zmiany zapisane
-    </span>
+        <font-awesome-icon class="fa-sm check_icon" icon="check-circle"/>
+        zmiany zapisane
+      </span>
     </div>
   </Tooltip>
 </template>
@@ -40,10 +40,10 @@ export default {
       return this.time_passed * 100 / timeout
     },
     display_bar() {
-      return this.time_passed
+      return this.interval_function_id
     },
     display_info() {
-      return !this.display_spinner && this.saves_counter !== 0 && !this.time_passed
+      return !this.display_spinner && this.saves_counter !== 0  && !this.interval_function_id
     },
     tooltip_text() {
       return 'zmiany są automatycznie zapisywane po ' + timeout / 1000 + ' sekundach od ostatniej edycji lub po ' +
@@ -72,8 +72,7 @@ export default {
       if (this.time_passed === timeout) {
         this.$emit('save')
         this.startLoading()
-      }
-      else if (this.data_ready && this.are_changes) this.time_passed += refresh_time
+      } else if (this.data_ready && this.are_changes) this.time_passed += refresh_time
     },
     handleSaveSuccess() {
       this.display_spinner = false
@@ -93,13 +92,13 @@ export default {
 
 <style scoped lang="scss">
 .outer {
-  width: 140px;
-  height: 30px;
+  width: 8rem;
+  height: 100%;
   border-radius: 4px;
-  margin: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
 .progress, .bar {
@@ -126,5 +125,9 @@ export default {
   width: 100%;
   font-size: .9rem;
   text-align: center;
+}
+
+.hg-spinner {
+  margin: 0;
 }
 </style>

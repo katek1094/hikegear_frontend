@@ -34,16 +34,29 @@
       <!--      EDITOR-->
       <div class="editor">
         <div class="editor__options">
-          <router-link class="editor__options__link hg-link" :to="{ name: 'backpack', params: { hash: backpack_hash }}">
-            <font-awesome-icon class="fa-md" icon="share"/>
-            link do listy
-          </router-link>
-          <SaveProgress :data_ready="editor_data_ready" :are_changes="are_changes" ref="save_progress" @save="save"/>
-          <Tooltip text="jak korzystać z aplikacji?" size="small">
-            <button class="editor__options__info" type="button" @click="$refs.instruction.openModal">
-              <font-awesome-icon class="fa-md" icon="question"/>
-            </button>
-          </Tooltip>
+          <div class="editor__options__private">
+            <div class="editor__options__private_input_and_info">
+              <label class="hg-switch editor__options__private_input">
+                <input class="hg-switch__input" type="checkbox" v-model="is_private">
+                <span class="hg-switch__slider"></span>
+              </label>
+              <span class="editor__options__private_info" v-if="is_private">prywatny</span>
+              <span class="editor__options__private_info" v-else>publiczny</span>
+            </div>
+            <router-link v-if="!is_private" class="editor__options__link hg-link"
+                         :to="{ name: 'backpack', params: { hash: backpack_hash }}">
+              <font-awesome-icon class="fa-md" icon="share"/>
+              link do listy
+            </router-link>
+          </div>
+          <div class="editor__options__progress_and_info">
+            <SaveProgress :data_ready="editor_data_ready" :are_changes="are_changes" ref="save_progress" @save="save"/>
+            <Tooltip text="jak korzystać z aplikacji?" size="small">
+              <button class="editor__options__info" type="button" @click="$refs.instruction.openModal">
+                <font-awesome-icon class="fa-md" icon="question"/>
+              </button>
+            </Tooltip>
+          </div>
         </div>
         <AutoResizable ref="backpack_name_input" v-model.trim="backpack_name" :maxlength="max_backpack_name_length"
                        :prevent-enter="true" class="backpack__name" placeholder="nazwa listy"/>
@@ -138,6 +151,10 @@ export default {
       get: () => store.getters['editor/dynamic_list'],
       set: (val) => store.dispatch('editor/moveCategory', val)
     })
+    const is_private = computed({
+      get: () => store.getters['editor/is_private'],
+      set: () => store.dispatch('editor/switchPrivate')
+    })
     const backpack_name = computed({
       get: () => store.getters['editor/backpack_name'],
       set: (val) => store.dispatch('editor/renameBackpack', val)
@@ -199,6 +216,7 @@ export default {
       backpack_description_input,
       confirmation_dialog,
       save_progress,
+      is_private,
       backpack_id,
       backpacks,
       editor_data_ready,
@@ -280,8 +298,35 @@ export default {
 }
 
 .editor__options {
+  &__private {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-grow: 1;
+  }
+
+  &__private_input_and_info {
+    display: flex;
+    align-items: center;
+  }
+
+  &__private__input {
+
+  }
+
+  &__private_info {
+    margin: 0 6px;
+  }
+
   &__link {
-    margin: 10px 0;
+    margin: 0 6px 0 10px;
+  }
+
+  &__progress_and_info {
+    flex-grow: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
   }
 
   &__info {

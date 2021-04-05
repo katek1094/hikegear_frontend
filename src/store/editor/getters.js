@@ -6,6 +6,7 @@ export default {
         return state.backpacks
     },
     are_any_changes(state) {
+        if (state.static.private !== state.dynamic.private) return true
         if (state.static.name !== state.dynamic.name) return true
         if (state.static.description !== state.dynamic.description) return true
         if (!state.dynamic.list) return false
@@ -23,6 +24,9 @@ export default {
     },
     isEditorDataReady(state) {
         return Boolean(state.dynamic.list)
+    },
+    is_private(state) {
+        return state.dynamic.private
     },
     backpack_name(state) {
         return state.dynamic.name
@@ -57,6 +61,7 @@ export default {
     },
     bodyBackpackData(state) {
         let data = {}
+        data.private = state.dynamic.private
         data.name = state.dynamic.name
         data.description = state.dynamic.description
         data.list = state.dynamic.list

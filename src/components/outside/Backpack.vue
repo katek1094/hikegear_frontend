@@ -41,6 +41,13 @@
         </div>
       </div>
     </div>
+
+    <div v-if="backpack_is_private" class="alternative">
+      <h1>Ta lista sprzętu jest prywatna</h1>
+    </div>
+    <div v-if="backpack_not_found" class="alternative">
+      <h1>Podana lista sprzętu nie istnieje, lub link jest nieprawidłowy</h1>
+    </div>
   </div>
 </template>
 
@@ -57,7 +64,9 @@ export default {
   },
   data() {
     return {
-      backpack: false
+      backpack: false,
+      backpack_not_found: false,
+      backpack_is_private: false
     }
   },
   computed: {
@@ -77,15 +86,18 @@ export default {
       return result
     },
   },
-  beforeCreate() {
+  beforeMount() {
     const id = hashids.decode(this.hash)[0]
-    apiFetch('backpacks/' + id, {
-      method: 'GET',
-    })
-        .then(response => {
-          if (response.ok) response.json().then(data => this.backpack = data)
-          else console.log(response)
-        })
+    if (id) {
+      apiFetch('backpacks/' + id, {
+        method: 'GET',
+      }, [403, 404])
+          .then(response => {
+            if (response.ok) response.json().then(data => this.backpack = data)
+            else if (response.status === 403) this.backpack_is_private = true
+            else if (response.status === 404) this.backpack_not_found = true
+          })
+    } else this.backpack_not_found = true
   },
 }
 </script>
@@ -178,6 +190,7 @@ $quantity_width: 2rem;
   &:not(:last-child) {
     border-bottom: 1px dotted grey;
   }
+
   &:last-child {
     border-bottom: 1px solid grey;
   }
@@ -213,6 +226,11 @@ $quantity_width: 2rem;
   padding: 4px;
   font-size: 1.15em;
   margin: 0 3px;
+}
+
+.alternative {
+  padding: 30px;
+  @include flex-column-center;
 }
 
 @media (min-width: 480px) {

@@ -81,7 +81,7 @@ export default {
                       inputs.new_password1.response_info = 'to hasło jest zbyt popularne'
                     }
                   })
-                } else alert(response.status)
+                }
               }
             })
       }
@@ -99,6 +99,7 @@ export default {
 .hg-flx_col_ctr {
   margin-top: 8vh;
 }
+
 .success {
   color: yellowgreen;
 }

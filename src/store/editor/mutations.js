@@ -51,11 +51,7 @@ export default {
     add_backpack(state, backpack) {
         state.backpacks.unshift(backpack)
     },
-    update_backpack(state, payload) {
-        for (let i = 0; i < state.backpacks.length; i++) {
-            if (state.backpacks[i].id === payload.id) {
-                state.backpacks[i] = payload.data
-            }
-        }
+    toggle_private(state) {
+        state.dynamic.private = !state.dynamic.private
     }
 }

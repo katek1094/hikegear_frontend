@@ -70,7 +70,14 @@ export default {
             headers: {'Content-Type': 'application/json'},
             body: rootGetters['editor/bodyBackpackData']
         })
-            .then(response => (response.ok) ? 'success' : 'failure')
+            .then(response => {
+                if (response.ok) {
+                    return response.json().then(data => {
+                        commit('update_backpack', {data: data, id: payload.id})
+                        return 'success'
+                    })
+                }
+            })
     },
     addBackpack({commit}) {
         return apiFetch('backpacks', {
@@ -108,12 +115,14 @@ export default {
                     })
                 }
             })
-    },
+    }
+    ,
     addImportedBackpack({commit}, backpack) {
         commit('copy_and_set_dynamic_backpack', backpack)
         commit('copy_and_set_static_backpack', backpack)
         commit('add_backpack', backpack)
-    },
+    }
+    ,
     deleteBackpack({commit, rootGetters}, backpack_id) {
         let backpacks = rootGetters['editor/backpacks']
         let index
@@ -132,11 +141,13 @@ export default {
         apiFetch('backpacks/' + backpack_id, {
             method: 'DELETE'
         })
-    },
+    }
+    ,
     changeBackpack({commit, getters}, index) {
         commit('copy_and_set_dynamic_backpack', getters['backpacks'][index])
         commit('copy_and_set_static_backpack', getters['backpacks'][index])
-    },
+    }
+    ,
     getInitialData({commit}) {
         return apiFetch('initial', {
             method: 'GET'

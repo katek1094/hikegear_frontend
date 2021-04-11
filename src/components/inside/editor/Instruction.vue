@@ -34,7 +34,7 @@
 
       <h3 class="header">Mój sprzęt</h3>
       <span>Osobna lista twojego sprzętu, którego możesz używać przy planowaniu wypraw. </span><br><br>
-      <span>Aby dodać przedmioty do edytowanej listy sprzętu przeciągaj je z okna "mój sprzęt" po prawej stronie. </span><br><br>
+      <span>Aby dodać przedmioty do edytowanej listy sprzętu przeciągaj je z okna "mój sprzęt" po prawej stronie (na małych urządzeniach jest ono niewidoczne). </span><br><br>
       <span>Aby edytować listę swojego sprzętu wejdź w zakładkę "mój sprzęt" w głównym menu gdzie możesz edytować
         listę w sposób analogiczny do głównego edytora. </span><br><br>
       <span>Jeżeli chcesz dodać do swojego sprzętu rzeczy, które są już na którejś z list, użyj opcji "dodaj sprzęt z

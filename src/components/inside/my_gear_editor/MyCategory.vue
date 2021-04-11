@@ -26,11 +26,10 @@
       </template>
     </draggable>
     <div class="my_category__footer">
-      <button v-if="can_add_item" class="my_category__add-item" type="button" @click="addItem">
+      <button class="my_category__add-item" type="button" @click="addItem">
         <font-awesome-icon class="fa-md" icon="plus"/>
         dodaj przedmiot
       </button>
-      <div v-else></div>
     </div>
   </div>
 </template>
@@ -71,7 +70,6 @@ export default {
     const {
       max_name_length,
       name_input,
-      can_add_item,
       addItem,
       setItemRef,
       resizeAllItems,
@@ -84,7 +82,7 @@ export default {
 
     return {
       max_name_length, name_input, confirmation_dialog, no_drag,
-      category_name, is_the_only_category, items, can_add_item,
+      category_name, is_the_only_category, items,
       addItem, deleteCategory, setItemRef, resizeAllItems, focusName, displayConfirmationDialog, toggleNoDrag
     }
   }

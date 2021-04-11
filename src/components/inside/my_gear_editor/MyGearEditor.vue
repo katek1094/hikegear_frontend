@@ -17,7 +17,7 @@
             <MyCategory :category="element" :ref="setCategoryRef"/>
           </template>
         </draggable>
-        <button v-if="can_add_category" class="add-category" type="button" @click="addCategory">
+        <button class="add-category" type="button" @click="addCategory">
           <font-awesome-icon class="fa-md" icon="plus"/>
           dodaj kategorię
         </button>
@@ -65,7 +65,6 @@ export default {
     }
     const {
       categories_refs,
-      can_add_category,
       addCategory,
       setCategoryRef
     } = useCategories('my_gear/addNewCategory', categories)
@@ -74,7 +73,7 @@ export default {
     const {no_drag, toggleNoDrag} = useNoDrag()
 
     return {
-      editor_data_ready, categories, save_progress, are_changes, are_any_backpacks, no_drag, can_add_category,
+      editor_data_ready, categories, save_progress, are_changes, are_any_backpacks, no_drag,
       setCategoryRef, addCategory, save, toggleNoDrag
     }
   }

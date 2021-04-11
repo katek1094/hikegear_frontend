@@ -108,7 +108,7 @@ export default {
         })
             .then(response => {
                 if (response.ok) {
-                    response.json().then(data => {
+                    return response.json().then(data => {
                         commit('copy_and_set_dynamic_backpack', data)
                         commit('copy_and_set_static_backpack', data)
                         commit('add_backpack', data)

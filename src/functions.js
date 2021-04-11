@@ -27,9 +27,15 @@ export function apiFetch(endpoint, options, handled_4xx_codes = []) {
                 return response
             } else {
                 if (response.status === 403) {
-                    store.dispatch('auth/changeLoggedIn', false).then(() => {
-                        router.push({name: 'login'})
-                    })
+                    if (store.getters['auth/is_logged_in']) {
+                        alert('BŁĄD. Z nieznanych mi przyczyn na niektórych starszych smartphonach aplikacja nie działa w następującym przypadku: ' +
+                            'jeżeli zamkniesz (nie wyjdziesz z niej) przeglądarkę z otwartą kartą z hikegear.pl, to po ponownym włączeniu ' +
+                            'przeglądarki hikegear.pl nie będzie działać w starej karcie, musisz ją zamknąć i otworzyć w nowej karcie lub nie wyłączać przeglądarki. ')
+                    } else {
+                        store.dispatch('auth/changeLoggedIn', false).then(() => {
+                            router.push({name: 'login'})
+                        })
+                    }
                 } else alert(`wystąpił błąd w komunikacji z serwerem - ${response.status}`)
                 return response
             }

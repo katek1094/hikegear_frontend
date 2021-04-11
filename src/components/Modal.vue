@@ -1,6 +1,6 @@
 <template>
   <teleport to="body">
-    <div class="modal" v-if="show">
+    <div class="modal" v-if="show" :class="{is_confirmation: is_confirmation}">
       <div class="modal__backdrop" @click="closeModal"/>
       <div class="modal__dialog" :class="{is_confirmation: is_confirmation}">
         <button type="button" class="modal__close" @click="closeModal">
@@ -65,6 +65,12 @@ export default {
   left: 0;
   z-index: 10;
 
+  &.is_confirmation {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+
   &__backdrop {
     background-color: rgba(0, 0, 0, 0.4);
     position: fixed;
@@ -89,10 +95,6 @@ export default {
     flex-direction: column;
     border-radius: 5px;
     z-index: 11;
-
-    &.is_confirmation {
-      margin: 30vh auto;
-    }
   }
 
   $close_size: 2.8rem;

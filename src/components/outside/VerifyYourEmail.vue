@@ -6,7 +6,7 @@
         <p>Aby móc z niego korzystać musisz kliknąć w link aktywacyjny wysłany na adres mailowy podany przy
           rejestracji. </p>
         <p>Jeżeli nie widzisz wiadomości w skrzynce odbiorczej, należy sprawdzić foldery "Spam", "Oferty" itp. </p>
-        <p>Uwaga! Konto należy aktywować w ciągu 15 minut od jego utworzenia.</p>
+        <p>Uwaga! Konto należy aktywować w ciągu 20 minut od jego utworzenia.</p>
       </div>
     </div>
   </OutsideBaseApp>

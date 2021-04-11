@@ -43,7 +43,7 @@
     </div>
 
     <div v-if="backpack_is_not_shared" class="alternative">
-      <h1>Ta lista sprzętu nie udostępniona</h1>
+      <h1>Ta lista sprzętu nie jest udostępniona</h1>
     </div>
     <div v-if="backpack_not_found" class="alternative">
       <h1>Podana lista sprzętu nie istnieje, lub link jest nieprawidłowy</h1>

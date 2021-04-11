@@ -3,6 +3,7 @@
     <div v-if="request_sent" class="hg-flx_col_ctr hg-text-wrapper">
       <h2>Na podany adres został wysłany email</h2>
       <p>znajdziesz w nim link pozwalający zresetować twoje hasło</p>
+      <p>link jest ważny przez 20 minut od jego wysłania</p>
     </div>
     <form v-else class="hg-flx_col_ctr hg-text-wrapper" @submit.prevent="submit">
       <h2>podaj swój email, aby zresetować hasło</h2>

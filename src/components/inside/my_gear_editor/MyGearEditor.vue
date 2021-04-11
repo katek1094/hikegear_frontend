@@ -85,6 +85,7 @@ export default {
 
 .import__gear {
   @include editor-add;
+  margin: 0;
   font-size: 1rem;
 }
 

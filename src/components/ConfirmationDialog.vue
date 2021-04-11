@@ -43,7 +43,7 @@ export default {
   width: 100%;
   font-size: 1.1rem;
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 10px;
 }
 .buttons_wrapper {
   display: flex;

@@ -25,10 +25,12 @@
       <h3 class="header">Edytor</h3>
       <span>Zmiany zapisywane są automatycznie po {{ timeout }} sekundach od wprowadzenia ostaniej zmiany lub po
         wciśnięciu klawiszy Ctrl + S</span><br><br>
-      <span>Aby udostępnić listę sprzętu innym skopiuj link, w który możesz wejść klikając
-        "link do listy"</span><br><br>
       <span>Importowanie listy sprzętu z lighterpack.com - możesz zrobić to klikając "importuj" i wpisując tam link do
         swojej listy z lighterpack.com</span>
+
+      <h3>Udostępnianie</h3>
+      <span>Aby udostępnić listę sprzętu musisz ustawić kliknąć przycisk "udostępnij" w lewym górnym rogu edytora. </span>
+      <span>Wtedy obok przycisku pojawi się link do twojej listy sprzętu, pod którym będzie ona dostępna dla każdego. </span>
 
       <h3 class="header">Mój sprzęt</h3>
       <span>Osobna lista twojego sprzętu, którego możesz używać przy planowaniu wypraw. </span><br><br>

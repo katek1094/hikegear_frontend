@@ -131,7 +131,7 @@ export function useItem(item_weight, item_quantity) {
     }
     const charControl = (e) => {
         const allowed_codes = [8, 9, 13, 46, 37, 38, 39, 40, // backspace, tab, enter, delete, arrows
-                               17, 67, 86, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105,    // ctrl, c, v, numeric tab
+                               17, 67, 86, 88, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105,    // ctrl, c, v, x,  numeric tab
             48, 49, 50, 51, 52, 53, 54, 55, 56, 57] // 0-9 numbers
         if (!allowed_codes.includes(e.keyCode)) e.preventDefault()
         if ((e.target.getAttribute('name') === 'item_quantity') && (e.keyCode === 190)) e.preventDefault() // 190 is a dot

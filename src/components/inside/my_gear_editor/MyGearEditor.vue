@@ -8,6 +8,11 @@
             dodaj sprzęt z listy
           </button>
           <ImportToMyGear ref="importGear"/>
+          <button type="button" class="import__gear" @click="$refs.importFromExcel.openModal">
+            <font-awesome-icon class="fa-lg" icon="file-excel"/>
+            importuj z pliku
+          </button>
+          <ImportFromExcel ref="importFromExcel"/>
           <SaveProgress :data_ready="editor_data_ready" :are_changes="are_changes" ref="save_progress" @save="save"/>
         </div>
         <draggable v-model="categories" animation="1000" class="my_categories" group="categories"
@@ -35,10 +40,11 @@ import {computed} from "vue";
 import ImportToMyGear from "@/components/inside/my_gear_editor/ImportToMyGear";
 import SaveProgress from "@/components/inside/SaveProgress";
 import {useAutoresizeAll, useNoDrag, useCategories, useEditor} from "@/hooks";
+import ImportFromExcel from "./ImportFromExcel";
 
 export default {
   name: "MyGearEditor",
-  components: {SaveProgress, ImportToMyGear, MyCategory, InsideBaseApp, draggable},
+  components: {ImportFromExcel, SaveProgress, ImportToMyGear, MyCategory, InsideBaseApp, draggable},
   setup() {
     const store = useStore()
 

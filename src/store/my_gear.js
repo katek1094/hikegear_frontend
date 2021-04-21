@@ -49,6 +49,10 @@ export default {
         changeMyGear({commit}, new_list) {
             commit('set_dynamic', new_list)
         },
+        setMyGear({commit}, new_list) {
+          commit('copy_and_set_static', new_list)
+          commit('copy_and_set_dynamic', new_list)
+        },
         moveItem({commit}, payload) {
             commit('set_dynamic_category_items', payload)
         },

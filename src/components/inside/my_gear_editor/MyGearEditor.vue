@@ -8,7 +8,7 @@
             dodaj sprzęt z listy
           </button>
           <ImportToMyGear ref="importGear"/>
-          <button type="button" class="import__gear" @click="$refs.importFromExcel.openModal">
+          <button type="button" class="import__gear from_excel" @click="$refs.importFromExcel.openModal">
             <font-awesome-icon class="fa-lg" icon="file-excel"/>
             importuj z pliku
           </button>
@@ -92,6 +92,12 @@ export default {
   @include editor-add;
   margin: 0;
   font-size: 1rem;
+
+  &.from_excel {
+    @media (max-width: 500px) {
+      display: none;
+    }
+  }
 }
 
 .my-gear_editor {

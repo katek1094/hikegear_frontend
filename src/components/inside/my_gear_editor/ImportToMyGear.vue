@@ -27,7 +27,9 @@
                   <input :id="'item' + item.id" v-model="selected_items" :value="item.id" class="item__checkbox"
                          type="checkbox" @click="handleItemClick(category.id, item.id)">
                   <div class="item__data">
-                    <span class="item__property">{{ item.name }}</span><span class="item__property">{{ item.description }}</span><span class="item__property">{{ item.weight }}</span>
+                    <span class="item__property">{{ item.name }}</span>
+                    <span class="item__property">{{ item.description }}</span>
+                    <span class="item__property">{{ item.weight }}</span>
                   </div>
                 </div>
               </div>

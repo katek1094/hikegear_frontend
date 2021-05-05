@@ -40,14 +40,14 @@ export default {
         this.show = false;
         this.$emit('close-modal')
         document.querySelector("body").classList.remove("modal_active");
-        document.querySelector("body").style.marginRight = '0'
+        if (!this.is_confirmation)  document.querySelector("body").style.marginRight = '0'
       }
     },
     openModal() {
       this.show = true;
       this.$emit('open-modal')
       document.querySelector("body").classList.add("modal_active");
-      document.querySelector("body").style.marginRight = '15px';
+      if (!this.is_confirmation) document.querySelector("body").style.marginRight = '15px';
     },
   }
 }
@@ -79,6 +79,10 @@ export default {
     bottom: 0;
     left: 0;
     z-index: 9;
+
+    .is_confirmation & {
+      right: 0;
+    }
   }
 
   @media (hover: none) and (pointer: coarse) {

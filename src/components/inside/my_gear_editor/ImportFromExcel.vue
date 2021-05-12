@@ -5,7 +5,8 @@
       <div class="hg-flx_col_ctr">
         <form @submit.prevent="submitForm" class="import_form">
           <input type="file" name="excel" accept=".xlsx">
-          <button type="submit" class="hg-button">importuj</button>
+          <div v-if="waiting_for_response" class="hg-spinner"></div>
+          <button v-else type="submit" class="hg-button">importuj</button>
         </form>
         <span class="info">{{ info }}</span>
         <br>
@@ -39,6 +40,7 @@ export default {
     const store = useStore()
     const modal_ref = ref(null) // template ref
     const info = ref('')
+    const waiting_for_response = ref(false)
 
     const openModal = () => modal_ref.value.openModal()
 
@@ -49,15 +51,16 @@ export default {
         if (ext === 'xlsx') {
           const fd = new FormData()
           fd.append('excel', e.target.excel.files[0])
+          waiting_for_response.value = true
           apiFetch('import_from_excel', {
             method: 'POST',
             body: fd
           }, [400])
               .then(response => {
                 if (response.ok) {
-                  console.log('success')
                   response.json().then(data => {
                     store.dispatch('my_gear/setMyGear', data['private_gear'])
+                    waiting_for_response.value = false
                     modal_ref.value.closeModal()
                   })
                 } else if (response.status === 400) {
@@ -68,7 +71,7 @@ export default {
       }
     }
 
-    return {modal_ref, info, openModal, submitForm}
+    return {modal_ref, info, waiting_for_response,  openModal, submitForm}
   }
 }
 </script>

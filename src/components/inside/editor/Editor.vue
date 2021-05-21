@@ -6,7 +6,9 @@
         <div class="backpacks_list__items">
           <div class="backpacks_list__item" v-for="(backpack, index) in backpacks" :key="backpack.id">
           <span v-if="backpack.name !== ''" :class="{active: backpack.id === backpack_id}"
-                class="backpacks_list__item__name" @click="changeBackpack(index)">{{ backpack.name }}</span>
+                class="backpacks_list__item__name" @click="changeBackpack(index)">
+            {{ backpack.name }}<font-awesome-icon v-if="backpack.shared" class="fa-sm is_shared" icon="share-alt"/>
+          </span>
             <span v-else :class="{active: backpack.id === backpack_id}" class="backpacks_list__item__name"
                   @click="changeBackpack(index)">bez nazwy</span>
             <Tooltip text="usuń listę" direction="left" size="small">
@@ -269,6 +271,11 @@ export default {
   width: 94%;
   max-width: $backpack_list_max_width; // <---------------------------------------------------- check later
   margin: 5px 0;
+
+  & .is_shared {
+    color: blue;
+    margin-left: 10px;
+  }
 
   &__items {
     box-sizing: border-box;

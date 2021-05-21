@@ -18,9 +18,11 @@ import {
     faQuestion,
     faWindowMinimize,
     faWindowMaximize,
-    faFileExcel
+    faFileExcel,
+    faShareAlt
 } from '@fortawesome/free-solid-svg-icons'
 // TODO: add better icon for handles
+
 library.add(faTrash)
 library.add(faChild)
 library.add(faSyncAlt)
@@ -36,6 +38,7 @@ library.add(faQuestion)
 library.add(faWindowMinimize)
 library.add(faWindowMaximize)
 library.add(faFileExcel)
+library.add(faShareAlt)
 
 import App from './App.vue'
 

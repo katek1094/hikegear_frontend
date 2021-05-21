@@ -14,6 +14,7 @@ import LandingPage from "@/components/outside/LandingPage";
 import ActivationLinkExpired from "@/components/outside/ActivationLinkExpired";
 import ForgottenPassword from "@/components/outside/ForgottenPassword";
 import ResetPasswordForm from "@/components/outside/ResetPasswordForm";
+import Reviews from "./components/inside/reviews/Reviews";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -21,6 +22,7 @@ const router = createRouter({
         {path: '/', component: LandingPage, name: 'landing_page'},
         {path: '/edytor', component: Editor, name: 'editor', meta: {require_auth: true}},
         {path: '/konto', component: Settings, name: 'settings', meta: {require_auth: true}},
+        {path: '/recenzje', component: Reviews, name: 'reviews', meta: {require_auth: true}},
         {path: '/logowanie', component: Login, name: 'login'},
         {path: '/rejestracja', component: Register, name: 'register'},
         {path: '/weryfikacja_email', component: VerifyYourEmail, name: 'verify_email'},

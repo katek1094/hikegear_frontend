@@ -24,6 +24,7 @@ export default {
     return {
       active: false,
       items: [
+        {name: 'recenzje sprzętu', to: {name: 'reviews'}},
         {name: 'edytor', to: {name: 'editor'}},  //if editing this, remember to change navbar height
         {name: 'mój sprzęt', to: {name: 'my_gear'}},
         {name: 'konto', to: {name: 'settings'}},
@@ -108,7 +109,7 @@ $hamburger-padding: 7px 16px;
 }
 
 .navbar--active {
-  height: $nav_height * 4 + 4px;  // <--------------------------------------- edit here amount of links
+  height: $nav_height * 5 + 4px;  // <--------------------------------------- edit here (amount of links + 1)
   //line-height: initial;
 }
 

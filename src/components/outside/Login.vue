@@ -74,7 +74,7 @@ export default {
         })
             .then(async response => {
               if (response.status === 200) {
-                await store.dispatch('editor/getInitialData')
+                await store.dispatch('getInitialData')
                     .then(() => router.push({name: 'editor'}))
               } else if (response.status === 401) {
                 response_info.value = 'błędny email lub hasło'

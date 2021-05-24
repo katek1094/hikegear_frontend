@@ -2,6 +2,9 @@
   <InsideBaseApp>
     <div class="reviews hg-flx_col_ctr">
       <div>
+        <h2>Recencje produktów</h2>
+        <input type="text" placeholder="wyszukaj produkt">
+        <h4>filtry</h4>
         <div>
           <label for="select_category">wybierz kategorię</label>
           <select id="select_category" v-model="selected_category_index">
@@ -18,6 +21,18 @@
             </option>
           </select>
         </div>
+        <div>
+          <label for="select_brand">wybierz producenta</label>
+          <select id="select_brand" v-model="selected_brand_index">
+            <option disabled hidden selected value="">{{ selected_brand_index }}</option>
+            <option v-for="(brand, index) in brands" :key="index" :value="index">{{ brand }}</option>
+          </select>
+        </div>
+
+
+
+        <button>dodaj recenzję</button>
+
       </div>
     </div>
   </InsideBaseApp>
@@ -41,10 +56,15 @@ export default {
       {name: 'pozostałe', subcategories: ['kije trekkingowe', 'kompasy', 'noże', 'krzesiwa']}
     ]
 
+    const brands = [
+      'Cumulus', 'OnMyWay', 'Lesovik', 'Montano', 'Kwark', 'Salewa', 'Brooks', 'Black Diamond'
+    ]
+
     const selected_category_index = ref(null)
     const selected_subcategory_index = ref(null)
+    const selected_brand_index = ref(null)
 
-    return {categories, selected_category_index, selected_subcategory_index}
+    return {categories, brands, selected_category_index, selected_subcategory_index, selected_brand_index}
   }
 }
 </script>

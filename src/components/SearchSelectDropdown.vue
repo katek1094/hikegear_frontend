@@ -75,15 +75,14 @@ export default {
 }
 
 .search, .hint {
-  padding: 5px 5px 5px 10px;
+  padding: 5px;
   box-sizing: border-box;
-  font-size: 1rem;
 }
 
 .hints {
   position: absolute;
-  max-height: 300px;
-  width: inherit;
+  max-height: 16rem;
+  width: 14rem;
   overflow-y: auto;
   box-sizing: content-box;
 }

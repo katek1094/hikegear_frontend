@@ -5,7 +5,7 @@
       <div class="outer_div">
         <div class="inner_div">
           <label for="select_backpack">wybierz listę, z której chcesz dodać sprzęt: </label>
-          <select id="select_backpack" v-model="selected_backpack_id" class="select_backpack">
+          <select id="select_backpack" v-model="selected_backpack_id" class="hg-select">
             <option disabled hidden selected value=""></option>
             <option v-for="backpack in backpacks" :key="backpack.id" :value="backpack.id">{{ backpack.name }}</option>
           </select>
@@ -213,16 +213,6 @@ export default {
 <style scoped lang="scss">
 .info {
   font-size: 1rem;
-}
-
-.select_backpack {
-  outline: none;
-  border-radius: 4px;
-  background-color: white;
-  font-size: 1rem;
-  padding: 1px;
-  margin: 4px 0;
-  min-width: 140px;
 }
 
 .select_buttons {

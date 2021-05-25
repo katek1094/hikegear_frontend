@@ -2,36 +2,40 @@
   <InsideBaseApp>
     <div class="reviews hg-flx_col_ctr">
       <div>
-        <h2>Recencje produktów</h2>
-        <input type="text" placeholder="wyszukaj produkt">
-        <h4>filtry</h4>
+        <input class="hg-input" type="text" placeholder="wyszukaj produkt" v-model="search_input_value">
+        <p><b>filtry</b></p>
         <div>
           <label for="select_category">wybierz kategorię</label>
-          <select id="select_category" v-model="selected_category_index">
-            <option disabled hidden selected value="">{{ selected_category_index }}</option>
-            <option v-for="(category, index) in categories" :key="index" :value="index">{{ category.name }}</option>
+          <select id="select_category" class="hg-select" v-model="selected_category_id">
+            <option disabled hidden selected value="">wybierz kategorię</option>
+            <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}</option>
           </select>
+          <button v-show="selected_category_id" class="reset_button" @click="resetCategoryFilter">
+            <font-awesome-icon class="fa-lg" icon="times"/>
+          </button>
         </div>
-        <div v-if="selected_category_index != null">
+        <div v-if="selected_category_id != null">
           <label for="select_subcategory">wybierz podkategorię</label>
-          <select id="select_subcategory" v-model="selected_subcategory_index">
+          <select id="select_subcategory" class="hg-select" v-model="selected_subcategory_id">
             <option disabled hidden selected value="">wybierz podkategorię</option>
-            <option v-for="(subcategory, index) in categories[selected_category_index].subcategories" :key="index"
-                    :value="index">{{ subcategory }}
+            <option v-for="subcategory in subcategories"
+                    :key="subcategory.id"
+                    :value="subcategory.id">{{ subcategory.name }}
             </option>
           </select>
         </div>
         <div>
           <label for="select_brand">wybierz producenta</label>
-          <select id="select_brand" v-model="selected_brand_index">
-            <option disabled hidden selected value="">{{ selected_brand_index }}</option>
-            <option v-for="(brand, index) in brands" :key="index" :value="index">{{ brand }}</option>
+          <select id="select_brand" class="hg-select" v-model="selected_brand_id">
+            <option disabled hidden selected value="">wybierz producenta</option>
+            <option v-for="brand in brands" :key="brand.id" :value="brand.id">{{ brand.name }}</option>
           </select>
+          <button v-show="selected_brand_id" class="reset_button" @click="resetBrandFilter">
+            <font-awesome-icon class="fa-lg" icon="times"/>
+          </button>
         </div>
+        <button class="hg-button">szukaj</button>
 
-
-
-        <button>dodaj recenzję</button>
 
       </div>
     </div>
@@ -40,35 +44,57 @@
 
 <script>
 import InsideBaseApp from "../InsideBaseApp";
-import {ref} from 'vue'
+import {ref, watch, computed} from 'vue'
+import {useStore} from 'vuex'
 
 export default {
   name: "Reviews",
   components: {InsideBaseApp},
   setup() {
-    const categories = [
-      {name: 'obuwie', subcategories: ['trekkingowe', 'trailowe', 'wysokie', 'wodoodporne']},
-      {name: 'ubrania', subcategories: ['kurtki', 'czapki', 'spodnie', 'koszulki']},
-      {name: 'plecaki', subcategories: ['10-20l', '20-30l', '30-40l', '40l+']},
-      {name: 'biwakowanie', subcategories: ['tarpy', 'namioty', 'śpiwory', 'hamaki']},
-      {name: 'gotowanie', subcategories: ['palniki', 'naczynia', 'paliwo']},
-      {name: 'elektronika', subcategories: ['czołówki', 'telefony', 'gps', 'powerbanki', 'ładowarki słoneczne']},
-      {name: 'pozostałe', subcategories: ['kije trekkingowe', 'kompasy', 'noże', 'krzesiwa']}
-    ]
+    const store = useStore()
+    const categories = computed(() => store.getters['reviews/categories'])
+    const brands = computed(() => store.getters['reviews/brands'])
 
-    const brands = [
-      'Cumulus', 'OnMyWay', 'Lesovik', 'Montano', 'Kwark', 'Salewa', 'Brooks', 'Black Diamond'
-    ]
+    const selected_category_id = ref(null)
+    const selected_subcategory_id = ref(null)
+    const selected_brand_id = ref(null)
+    const search_input_value = ref('')
 
-    const selected_category_index = ref(null)
-    const selected_subcategory_index = ref(null)
-    const selected_brand_index = ref(null)
+    const subcategories = computed(() => {
+      return categories.value.find((el) => el.id === selected_category_id.value).subcategories
+    })
 
-    return {categories, brands, selected_category_index, selected_subcategory_index, selected_brand_index}
+    watch(selected_category_id, () => selected_subcategory_id.value = null)
+
+    const resetCategoryFilter = () => selected_category_id.value = null
+    const resetBrandFilter = () => selected_brand_id.value = null
+
+    return {
+      categories, subcategories, search_input_value, brands, selected_category_id, selected_subcategory_id,
+      selected_brand_id, resetCategoryFilter, resetBrandFilter
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.hg-select {
+  margin: 4px;
+}
 
+.reset_button {
+  background-color: transparent;
+  border: none;
+  color: red;
+  font-size: 1.1rem;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.06);
+  }
+
+  &:active {
+    transform: scale(1);
+  }
+}
 </style>

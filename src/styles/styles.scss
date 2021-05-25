@@ -305,6 +305,16 @@ $switch_circle_diameter: $switch_height - 2 * $switch_padding;
   }
 }
 
+.hg-select {
+  outline: none;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 1rem;
+  padding: 1px;
+  margin: 4px 0;
+  min-width: 140px;
+}
+
 .hg-form_label {
   margin: 10px 4px;
 }

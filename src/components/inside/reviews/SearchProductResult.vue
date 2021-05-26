@@ -25,10 +25,10 @@ export default {
 
 <style lang="scss" scoped>
 .wrapper {
-  border: 1px solid gray;
   border-radius: 4px;
   margin: 4px;
   padding: 8px;
+  background-color: $grey3;
 }
 .hg-link {
   display: block;

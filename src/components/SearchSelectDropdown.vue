@@ -54,7 +54,9 @@ export default {
       activated.value = false
     }
 
-    return {query, activated, results, activate, deactivate, search, select, reset}
+    const setValue = (new_val) => query.value = new_val
+
+    return {query, activated, results, activate, deactivate, search, select, reset, setValue}
   }
 }
 </script>

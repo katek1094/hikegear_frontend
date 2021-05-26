@@ -2,19 +2,23 @@ import {createRouter, createWebHistory} from 'vue-router'
 
 import store from "./store/index.js";
 
-import Editor from "@/components/inside/editor/Editor";
-import Settings from "@/components/inside/Settings";
-import Register from "@/components/outside/Register";
-import Login from "@/components/outside/Login";
-import VerifyYourEmail from "@/components/outside/VerifyYourEmail";
-import Backpack from "@/components/outside/Backpack";
-import MyGearEditor from "@/components/inside/my_gear_editor/MyGearEditor";
-import NotFound from "@/components/outside/NotFound";
-import LandingPage from "@/components/outside/LandingPage";
-import ActivationLinkExpired from "@/components/outside/ActivationLinkExpired";
-import ForgottenPassword from "@/components/outside/ForgottenPassword";
-import ResetPasswordForm from "@/components/outside/ResetPasswordForm";
+import Editor from "./components/inside/editor/Editor";
+import Settings from "./components/inside/Settings";
+import Register from "./components/outside/Register";
+import Login from "./components/outside/Login";
+import VerifyYourEmail from "./components/outside/VerifyYourEmail";
+import Backpack from "./components/outside/Backpack";
+import MyGearEditor from "./components/inside/my_gear_editor/MyGearEditor";
+import NotFound from "./components/outside/NotFound";
+import LandingPage from "./components/outside/LandingPage";
+import ActivationLinkExpired from "./components/outside/ActivationLinkExpired";
+import ForgottenPassword from "./components/outside/ForgottenPassword";
+import ResetPasswordForm from "./components/outside/ResetPasswordForm";
 import Reviews from "./components/inside/reviews/Reviews";
+import NewProduct from "./components/inside/reviews/NewProduct";
+import NewReview from "./components/inside/reviews/NewReview";
+import ProductPage from "./components/inside/reviews/ProductPage";
+import NewBrand from "./components/inside/reviews/NewBrand";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -23,6 +27,10 @@ const router = createRouter({
         {path: '/edytor', component: Editor, name: 'editor', meta: {require_auth: true}},
         {path: '/konto', component: Settings, name: 'settings', meta: {require_auth: true}},
         {path: '/recenzje', component: Reviews, name: 'reviews', meta: {require_auth: true}},
+        {path: '/nowy_produkt', component: NewProduct, name: 'new_product', meta: {require_auth: true}},
+        {path: '/nowy_marka', component: NewBrand, name: 'new_brand', meta: {require_auth: true}},
+        {path: '/nowa_recenzja/:id', component: NewReview, name: 'new_review', meta: {require_auth: true}},
+        {path: '/produkt/:id', component: ProductPage, name: 'product_page', meta: {require_auth: true}},
         {path: '/logowanie', component: Login, name: 'login'},
         {path: '/rejestracja', component: Register, name: 'register'},
         {path: '/weryfikacja_email', component: VerifyYourEmail, name: 'verify_email'},

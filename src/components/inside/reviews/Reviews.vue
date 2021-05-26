@@ -1,8 +1,10 @@
 <template>
   <InsideBaseApp>
     <div class="reviews hg-flx_col_ctr">
+      <router-link class="hg-link" :to="{name: 'new_product'}">dodaj produkt</router-link>
+      <router-link class="hg-link" :to="{name: 'new_brand'}">dodaj markę</router-link>
       <form class="form hg-flx_col_ctr" @submit.prevent>
-        <input class="hg-input search_product" type="text" placeholder="wyszukaj produkt"
+        <input class="hg-input search_product" type="text" placeholder="wpisz nazwę produktu (model)"
                v-model="search_product_query" @keydown.enter="submit">
         <div class="filters">
           <span><b>filtry</b></span>
@@ -18,7 +20,7 @@
               <font-awesome-icon class="fa-lg" icon="times"/>
             </button>
           </div>
-          <div class="field" v-if="selected_category_id != null">
+          <div class="field" v-if="subcategories">
             <label for="select_subcategory">podkategoria</label>
             <select id="select_subcategory" class="hg-select" v-model="selected_subcategory_id">
               <option disabled hidden selected value="">wybierz podkategorię</option>
@@ -46,10 +48,8 @@
       <div v-if="no_matching_results">
         <p>brak wyników</p>
       </div>
-      <div v-if="search_results">
-        <div v-for="result in search_results" :key="result.id">
-          <p>{{ result.name }}</p>
-        </div>
+      <div v-if="search_results" class="search_results">
+        <SearchProductResult v-for="result in search_results" :key="result.id" :result="result"/>
       </div>
     </div>
   </InsideBaseApp>
@@ -61,10 +61,11 @@ import {ref, watch, computed} from 'vue'
 import {useStore} from 'vuex'
 import {apiFetch} from "@/functions";
 import SearchSelectDropdown from "../../SearchSelectDropdown";
+import SearchProductResult from "./SearchProductResult";
 
 export default {
   name: "Reviews",
-  components: {SearchSelectDropdown, InsideBaseApp},
+  components: {SearchProductResult, SearchSelectDropdown, InsideBaseApp},
   setup() {
     const store = useStore()
     const categories = computed(() => store.getters['reviews/categories'])
@@ -80,7 +81,12 @@ export default {
     const form_submitted = ref(false) // to know, when to show array of results, or "no matching results" info
 
     const subcategories = computed(() => {
-      return categories.value.find((el) => el.id === selected_category_id.value).subcategories
+      if (selected_category_id.value === null) return false
+      else {
+        const sub = categories.value.find((el) => el.id === selected_category_id.value).subcategories
+        if (sub.length === 1) return false
+        else return sub
+      }
     })
 
     watch(selected_category_id, () => selected_subcategory_id.value = null)

@@ -85,6 +85,7 @@ export default {
   width: 14rem;
   overflow-y: auto;
   box-sizing: content-box;
+  z-index: 10;
 }
 
 .hint {

@@ -1,7 +1,9 @@
 <template>
   <InsideBaseApp>
-    <div>
-      <h1>new product</h1>
+    <div class="hg-flx_col_ctr">
+      <div class="wrapper">
+        <h1>new product</h1>
+      </div>
     </div>
   </InsideBaseApp>
 </template>
@@ -15,5 +17,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.wrapper {
+  width: 500px;
+}
 </style>

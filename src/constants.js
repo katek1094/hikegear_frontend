@@ -13,6 +13,8 @@ const items_in_category_max_amount = 30
 const max_backpacks_amount = 40
 const hashids_salt = 'hikegear salt'
 const hashids_hash_len = 8
+const review_summary_max_length = 120
+const review_text_max_length = 4000
 
 export default {
     CATEGORY_MAX_NAME_LENGTH: cat_max_name_len,
@@ -29,5 +31,7 @@ export default {
     ITEMS_IN_CATEGORY_MAX_AMOUNT: items_in_category_max_amount,
     MAX_BACKPACKS_AMOUNT: max_backpacks_amount,
     HASHIDS_SALT: hashids_salt,
-    HASHIDS_HASH_LEN: hashids_hash_len
+    HASHIDS_HASH_LEN: hashids_hash_len,
+    REVIEW_SUMMARY_MAX_LEN: review_summary_max_length,
+    REVIEW_TEXT_MAX_LEN: review_text_max_length
 }

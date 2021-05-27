@@ -8,7 +8,7 @@
             dodaj produkt
           </router-link>
           <router-link class="hg-link" :to="{name: 'new_brand'}">
-            <font-awesome-icon class="fa-md" icon="plus"/>
+            <font-awesome-icon class="fa-md" icon="industry"/>
             dodaj producenta
           </router-link>
         </div>

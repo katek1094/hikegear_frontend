@@ -112,7 +112,7 @@ export default {
   width: 100%;
 }
 
-@media (min-width: 480px) {
+@media (min-width: 300px) {
   /* smartphones, Android phones, landscape iPhone */
   .my-gear_editor {
     width: 100%;

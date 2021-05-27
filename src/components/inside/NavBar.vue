@@ -36,7 +36,7 @@ export default {
       this.active = !this.active
     },
     onWindowResize() {
-      if (window.innerWidth > 560) {
+      if (window.innerWidth > 730) {
         this.active = false
       }
     }
@@ -184,7 +184,7 @@ $hamburger-padding: 7px 16px;
 }
 
 
-@media (max-width: 560px) {
+@media (max-width: 730px) {
   .hamburger {
     display: inline-block;
   }

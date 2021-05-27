@@ -2,9 +2,15 @@
   <InsideBaseApp>
     <div class="hg-flx_col_ctr">
       <div class="reviews">
-        <div>
-          <router-link class="hg-link" :to="{name: 'new_product'}">dodaj produkt</router-link>
-          <router-link class="hg-link" :to="{name: 'new_brand'}">dodaj markę</router-link>
+        <div class="add_options">
+          <router-link class="hg-link" :to="{name: 'new_product'}">
+            <font-awesome-icon class="fa-md" icon="plus"/>
+            dodaj produkt
+          </router-link>
+          <router-link class="hg-link" :to="{name: 'new_brand'}">
+            <font-awesome-icon class="fa-md" icon="plus"/>
+            dodaj producenta
+          </router-link>
         </div>
         <form class="form hg-flx_col_ctr" @submit.prevent>
           <input class="hg-input search_product" type="text" placeholder="wpisz nazwę produktu (model)"
@@ -128,10 +134,10 @@ export default {
       if (route.query.query) {
         search()
         search_product_query.value = route.query.query
-        if (route.query.category_id) selected_category_id.value = route.query.category_id
-        if (route.query.subcategory_id) selected_subcategory_id.value = route.query.subcategory_id
+        if (route.query.category_id) selected_category_id.value = Number(route.query.category_id)
+        if (route.query.subcategory_id) selected_subcategory_id.value = Number(route.query.subcategory_id)
         if (route.query.brand_id) {
-          selected_brand_id.value = route.query.brand_id
+          selected_brand_id.value = Number(route.query.brand_id)
           brand_select.value.setValue(brands.value.find((el) => el.id === Number(route.query.brand_id)).name)
         }
       }
@@ -140,11 +146,14 @@ export default {
     const submit = () => {
       if (search_product_query.value !== '') {
         let params = {query: search_product_query.value}
-        if (selected_subcategory_id.value !== null) params.subcategory_id = selected_subcategory_id.value
+        if (selected_subcategory_id.value !== null) {
+          params.subcategory_id = selected_subcategory_id.value
+          params.category_id = selected_category_id.value
+        }
         else if (selected_category_id.value !== null) params.category_id = selected_category_id.value
         if (selected_brand_id.value !== null) params.brand_id = selected_brand_id.value
         router.push({name: 'reviews', query: params})
-      }
+      } else router.push({name: 'reviews'})
     }
 
 
@@ -159,8 +168,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.reviews {
-  width: 800px;
+
+
+.add_options {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 8px;
+  //max-width: 340px;
+
+  & .hg-link {
+    @include editor-add;
+    font-size: 1.1rem;
+    //margin-left: 20px;
+  }
 }
 
 .form {
@@ -169,7 +189,7 @@ export default {
 
 .filters {
   margin: 4px;
-  width: 100%;
+  //width: 100%;
   padding: 4px;
   box-sizing: border-box;
 }
@@ -187,10 +207,9 @@ export default {
 
 .field {
   display: grid;
-  grid-template-columns: 7rem 14rem auto;
+  grid-template-columns: 1fr 12rem 3rem;
   align-items: center;
-  justify-content: flex-start;
-  grid-gap: 2px;
+  grid-gap: 3px;
 }
 
 .brand_select {
@@ -208,4 +227,49 @@ export default {
     cursor: pointer;
   }
 }
+
+@media (min-width: 300px) {
+  .reviews {
+    width: 96%;
+    max-width: 500px;
+  }
+  .search_product {
+    width: 90%;
+    max-width: 400px;
+  }
+
+}
+
+@media (min-width: 480px) {
+  /* smartphones, Android phones, landscape iPhone */
+
+}
+
+@media (min-width: 600px) {
+  /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
+  .reviews {
+    width: 80%;
+  }
+}
+
+@media (min-width: 801px) {
+  /* tablet, landscape iPad, lo-res laptops ands desktops */
+  .reviews {
+    width: 600px;
+  }
+}
+
+
+@media (min-width: 1025px) {
+  /* big landscape tablets, laptops, and desktops */
+
+}
+
+@media (min-width: 1281px) {
+  /* hi-res laptops and desktops */
+
+
+}
+
+
 </style>

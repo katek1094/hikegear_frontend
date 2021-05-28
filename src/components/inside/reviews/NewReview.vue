@@ -1,7 +1,7 @@
 <template>
   <InsideBaseApp>
     <div class="hg-flx_col_ctr">
-      <div class="wrapper">
+      <div class="new_review_wrapper">
         <div v-if="waiting_for_data" class="hg-spinner"></div>
         <div v-if="product">
           <div class="header">
@@ -78,7 +78,6 @@ export default {
         let body = {product: product.value.id, summary: summary.value, text: text.value}
         if (weight_net.value) body.weight_net = weight_net.value
         if (weight_gross.value) body.weight_gross = weight_gross.value
-        console.log(body)
         apiFetch('reviews', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
@@ -113,7 +112,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.wrapper {
+.new_review_wrapper {
   width: 600px;
 }
 

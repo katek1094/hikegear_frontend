@@ -235,3 +235,28 @@ export function usePasswords() {
 
     return {min_password_length, max_password_length, isPasswordValid, arePasswordsEqual}
 }
+
+export function useFilters() {
+    const store = useStore()
+    const categories = computed(() => store.getters['reviews/categories'])
+    const brands = computed(() => store.getters['reviews/brands'])
+    const selected_category_id = ref(null)
+    const selected_subcategory_id = ref(null)
+    const selected_brand_id = ref(null)
+
+    const subcategories = computed(() => {
+        if (selected_category_id.value === null) return false
+        else {
+            const sub = categories.value.find((el) => el.id === selected_category_id.value).subcategories
+            if (sub.length === 1) return false
+            else return sub
+        }
+    })
+
+    const setBrandId = (payload) => selected_brand_id.value = payload.id
+
+    return {
+        categories, brands, selected_category_id, selected_subcategory_id, selected_brand_id, subcategories,
+        setBrandId
+    }
+}

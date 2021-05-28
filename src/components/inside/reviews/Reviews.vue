@@ -8,13 +8,13 @@
             dodaj produkt
           </router-link>
           <router-link class="hg-link" :to="{name: 'new_brand'}">
-            <font-awesome-icon class="fa-md" icon="industry"/>
+            <font-awesome-icon class="fa-md" icon="plus"/>
             dodaj producenta
           </router-link>
         </div>
         <form class="form hg-flx_col_ctr" @submit.prevent>
           <input class="hg-input search_product" type="text" placeholder="wpisz nazwę produktu (model)"
-                 v-model="search_product_query" @keydown.enter="submit" autofocus>
+                 v-model="search_product_query" @keydown.enter="submit" autofocus ref="query_input">
           <div class="filters">
             <span><b>filtry</b></span>
             <div class="field">
@@ -68,11 +68,12 @@
 <script>
 import InsideBaseApp from "../InsideBaseApp";
 import {ref, watch, computed, onMounted} from 'vue'
-import {useStore} from 'vuex'
+// import {useStore} from 'vuex'
 import {apiFetch} from "@/functions";
 import SearchSelectDropdown from "../../SearchSelectDropdown";
 import SearchProductResult from "./SearchProductResult";
 import {useRoute, useRouter} from 'vue-router'
+import {useFilters} from "../../../hooks";
 
 export default {
   name: "Reviews",
@@ -80,27 +81,20 @@ export default {
   setup() {
     const route = useRoute()
     const router = useRouter()
-    const store = useStore()
-    const categories = computed(() => store.getters['reviews/categories'])
-    const brands = computed(() => store.getters['reviews/brands'])
 
-    const selected_category_id = ref(null)
-    const selected_subcategory_id = ref(null)
-    const selected_brand_id = ref(null)
     const search_product_query = ref('') // value of text input
     const brand_select = ref('null') //template ref
+    const query_input = ref('null') //template ref
     const search_results = ref(null)
     const waiting_for_response = ref(false)
     const form_submitted = ref(false) // to know, when to show array of results, or "no matching results" info
 
-    const subcategories = computed(() => {
-      if (selected_category_id.value === null) return false
-      else {
-        const sub = categories.value.find((el) => el.id === selected_category_id.value).subcategories
-        if (sub.length === 1) return false
-        else return sub
-      }
-    })
+
+
+    const {
+      categories, brands, selected_category_id, selected_subcategory_id, selected_brand_id, subcategories,
+      setBrandId
+    } = useFilters()
 
     watch(selected_category_id, () => selected_subcategory_id.value = null)
 
@@ -111,8 +105,6 @@ export default {
       brand_select.value.reset()
     }
     const no_matching_results = computed(() => form_submitted.value && search_results.value.length === 0)
-
-    const setBrandId = (payload) => selected_brand_id.value = payload.id
 
     const search = () => {
       waiting_for_response.value = true
@@ -140,6 +132,7 @@ export default {
           selected_brand_id.value = Number(route.query.brand_id)
           brand_select.value.setValue(brands.value.find((el) => el.id === Number(route.query.brand_id)).name)
         }
+        query_input.value.focus()
       }
     })
 
@@ -149,8 +142,7 @@ export default {
         if (selected_subcategory_id.value !== null) {
           params.subcategory_id = selected_subcategory_id.value
           params.category_id = selected_category_id.value
-        }
-        else if (selected_category_id.value !== null) params.category_id = selected_category_id.value
+        } else if (selected_category_id.value !== null) params.category_id = selected_category_id.value
         if (selected_brand_id.value !== null) params.brand_id = selected_brand_id.value
         router.push({name: 'reviews', query: params})
       } else router.push({name: 'reviews'})
@@ -158,7 +150,7 @@ export default {
 
 
     return {
-      categories, subcategories, search_product_query, brand_select, brands, selected_category_id,
+      categories, subcategories, search_product_query, brand_select, query_input, brands, selected_category_id,
       selected_subcategory_id, selected_brand_id, search_results, waiting_for_response, form_submitted,
       no_matching_results,
       resetCategoryFilter, resetSubcategoryFilter, resetBrandFilter, setBrandId, submit
@@ -189,7 +181,6 @@ export default {
 
 .filters {
   margin: 4px;
-  //width: 100%;
   padding: 4px;
   box-sizing: border-box;
 }
@@ -202,18 +193,14 @@ export default {
   margin: 4px;
   border: none;
   padding: 4px;
-  width: 100%;
+  width: 12rem;
 }
 
 .field {
   display: grid;
-  grid-template-columns: 1fr 12rem 3rem;
+  grid-template-columns: 1fr auto 3rem;
   align-items: center;
   grid-gap: 3px;
-}
-
-.brand_select {
-  width: 100%;
 }
 
 .reset_button {

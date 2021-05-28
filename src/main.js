@@ -20,7 +20,6 @@ import {
     faWindowMaximize,
     faFileExcel,
     faComment,
-    faIndustry
 } from '@fortawesome/free-solid-svg-icons'
 // TODO: add better icon for handles
 library.add(faTrash)
@@ -39,7 +38,6 @@ library.add(faWindowMinimize)
 library.add(faWindowMaximize)
 library.add(faFileExcel)
 library.add(faComment)
-library.add(faIndustry)
 
 import App from './App.vue'
 

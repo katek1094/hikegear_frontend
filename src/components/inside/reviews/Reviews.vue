@@ -1,7 +1,7 @@
 <template>
   <InsideBaseApp>
     <div class="hg-flx_col_ctr">
-      <div class="reviews">
+      <div class="reviews hg-wrapper">
         <div class="add_options">
           <router-link class="hg-link" :to="{name: 'new_product'}">
             <font-awesome-icon class="fa-md" icon="plus"/>
@@ -189,13 +189,6 @@ export default {
   width: 24rem;
 }
 
-.hg-select {
-  margin: 4px;
-  border: none;
-  padding: 4px;
-  width: 12rem;
-}
-
 .field {
   display: grid;
   grid-template-columns: 1fr auto 3rem;
@@ -216,10 +209,6 @@ export default {
 }
 
 @media (min-width: 300px) {
-  .reviews {
-    width: 96%;
-    max-width: 500px;
-  }
   .search_product {
     width: 90%;
     max-width: 400px;
@@ -234,16 +223,12 @@ export default {
 
 @media (min-width: 600px) {
   /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
-  .reviews {
-    width: 80%;
-  }
+
 }
 
 @media (min-width: 801px) {
   /* tablet, landscape iPad, lo-res laptops ands desktops */
-  .reviews {
-    width: 600px;
-  }
+
 }
 
 

@@ -1,7 +1,7 @@
 <template>
   <InsideBaseApp>
     <div class="hg-flx_col_ctr">
-      <div class="new_review_wrapper">
+      <div class="new_review hg-wrapper">
         <div v-if="waiting_for_data" class="hg-spinner"></div>
         <div v-if="product">
           <div class="header">
@@ -112,12 +112,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.new_review_wrapper {
-  width: 600px;
-}
-
 .header {
-  padding-left: 10px;
+  margin-left: 9px;
 
   & .title {
     text-align: center;
@@ -137,15 +133,16 @@ export default {
 }
 
 .info {
-  margin-left: 10px;
+  margin-left: 9px;
   font-size: .9rem;
+  display: block;
 }
 
 .hg-input {
-  display: block;
+  //display: block;
   width: 90%;
-  font-size: 1rem;
-  padding: 5px;
+  font-size: 1.1rem;
+  padding: 6px;
 
   &.weight {
     max-width: 6rem;

@@ -1,5 +1,5 @@
 <template>
-  <div class="search_select_wrapper">
+  <div class="search_select_dropdown">
     <input class="search" type="text" v-model="query" :placeholder="placeholder" @click="activate"
            @blur="deactivate" @input="search">
     <div v-if="activated" class="hints">
@@ -62,7 +62,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.search_select_wrapper {
+.search_select_dropdown {
   border-radius: 4px;
   overflow: hidden;
   margin: 4px;
@@ -85,7 +85,8 @@ export default {
 .hints {
   position: absolute;
   max-height: 16rem;
-  width: 12rem;
+  //width: 12rem;
+  width: inherit;
   overflow-y: auto;
   box-sizing: content-box;
   z-index: 10;

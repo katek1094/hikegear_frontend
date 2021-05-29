@@ -310,9 +310,10 @@ $switch_circle_diameter: $switch_height - 2 * $switch_padding;
   border-radius: 4px;
   background-color: white;
   font-size: 1rem;
-  padding: 1px;
-  margin: 4px 0;
-  min-width: 140px;
+  padding: 4px;
+  margin: 4px;
+  border: none;
+  min-width: 12rem;
 }
 
 .hg-form_label {
@@ -336,6 +337,45 @@ $switch_circle_diameter: $switch_height - 2 * $switch_padding;
       text-decoration: underline;
     }
   }
+}
+
+@media (min-width: 300px) {
+  .hg-wrapper {
+    width: 96%;
+    max-width: 500px;
+  }
+
+}
+
+@media (min-width: 480px) {
+  /* smartphones, Android phones, landscape iPhone */
+
+}
+
+@media (min-width: 600px) {
+  /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
+  .hg-wrapper {
+    width: 80%;
+  }
+}
+
+@media (min-width: 801px) {
+  /* tablet, landscape iPad, lo-res laptops ands desktops */
+  .hg-wrapper {
+    width: 600px;
+  }
+}
+
+
+@media (min-width: 1025px) {
+  /* big landscape tablets, laptops, and desktops */
+
+}
+
+@media (min-width: 1281px) {
+  /* hi-res laptops and desktops */
+
+
 }
 
 

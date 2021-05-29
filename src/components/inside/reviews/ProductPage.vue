@@ -1,7 +1,7 @@
 <template>
   <InsideBaseApp>
     <div class="hg-flx_col_ctr">
-      <div class="wrapper">
+      <div class="product_page">
         <div v-if="waiting_for_response" class="hg-spinner"></div>
         <div v-if="product">
           <h1>{{ product.full_name }}</h1>
@@ -61,7 +61,7 @@ export default {
   font-size: 1rem;
 }
 
-.wrapper {
+.product_page {
   width: 500px;
 }
 

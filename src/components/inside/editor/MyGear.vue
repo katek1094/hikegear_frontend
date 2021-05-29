@@ -166,7 +166,6 @@ export default {
   overflow-y: auto;
   overflow-x: hidden;
   width: 100%;
-  //height: 100%;
   padding: 0 3px;
   box-sizing: border-box;
 
@@ -183,10 +182,6 @@ export default {
   .sortable-chosen.my-item:hover .my-item__handle, .no_drag_my_item .my-item:hover .my-item__handle, {
     visibility: visible;
   }
-}
-
-.sortable-chosen {
-  @include sort-chosen;
 }
 
 .categories .sortable-chosen {

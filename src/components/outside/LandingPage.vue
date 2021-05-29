@@ -9,8 +9,8 @@
         <img class="image" src="@/assets/hg2.png" alt="coś się popsuło">
       </div>
       <div class="buttons_wrapper">
-        <button class="button" @click="loginRedirect">zaloguj się</button>
-        <button class="button" @click="registerRedirect">zarejestruj się</button>
+        <button class="hg-button" @click="loginRedirect">zaloguj się</button>
+        <button class="hg-button" @click="registerRedirect">zarejestruj się</button>
       </div>
     </div>
   </OutsideBaseApp>
@@ -99,8 +99,7 @@ export default {
   margin-top: 20px;
 }
 
-.button {
-  @include form-submit;
+.hg-button {
   font-weight: bold;
 }
 

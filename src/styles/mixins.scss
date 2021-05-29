@@ -1,0 +1,177 @@
+@import "variables.scss";
+
+//general mixins
+@mixin flex-column-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+//EDITORS AND SORTABLE MIXINS
+@mixin editor {
+  padding-bottom: 30px;
+  @include flex-column-center;
+
+  &__options {
+    min-height: $spinner_size;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 6px 0;
+    width: 100%;
+    padding: 0 1.6rem;
+  }
+
+  &__wrapper {
+    @include flex-column-center;
+  }
+}
+
+@mixin editor-add {
+  margin: 4px;
+  border: none;
+  background-color: transparent;
+  outline: none;
+  color: yellowgreen;
+  font-size: .9rem;
+  justify-self: flex-start;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+}
+
+@mixin editor-input_and_label {
+  padding: 3px;
+  border: 1px solid transparent;
+}
+
+@mixin editor-input__field {
+  @include editor-input_and_label;
+  border-radius: 4px;
+  background-color: transparent;
+  outline: none;
+  font-size: 1em;
+
+  &:focus, &:active {
+    background-color: white;
+    border: 1px solid grey;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: white;
+      cursor: text;
+    }
+  }
+
+}
+
+@mixin category-item_grid {
+  display: grid;
+  align-items: center;
+  column-gap: 1px;
+  padding: 1px 0;
+}
+
+@mixin sort-handle {
+  margin-right: 6px;
+  padding: 5px 6px 3px 6px;
+  cursor: move;
+  border-radius: 6px;
+  font-size: 1.15rem;
+
+  @media (hover: hover) and (pointer: fine) {
+    .no_drag_item &:hover, .no_drag_cat &:hover, .no_drag_my_item &:hover {
+      background-color: white;
+    }
+    visibility: hidden;
+  }
+}
+
+@mixin editor-items {
+  border-top: 1px solid grey;
+}
+
+@mixin editor-category {
+  margin-top: 16px;
+
+  &__name {
+    @include editor-input__field;
+    font-weight: bold;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  &__header {
+    @include category-item_grid;
+    font-size: 1rem;
+  }
+  &__footer {
+    @include category-item_grid;
+  }
+  &__handle {
+    @include sort-handle;
+  }
+  &__add-item {
+    @include editor-add;
+  }
+  &__delete {
+    @include editor-delete;
+  }
+  &__weight_label {
+    font-size: $category-item_font_size;
+    @include editor-input_and_label;
+    align-self: flex-end;
+  }
+}
+
+@mixin editor-item {
+  &:not(:last-child) {
+    border-bottom: 1px dotted grey;
+  }
+  &:last-child {
+    border-bottom: 1px solid grey;
+  }
+  // code below removes arrows from weight inputs
+  &__weight::-webkit-outer-spin-button,
+  &__weight::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+  &__weight[type=number] {
+    -moz-appearance: textfield;
+  }
+  &__handle {
+    @include sort-handle;
+  }
+  &__delete {
+    @include editor-delete;
+  }
+  &__name, &__description, &__weight {
+    @include editor-input__field;
+  }
+}
+
+@mixin editor-delete {
+  outline: none;
+  border: none;
+  font-size: 0.8rem;
+  background-color: transparent;
+  padding: 6px;
+  width: $category-item_grid_delete_width;
+  box-sizing: border-box;
+
+  @media (hover: hover) and (pointer: fine) {
+    & {
+      visibility: hidden;
+    }
+    &:hover {
+      color: red;
+      cursor: pointer;
+    }
+  }
+}

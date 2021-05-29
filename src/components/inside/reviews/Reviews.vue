@@ -68,7 +68,6 @@
 <script>
 import InsideBaseApp from "../InsideBaseApp";
 import {ref, watch, computed, onMounted} from 'vue'
-// import {useStore} from 'vuex'
 import {apiFetch} from "@/functions";
 import SearchSelectDropdown from "../../SearchSelectDropdown";
 import SearchProductResult from "./SearchProductResult";
@@ -88,7 +87,6 @@ export default {
     const search_results = ref(null)
     const waiting_for_response = ref(false)
     const form_submitted = ref(false) // to know, when to show array of results, or "no matching results" info
-
 
 
     const {
@@ -160,7 +158,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 
 .add_options {
   display: flex;

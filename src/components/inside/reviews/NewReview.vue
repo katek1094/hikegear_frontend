@@ -8,14 +8,15 @@
             <h2 class="title">nowa recenzja</h2>
             <h3>{{ product.full_name }}</h3>
           </div>
-          <form class="form" @submit.prevent>
+          <form class="hg-flx_col_ctr" @submit.prevent>
             <div class="section">
-              <AutoResizable class="hg-input summary" v-model="summary" placeholder="podsumowanie"
-                             :maxlength="summary_limit"/>
+              <AutoResizable ref="summary_input" v-model="summary" :maxlength="summary_limit"
+                             class="hg-input summary" placeholder="podsumowanie"/>
               <label class="info">krótkie (max {{ summary_limit }} znaków) podsumowanie recenzji - pole wymagane</label>
             </div>
             <div class="section">
-              <AutoResizable class="hg-input text" v-model="text" placeholder="recenzja" :maxlength="text_limit"/>
+              <AutoResizable ref="text_input" v-model="text" :maxlength="text_limit" class="hg-input text"
+                             placeholder="recenzja"/>
               <label class="info">tekst recenzji (max {{ text_limit }} znaków) - pole wymagane</label>
             </div>
             <div class="section">
@@ -44,6 +45,7 @@ import {apiFetch} from "../../../functions";
 import AutoResizable from "../../AutoResizable";
 import constants from "../../../constants";
 import {useRouter} from "vue-router";
+import {useAutoresizeAll} from "../../../hooks";
 
 export default {
   name: "NewReview",
@@ -61,6 +63,8 @@ export default {
     const text = ref('')
     const weight_net = ref('')
     const weight_gross = ref('')
+    const summary_input = ref('')
+    const text_input = ref('')
 
     apiFetch('products/' + props.id, {
       method: 'GET'
@@ -89,10 +93,11 @@ export default {
             })
       }
     }
-    // const resizeAll = () => {
-    //   name_input.value.resize()
-    //   description_input.value.resize()
-    // }
+    const resizeAll = () => {
+      summary_input.value.resize()
+      text_input.value.resize()
+    }
+    useAutoresizeAll(resizeAll)
     const charControl = (e) => {
       const allowed_codes = [8, 9, 13, 46, 37, 38, 39, 40, // backspace, tab, enter, delete, arrows
         17, 67, 86, 88, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105,    // ctrl, c, v, x,  numeric tab
@@ -104,7 +109,7 @@ export default {
 
     return {
       summary_limit, text_limit, weight_limit, product, summary, text, weight_net, weight_gross, waiting_for_data,
-      waiting_for_response,
+      waiting_for_response, summary_input, text_input,
       submit, charControl
     }
   }
@@ -121,12 +126,6 @@ export default {
   }
 }
 
-.form {
-  //display: flex;
-  //flex-direction: column;
-  //align-items: flex-start;
-}
-
 .section {
   width: 100%;
   margin-bottom: 20px;
@@ -139,7 +138,6 @@ export default {
 }
 
 .hg-input {
-  //display: block;
   width: 90%;
   font-size: 1.1rem;
   padding: 6px;
@@ -148,6 +146,5 @@ export default {
     max-width: 6rem;
   }
 }
-
 
 </style>

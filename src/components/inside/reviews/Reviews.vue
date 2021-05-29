@@ -13,7 +13,7 @@
           </router-link>
         </div>
         <form class="form hg-flx_col_ctr" @submit.prevent>
-          <input class="hg-input search_product" type="text" placeholder="wpisz nazwę produktu (model)"
+          <input class="hg-input" type="text" placeholder="wpisz nazwę produktu (model)"
                  v-model="search_product_query" @keydown.enter="submit" autofocus ref="query_input">
           <div class="filters">
             <span><b>filtry</b></span>
@@ -163,12 +163,10 @@ export default {
   display: flex;
   justify-content: space-evenly;
   margin: 8px;
-  //max-width: 340px;
 
   & .hg-link {
     @include editor-add;
     font-size: 1.1rem;
-    //margin-left: 20px;
   }
 }
 
@@ -176,14 +174,14 @@ export default {
   padding: 2px;
 }
 
+.hg-input {
+  width: 17rem;
+}
+
 .filters {
   margin: 4px;
   padding: 4px;
   box-sizing: border-box;
-}
-
-.search_product {
-  width: 24rem;
 }
 
 .field {
@@ -204,41 +202,5 @@ export default {
     cursor: pointer;
   }
 }
-
-@media (min-width: 300px) {
-  .search_product {
-    width: 90%;
-    max-width: 400px;
-  }
-
-}
-
-@media (min-width: 480px) {
-  /* smartphones, Android phones, landscape iPhone */
-
-}
-
-@media (min-width: 600px) {
-  /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
-
-}
-
-@media (min-width: 801px) {
-  /* tablet, landscape iPad, lo-res laptops ands desktops */
-
-}
-
-
-@media (min-width: 1025px) {
-  /* big landscape tablets, laptops, and desktops */
-
-}
-
-@media (min-width: 1281px) {
-  /* hi-res laptops and desktops */
-
-
-}
-
 
 </style>

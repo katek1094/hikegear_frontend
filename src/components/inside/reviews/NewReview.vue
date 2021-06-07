@@ -93,10 +93,12 @@ export default {
             })
       }
     }
+
     const resizeAll = () => {
       summary_input.value.resize()
       text_input.value.resize()
     }
+    
     useAutoresizeAll(resizeAll)
     const charControl = (e) => {
       const allowed_codes = [8, 9, 13, 46, 37, 38, 39, 40, // backspace, tab, enter, delete, arrows
@@ -105,7 +107,6 @@ export default {
       if (!allowed_codes.includes(e.keyCode)) e.preventDefault()
       if ((e.target.getAttribute('name') === 'item_quantity') && (e.keyCode === 190)) e.preventDefault() // 190 is a dot
     }
-
 
     return {
       summary_limit, text_limit, weight_limit, product, summary, text, weight_net, weight_gross, waiting_for_data,

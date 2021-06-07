@@ -13,8 +13,9 @@
           </router-link>
           <div v-if="product.reviews_amount">
             <p>recenzje</p>
+
             <div class="review" v-for="review in product.reviews" :key="review.id">
-              <p>{{ review.summary }}</p>
+              <p><b>{{ review.summary }}</b></p>
               <p>{{ review.text }}</p>
             </div>
           </div>

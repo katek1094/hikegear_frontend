@@ -78,7 +78,7 @@ export default {
 }
 
 .search, .hint {
-  padding: 5px;
+  padding: 7px;
   box-sizing: border-box;
 }
 

@@ -5,8 +5,9 @@
         <h1 class="title">nowy producent</h1>
         <form @submit.prevent>
           <div class="section">
-            <input type="text" v-model="name" class="hg-input" placeholder="nazwa">
+            <input type="text" v-model="name" class="hg-input" :class="{marked: invalid}" placeholder="nazwa">
           </div>
+          <p v-if="invalid">podany producent jest już dodany</p>
           <div class="hg-spinner" v-if="waiting_for_response"></div>
           <p v-else-if="success">dodano producenta {{ name }}</p>
           <button v-else class="hg-button" type="submit" @click="submit">dodaj</button>
@@ -30,6 +31,7 @@ export default {
     const name = ref('')
     const waiting_for_response = ref(false)
     const success = ref(false)
+    const invalid = ref(false)
 
     const submit = () => {
       if (name.value !== '') {
@@ -38,18 +40,19 @@ export default {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({name: name.value})
-        })
+        }, [400])
             .then(response => {
+              invalid.value = false
+              waiting_for_response.value = false
               if (response.ok) {
-                waiting_for_response.value = false
                 success.value = true
                 setTimeout(() => router.push({name: 'reviews'}), 1500)
-              } else console.log(response)
+              } else if (response.status === 400) invalid.value = true
             })
       }
     }
 
-    return {name, waiting_for_response, success, submit}
+    return {name, waiting_for_response, success, invalid, submit}
   }
 }
 </script>

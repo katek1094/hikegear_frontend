@@ -116,7 +116,7 @@ export default {
                 waiting_for_response.value = false
                 search_results.value = data
               })
-            } else console.log(response)
+            }
           })
     }
 

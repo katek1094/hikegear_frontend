@@ -34,8 +34,11 @@
             <label class="info">producent</label>
             <SearchSelectDropdown :values="brands" placeholder="wyszukaj lub wybierz" @selected="setBrandId"/>
           </div>
-          <div v-if="waiting_for_response" class="hg-spinner"></div>
-          <button v-else class="hg-button" type="submit" @click="submit">zatwierdź</button>
+          <div class="hg-flx_col_ctr">
+            <p v-if="invalid" class="invalid_info">podany produkt już istnieje </p>
+            <div v-if="waiting_for_response" class="hg-spinner"></div>
+            <button v-else class="hg-button" type="submit" @click="submit">zatwierdź</button>
+          </div>
         </form>
       </div>
     </div>
@@ -58,6 +61,7 @@ export default {
     const product_name = ref("")
     const product_url = ref("")
     const waiting_for_response = ref(false)
+    const invalid = ref(false)
     const {
       categories, brands, selected_category_id, selected_subcategory_id, selected_brand_id, subcategories,
       setBrandId
@@ -86,17 +90,18 @@ export default {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify(body)
-        })
+        }, [400])
             .then(response => {
+              waiting_for_response.value = false
               if (response.ok) response.json().then(data => router.push({name: 'product_page', params: {id: data.id}}))
-              else console.log(response)
+              else if (response.status === 400) invalid.value = true
             })
       }
     }
 
     return {
       categories, brands, selected_category_id, selected_subcategory_id, selected_brand_id, subcategories,
-      waiting_for_response, product_name, product_url,
+      waiting_for_response, product_name, product_url, invalid,
       setBrandId, submit
     }
   }
@@ -125,5 +130,9 @@ export default {
 
 .hg-select {
   //width: 12rem;
+}
+
+.invalid_info {
+  color: red;
 }
 </style>

@@ -6,7 +6,7 @@
         <div v-if="product">
           <h1>{{ product.full_name }}</h1>
           <div v-if="product.url && !display_url_form" class="url_options">
-            <a class="hg-link url"  :href="product.url">
+            <a class="hg-link url" :href="product.url">
               <font-awesome-icon class="fa-md" icon="external-link-alt"/>
               link do produktu na stronie producenta</a>
             <button class="edit_url" @click="addUrl">
@@ -24,18 +24,13 @@
             <div v-if="waiting_for_response" class="hg-spinner"></div>
             <button v-else class="hg-button" type="submit" @click="submitUrlForm">zatwierdź</button>
           </form>
-          <router-link v-if="can_add_review" class="hg-link add" :to="{name: 'new_review', params: {id: product.id}}">
+          <router-link v-if="can_add_review" class="hg-link add"
+                       :to="{name: 'new_review', params: {product_id: product.id}}">
             <font-awesome-icon class="fa-md" icon="comment"/>
             dodaj recenzję
           </router-link>
           <div v-if="product.reviews_amount" class="reviews">
-            <!--            <p>recenzje</p>-->
-            <div class="review" v-for="review in product.reviews" :key="review.id">
-              <p><b>{{ review.summary }}</b></p>
-              <p>{{ review.text }}</p>
-              <p v-if="review.weight_net">waga bez pokrowca: {{ review.weight_net }}g</p>
-              <p v-if="review.weight_gross">waga z pokrowcem: {{ review.weight_gross }}g</p>
-            </div>
+            <Review v-for="review in product.reviews" :key="review.id" :review="review" :is_author="user_id === review.author"/>
           </div>
           <div v-else>
             <p>brak recenzji</p>
@@ -51,10 +46,11 @@ import InsideBaseApp from "../InsideBaseApp";
 import {apiFetch} from "../../../functions";
 import {ref, computed} from 'vue'
 import {useStore} from 'vuex'
+import Review from "./Review";
 
 export default {
   name: "ProductPage",
-  components: {InsideBaseApp},
+  components: {Review, InsideBaseApp},
   props: {id: String},
   setup(props) {
     const store = useStore()
@@ -80,13 +76,13 @@ export default {
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({url: product_url.value})
         })
-        .then(response => {
-          if (response.ok) {
-            waiting_for_response.value = false
-            product.value.url = product_url.value
-            display_url_form.value = false
-          }
-        })
+            .then(response => {
+              if (response.ok) {
+                waiting_for_response.value = false
+                product.value.url = product_url.value
+                display_url_form.value = false
+              }
+            })
       }
     }
 
@@ -99,11 +95,14 @@ export default {
               product.value = data
               waiting_for_data.value = false
               product_url.value = data.url
-          })
+            })
           } else console.log(response)
         })
 
-    return {product, waiting_for_data, waiting_for_response, product_url, can_add_review, display_url_form, addUrl, submitUrlForm}
+    return {
+      product, waiting_for_data, waiting_for_response, product_url, can_add_review, display_url_form, user_id,
+      addUrl, submitUrlForm
+    }
   }
 }
 </script>
@@ -113,6 +112,7 @@ export default {
   min-width: 290px;
   width: 80%;
   max-width: 400px;
+  font-size: 1rem;
 }
 
 .add_url {
@@ -126,6 +126,7 @@ export default {
   @include editor-add;
   margin: 0 10px;
 }
+
 .url_options {
   display: flex;
 }
@@ -145,11 +146,4 @@ export default {
   margin-top: 30px;
 }
 
-.review {
-  //border: 1px solid black;
-  border-radius: 8px;
-  background-color: $grey3;
-  padding: 8px;
-  margin-top: 20px;
-}
 </style>

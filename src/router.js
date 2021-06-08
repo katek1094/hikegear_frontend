@@ -19,6 +19,7 @@ import NewProduct from "./components/inside/reviews/NewProduct";
 import NewReview from "./components/inside/reviews/NewReview";
 import ProductPage from "./components/inside/reviews/ProductPage";
 import NewBrand from "./components/inside/reviews/NewBrand";
+import EditReview from "./components/inside/reviews/EditReview";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -29,7 +30,8 @@ const router = createRouter({
         {path: '/recenzje', component: Reviews, name: 'reviews', meta: {require_auth: true}},
         {path: '/nowy_produkt', component: NewProduct, name: 'new_product', meta: {require_auth: true}},
         {path: '/nowy_marka', component: NewBrand, name: 'new_brand', meta: {require_auth: true}},
-        {path: '/nowa_recenzja/:id', component: NewReview, name: 'new_review', props: true, meta: {require_auth: true}},
+        {path: '/nowa_recenzja/:product_id', component: NewReview, name: 'new_review', props: true, meta: {require_auth: true}},
+        {path: '/edycja_recenzji/:review_id/:product_id', component: EditReview, name: 'edit_review', props: true, meta: {require_auth: true}},
         {path: '/produkt/:id', component: ProductPage, name: 'product_page', props: true, meta: {require_auth: true}},
         {path: '/logowanie', component: Login, name: 'login'},
         {path: '/rejestracja', component: Register, name: 'register'},

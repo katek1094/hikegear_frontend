@@ -2,13 +2,13 @@ import {ref, computed, onMounted, onBeforeUnmount, onBeforeUpdate} from 'vue'
 import {useStore} from 'vuex'
 import Constants from '@/constants'
 
-export function useNoDrag() {
+export function useNoDrag() {  // it is used for class bindings for draggable elements parents, to control visibility of handles and tooltips
     const no_drag = ref(true)
     const toggleNoDrag = () => no_drag.value = !no_drag.value
     return {no_drag, toggleNoDrag}
 }
 
-export function useAutoresizeAll(resizeAll) {
+export function useAutoresizeAll(resizeAll) { // it is used to trigger resize() functions in AutoResizable components (which are defined in resizeAll function)
     if (typeof resizeAll !== 'function') throw 'resizeAll must be a function (argument in useAutoresizingAll)'
     const resizes_counter = ref(0) //every time window is resized, it increments, in handleWindowResize()
     const handleWindowResize = () => {
@@ -22,8 +22,8 @@ export function useAutoresizeAll(resizeAll) {
     onBeforeUnmount(() => window.removeEventListener("resize", handleWindowResize));
 }
 
-export function useCategories(action, categories) {
-    if (typeof action !== 'string') throw 'action must be a string (argument in useCategories)'
+export function useCategories(action_name, categories) {  // it is used to handle adding new categories in editors
+    if (typeof action_name !== 'string') throw 'action_name must be a string (argument in useCategories)'
     const store = useStore()
     const categories_refs = ref([])  //array of template refs created with setCategoryRef()
 
@@ -31,7 +31,7 @@ export function useCategories(action, categories) {
         if (el) categories_refs.value.push(el)
     }
     const addCategory = async () => {
-        await store.dispatch(action)
+        await store.dispatch(action_name)
         window.scrollTo(0, document.body.scrollHeight)
         categories_refs.value[categories_refs.value.length - 1].focusName()
     }
@@ -40,7 +40,7 @@ export function useCategories(action, categories) {
     return {categories_refs, can_add_category, addCategory, setCategoryRef}
 }
 
-export function useEditor(are_changes, save, categories_refs, state_watch_func) {
+export function useEditor(are_changes, save, categories_refs, state_watch_func) { // it is used for editors to handle data changes, autosaving and triggering SaveProgress component methods
     if (!(typeof are_changes === 'object' && typeof save === 'function' && typeof categories_refs === 'object' && typeof state_watch_func === 'function')) throw 'bad arguments in useEditor'
     const store = useStore()
     const save_progress = ref(null) //template ref
@@ -52,7 +52,7 @@ export function useEditor(are_changes, save, categories_refs, state_watch_func) 
         }
     }
     const handleDataChange = () => {
-        if (save_progress.value) { //in case of creating first backpack, then saveprogress is undefined
+        if (save_progress.value) { //in case of creating first backpack, then save_progress is undefined
             categories_refs.value = []
             save_progress.value.handleEdit(are_changes.value)
         }
@@ -70,13 +70,13 @@ export function useEditor(are_changes, save, categories_refs, state_watch_func) 
 export function useConfirmationDialog(confirm_condition_computed = {value: true}, alternative = false) {
     const confirmation_dialog = ref(null) //template ref
     const displayConfirmationDialog = () => {
-        if (confirm_condition_computed.value) confirmation_dialog.value.openModal()
-        else if (typeof alternative === 'function') alternative()
+        if (confirm_condition_computed.value) confirmation_dialog.value.openModal()  // confirm_condition_computed is a computed property that defines if confirmation dialog should be displayed
+        else if (typeof alternative === 'function') alternative()  // alternative is a function that triggers if confirmation dialog is not needed (confirm_condition_computed = false
     }
     return {confirmation_dialog, displayConfirmationDialog}
 }
 
-export function useCategory(add_action, add_argument, items) {
+export function useCategory(add_action, add_argument, items) {  // used by categories components for AutoResizable handling and adding items
     const store = useStore()
     const max_name_length = Constants.CATEGORY_MAX_NAME_LENGTH
     const name_input = ref(null) //template ref
@@ -92,8 +92,6 @@ export function useCategory(add_action, add_argument, items) {
 
     const addItem = async () => {
         await store.dispatch(add_action, add_argument)
-        // const added_item = items_refs.value[items_refs.value.length - 1].$el
-        // window.scrollTo(0, added_item.scrollHeight / 2 + window.scrollY)
         items_refs.value[items_refs.value.length - 1].focusName()
     }
 
@@ -103,7 +101,7 @@ export function useCategory(add_action, add_argument, items) {
     return {max_name_length, name_input, can_add_item, addItem, setItemRef, resizeAllItems, focusName}
 }
 
-export function useItem(item_weight, item_quantity) {
+export function useItem(item_weight, item_quantity) {  // used by item components for handling inputs and AutoResizable
     const max_name_length = Constants.ITEM_MAX_NAME_LENGTH
     const max_description_length = Constants.ITEM_MAX_DESCRIPTION_LENGTH
     const weight_limit = Constants.ITEM_MAX_WEIGHT
@@ -143,7 +141,7 @@ export function useItem(item_weight, item_quantity) {
     }
 }
 
-export function useInputs() {
+export function useInputs() {  // used for form inputs validation system
     class Input {  // class for creating inputs to the form hooks
         constructor(name, isValid) {
             this.name = name // used for referencing in inputs object and as html element names
@@ -185,7 +183,7 @@ export function useInputs() {
     return {Input, ValidityInfo}
 }
 
-export function useForm(inputs) {
+export function useForm(inputs) {  // provides event handlers for form validation system
     const markAsBlurred = (e) => {
         let name = e.target.getAttribute('name')
         if (inputs[name].activated) inputs[name].blurred = true
@@ -200,7 +198,7 @@ export function useForm(inputs) {
     return {waiting_for_response, markAsBlurred, markAsActivated}
 }
 
-export function useEmail() {
+export function useEmail() { // provides email validation function for form validation system
     const email_regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const {ValidityInfo} = useInputs()
     const isEmailValid = (email_value) => {
@@ -210,7 +208,7 @@ export function useEmail() {
     return {isEmailValid}
 }
 
-export function usePasswords() {
+export function usePasswords() { // provides password validation functions for forms validation system
     const min_password_length = Constants.PASSWORD_MIN_LENGTH
     const max_password_length = Constants.PASSWORD_MAX_LENGTH
     const numeric_regex = /^\d+$/
@@ -236,7 +234,7 @@ export function usePasswords() {
     return {min_password_length, max_password_length, isPasswordValid, arePasswordsEqual}
 }
 
-export function useFilters() {
+export function useFilters() {  // provides data and refs for handling reviews filters
     const store = useStore()
     const categories = computed(() => store.getters['reviews/categories'])
     const brands = computed(() => store.getters['reviews/brands'])

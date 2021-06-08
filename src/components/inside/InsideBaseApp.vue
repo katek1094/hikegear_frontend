@@ -21,7 +21,6 @@ export default {
 .inside_base_app--slot {
   padding-top: 10px;
   padding-bottom: 15px;
-  //overflow: hidden; // <-----------------------changed for tooltips to be seen
 }
 
 </style>

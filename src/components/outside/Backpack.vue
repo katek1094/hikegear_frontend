@@ -213,10 +213,6 @@ $quantity_width: 2rem;
   align-self: flex-end;
 }
 
-//.item:not(:last-child) {
-//  border-bottom: 1px dotted grey;
-//}
-
 .item__worn, .item__consumable {
   border-radius: 50%;
   border: none;

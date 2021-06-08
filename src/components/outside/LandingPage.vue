@@ -32,8 +32,6 @@ export default {
         'Twórz listy sprzętu',
         'Dziel się nimi',
         'Zorganizuj swój sprzęt',
-        // 'Zorganizuj swój sprzęt',
-        // 'Zorganizuj swój sprzęt',
       ],
       chosen_text: 0
     }

@@ -85,7 +85,6 @@ export default {
 .hints {
   position: absolute;
   max-height: 16rem;
-  //width: 12rem;
   width: inherit;
   overflow-y: auto;
   box-sizing: content-box;

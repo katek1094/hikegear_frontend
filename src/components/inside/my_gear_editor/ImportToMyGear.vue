@@ -79,7 +79,6 @@ export default {
         items = 'przedmiot'
         will = 'zostanie'
         add = 'dodany'
-        // } else if (len > 1 && len < 5) {
       } else if ((len > 20 || len < 5) && (str_len.slice(-1) === '2' || str_len.slice(-1) === '3' || str_len.slice(-1) === '4')) {
         items = 'przedmioty'
         will = 'zostaną'

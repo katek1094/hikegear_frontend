@@ -1,15 +1,15 @@
 <template>
   <InsideBaseApp>
     <div class="hg-flx_col_ctr">
-      <div class="new_brand hg-wrapper">
+      <div class="hg-flx_col_ctr hg-wrapper">
         <h1 class="title">nowy producent</h1>
         <form @submit.prevent>
           <div class="section">
             <input type="text" v-model="name" class="hg-input" :class="{marked: invalid}" placeholder="nazwa">
           </div>
-          <p v-if="invalid">podany producent jest już dodany</p>
+          <p class="info" v-if="invalid">podany producent jest już dodany</p>
           <div class="hg-spinner" v-if="waiting_for_response"></div>
-          <p v-else-if="success">dodano producenta {{ name }}</p>
+          <p class="info" v-else-if="success">dodano producenta <b>{{ name }}</b></p>
           <button v-else class="hg-button" type="submit" @click="submit">dodaj</button>
         </form>
       </div>
@@ -46,7 +46,7 @@ export default {
               waiting_for_response.value = false
               if (response.ok) {
                 success.value = true
-                setTimeout(() => router.push({name: 'reviews'}), 1500)
+                setTimeout(() => router.push({name: 'reviews'}), 2500)
               } else if (response.status === 400) invalid.value = true
             })
       }

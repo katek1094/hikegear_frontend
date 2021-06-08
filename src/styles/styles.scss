@@ -175,15 +175,19 @@
 
   @media (min-width: 600px) {
     & {
-      width: 80%;
+      width: 84%;
+      max-width: 620px;
     }
   }
 
   @media (min-width: 801px) {
     & {
-      width: 600px;
+      width: 76%;
+      max-width: 800px;
     }
+
   }
+
 }
 
 

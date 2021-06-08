@@ -1,8 +1,8 @@
 <template>
   <InsideBaseApp>
     <div class="hg-flx_col_ctr">
+      <div v-if="waiting_for_data" class="hg-spinner"></div>
       <div class="new_review hg-wrapper">
-        <div v-if="waiting_for_data" class="hg-spinner"></div>
         <div v-if="product">
           <div class="header">
             <h2 class="title">nowa recenzja</h2>

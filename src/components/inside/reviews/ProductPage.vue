@@ -1,19 +1,18 @@
 <template>
   <InsideBaseApp>
     <div class="hg-flx_col_ctr">
-      <div class="product_page">
+      <div class="hg-wrapper">
         <div v-if="waiting_for_response" class="hg-spinner"></div>
         <div v-if="product">
           <h1>{{ product.full_name }}</h1>
           <p v-if="product.link">link do produktu: {{ product.link }}</p>
           <!--          <p v-else>dodaj link do produktu</p>-->
-          <router-link class="hg-link" :to="{name: 'new_review', params: {id: product.id}}">
+          <router-link v-if="can_add_review" class="hg-link" :to="{name: 'new_review', params: {id: product.id}}">
             <font-awesome-icon class="fa-md" icon="comment"/>
             dodaj recenzję
           </router-link>
-          <div v-if="product.reviews_amount">
-            <p>recenzje</p>
-
+          <div v-if="product.reviews_amount" class="reviews">
+            <!--            <p>recenzje</p>-->
             <div class="review" v-for="review in product.reviews" :key="review.id">
               <p><b>{{ review.summary }}</b></p>
               <p>{{ review.text }}</p>
@@ -31,15 +30,24 @@
 <script>
 import InsideBaseApp from "../InsideBaseApp";
 import {apiFetch} from "../../../functions";
-import {ref} from 'vue'
+import {ref, computed} from 'vue'
+import {useStore} from 'vuex'
 
 export default {
   name: "ProductPage",
   components: {InsideBaseApp},
   props: {id: String},
   setup(props) {
+    const store = useStore()
     const product = ref(null)
     const waiting_for_response = ref(true)
+    const user_id = store.getters['auth/user_id']
+
+    const can_add_review = computed(() => {
+      if (product.value) {
+        return !product.value.reviews.find((el) => el.author === user_id)
+      } else return false
+    })
 
     apiFetch('products/' + props.id, {
       method: 'GET'
@@ -51,7 +59,7 @@ export default {
           } else console.log(response)
         })
 
-    return {product, waiting_for_response}
+    return {product, waiting_for_response, can_add_review}
   }
 }
 </script>
@@ -62,11 +70,15 @@ export default {
   font-size: 1rem;
 }
 
-.product_page {
-  width: 500px;
+.reviews {
+  margin-top: 30px;
 }
 
 .review {
-  border: 1px solid black;
+  //border: 1px solid black;
+  border-radius: 8px;
+  background-color: $grey3;
+  padding: 8px;
+  margin-top: 20px;
 }
 </style>

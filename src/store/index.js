@@ -50,6 +50,7 @@ const store = createStore({
                             commit('my_gear/copy_and_set_dynamic', data['private_gear'], {root: true})
                             commit('reviews/set_categories', data['categories'], {root: true})
                             commit('reviews/set_brands', data['brands'], {root: true})
+                            commit('auth/set_user_id', data['user_id'], {root: true})
 
                             return response
                         })

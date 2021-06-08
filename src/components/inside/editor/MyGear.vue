@@ -45,7 +45,7 @@ export default {
     const toggleMinimized = () => store.dispatch('toggleMyGearMinimized')
 
     onMounted(() => {
-      if (is_empty.value) toggleMinimized()
+      if (is_empty.value && !minimized.value) toggleMinimized()
     })
 
     const elements = computed(() => {

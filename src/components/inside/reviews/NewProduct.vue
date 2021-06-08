@@ -109,6 +109,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.hg-wrapper {
+  max-width: 450px;
+}
+
 .section {
   display: flex;
   //grid-template-columns: ;

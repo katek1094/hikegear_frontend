@@ -12,7 +12,7 @@
             dodaj producenta
           </router-link>
         </div>
-        <form class="form hg-flx_col_ctr" @submit.prevent>
+        <form class="form " @submit.prevent>
           <input class="hg-input" type="text" placeholder="wpisz nazwę produktu (model)"
                  v-model="search_product_query" @keydown.enter="submit" autofocus ref="query_input">
           <div class="filters">
@@ -51,8 +51,10 @@
               </button>
             </div>
           </div>
-          <div class="hg-spinner" v-if="waiting_for_response"></div>
-          <button class="hg-button" v-else @click="submit" type="button">szukaj</button>
+          <div class="submit_button_wrapper">
+            <div class="hg-spinner" v-if="waiting_for_response"></div>
+            <button class="hg-button" v-else @click="submit" type="button">szukaj</button>
+          </div>
         </form>
         <div v-if="no_matching_results">
           <p>brak wyników</p>
@@ -158,11 +160,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.hg-wrapper {
+  max-width: 34rem;
+}
 
 .add_options {
   display: flex;
   justify-content: space-evenly;
   margin: 8px;
+  //max-width: 30rem;
 
   & .hg-link {
     @include editor-add;
@@ -175,18 +181,20 @@ export default {
 }
 
 .hg-input {
-  width: 17rem;
+  width: 30rem;
+  max-width: 96%;
 }
 
 .filters {
   margin: 4px;
   padding: 4px;
   box-sizing: border-box;
+  max-width: 440px;
 }
 
 .field {
   display: grid;
-  grid-template-columns: 1fr auto 3rem;
+  grid-template-columns: 1fr auto 1rem;
   align-items: center;
   grid-gap: 3px;
 }
@@ -196,11 +204,16 @@ export default {
   border: none;
   color: red;
   font-size: 1rem;
-  margin-left: 8px;
+  //margin-left: 8px;
 
   &:hover {
     cursor: pointer;
   }
+}
+.submit_button_wrapper {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
 }
 
 </style>

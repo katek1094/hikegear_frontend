@@ -18,11 +18,11 @@
             <font-awesome-icon class="fa-md" icon="link"/>
             dodaj link
           </button>
-          <form v-else-if="display_url_form" @submit.prevent>
+          <form v-else-if="display_url_form" @submit="submitUrlForm">
             <input v-model="product_url" class="hg-input" type="url"
                    placeholder="link do produktu na stronie producenta">
             <div v-if="waiting_for_response" class="hg-spinner"></div>
-            <button v-else class="hg-button" type="submit" @click="submitUrlForm">zatwierdź</button>
+            <button v-else class="hg-button" type="submit">{{ url_form_button_text }}</button>
           </form>
           <router-link v-if="can_add_review" class="hg-link add"
                        :to="{name: 'new_review', params: {product_id: product.id}}">
@@ -30,7 +30,8 @@
             dodaj recenzję
           </router-link>
           <div v-if="product.reviews_amount" class="reviews">
-            <Review v-for="review in product.reviews" :key="review.id" :review="review" :is_author="user_id === review.author"/>
+            <Review v-for="review in product.reviews" :key="review.id" :review="review"
+                    :is_author="user_id === review.author" @review-deleted="removeReview"/>
           </div>
           <div v-else>
             <p>brak recenzji</p>
@@ -67,9 +68,14 @@ export default {
       } else return false
     })
 
+    const url_form_button_text = computed(() => {
+      if (product_url.value !== product.value.url) return 'zatwierdź'
+      else return 'anuluj'
+    })
+
     const addUrl = () => display_url_form.value = true
     const submitUrlForm = () => {
-      if (product_url.value !== '') {
+      if (product_url.value !== product.value.url) {
         waiting_for_response.value = true
         apiFetch('products/' + props.id, {
           method: 'PATCH',
@@ -83,7 +89,7 @@ export default {
                 display_url_form.value = false
               }
             })
-      }
+      } else display_url_form.value = false
     }
 
     apiFetch('products/' + props.id, {
@@ -99,9 +105,15 @@ export default {
           } else console.log(response)
         })
 
+    const removeReview = (e) => {
+      let index = product.value.reviews.findIndex((el) => el.id === e.id)
+      product.value.reviews.splice(index, 1)
+    }
+
     return {
       product, waiting_for_data, waiting_for_response, product_url, can_add_review, display_url_form, user_id,
-      addUrl, submitUrlForm
+      url_form_button_text,
+      addUrl, submitUrlForm, removeReview
     }
   }
 }

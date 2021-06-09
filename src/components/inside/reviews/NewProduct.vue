@@ -3,9 +3,10 @@
     <div class="hg-flx_col_ctr">
       <div class="new_product hg-wrapper">
         <h1 class="title">nowy produkt</h1>
-        <form @submit.prevent>
+        <form @submit="submit">
           <div class="section">
-            <input v-model="product_name" class="hg-input" type="text" placeholder="nazwa (model)">
+            <input v-model="product_name" class="hg-input" type="text" placeholder="nazwa (model)"
+                   :maxlength="name_max_len">
           </div>
           <div class="section">
             <input v-model="product_url" class="hg-input" type="url"
@@ -37,7 +38,7 @@
           <div class="hg-flx_col_ctr">
             <p v-if="invalid" class="invalid_info">podany produkt już istnieje </p>
             <div v-if="waiting_for_response" class="hg-spinner"></div>
-            <button v-else class="hg-button" type="submit" @click="submit">zatwierdź</button>
+            <button v-else class="hg-button" type="submit">zatwierdź</button>
           </div>
         </form>
       </div>
@@ -52,12 +53,14 @@ import {ref, computed} from "vue";
 import {useFilters} from "../../../hooks";
 import {apiFetch} from "../../../functions";
 import {useRouter} from "vue-router";
+import constants from "../../../constants";
 
 export default {
   name: "NewProduct",
   components: {SearchSelectDropdown, InsideBaseApp},
   setup() {
     const router = useRouter()
+    const name_max_len = constants.PRODUCT_NAME_MAX_LEN
     const product_name = ref("")
     const product_url = ref("")
     const waiting_for_response = ref(false)
@@ -101,7 +104,7 @@ export default {
 
     return {
       categories, brands, selected_category_id, selected_subcategory_id, selected_brand_id, subcategories,
-      waiting_for_response, product_name, product_url, invalid,
+      waiting_for_response, product_name, product_url, invalid, name_max_len,
       setBrandId, submit
     }
   }

@@ -8,7 +8,7 @@
             <h2 class="title">{{ title }}</h2>
             <h3>{{ product.full_name }}</h3>
           </div>
-          <form class="hg-flx_col_ctr" @submit.prevent>
+          <form class="hg-flx_col_ctr" @submit.prevent="submit">
             <div class="section">
               <AutoResizable ref="summary_input" v-model="summary" :maxlength="summary_limit"
                              class="hg-input summary" placeholder="podsumowanie"/>
@@ -30,7 +30,7 @@
               <label class="info">waga z pokrowcem (w gramach) - pole opcjonalne</label>
             </div>
             <div v-if="waiting_for_response" class="hg-spinner"></div>
-            <button v-else class="hg-button" type="button" @click="submit">zatwierdź</button>
+            <button v-else class="hg-button" type="submit">zatwierdź</button>
           </form>
         </div>
       </div>
@@ -131,7 +131,7 @@ export default {
 
   & .title {
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
   }
 }
 

@@ -6,9 +6,11 @@
       edytuj recenzję
     </router-link>
 
-    <button v-if="is_author" type="button" @click="displayConfirmationDialog">
-      <font-awesome-icon class="fa-sm" icon="trash"/>
-    </button>
+    <Tooltip text="usuń recenzję" direction="left" size="small" class="tp">
+      <button class="delete_review" v-if="is_author" type="button" @click="displayConfirmationDialog">
+        <font-awesome-icon class="fa-sm" icon="trash"/>
+      </button>
+    </Tooltip>
     <ConfirmationDialog ref="confirmation_dialog" @confirmed="deleteReview">
       <template v-slot:header>na pewno chcesz usunąć tę recenzję?</template>
     </ConfirmationDialog>
@@ -21,15 +23,16 @@
 </template>
 
 <script>
+import Tooltip from "@/components/Tooltip";
 import ConfirmationDialog from "../../ConfirmationDialog";
 import {useConfirmationDialog} from "@/hooks.js";
 import {apiFetch} from "../../../functions";
 
 export default {
   name: "Review",
-  components: {ConfirmationDialog},
+  components: {ConfirmationDialog, Tooltip},
   props: {review: Object, is_author: Boolean},
-  emits: ['reviewDeleted'],
+  emits: {reviewDeleted: ({id}) => Number.isInteger(id)},
   setup(props, {emit}) {
     const deleteReview = () => {
       apiFetch('reviews/' + props.review.id, {
@@ -57,5 +60,15 @@ export default {
 
 .hg-link.add {
   @include editor-add;
+}
+
+.delete_review {
+  @include editor_delete;
+  visibility: visible !important;
+  font-size: 1rem;
+}
+
+.tp {
+  float: right; // its not necessary after wrapping into div with grid or flex
 }
 </style>

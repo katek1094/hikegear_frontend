@@ -210,6 +210,7 @@ export default {
     cursor: pointer;
   }
 }
+
 .submit_button_wrapper {
   margin: 20px 0;
   display: flex;

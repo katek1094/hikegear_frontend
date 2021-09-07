@@ -3,14 +3,14 @@
     <div class="hg-flx_col_ctr">
       <div class="hg-flx_col_ctr hg-wrapper">
         <h1 class="title">nowy producent</h1>
-        <form @submit.prevent>
+        <form @submit.prevent="submit">
           <div class="section">
             <input type="text" v-model="name" class="hg-input" :class="{marked: invalid}" placeholder="nazwa">
           </div>
           <p class="info" v-if="invalid">podany producent jest już dodany</p>
           <div class="hg-spinner" v-if="waiting_for_response"></div>
           <p class="info" v-else-if="success">dodano producenta <b>{{ name }}</b></p>
-          <button v-else class="hg-button" type="submit" @click="submit">dodaj</button>
+          <button v-else class="hg-button" type="submit">dodaj</button>
         </form>
       </div>
     </div>

@@ -3,7 +3,7 @@
     <div class="hg-flx_col_ctr">
       <div class="new_product hg-wrapper">
         <h1 class="title">nowy produkt</h1>
-        <form @submit="submit">
+        <form @submit.prevent="submit">
           <div class="section">
             <input v-model="product_name" class="hg-input" type="text" placeholder="nazwa (model)"
                    :maxlength="name_max_len">
@@ -96,7 +96,10 @@ export default {
         }, [400])
             .then(response => {
               waiting_for_response.value = false
-              if (response.ok) response.json().then(data => router.push({name: 'product_page', params: {id: data.id}}))
+              if (response.ok) {
+                console.log('ok')
+                response.json().then(data => router.push({name: 'product_page', params: {id: data.id}}))
+              }
               else if (response.status === 400) invalid.value = true
             })
       }

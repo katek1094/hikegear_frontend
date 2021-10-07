@@ -18,7 +18,7 @@
           <div class="filters">
             <span><b>filtry</b></span>
             <div class="field">
-              <label for="select_category">kategoria</label>
+              <label>kategoria</label>
               <select id="select_category" class="hg-select" v-model="selected_category_id">
                 <option disabled hidden selected value="">wybierz kategorię</option>
                 <option v-for="category in categories" :key="category.id" :value="category.id">
@@ -30,7 +30,7 @@
               </button>
             </div>
             <div class="field" v-if="subcategories">
-              <label for="select_subcategory">podkategoria</label>
+              <label>podkategoria</label>
               <select id="select_subcategory" class="hg-select" v-model="selected_subcategory_id">
                 <option disabled hidden selected value="">wybierz podkategorię</option>
                 <option v-for="subcategory in subcategories"

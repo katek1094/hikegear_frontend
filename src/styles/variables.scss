@@ -18,23 +18,20 @@ $color_a: $white1; // my_gear categories in window in editor, dirty white
 $background: $grey1;
 $windows_color: $grey3;
 
-//$nav_height: 50px;
+// navbar settings
 $nav_height: 50px;
 $nav_color: $grey4;
-//variables used in components
 
+//variables used in editor and my_gear components
 $editor_enough_width: 620px;
 $editor_big_width: 760px;
-
 
 $my_gear_min_width: 320px;
 $my_gear_max_width: 560px;
 $my_gear_minimized_width: 180px;
 
-
 $backpack_list_min_width: 300px;
 $backpack_list_max_width: 440px;
-
 
 $grid_gap: 10px;
 $grid_wrapper_padding: 5px;
@@ -48,11 +45,18 @@ $second_threshold: ($my_gear_max_width + $editor_big_width
 $first_threshold: ($my_gear_min_width + $editor_enough_width
 + $grid_wrapper_padding + $grid_gap);
 
-
 $category-item_grid_handle_width: auto;
 $category-item_grid_weight_width: 3rem;
 $category-item_grid_delete_width: 30px;
 
 $category-item_font_size: .8rem;
-//$category-item_font_size: .9rem;
 
+
+// variables used in global styles
+$spinner_size: 2rem;
+
+$switch_height: 24px;
+$switch_padding: 2px;
+$switch_circle_diameter: $switch_height - 2 * $switch_padding;
+
+$hg-border_radius: 4px;

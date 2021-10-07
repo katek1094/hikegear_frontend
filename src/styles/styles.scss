@@ -1,231 +1,7 @@
-//general mixins
-@mixin flex-column-center {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-
-//EDITORS AND SORTABLE MIXINS
-@mixin editor {
-  padding-bottom: 30px;
-  @include flex-column-center;
-
-  &__options {
-    min-height: $spinner_size;
-    box-sizing: border-box;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    align-items: center;
-    margin: 6px 0;
-    width: 100%;
-    padding: 0 1.6rem;
-  }
-
-  &__wrapper {
-    @include flex-column-center;
-  }
-}
-
-@mixin editor-add {
-  margin: 4px;
-  border: none;
-  background-color: transparent;
-  outline: none;
-  color: yellowgreen;
-  font-size: .9rem;
-  justify-self: flex-start;
-
-  @media (hover: hover) and (pointer: fine) {
-    &:hover {
-      text-decoration: underline;
-      cursor: pointer;
-    }
-  }
-}
-
-@mixin editor-input_and_label {
-  padding: 3px;
-  border: 1px solid transparent;
-}
-
-@mixin editor-input__field {
-  @include editor-input_and_label;
-  border-radius: 4px;
-  background-color: transparent;
-  outline: none;
-  font-size: 1em;
-
-  &:focus, &:active {
-    background-color: white;
-    border: 1px solid grey;
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    &:hover {
-      background-color: white;
-      cursor: text;
-    }
-  }
-
-}
-
-@mixin category-item_grid {
-  display: grid;
-  align-items: center;
-  column-gap: 1px;
-  padding: 1px 0;
-
-}
-
-@mixin sort-chosen {
-  transform: scale(1.01);
-  box-shadow: 4px 4px 4px grey;
-}
-
-@mixin sort-handle {
-  margin-right: 6px;
-  padding: 5px 6px 3px 6px;
-  cursor: move;
-  border-radius: 6px;
-  font-size: 1.15rem;
-
-  @media (hover: hover) and (pointer: fine) {
-    .no_drag_item &:hover, .no_drag_cat &:hover, .no_drag_my_item &:hover {
-      background-color: white;
-    }
-    visibility: hidden;
-  }
-}
-
-@mixin editor-items {
-  border-top: 1px solid grey;
-}
-
-@mixin editor-category {
-  margin-top: 16px;
-
-  &__name {
-    @include editor-input__field;
-    font-weight: bold;
-    width: 100%;
-    box-sizing: border-box;
-  }
-  &__header {
-    @include category-item_grid;
-    font-size: 1rem;
-  }
-  &__footer {
-    @include category-item_grid;
-  }
-  &__handle {
-    @include sort-handle;
-  }
-  &__add-item {
-    @include editor-add;
-  }
-  &__delete {
-    @include editor-delete;
-  }
-  &__weight_label {
-    font-size: $category-item_font_size;
-    @include editor-input_and_label;
-    align-self: flex-end;
-  }
-}
-
-@mixin editor-item {
-  &:not(:last-child) {
-    border-bottom: 1px dotted grey;
-  }
-  &:last-child {
-    border-bottom: 1px solid grey;
-  }
-  // code below removes arrows from weight inputs
-  &__weight::-webkit-outer-spin-button,
-  &__weight::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-  }
-  &__weight[type=number] {
-    -moz-appearance: textfield;
-  }
-  &__handle {
-    @include sort-handle;
-  }
-  &__delete {
-    @include editor-delete;
-  }
-  &__name, &__description, &__weight {
-    @include editor-input__field;
-  }
-}
-
-@mixin editor-delete {
-  outline: none;
-  border: none;
-  font-size: 0.8rem;
-  background-color: transparent;
-  padding: 6px;
-  width: $category-item_grid_delete_width;
-  box-sizing: border-box;
-
-  @media (hover: hover) and (pointer: fine) {
-    & {
-      visibility: hidden;
-    }
-    &:hover {
-      color: red;
-      cursor: pointer;
-    }
-  }
-}
-
-
-//forms mixins
-@mixin form-input {
-  width: 15rem;
-  font-size: 1.2rem;
-  margin: 4px;
-  border-radius: 4px;
-  outline: none;
-  padding: 7px;
-  border: 1px solid white;
-  box-shadow: none; // for mozilla firefox required field red shadow
-
-  &:focus {
-    border: 1px solid black;
-  }
-}
-
-@mixin form-submit {
-  outline: none;
-  border-radius: 5px;
-  font-size: 1.2rem;
-  border: 1px solid grey;
-  padding: 10px 14px;
-  margin: 4px;
-  background-color: white;
-  transition: all .25s;
-  box-shadow: none;
-
-  @media (hover: hover) and (pointer: fine) {
-    &:hover {
-      cursor: pointer;
-      transform: translate(0, -1px);
-      box-shadow: grey 0 1px;
-    }
-  }
-
-  &:active {
-    transition: all .1s;
-    transform: none;
-    box-shadow: none;
-  }
-}
-
 // GLOBAL STYLES (CLASSES) with 'hg-' prefix
-$spinner_size: 2rem;
+
+@import "mixins.scss";
+
 .hg-spinner {
   box-sizing: border-box;
   border: 5px solid white;
@@ -237,13 +13,25 @@ $spinner_size: 2rem;
   animation: spin 1.7s linear infinite;
   margin: 8px;
   align-self: center;
-}
 
-//$switch_height: 1.6rem;
-$switch_height: 24px;
-//$switch_padding: .15rem;
-$switch_padding: 2px;
-$switch_circle_diameter: $switch_height - 2 * $switch_padding;
+  @-webkit-keyframes spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}
 
 .hg-switch {
   position: relative;
@@ -298,11 +86,33 @@ $switch_circle_diameter: $switch_height - 2 * $switch_padding;
 }
 
 .hg-input {
-  @include form-input;
+  width: 15rem;
+  font-size: 1.2rem;
+  margin: 4px;
+  border-radius: $hg-border_radius;
+  outline: none;
+  padding: 7px;
+  border: 1px solid white;
+  box-shadow: none; // for mozilla firefox required field red shadow
+
+  &:focus {
+    border: 1px solid black;
+  }
 
   &.marked {
     border-color: red;
   }
+}
+
+.hg-select {
+  outline: none;
+  border-radius: $hg-border_radius;
+  background-color: white;
+  font-size: 1rem;
+  padding: 6px;
+  margin: 4px;
+  border: none;
+  min-width: 12rem; // extract this?
 }
 
 .hg-form_label {
@@ -310,7 +120,29 @@ $switch_circle_diameter: $switch_height - 2 * $switch_padding;
 }
 
 .hg-button {
-  @include form-submit;
+  outline: none;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  border: 1px solid grey;
+  padding: 10px 14px;
+  margin: 4px;
+  background-color: white;
+  transition: all .25s;
+  box-shadow: none;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      cursor: pointer;
+      transform: translate(0, -1px);
+      box-shadow: grey 0 1px;
+    }
+  }
+
+  &:active {
+    transition: all .1s;
+    transform: none;
+    box-shadow: none;
+  }
 }
 
 .hg-text-wrapper {
@@ -328,22 +160,62 @@ $switch_circle_diameter: $switch_height - 2 * $switch_padding;
   }
 }
 
-
-// for spinner
-@-webkit-keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-  }
+.sortable-chosen {
+  transform: scale(1.01);
+  box-shadow: 4px 4px 4px grey;
 }
 
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
+.hg-wrapper {
+  @media (min-width: 300px) {
+    & {
+      width: 96%;
+      max-width: 500px;
+    }
   }
-  100% {
-    transform: rotate(360deg);
+
+  @media (min-width: 600px) {
+    & {
+      width: 84%;
+      max-width: 620px;
+    }
   }
+
+  @media (min-width: 801px) {
+    & {
+      width: 76%;
+      max-width: 800px;
+    }
+
+  }
+
+}
+
+
+@media (min-width: 300px) {
+
+}
+
+@media (min-width: 480px) {
+  /* smartphones, Android phones, landscape iPhone */
+
+}
+
+@media (min-width: 600px) {
+  /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
+
+}
+
+@media (min-width: 801px) {
+  /* tablet, landscape iPad, lo-res laptops ands desktops */
+
+}
+
+@media (min-width: 1025px) {
+  /* big landscape tablets, laptops, and desktops */
+
+}
+
+@media (min-width: 1281px) {
+  /* hi-res laptops and desktops */
+
 }

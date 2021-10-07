@@ -5,15 +5,15 @@
       <div class="outer_div">
         <div class="inner_div">
           <label for="select_backpack">wybierz listę, z której chcesz dodać sprzęt: </label>
-          <select id="select_backpack" v-model="selected_backpack_id" class="select_backpack">
+          <select id="select_backpack" v-model="selected_backpack_id" class="hg-select">
             <option disabled hidden selected value=""></option>
             <option v-for="backpack in backpacks" :key="backpack.id" :value="backpack.id">{{ backpack.name }}</option>
           </select>
           <div v-if="selected_backpack_id !== ''" class="items_picker" ref="checks">
             <p class="info">zaznacz przedmioty i kategorie, które chcesz dodać</p>
-            <div class="select_buttons">
-              <button class="select_button" type="button" @click="checkEverything">zaznacz wszystko</button>
-              <button class="select_button" type="button" @click="uncheckEverything">odznacz wszystko</button>
+            <div class="options">
+              <button class="hg-button" type="button" @click="checkEverything">zaznacz wszystko</button>
+              <button class="hg-button" type="button" @click="uncheckEverything">odznacz wszystko</button>
             </div>
             <div v-for="category in filtered_categories" :key="category.id" class="category">
               <div class="category_header">
@@ -42,7 +42,7 @@
     <template v-slot:footer>
       <div class="footer" v-if="selected_items.length !== 0">
         <p class="info">{{ summary_text }}</p>
-        <button class="submit" @click="addToMyGear">dodaj</button>
+        <button class="hg-button submit" @click="addToMyGear">dodaj</button>
       </div>
     </template>
   </modal>
@@ -79,7 +79,6 @@ export default {
         items = 'przedmiot'
         will = 'zostanie'
         add = 'dodany'
-        // } else if (len > 1 && len < 5) {
       } else if ((len > 20 || len < 5) && (str_len.slice(-1) === '2' || str_len.slice(-1) === '3' || str_len.slice(-1) === '4')) {
         items = 'przedmioty'
         will = 'zostaną'
@@ -215,17 +214,7 @@ export default {
   font-size: 1rem;
 }
 
-.select_backpack {
-  outline: none;
-  border-radius: 4px;
-  background-color: white;
-  font-size: 1rem;
-  padding: 1px;
-  margin: 4px 0;
-  min-width: 140px;
-}
-
-.select_buttons {
+.options {
   width: 100%;
   display: flex;
   justify-content: space-evenly;
@@ -233,10 +222,9 @@ export default {
   margin-bottom: 6px;
 }
 
-.select_button {
-  @include form-submit;
+.hg-button {
   font-size: .9rem;
-  padding: 8px;
+  padding: 8px 10px; // add as a hg-button-sm?
 }
 
 .items_picker {
@@ -298,10 +286,9 @@ export default {
   justify-content: space-evenly;
 }
 
-.submit {
-  @include form-submit;
+.hg-button.submit {
   font-size: 1rem;
-  padding: 8px 10px;
+  padding: 8px 12px;
 }
 
 </style>

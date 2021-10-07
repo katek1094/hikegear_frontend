@@ -5,16 +5,21 @@ export default {
     namespaced: true,
     state() {
         return {
-            logged_in: undefined
+            logged_in: undefined,
+            user_id: undefined
         }
     },
     mutations: {
         set_logged_in(state, bool) {
             state.logged_in = bool
         },
+        set_user_id(state, id) {
+            state.user_id = id
+        }
     },
     getters: {
-        is_logged_in: state => state.logged_in
+        is_logged_in: state => state.logged_in,
+        user_id: state => state.user_id
     },
     actions: {
         changeLoggedIn({commit}, bool) {

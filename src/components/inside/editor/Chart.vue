@@ -25,7 +25,6 @@ export default {
         labels: this.data_labels
       },
       chart_options: {
-        // responsive: true,
         maintainAspectRatio: false,
         elements: {
           arc: {
@@ -53,7 +52,6 @@ export default {
       this.chart.data.datasets[0].data = this.data_array
       this.chart.data.labels = this.data_labels
       this.chart.update()
-      // this.chart.resize()
     },
   },
   mounted() {

@@ -146,32 +146,5 @@ export default {
     changeBackpack({commit, getters}, index) {
         commit('copy_and_set_dynamic_backpack', getters['backpacks'][index])
         commit('copy_and_set_static_backpack', getters['backpacks'][index])
-    }
-    ,
-    getInitialData({commit}) {
-        return apiFetch('initial', {
-            method: 'GET'
-        }, [403])
-            .then(response => {
-                if (response.ok) {
-                    return response.json().then(data => {
-                        if (data.backpacks.length > 0) {
-                            commit('copy_and_set_dynamic_backpack', data.backpacks[0])
-                            commit('copy_and_set_static_backpack', data.backpacks[0])
-                            commit('set_backpacks', data.backpacks)
-                        } else {
-                            commit('copy_and_set_dynamic_backpack', [])
-                            commit('copy_and_set_static_backpack', [])
-                            commit('set_backpacks', [])
-                        }
-                        if (data['private_gear'].length === 0) {
-                            data['private_gear'] = [{name: "", description: '', id: 0, items: []}]
-                        }
-                        commit('my_gear/copy_and_set_static', data['private_gear'], {root: true})
-                        commit('my_gear/copy_and_set_dynamic', data['private_gear'], {root: true})
-                        return response
-                    })
-                } else if (response.status === 403) return response // 403
-            })
-    }
+    },
 }

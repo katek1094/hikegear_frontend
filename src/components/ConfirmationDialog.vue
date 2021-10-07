@@ -8,8 +8,8 @@
         <span><slot name="body"/></span>
       </div>
       <div class="buttons_wrapper">
-        <button class="confirm" @click="confirm">tak</button>
-        <button class="cancel" @click="closeModal">nie</button>
+        <button class="hg-button" @click="confirm">tak</button>
+        <button class="hg-button" @click="closeModal">nie</button>
       </div>
     </template>
   </modal>
@@ -50,7 +50,4 @@ export default {
   justify-content: space-evenly;
 }
 
-.confirm, .cancel {
-  @include form-submit;
-}
 </style>

@@ -138,10 +138,6 @@ $delete_width: $category-item_grid_delete_width;
   @include editor-items;
 }
 
-.sortable-chosen {
-  @include sort-chosen;
-}
-
 @media (hover: hover) and (pointer: fine) {
   .no_drag_cat .category__header:hover .category__delete.deletable, ::v-deep(.no_drag_item .item:hover .item__delete),
   .no_drag_cat .category__header:hover .category__handle, ::v-deep(.no_drag_item .item:hover .item__handle),

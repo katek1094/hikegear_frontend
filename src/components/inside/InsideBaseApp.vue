@@ -19,11 +19,8 @@ export default {
 <style lang="scss" scoped>
 
 .inside_base_app--slot {
-  //display: flex;
-  //justify-content: center;
   padding-top: 10px;
   padding-bottom: 15px;
-  //overflow: hidden; // <-----------------------changed for tooltips to be seen
 }
 
 </style>

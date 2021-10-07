@@ -221,42 +221,16 @@ export default {
     useAutoresizeAll(resizeAll)
     const {no_drag, toggleNoDrag} = useNoDrag()
 
-    store.watch((state => state.my_gear_minimized), () => setTimeout(resizeAll, 50)
-    )
+    store.watch((state => state.my_gear_minimized), () => setTimeout(resizeAll, 50))
     const my_gear_minimized = computed(() => store.getters['is_my_gear_minimized'])
 
     return {
-      my_gear_minimized,
-      max_backpack_name_length,
-      max_backpack_description_length,
-      no_drag,
-      backpack_name_input,
-      backpack_description_input,
-      backpack_delete_confirmation_dialog,
-      toggle_shared_confirmation_dialog,
-      save_progress,
-      is_shared,
-      backpack_id,
-      backpacks,
-      editor_data_ready,
-      summary_data,
-      categories,
-      backpack_name,
-      backpack_description,
-      can_add_category,
-      can_add_backpack,
-      are_changes,
-      backpack_hash,
-      setCategoryRef,
-      addCategory,
-      changeBackpack,
-      addBackpack,
-      deleteBackpack,
-      toggleShared,
-      displayConfirmationDialogBackpackDelete,
-      displayConfirmationDialogToggleShared,
-      save,
-      toggleNoDrag,
+      my_gear_minimized, max_backpack_name_length, max_backpack_description_length, no_drag, backpack_name_input,
+      backpack_description_input, backpack_delete_confirmation_dialog, toggle_shared_confirmation_dialog, save_progress,
+      is_shared, backpack_id, backpacks, editor_data_ready, summary_data, categories, backpack_name,
+      backpack_description, can_add_category, can_add_backpack, are_changes, backpack_hash, setCategoryRef, addCategory,
+      changeBackpack, addBackpack, deleteBackpack, toggleShared, displayConfirmationDialogBackpackDelete,
+      displayConfirmationDialogToggleShared, save, toggleNoDrag,
     }
   },
 }
@@ -422,7 +396,7 @@ export default {
   width: 100%;
 }
 
-@media (min-width: 480px) {
+@media (min-width: 300px) {
   /* smartphones, Android phones, landscape iPhone */
   .editor {
     width: 100%;
